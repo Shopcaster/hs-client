@@ -1,0 +1,260 @@
+
+$white: #F1F1F2;
+
+$grey: #999;
+$black: #0A0A0A;
+$red: #D31920;
+$green: #009345;
+$blue: #1b75bb;
+$yellow: #333;
+
+@import "reset";
+@import "mixins";
+@import "generic";
+
+html, body{
+    background-image:url(../img/bg.png);
+}
+
+html{
+    background-color:#87888B;
+}
+ 
+body{
+    /*@include gradient(#E5E5E6, #87888B);*/
+    font-size: 14px;
+}
+
+#top-bar{
+    background-color:$black;
+    /*background-image:url(../img/chalkboard_thin.jpg);*/
+    text-align:right;
+    font-size:13px;
+    
+    padding:5px;
+    color:$grey - #222;
+
+    a {
+        color:$grey;
+        margin-right:10px;
+    }
+
+    .login, .logout{
+        color:$white;
+        margin-right:2px;
+    }
+    .logout, .email{display:none;}
+}
+
+header{
+    height:50px;
+    background-color:$black + #222;
+    /*@include gradient($black + #383838, $black);*/
+    background-image:url(../img/ab_grad.png);
+    border-top:1px solid $black + #555;
+    border-bottom:1px solid $black + #333;
+    @include box-shadow(0, 1px, 0px, $black);
+    
+    .w960{position:relative;}
+
+    #logo{
+        margin-top:5px;
+        width:auto;
+        height:42px;
+    }
+
+    ul{
+        height:100%;
+        position:absolute;
+        top:0;left:200px;
+        width: 960px - 200px;
+
+        li{
+            height:100%;
+            float:left;
+
+            $color: $black + #222;
+
+            a{
+                display:block;
+                margin:12px 5px 0;
+                padding:6px 15px 8px;
+
+                font-size:12px;
+                font-weight:bold;
+                color: $black + #ccc;
+                text-shadow: $color 0 -1px 2px;
+
+                background-color: $color;
+                border:1px solid $color - #111;
+                border-top:1px solid $color + #666;
+                @include gradient($color + #444, $color + #181818);
+                @include rounded();
+                @include box-shadow(0, 1px, 2px, #000);
+                @include box-shadow(0, -1px, 1px, $color - #111);
+            }
+            a:hover{
+                @include gradient($color + #484848, $color + #222);
+                color:$white;
+                text-decoration:none;
+            }
+            a:active{
+                padding:8px 15px 6px;
+                border:1px solid $color;
+                @include gradient($color + #111, $color + #222);
+                @include rounded();
+                @include box-shadow(0, 1px, 1px, $color + #444);
+            }
+        }
+        li.right{
+            float:right;
+            margin-right:-6px;
+        }
+    }
+}
+
+#body{
+    padding:10px 0 0;
+
+    .listing{
+        padding:10px 0;
+
+        #listing-image{
+            padding:10px;
+            background-color:$white;
+            height:418px;
+            width:560px;
+            float:left;
+
+            @include box-shadow(0, 4px, 8px, $black + #333);
+
+            img{
+                border:1px solid $grey;
+            }
+        }
+        #listing-sidebar{
+            float:right;
+            height:418px;
+            width:340px;
+            padding:10px;
+            background-color:$white;
+            position:relative;
+
+            @include box-shadow(0, 4px, 8px, $black + #333);
+
+            .map{
+                /*position:absolute;
+                bottom:10px;
+                left:10px;*/
+                width:340px;
+                height:200px;
+                border:1px solid $grey;
+                /*@include box-shadow(0, 1px, 2px, $black);*/
+            }
+
+            #listing-offerbar{
+                $bg-color:#d5d5d5;
+
+                margin:15px 0 20px;
+                padding:0;
+
+                @include box-shadow(0, 1px, 2px, $black);
+                border:1px solid $bg-color - #181818;
+                @include gradient($bg-color + #080808, $bg-color - #181818);
+                @include rounded();
+
+                font-weight:bold;
+                color:$bg-color - #777;
+                text-shadow: $bg-color + #444 0 1px 2px;
+
+                .listing-obi{
+                    border-right:1px solid $bg-color - #222;
+                    padding:5px 10px;
+
+                    width:92px;
+                    height:100%;
+                    float:left;
+
+                    .listing-obi-title{
+                        font-weight:bold;
+                        font-size:12px; 
+                    }
+
+                    .listing-obi-value{
+                        font-size:26px;
+                        font-weight:bold;
+                    }
+                }
+                .listing-obi.asking{
+                    color:$green - #333;
+                }
+                .listing-obi.best-offer{
+                }
+                .listing-obi.date{
+                    border-right:none;
+                }
+            }
+
+            .button{
+                float:left;
+                display:block;
+                width:140px;
+            }
+            .button#offer{
+                color:$red - #222;
+            }
+            .button#question{
+                float:right;
+            }
+
+            #listing-description{
+                margin-top:70px;
+            }
+        }
+    }
+}
+ 
+footer{
+    text-align:center;
+    padding:0;
+    font-size:12px;
+    color:$white - #222;
+
+    a{
+        color:$white - #181818;
+        margin-right:10px;
+    }
+    a:hover{text-decoration:underline;}
+}
+
+#dialog{
+
+    label{
+        vertical-align:top;
+        display:block;
+        margin-bottom:10px;
+        input{
+            float:right;
+        }
+    }
+    label.password{
+        display:none;
+        .password-text{
+            float:left;
+            width:100px;
+        }
+    }
+    input{
+        width:150px;
+    }
+    a{
+        display:block;
+        font-size:12px;
+    }
+    a.password{
+        text-align:right;
+    }
+    a.cancel-password{
+        float:left;
+    }
+}
