@@ -23,3 +23,4 @@ hs.goTo = function(url){document.location.hash = '#'+url;};
 //     if (document.location.hash == '')
 //         hs.controller.goTo('/');
 // });
+

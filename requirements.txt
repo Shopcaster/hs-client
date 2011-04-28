@@ -1,3 +1,4 @@
 # npm packages:
-npm install wrench && \
 npm install underscore
+npm install mime
+apt-get install inotify-tools

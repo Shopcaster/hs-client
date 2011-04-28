@@ -3,15 +3,13 @@
 hs.views = new Object();
 
 hs.views.View = Backbone.View.extend({
-    _tmplContext: _.defaults(this.options || {}, {
-        'MEDIA_URL': hsConst.MEDIA_URL
-    }),
+    _tmplContext: _.defaults(this.options || {}, {}),
     render: function(){
         if (this.template) $(this.el).html(this.renderTmpl());
         return this;
     },
     renderTmpl: function(){
-        if (typeof this.template == 'undefined') 
+        if (typeof this.template == 'undefined')
             throw('must define dialog template');
         var context = _.clone(this._tmplContext);
         if (this.model)

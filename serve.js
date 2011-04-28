@@ -1,21 +1,26 @@
+#!/usr/bin/env node
 
 var http = require('http'),
-    parseURL = require('url').parse,
-    build = require('build.js');
+    url = require('url'),
+    path = require('path'),
+    fs = require('fs'),
+    mime = require('mime'),
+    exec = require('child_process').exec,
+    build = require('./build.js');
 
-if (process.argv.length < 3)
-    throw('must specify build type');
-var buildType = process.argv[2];
+mime.define({
+    'text/cache-manifest': ['appcache', 'appCache'],
+});
 
-http.createServer(function (req, res) {
-  var uri = url.parse(request.url).pathname,
-      filename = path.join(process.cwd(), uri);
-  
+var server = http.createServer(function (req, res) {
+  var uri = url.parse(req.url).pathname,
+      filename = path.join(build.buildDir, uri);
+
   path.exists(filename, function(exists) {
     if(!exists) {
-      response.writeHead(404, {"Content-Type": "text/plain"});
-      response.write("404 Not Found\n");
-      response.end();
+      res.writeHead(404, {"Content-Type": "text/plain"});
+      res.write("404 Not Found\n");
+      res.end();
       return;
     }
 
@@ -23,19 +28,30 @@ http.createServer(function (req, res) {
         if (stat.isDirectory()) filename += '/index.html';
 
         fs.readFile(filename, "binary", function(err, file) {
-          if(err) {        
-            response.writeHead(500, {"Content-Type": "text/plain"});
-            response.write(err + "\n");
-            response.end();
+          if(err) {
+            res.writeHead(500, {"Content-Type": "text/plain"});
+            res.write(err + "\n");
+            res.end();
             return;
           }
 
-          response.writeHead(200);
-          response.write(file, "binary");
-          response.end();
+          res.writeHead(200, {"Content-Type": mime.lookup(filename)});
+          res.write(file, "binary");
+          res.end();
         });
     });
   });
-}).listen(3000, "0.0.0.0");
+});
+
+server.listen(3000, "0.0.0.0");
+
+(function waitForChange(){
+    exec('inotifywait -r '+build.srcDir, function(){
+        build.build(function(){
+            waitForChange();
+        });
+    });
+})();
+
 
 console.log('Server running at http://0.0.0.0:3000/');
