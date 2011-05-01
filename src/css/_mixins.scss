@@ -15,10 +15,10 @@
     text-shadow: $color 0 $offset $radius;
 }
 
-@mixin box-shadow($hor: 0, $vert: 2px, $blur: 4px, $color: $black) {
-    -moz-box-shadow: $hor $vert $blur $color;
-    -webkit-box-shadow: $hor $vert $blur $color;
-    box-shadow: $hor $vert $blur $color;
+@mixin box-shadow($value) {
+    -moz-box-shadow: $value;
+    -webkit-box-shadow: $value;
+    box-shadow: $value;
 }
 
 @mixin sans(){
@@ -31,7 +31,76 @@
         startColorstr='$from', endColorstr='$to'); /* for IE */
     background:-webkit-gradient(linear, left top, left bottom,
         from($from), to($to)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  $from,  $to); /* for firefox 3.6+ */ 
+    background: -moz-linear-gradient(top,  $from,  $to); /* for firefox 3.6+ */
+}
+
+@mixin background-size($val:contain){
+       -moz-background-size: $val;/* Gecko 1.9.2 (Firefox 3.6) */
+         -o-background-size: $val;/* Opera 9.5 */
+    -webkit-background-size: $val;/* Safari 3.0 */
+            background-size: $val;/* Gecko 2.0 (Firefox 4.0) and other CSS3-compliant browsers */
+}
+
+@mixin dark-button($color: $black + #222){
+    input[type=button], input[type=submit], .button{
+        display:block;
+        padding:6px 15px 8px;
+
+        font-size:12px;
+        font-weight:bold;
+        color: $color + #aaa;
+        text-shadow: $color 0 -1px 2px;
+
+        border:none;
+        @include gradient($color + #444, $color + #181818);
+        @include rounded();
+        @include box-shadow((inset 0 -1px $color - #111,
+                             inset 0 1px $color + #666,
+                             0 1px 2px #000));
+    }
+    input[type=button]:hover, input[type=submit]:hover, .button:hover{
+        @include gradient($color + #484848, $color + #222);
+        color:$white;
+        text-decoration:none;
+    }
+    input[type=button]:active, input[type=submit]:active, .button:active{
+        padding:8px 15px 6px;
+        border:1px solid $color - #333;
+        @include gradient($color + #111, $color + #222);
+        @include rounded();
+        @include box-shadow((inset 0 1px 1px $color - #111,
+                             inset 0 -1px $color + #444));
+    }
+}
+
+@mixin light-button($color: $white - #222){
+    input[type=button], input[type=submit], .button{
+        display:block;
+        padding:6px 15px 8px;
+
+        font-size:12px;
+        font-weight:bold;
+        text-align:center;
+        color:$color - #777;
+        text-shadow: $color + #444 0 1px 2px;
+
+        border:1px solid $color - #444;
+        background-color:$color;
+        @include box-shadow((inset 0 0px 0px $color - #333,
+                             inset 0 -1px 1px $color,
+                             0 1px 1px $black));
+        @include gradient($color + #080808, $color - #181818);
+        @include rounded();
+    }
+    input[type=button]:hover, input[type=submit]:hover, .button:hover{
+        color:$color - #999;
+        text-decoration:none;
+    }
+    input[type=button]:active, input[type=submit]:active, .button:active{
+        border:1px solid $color - #444;
+        @include box-shadow((inset 0 0px 2px $color - #444));
+        @include gradient($color - #181818, $color + #080808);
+    }
 }
 
 /**

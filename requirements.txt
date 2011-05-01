@@ -1,4 +1,0 @@
-# npm packages:
-npm install underscore
-npm install mime
-apt-get install inotify-tools

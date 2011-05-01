@@ -4,7 +4,8 @@ var _ = require('underscore')._,
     fs = require('fs'),
     wrench = require('wrench'),
     buildDir = './_build/',
-    srcDir = './src/';
+    srcDir = './src/',
+    isScript = process.argv[1] == __filename;
 
 var build = function(buildClbk){
     var buildOutput = {
@@ -30,8 +31,8 @@ var build = function(buildClbk){
             fs.writeFile(buildDir+'/index.html', html, function(){
                 console.log('Done');
                 if (typeof buildClbk == 'function')
-                    buildClbk();
-                else if (process.argv[1] == __filename)
+                    buildClbk(null);
+                else if (isScript)
                     process.exit();
             });
         });
@@ -44,22 +45,26 @@ var build = function(buildClbk){
     };
 
     fs.realpath(buildDir, function(err, fullBuildDir){
-        if (err) errOut(err);
+        if (err) return errOut(err);
         buildDir = fullBuildDir;
         fs.realpath(srcDir, function(err, fullSrcDir){
-            if (err) errOut(err);
+            if (err) return errOut(err);
             srcDir = fullSrcDir;
             // rm -rf buildDir && mkdir buildDir
             wrench.rmdirRecursive(buildDir, function(err){
-                if (err) errOut(err);
+                if (err) return errOut(err);
                 fs.mkdir(buildDir, 0766, function(err){
-                    if (err) errOut(err);
+                    if (err) return errOut(err);
                     (function doStep(){
                         var step = steps.shift();
                         if (step == null) return writeOutput();
 
                         console.log('Starting build step:', step.name);
-                        step.build(srcDir, buildDir, function(result){
+                        step.build(srcDir, buildDir, function(err, result){
+                            if (err){
+                                console.log('Error in step:', step.name);
+                                return errOut(err);
+                            }
                             if (typeof result == 'object')
                                 updateOutput(result);
                             doStep();
@@ -72,12 +77,16 @@ var build = function(buildClbk){
 
     function errOut(err){
         console.log('Error:', err);
-        process.exit(1);
+
+        if (typeof buildClbk == 'function')
+            buildClbk(err);
+        else if (isScript)
+            process.exit(1);
     }
 };
 
 
-if (process.argv[1] == __filename) build();
+if (isScript) build();
 else{
     exports.build = build;
     exports.buildDir = buildDir.replace(/^\.\//, module.filename.replace('build.js', ''));

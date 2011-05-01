@@ -17,10 +17,3 @@ hs.goTo = function(url){document.location.hash = '#'+url;};
         Backbone.history.start();
     });
 })();
-
-// hs.init(function(){
-//     Backbone.history.start();
-//     if (document.location.hash == '')
-//         hs.controller.goTo('/');
-// });
-

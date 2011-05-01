@@ -8,6 +8,8 @@ $green: #009345;
 $blue: #1b75bb;
 $yellow: #333;
 
+$layout_width: 960px;
+
 @import "reset";
 @import "mixins";
 @import "generic";
@@ -19,10 +21,11 @@ html, body{
 html{
     background-color:#87888B;
 }
- 
+
 body{
     /*@include gradient(#E5E5E6, #87888B);*/
     font-size: 14px;
+    font-family: 'Cantarell', arial, sans-serif;
 }
 
 #top-bar{
@@ -30,7 +33,7 @@ body{
     /*background-image:url(../img/chalkboard_thin.jpg);*/
     text-align:right;
     font-size:13px;
-    
+
     padding:5px;
     color:$grey - #222;
 
@@ -53,59 +56,36 @@ header{
     background-image:url(../img/ab_grad.png);
     border-top:1px solid $black + #555;
     border-bottom:1px solid $black + #333;
-    @include box-shadow(0, 1px, 0px, $black);
-    
-    .w960{position:relative;}
+    @include box-shadow(0 1px 0px $black);
+
+    .width{position:relative;}
 
     #logo{
-        margin-top:5px;
-        width:auto;
-        height:42px;
+        position:absolute;
+        top:9px;left:5px;
+        width:170px;
+        height:33px;
+        background-image:url(../img/ab_logo.png);
+        @include background-size();
+        background-repeat:no-repeat;
     }
 
     ul{
         height:100%;
         position:absolute;
         top:0;left:200px;
-        width: 960px - 200px;
+        width: $layout_width - 200px;
 
         li{
             height:100%;
             float:left;
 
-            $color: $black + #222;
-
             a{
-                display:block;
                 margin:12px 5px 0;
-                padding:6px 15px 8px;
-
-                font-size:12px;
-                font-weight:bold;
-                color: $black + #ccc;
-                text-shadow: $color 0 -1px 2px;
-
-                background-color: $color;
-                border:1px solid $color - #111;
-                border-top:1px solid $color + #666;
-                @include gradient($color + #444, $color + #181818);
-                @include rounded();
-                @include box-shadow(0, 1px, 2px, #000);
-                @include box-shadow(0, -1px, 1px, $color - #111);
             }
-            a:hover{
-                @include gradient($color + #484848, $color + #222);
-                color:$white;
-                text-decoration:none;
-            }
-            a:active{
-                padding:8px 15px 6px;
-                border:1px solid $color;
-                @include gradient($color + #111, $color + #222);
-                @include rounded();
-                @include box-shadow(0, 1px, 1px, $color + #444);
-            }
+            @include dark-button();
         }
+        li.active{@include dark-button($red - #555)}
         li.right{
             float:right;
             margin-right:-6px;
@@ -126,7 +106,7 @@ header{
             width:560px;
             float:left;
 
-            @include box-shadow(0, 4px, 8px, $black + #333);
+            @include box-shadow(0 4px 8px $black + #333);
 
             img{
                 border:1px solid $grey;
@@ -140,16 +120,12 @@ header{
             background-color:$white;
             position:relative;
 
-            @include box-shadow(0, 4px, 8px, $black + #333);
+            @include box-shadow(0 4px 8px $black + #333);
 
             .map{
-                /*position:absolute;
-                bottom:10px;
-                left:10px;*/
                 width:340px;
                 height:200px;
                 border:1px solid $grey;
-                /*@include box-shadow(0, 1px, 2px, $black);*/
             }
 
             #listing-offerbar{
@@ -158,7 +134,7 @@ header{
                 margin:15px 0 20px;
                 padding:0;
 
-                @include box-shadow(0, 1px, 2px, $black);
+                @include box-shadow(0 1px 2px $black);
                 border:1px solid $bg-color - #181818;
                 @include gradient($bg-color + #080808, $bg-color - #181818);
                 @include rounded();
@@ -177,7 +153,7 @@ header{
 
                     .listing-obi-title{
                         font-weight:bold;
-                        font-size:12px; 
+                        font-size:12px;
                     }
 
                     .listing-obi-value{
@@ -212,8 +188,38 @@ header{
             }
         }
     }
+    #new_listing{
+        width:100%;
+
+        li, ul {margin:0;padding:0;list-style:none;}
+        .form_item{
+            width:93%;
+            padding:2%;
+            margin:2%;
+            display:block;
+            font-size:16px;
+            @include sans();
+
+            background-color:$white;
+            @include box-shadow(0 2px 4px $black + #222);
+
+            input[type=button]{
+                float:right;
+            }
+
+            #image{
+                max-height:40px;
+                width:auto;
+                margin:0 0 -7px;
+                padding:0;
+            }
+
+            label{color:$grey;}
+        }
+        .form_item:after {@include clearfix();}
+    }
 }
- 
+
 footer{
     text-align:center;
     padding:0;
@@ -258,3 +264,8 @@ footer{
         float:left;
     }
 }
+
+@import "mobile_tablet";
+@import "mobile_landscape";
+@import "mobile_portrait";
+@import "mobile_retna";

@@ -10,7 +10,7 @@ exports.build = function(srcDir, buildDir, clbk){
         manifest = '';
 
     manifest += 'CACHE MANIFEST\n';
-    manifest += '#built: '+ new Date() +'\n\n';
+    manifest += '#built: '+ Math.round(new Date().getTime() / 1000) +'\n\n';
 
     listDirectory(buildDir, function(err, result){
 
@@ -19,7 +19,7 @@ exports.build = function(srcDir, buildDir, clbk){
         }).join('\n');
 
         fs.writeFile(manifestFile, manifest, function(){
-            clbk({htmlAttr: 'manifest="'+manifestFilename+'"'});
+            clbk(null, {htmlAttr: 'manifest="'+manifestFilename+'"'});
         });
     });
 };
