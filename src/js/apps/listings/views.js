@@ -1,4 +1,7 @@
-//depends: apps/listings/main.js, core/views.js, core/date.js
+//depends: core/views.js, core/date.js,
+//         apps/listings/main.js,
+//         apps/listings/listingPage.tmpl,
+//         apps/listings/listingForm.tmpl
 
 hs.listings.views = new Object();
 

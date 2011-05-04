@@ -2,8 +2,8 @@
 
 hs.regController('listings', Backbone.Controller.extend({
   routes: {
-    '/listings/new/': 'newListing',
-    '/listings/:id/': 'listing'
+    '!/listings/new/': 'newListing',
+    '!/listings/:id/': 'listing'
   },
   listing: function(id){
     var listing = new hs.listings.models.Listing({id: parseInt(id)}),

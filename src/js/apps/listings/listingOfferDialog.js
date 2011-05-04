@@ -1,4 +1,5 @@
-//depends: core/auth/dialog.js, apps/listings/main.js, apps/listings/views.js
+//depends: core/auth/dialog.js, apps/listings/main.js, apps/listings/views.js,
+//         apps/listings/listingOfferDialog.tmpl
 
 hs.listings.views.offerDialog = hs.auth.Dialog.extend({
     template: 'listingOfferDialog',
