@@ -56,7 +56,7 @@
         @include rounded();
         @include box-shadow((inset 0 -1px $color - #111,
                              inset 0 1px $color + #666,
-                             0 1px 2px #000));
+                             0 1px 6px #333));
     }
     input[type=button]:hover, input[type=submit]:hover, .button:hover{
         @include gradient($color + #484848, $color + #222);
