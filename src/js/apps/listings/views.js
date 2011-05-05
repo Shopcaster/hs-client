@@ -22,7 +22,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
   updatePhoto: function(){
     if (this.model.get('photo')){
       this.$('#listing-image img')
-          .attr('src', this.model.get('photo').web);
+          .attr('src', 'http://'+hs.API_DOMAIN+this.model.get('photo').web);
     }else{
       this.$('#listing-image img')
           .attr('src', 'http://lorempixum.com/560/418/technics/');
