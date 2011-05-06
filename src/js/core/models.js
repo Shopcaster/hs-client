@@ -1,14 +1,11 @@
-//depends: main.js
+//depends: main.js, core/api.js
 
 
 hs.models = new Object();
 
 hs.models.Model = Backbone.Model.extend({
-  auth: {
-    'GET': true,
-    'POST': true,
-    'PUT': true,
-    'DELETE': true
+  initialize: function(){
+    hs.api.con.sub(this.url(), _.bind(this.set, this));
   }
 });
 

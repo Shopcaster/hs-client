@@ -2,9 +2,12 @@
 
 var hs = new Object();
 
-hs.API_DOMAIN = 'dev.hipsell.com';
-hs.API_PATH = '/api/v1/';
-hs.API_URL = 'http://'+hs.API_DOMAIN+hs.API_PATH;
+hs.API = {
+  port: 8000,
+  host: '0.0.0.0',
+  path: '/',
+  protocol: 'http'
+};
 
 hs.log = function(){
   if (window.console && typeof console.log === "function")
