@@ -32,7 +32,7 @@ hs.con = {
   recieved: function(msg){
     console.log('message revieved:', msg);
 
-    parsed = /^(\w+):(.*)$/.exec(msg);
+    var parsed = /^(\w+):(.*)$/.exec(msg);
     if (parsed){
       var key = parsed[1], data = parsed[2];
       this.trigger('recieved', key, data);
