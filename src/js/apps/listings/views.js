@@ -1,16 +1,14 @@
 //depends: core/views.js, core/date.js,
 //         apps/listings/main.js,
-//         apps/listings/listingPage.tmpl,
-//         apps/listings/listingForm.tmpl
+//         apps/listings/tmpl/listingPage.tmpl,
+//         apps/listings/tmpl/listingForm.tmpl
 
 hs.listings.views = new Object();
 
 hs.listings.views.ListingPage = hs.views.Page.extend({
   template: 'listingPage',
-  events: {
-    'click #offer': 'makeOffer'
-  },
   initialize: function(){
+    hs.views.Page.prototype.initialize.apply(this, arguments);
     this.model.bind('change:photo', _.bind(this.updatePhoto, this));
     this.model.bind('change:description', _.bind(this.updateDesc, this));
     this.model.bind('change:created_on', _.bind(this.updateCreated, this));
@@ -22,7 +20,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
   updatePhoto: function(){
     if (this.model.get('photo')){
       this.$('#listing-image img')
-          .attr('src', 'http://'+hs.API_DOMAIN+this.model.get('photo').web);
+          .attr('src', this.model.get('photo').web);
     }else{
       this.$('#listing-image img')
           .attr('src', 'http://lorempixum.com/560/418/technics/');
@@ -61,17 +59,27 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     }else{
       this.$('.best-offer .listing-obi-value').text('$0');
     }
-  },
-  makeOffer: function(e){
-    e.preventDefault();
-    var dialog = new hs.listings.views.offerDialog();
-    dialog.bind('submit', _.bind(function(){
-      var offer = new hs.listings.models.Offer();
-      offer.set('amount', dialog.amount);
-      offer.save();
-    }, this)).render();
-  },
+  }
 });
+
+
+hs.listings.views.OfferForm = hs.views.View.extend({
+  template: 'offerForm',
+  el: $('body'),
+  events: {
+    'click #offer': 'makeOffer'
+  },
+  initialize: function(){
+    hs.views.View.prototype.initialize.apply(this, arguments);
+  },
+  makeOffer: function(){
+    if (!this.rendered)
+      this.render();
+
+  }
+});
+
+
 
 
 hs.listings.views.ListingForm = hs.views.Form.extend({

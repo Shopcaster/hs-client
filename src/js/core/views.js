@@ -5,8 +5,12 @@ hs.views = new Object();
 hs.views.View = Backbone.View.extend({
   _tmplContext: _.defaults(this.options || {}, {}),
   events: {},
+  rendered: false,
   render: function(){
-    if (this.template) $(this.el).html(this.renderTmpl());
+    if (this.template){
+      $(this.el).html(this.renderTmpl());
+      this.rendered = true;
+    }
     return this;
   },
   renderTmpl: function(){
@@ -93,44 +97,4 @@ hs.views.Form = hs.views.View.extend(_.extend(Backbone.Events, {
 
 
 
-hs.views.Dialog = hs.views.View.extend({
-  el: $('#dialog')[0],
-  buttons: {
-    "OK": function(){this.trigger('click:ok').close();},
-    "Cancel": function(){this.trigger('click:cancel').close();}
-  },
-  buttonBind: function(){
-    _.each(this.buttons, _.bind(function(value, key){
-      if (_.isFunction(value))
-        this.buttons[key] = _.bind(value, this);
-    }, this));
-  },
-  render: function(){
-    $('body').append(this.el);
-    this.buttonBind();
-    $(this.el).html(this.renderTmpl()).dialog({
-      modal: true,
-      buttons: this.buttons
-    });
-    return this;
-  },
-  close: function(){return this.remove()},
-  remove: function(){
-    $(this.el).dialog('close').remove();
-    return this;
-  }
-});
 
-hs.views.FormDialog = hs.views.Dialog.extend({
-  buttons: {
-    "Submit": function(){this.$('form').submit();},
-    "Cancel": function(){this.trigger('click:cancel').close();}
-  },
-  events: {
-    'submit form': 'submit'
-  },
-  submit: function(e){
-    e.preventDefault();
-    this.trigger('submit').close();
-  }
-});

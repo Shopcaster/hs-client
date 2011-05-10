@@ -1,11 +1,15 @@
-//depends: main.js, core/api.js
+//depends: main.js, core/pubsub.js
 
 
 hs.models = new Object();
 
 hs.models.Model = Backbone.Model.extend({
+  key: null,
+  url: function(){return this.key},
   initialize: function(){
-    hs.api.con.sub(this.url(), _.bind(this.set, this));
+    hs.pubsub.sub(this.key, _.bind(function(fields){
+      if (fields.id == this.id) this.set(fields);
+    }, this));
   }
 });
 

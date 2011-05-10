@@ -3,9 +3,7 @@
 hs.listings.models = new Object();
 
 hs.listings.models.Listing = hs.models.Model.extend({
-  url: function(){
-    return '/listing/'+this.id+'/';
-  }
+  key: 'listing'
 });
 
 
@@ -15,7 +13,5 @@ hs.listings.models.ListingSet = hs.models.ModelSet.extend({
 });
 
 hs.listings.models.Offer = hs.models.Model.extend({
-  url: function(){
-    return '/offer/'+this.id+'/';
-  }
+  key: 'offer',
 });
