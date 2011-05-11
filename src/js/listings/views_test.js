@@ -1,4 +1,4 @@
-//depends: apps/listings/views.js, apps/listings/models.js
+//depends: listings/views.js, listings/models.js
 
 module("Listing views");
 

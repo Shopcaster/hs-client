@@ -179,6 +179,47 @@ header{
             .button#offer{
                 color:$red - #222;
             }
+
+            $offerBoxColor: #d5d5d5;
+
+            #offerBox.open .button#offer{
+                @include box-shadow(none);
+                @include gradient-clear();
+                @include rounded-bottom(0px);
+                border-bottom:none;
+                background-color:$offerBoxColor;
+                border-color:$offerBoxColor - #444;
+            }
+            #offerBox{
+
+                position:relative;
+                #offerForm{
+                    position:absolute;
+                    top:28px; left:0;
+                    z-index:2;
+                    width:140px;
+                    padding:6px 10px 5px;
+
+                    text-align:right;
+
+                    background-color: $offerBoxColor;
+                    border-color:$offerBoxColor - #444;
+                    border-width:0 1px 1px;
+                    border-style:solid;
+
+                    /*@include box-shadow((inset 0 0px 2px $offerBoxColor - #444));*/
+                    input[type=text], input[type=email]{
+                        width:130px;
+                        margin: 0 0 5px;
+                    }
+                    a {
+                        font-size:18px;
+                        line-height:14px;
+                    }
+                }
+            }
+
+
             .button#question{
                 float:right;
             }

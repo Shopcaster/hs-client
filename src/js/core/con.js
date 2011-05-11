@@ -38,7 +38,9 @@ hs.con = {
       this.trigger('sending', key, data);
       this.trigger('sending:'+key, data);
       if (typeof data == 'undefined') data = {};
-      this.socket.send(key+':'+JSON.stringify(data));
+      var msg = key+':'+JSON.stringify(data);
+      this.socket.send(msg);
+    console.log('sent:', msg);
     }, this));
   },
   _connected: function(){
@@ -46,13 +48,14 @@ hs.con = {
     this.trigger('connected');
   },
   _recieved: function(msg){
-    console.log('message revieved:', msg);
+    console.log('revieved:', msg);
 
     var parsed = /^(\w+):(.*)$/.exec(msg);
     if (parsed){
       var key = parsed[1], data = JSON.parse(parsed[2]);
       this.trigger('recieved', key, data);
       this.trigger('recieved:'+key, data);
+      this.trigger(key, data);
     }
   },
   _closed: function(){

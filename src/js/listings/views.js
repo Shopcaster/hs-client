@@ -1,9 +1,11 @@
 //depends: core/views.js, core/date.js,
-//         apps/listings/main.js,
-//         apps/listings/tmpl/listingPage.tmpl,
-//         apps/listings/tmpl/listingForm.tmpl
+//         listings/main.js,
+//         listings/tmpl/listingPage.tmpl,
+//         listings/tmpl/listingForm.tmpl,
+//         listings/models.js
 
 hs.listings.views = new Object();
+
 
 hs.listings.views.ListingPage = hs.views.Page.extend({
   template: 'listingPage',
@@ -11,11 +13,17 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     hs.views.Page.prototype.initialize.apply(this, arguments);
     this.model.bind('change:photo', _.bind(this.updatePhoto, this));
     this.model.bind('change:description', _.bind(this.updateDesc, this));
-    this.model.bind('change:created_on', _.bind(this.updateCreated, this));
+    this.model.bind('change:created', _.bind(this.updateCreated, this));
+    this.model.bind('change:updated', _.bind(this.updateCreated, this));
     this.model.bind('change:latitude', _.bind(this.updateLoc, this));
     this.model.bind('change:longitude', _.bind(this.updateLoc, this));
     this.model.bind('change:price', _.bind(this.updatePrice, this));
     this.model.bind('change:best_offer', _.bind(this.updateBestOffer, this));
+  },
+  render: function(){
+    hs.views.Page.prototype.render.apply(this, arguments);
+
+    this.offerForm = new hs.listings.views.OfferForm({el: $('#offerBox')});
   },
   updatePhoto: function(){
     if (this.model.get('photo')){
@@ -63,19 +71,36 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
 });
 
 
-hs.listings.views.OfferForm = hs.views.View.extend({
+hs.listings.views.OfferForm = hs.views.Form.extend({
+  _renderWith: 'append',
   template: 'offerForm',
-  el: $('body'),
-  events: {
-    'click #offer': 'makeOffer'
+  fields: {
+    'amount': ''
   },
+  events: _.extend({
+    'click #offer': 'makeOffer',
+    'click #offerCancel': 'makeOffer',
+    'click #offerSubmit': '_submit'
+  }, hs.views.Form.prototype.events),
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
   },
-  makeOffer: function(){
-    if (!this.rendered)
-      this.render();
-
+  makeOffer: function(e){
+    e.preventDefault();
+    if ($('#offerForm:visible').length){
+      $('#offerBox').removeClass('open');
+      $('#offerForm').fadeOut(200);
+    }else{
+      $('#offerBox').addClass('open');
+      if (!this.rendered) this.render();
+      $('#offerForm').fadeIn(200);
+    }
+  },
+  validateAmount: function(value, clbk){
+    clbk(/^\d+$/.test(value.replace('$', '')));
+  },
+  submit: function(){
+    hs.log('TODO:submit offerForm');
   }
 });
 
@@ -98,9 +123,19 @@ hs.listings.views.ListingForm = hs.views.Form.extend({
     this.bind('change:price', _.bind(function(){
       this.set('price', this.get('price').replace('$', ''));
     }, this));
+    this.model = new hs.listings.models.Listing();
+    this.bind('change', _.bind(function(){
+      this.model.set(this.toJSON());
+    }, this));
   },
   submit: function(){
-    hs.log('TODO:submit ListingForm');
+    this.model.bind('change', _.bind(function gt(){
+      this.model.unbind(gt);
+      hs.goTo('!/listings/'+this.model.id+'/');
+    }, this));
+    this.model.save(null, {error: function(){
+      console.log('save error', arguments);
+    }});
   },
   validateDescription: function(value, clbk){
     clbk(value.length > 0 && value.length < 141);

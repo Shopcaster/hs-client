@@ -1,9 +1,20 @@
-//depends: apps/listings/main.js, core/models.js
+//depends: listings/main.js, core/models.js
 
 hs.listings.models = new Object();
 
 hs.listings.models.Listing = hs.models.Model.extend({
-  key: 'listing'
+  key: 'listing',
+  fields: {
+    photo: '',
+    description: '',
+    created: '',
+    updated: '',
+    latitude: '',
+    longitude: '',
+    price: '',
+    best_offer: '',
+    offers: [],
+  }
 });
 
 

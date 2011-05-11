@@ -3,12 +3,16 @@
 hs.views = new Object();
 
 hs.views.View = Backbone.View.extend({
+  initialize: function(){
+    _.bindAll(this);
+  },
+  _renderWith: 'html',
   _tmplContext: _.defaults(this.options || {}, {}),
   events: {},
   rendered: false,
   render: function(){
     if (this.template){
-      $(this.el).html(this.renderTmpl());
+      $(this.el)[this._renderWith](this.renderTmpl());
       this.rendered = true;
     }
     return this;
@@ -30,14 +34,14 @@ hs.views.Page = hs.views.View.extend({
 });
 
 
-hs.views.Form = hs.views.View.extend(_.extend(Backbone.Events, {
-  events: _.extend(hs.views.View.prototype.events, {
+hs.views.Form = hs.views.View.extend(_.extend({
+  events: _.extend({
     'change input[type=text]': 'change',
     'change input[type=email]': 'change',
     'change input[type=password]': 'change',
     'change textarea': 'change',
     'submit form': '_submit'
-  }),
+  }, hs.views.View.prototype.events),
   fields:{},
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
@@ -92,8 +96,11 @@ hs.views.Form = hs.views.View.extend(_.extend(Backbone.Events, {
     //     $(this).animate({backgroundColor: oldColor});
     //   }, this), 200);
     // });
+  },
+  toJSON: function(){
+    return _.clone(this.values);
   }
-}));
+}, Backbone.Events));
 
 
 
