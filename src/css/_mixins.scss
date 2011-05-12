@@ -1,7 +1,7 @@
 
-@mixin dark-button($color: $black + #222, $prefix: ''){
-    input[type=button]#{$prefix}, input[type=submit]#{$prefix},
-    .button#{$prefix}{
+@mixin dark-button($color: $black + #222, $class: ''){
+    input[type=button]#{$class}, input[type=submit]#{$class},
+    .button#{$class}{
         display:block;
         padding:6px 15px 8px;
 
@@ -15,16 +15,16 @@
         @include rounded();
         @include box-shadow((inset 0 -1px $color - #111,
                              inset 0 1px $color + #666,
-                             0 1px 6px #333));
+                             0 1px 1px #111));
     }
-    input[type=button]:hover#{$prefix}, input[type=submit]:hover#{$prefix},
-    .button:hover#{$prefix}{
+    input[type=button]:hover#{$class}, input[type=submit]:hover#{$class},
+    .button:hover#{$class}{
         @include gradient($color + #484848, $color + #222);
         color:$white;
         text-decoration:none;
     }
-    nput[type=button]:active#{$prefix}, input[type=submit]:active#{$prefix},
-    .button:active#{$prefix}{
+    nput[type=button]:active#{$class}, input[type=submit]:active#{$class},
+    .button:active#{$class}{
         padding:8px 15px 6px;
         border:1px solid $color - #333;
         @include gradient($color + #111, $color + #222);

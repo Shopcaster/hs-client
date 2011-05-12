@@ -1,7 +1,7 @@
 
 $white: #F1F1F2;
 
-$grey: #999;
+$grey: #d5d5d5;
 $black: #0A0A0A;
 $red: #D31920;
 $green: #009345;
@@ -34,38 +34,59 @@ body{
     background-color:$black;
     /*background-image:url(../img/chalkboard_thin.jpg);*/
     text-align:right;
-    font-size:13px;
+    font-size:12px;
 
     padding:5px;
     color:$grey - #222;
+    font-weight:bold;
 
     a {
-        color:$grey;
+        color:$grey - #222;
         margin-right:10px;
     }
 
     .login, .logout{
         color:$white;
-        margin-right:2px;
+        margin-right:0px;
+        padding:0 6px 4px;
+        border:1px solid $black;
+        border-bottom:0;
     }
     .logout, .email{display:none;}
 
+    .login.open{
+        background-color:$grey;
+        border-color:$grey - #555;
+        @include rounded-top();
+        color:$black;
+        z-index:3;
+        color:$grey - #777;
+        text-shadow: $grey + #444 0 1px 2px;
+    }
     #loginForm{
         position:absolute;
-        right:0;top:20px;
+        right:0px;top:17px;
         width:160px;
-        background-color:$black;
+        background-color:$grey;
         z-index:2;
-        padding:10px;
-        border:1px solid $black + #333;
+        font-size:13px;
+        padding:5px;
+        border:1px solid $grey - #555;
         border-top:none;
         @include rounded-bottom();
+        @include rounded-top-left();
 
+        @include box-shadow(0 2px 4px $black + #333);
+        @include dark-button($blue - #444, '.submit');
         input{
             float:right;
-            margin-bottom:10px;
+            margin-bottom:5px;
+            width:148px;
         }
-        input:last-child{
+        input.submit{
+            padding:3px 10px 4px !important;
+            width:77px;
+            color:$white !important;
             margin-bottom:0;
         }
     }

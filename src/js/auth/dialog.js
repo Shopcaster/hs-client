@@ -13,6 +13,15 @@ hs.auth.LoginForm = hs.views.Form.extend({
       'type': 'password',
       'placeholder': 'Password'
   }],
+  initialize: function(){
+    hs.views.Form.prototype.initialize.apply(this, arguments);
+    $('body').click(_.bind(function(e){
+      console.log('body click', $(e.target).selector);
+      if ($('#loginForm').children($(e.target).selector).length)
+        return e.preventDefault();
+      this.hide();
+    }, this));
+  },
   submit: function(){
     hs.auth.login(this.values.email, this.values.password, _.bind(function(err){
       if (err){
@@ -26,10 +35,14 @@ hs.auth.LoginForm = hs.views.Form.extend({
   },
   show: function(){
     if (!this.rendered) this.render();
-    $('#loginForm').fadeIn(200);
+    // $('#loginForm').fadeIn(200);
+    $('#loginForm').show();
+    $('a.login').addClass('open');
   },
   hide: function(){
-    $('#loginForm').fadeOut(200);
+    // $('#loginForm').fadeOut(200);
+    $('#loginForm').hide();
+    $('a.login').removeClass('open');
   },
   toggle: function(){
     if($('#loginForm:visible').length)
