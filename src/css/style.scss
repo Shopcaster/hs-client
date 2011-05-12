@@ -28,6 +28,8 @@ body{
     font-family: 'Cantarell', arial, sans-serif;
 }
 
+.width{position:relative;}
+
 #top-bar{
     background-color:$black;
     /*background-image:url(../img/chalkboard_thin.jpg);*/
@@ -47,6 +49,26 @@ body{
         margin-right:2px;
     }
     .logout, .email{display:none;}
+
+    #loginForm{
+        position:absolute;
+        right:0;top:20px;
+        width:160px;
+        background-color:$black;
+        z-index:2;
+        padding:10px;
+        border:1px solid $black + #333;
+        border-top:none;
+        @include rounded-bottom();
+
+        input{
+            float:right;
+            margin-bottom:10px;
+        }
+        input:last-child{
+            margin-bottom:0;
+        }
+    }
 }
 
 header{
@@ -57,8 +79,6 @@ header{
     border-top:1px solid $black + #555;
     border-bottom:1px solid $black + #333;
     @include box-shadow(0 1px 0px $black);
-
-    .width{position:relative;}
 
     #logo{
         position:absolute;

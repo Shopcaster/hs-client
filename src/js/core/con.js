@@ -7,7 +7,7 @@ hs.con = {
       this.socket = new io.Socket(hs.API.host, {port: hs.API.port});
       this.socket.on('connect', this._connected);
       this.socket.on('message', this._recieved);
-      this.socket.on('disconnect', this._closed);
+      this.socket.on('disconnect', this._disconnected);
       this.socket.connect();
     }, this);
 
@@ -33,15 +33,37 @@ hs.con = {
     else if (!clbk) return false;
     else this.bind('connected', clbk);
   },
+  disconnect: function(clbk){
+    if (clbk)
+      this.bind('disconnected', _.bind(function(){
+        this.unbind(arguments.callee);
+        clbk();
+      }, this));
+    this.socket.disconnect();
+  },
+  reconnect: function(clbk){
+    if (clbk)
+      this.bind('connected', _.bind(function(){
+        this.unbind(arguments.callee);
+        clbk();
+      }, this));
+    this.disconnect(_.bind(function(){
+      this.connect();
+    }, this));
+  },
+  msgId: 1,
   send: function(key, data){
+    var msgId = this.msgId++;
     this.isConnected(_.bind(function(){
       this.trigger('sending', key, data);
       this.trigger('sending:'+key, data);
       if (typeof data == 'undefined') data = {};
+      data.id = msgId;
       var msg = key+':'+JSON.stringify(data);
       this.socket.send(msg);
-    console.log('sent:', msg);
+      console.log('sent:', msg);
     }, this));
+    return msgId;
   },
   _connected: function(){
     this._isConnected = true;
@@ -50,16 +72,16 @@ hs.con = {
   _recieved: function(msg){
     console.log('revieved:', msg);
 
-    var parsed = /^(\w+):(.*)$/.exec(msg);
+    var parsed = /^([\w-]+):(.*)$/.exec(msg);
     if (parsed){
       var key = parsed[1], data = JSON.parse(parsed[2]);
       this.trigger('recieved', key, data);
-      this.trigger('recieved:'+key, data);
+      this.trigger('recieved:'+data.id, key, data);
       this.trigger(key, data);
     }
   },
-  _closed: function(){
-    this.trigger('closed');
+  _disconnected: function(){
+    this.trigger('disconnected');
   }
 }
 _.bindAll(hs.con);

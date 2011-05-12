@@ -1,4 +1,6 @@
-//depends: core/views.js, core/date.js,
+//depends: core/views.js,
+//         core/date.js,
+//         core/forms/views.js,
 //         listings/main.js,
 //         listings/tmpl/listingPage.tmpl,
 //         listings/tmpl/listingForm.tmpl,
@@ -9,16 +11,15 @@ hs.listings.views = new Object();
 
 hs.listings.views.ListingPage = hs.views.Page.extend({
   template: 'listingPage',
-  initialize: function(){
-    hs.views.Page.prototype.initialize.apply(this, arguments);
-    this.model.bind('change:photo', _.bind(this.updatePhoto, this));
-    this.model.bind('change:description', _.bind(this.updateDesc, this));
-    this.model.bind('change:created', _.bind(this.updateCreated, this));
-    this.model.bind('change:updated', _.bind(this.updateCreated, this));
-    this.model.bind('change:latitude', _.bind(this.updateLoc, this));
-    this.model.bind('change:longitude', _.bind(this.updateLoc, this));
-    this.model.bind('change:price', _.bind(this.updatePrice, this));
-    this.model.bind('change:best_offer', _.bind(this.updateBestOffer, this));
+  modelEvents: {
+    'change:photo': 'updatePhoto',
+    'change:description': 'updateDesc',
+    'change:created': 'updateCreated',
+    'change:updated': 'updateCreated',
+    'change:latitude': 'updateLoc',
+    'change:longitude': 'updateLoc',
+    'change:price': 'updatePrice',
+    'change:best_offer': 'updateBestOffer'
   },
   render: function(){
     hs.views.Page.prototype.render.apply(this, arguments);
@@ -64,8 +65,6 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     if (this.model.get('best_offer')){
       this.$('.best-offer .listing-obi-value')
           .text('$'+this.model.get('best_offer').amount);
-    }else{
-      this.$('.best-offer .listing-obi-value').text('$0');
     }
   }
 });

@@ -16,24 +16,20 @@ hs.pubsub = {
     });
   },
   pub: function(key, data, extra){
-    var id = this.msgId++;
-    hs.con.send('pub', _.extend({key: key, data: data, id:id}, extra));
-    return id;
+    return hs.con.send('pub', _.extend({key: key, data: data}, extra));
   },
   sub: function(key, clbk) {
-    var id = this.msgId++;
     var send = _.isUndefined(this.subs[key]);
     if (send) this.subs[key] = new Array();
     if (_.indexOf(this.subs[key], clbk) == -1){
       this.subs[key].push(clbk);
-      if (send) hs.con.send('sub', {key: key, id:id});
+      if (send) return hs.con.send('sub', {key: key});
     }
   },
   unsub: function unsub(key, clbk) {
-    var id = this.msgId++;
     if (typeof clbk == 'undefined'){
       delete this.subs[key];
-      hs.con.send('unsub', {key: key, id:id});
+      return hs.con.send('unsub', {key: key});
     }else{
       if (_.isUndefined(this.subs[key])) return;
       var i = _.indexOf(this.subs[key], clbk);
@@ -42,7 +38,6 @@ hs.pubsub = {
       if (this.subs[key].length == 0)
         unsub(key);
     }
-    return id;
   }
 };
 _.extend(hs.pubsub, Backbone.Events);

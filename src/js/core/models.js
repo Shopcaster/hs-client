@@ -18,7 +18,7 @@ hs.models.Model = Backbone.Model.extend({
   },
   _sub: function(){
     hs.pubsub.sub(this.key+':'+this.get('id'), _.bind(function(fields){
-      if (fields.id == this.id) this.set(fields);
+      if (fields && fields.id == this.id) this.set(fields);
     }, this));
   }
 });

@@ -4,7 +4,7 @@ hs.listings.models = new Object();
 
 hs.listings.models.Listing = hs.models.Model.extend({
   key: 'listing',
-  fields: {
+  fields: { //for the moment, this is just a referance
     photo: '',
     description: '',
     created: '',
@@ -14,6 +14,9 @@ hs.listings.models.Listing = hs.models.Model.extend({
     price: '',
     best_offer: '',
     offers: [],
+  },
+  defaults: {
+    best_offer: {amount: 100}
   }
 });
 

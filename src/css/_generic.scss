@@ -21,6 +21,7 @@ textarea, input[type=text], input[type=email], input[type=password]{
 
 
 @include light-button(#d5d5d5);
+@include dark-button($black + #222, '.dark');
 
 .clearfix:before, .clearfix:after {
     content: "\0020";

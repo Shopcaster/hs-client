@@ -1,6 +1,7 @@
 
-@mixin dark-button($color: $black + #222){
-    input[type=button], input[type=submit], .button{
+@mixin dark-button($color: $black + #222, $prefix: ''){
+    input[type=button]#{$prefix}, input[type=submit]#{$prefix},
+    .button#{$prefix}{
         display:block;
         padding:6px 15px 8px;
 
@@ -16,12 +17,14 @@
                              inset 0 1px $color + #666,
                              0 1px 6px #333));
     }
-    input[type=button]:hover, input[type=submit]:hover, .button:hover{
+    input[type=button]:hover#{$prefix}, input[type=submit]:hover#{$prefix},
+    .button:hover#{$prefix}{
         @include gradient($color + #484848, $color + #222);
         color:$white;
         text-decoration:none;
     }
-    input[type=button]:active, input[type=submit]:active, .button:active{
+    nput[type=button]:active#{$prefix}, input[type=submit]:active#{$prefix},
+    .button:active#{$prefix}{
         padding:8px 15px 6px;
         border:1px solid $color - #333;
         @include gradient($color + #111, $color + #222);

@@ -6,7 +6,8 @@
 //    lib/underscore.js,
 //    lib/ICanHaz.js,
 //    lib/localStorage.js,
-//    lib/base64.js
+//    lib/base64.js,
+//    lib/sha256.js
 
 /**
 * this file just depends on all the libs so that they can be depended on as 1.
