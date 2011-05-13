@@ -84,16 +84,30 @@ hs.listings.views.OfferForm = hs.views.Form.extend({
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
   },
+  render: function(){
+    hs.views.View.prototype.render.apply(this, arguments);
+    $('body').click(_.bind(this.hide, this));
+    $('#offerForm').click(function(e){e.stopPropagation()});
+  },
+  show: function(){
+    if (!this.rendered) this.render();
+    $('#offerBox').addClass('open');
+    $('#offerForm').fadeIn(200);
+  },
+  hide: function(){
+    $('#offerBox').removeClass('open');
+    $('#offerForm').fadeOut(200);
+  },
+  toggle: function(){
+    if($('#offerForm:visible').length)
+      this.hide();
+    else
+      this.show();
+  },
   makeOffer: function(e){
     e.preventDefault();
-    if ($('#offerForm:visible').length){
-      $('#offerBox').removeClass('open');
-      $('#offerForm').fadeOut(200);
-    }else{
-      $('#offerBox').addClass('open');
-      if (!this.rendered) this.render();
-      $('#offerForm').fadeIn(200);
-    }
+    e.stopPropagation();
+    this.toggle();
   },
   validateAmount: function(value, clbk){
     clbk(/^\d+$/.test(value.replace('$', '')));
