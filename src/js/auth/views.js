@@ -15,6 +15,7 @@ hs.auth.views.Login = hs.views.View.extend({
   },
   login: function(e){
     e.preventDefault();
+    e.stopPropagation();
     this.loginForm = this.loginForm || new hs.auth.LoginForm();
     this.loginForm.toggle();
   },

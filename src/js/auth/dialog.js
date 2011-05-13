@@ -15,12 +15,7 @@ hs.auth.LoginForm = hs.views.Form.extend({
   }],
   initialize: function(){
     hs.views.Form.prototype.initialize.apply(this, arguments);
-    $('body').click(_.bind(function(e){
-      console.log('body click', $(e.target).selector);
-      if ($('#loginForm').children($(e.target).selector).length)
-        return e.preventDefault();
-      this.hide();
-    }, this));
+    $('body').click(_.bind(this.hide, this));
   },
   submit: function(){
     hs.auth.login(this.values.email, this.values.password, _.bind(function(err){
@@ -38,6 +33,7 @@ hs.auth.LoginForm = hs.views.Form.extend({
     // $('#loginForm').fadeIn(200);
     $('#loginForm').show();
     $('a.login').addClass('open');
+    $('#loginForm').click(function(e){e.stopPropagation()});
   },
   hide: function(){
     // $('#loginForm').fadeOut(200);
