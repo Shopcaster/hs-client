@@ -62,7 +62,14 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
     hs.views.Form.prototype.render.apply(this, arguments);
     if (!hs.auth.isAuthenticated())
       this.$('[name=email]').show();
-
+    hs.auth.bind('change:isAuthenticated', _.bind(function(isA){
+      if (isA){
+        this.$('[name=email]').hide();
+        this.$('[name=password]').hide();
+      }else{
+        this.$('[name=email]').show();
+      }
+    }, this));
   },
   renderLogin: function(){
     this.$('[name=password]').fadeIn(100);
