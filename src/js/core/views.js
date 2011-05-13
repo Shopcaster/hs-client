@@ -28,7 +28,6 @@ hs.views.View = Backbone.View.extend({
             && !_.isUndefined(this.model.get(event[2])))
           this[method]();
       }, this));
-    return this;
   },
   renderTmpl: function(){
     if (typeof this.template == 'undefined')

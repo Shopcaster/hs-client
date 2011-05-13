@@ -35,12 +35,10 @@ hs.auth.LoginForm = hs.views.Form.extend({
   show: function(){
     if (!this.rendered) this.render();
     $('#loginForm').fadeIn(200);
-    // $('#loginForm').show();
     $('a.login').addClass('open');
   },
   hide: function(){
     $('#loginForm').fadeOut(200);
-    // $('#loginForm').hide();
     $('a.login').removeClass('open');
   },
   toggle: function(){

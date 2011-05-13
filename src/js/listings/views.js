@@ -4,7 +4,8 @@
 //         listings/main.js,
 //         listings/tmpl/listingPage.tmpl,
 //         listings/tmpl/listingForm.tmpl,
-//         listings/models.js
+//         listings/models.js,
+//         auth/views.js
 
 hs.listings.views = new Object();
 
@@ -24,7 +25,10 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
   render: function(){
     hs.views.Page.prototype.render.apply(this, arguments);
 
-    this.offerForm = new hs.listings.views.OfferForm({el: $('#offerBox')});
+    this.offerForm = new hs.listings.views.OfferForm({
+      el: $('#offerBox'),
+      listing: this.model
+    });
   },
   updatePhoto: function(){
     if (this.model.get('photo')){
@@ -70,22 +74,27 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
 });
 
 
-hs.listings.views.OfferForm = hs.views.Form.extend({
+hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
   _renderWith: 'append',
   template: 'offerForm',
-  fields: {
-    'amount': ''
-  },
+  fields: [{
+    'name': 'amount',
+    'type': 'text',
+    'placeholder': 'Amount'
+  }].concat(hs.auth.views.AuthForm.prototype.fields),
   events: _.extend({
     'click #offer': 'makeOffer',
     'click #offerCancel': 'makeOffer',
     'click #offerSubmit': '_submit'
-  }, hs.views.Form.prototype.events),
+  }, hs.auth.views.AuthForm.prototype.events),
   initialize: function(){
-    hs.views.View.prototype.initialize.apply(this, arguments);
+    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
+    this.listing = this.options.listing;
+    if (_.isUndefined(this.listing))
+      throw(new Error('OfferForm requires a listing'));
   },
   render: function(){
-    hs.views.View.prototype.render.apply(this, arguments);
+    hs.auth.views.AuthForm.prototype.render.apply(this, arguments);
     $('body').click(_.bind(this.hide, this));
     $('#offerForm').click(function(e){e.stopPropagation()});
   },
@@ -113,7 +122,13 @@ hs.listings.views.OfferForm = hs.views.Form.extend({
     clbk(/^\d+$/.test(value.replace('$', '')));
   },
   submit: function(){
-    hs.log('TODO:submit offerForm');
+    this.model = this.model || new hs.listings.models.Offer();
+    this.model.set({
+      amount: this.get('amount'),
+      listing: this.listing.id
+    });
+    this.model.save();
+    this.hide();
   }
 });
 

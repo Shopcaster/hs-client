@@ -8,7 +8,7 @@ hs.views.Form = hs.views.View.extend(_.extend({
     'change textarea': 'change',
     'submit form': '_submit'
   }, hs.views.View.prototype.events),
-  fields:{},
+  fields:[],
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
     this.values = _.reduce(this.fields, function(val, field){
