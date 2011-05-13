@@ -27,7 +27,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
 
     this.offers = new hs.listings.views.Offers({
       el: $('#listing-offers'),
-      listing: this.model
+      model: this.model
     });
     this.offers.render();
   },
@@ -46,8 +46,8 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     }
   },
   updateCreated: function(){
-    if (this.model.get('created_on')){
-      var since = Date.since(this.model.get('created_on'));
+    if (this.model.get('created')){
+      var since = Date.since(this.model.get('created'));
       this.$('.date .listing-obi-title').text(since.text);
       this.$('.date .listing-obi-value').text(since.num);
     }

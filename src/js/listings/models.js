@@ -1,31 +1,41 @@
-//depends: listings/main.js, core/models.js
+//depends: listings/main.js,
+//         core/models/model.js,
+//         core/models/fields.js
 
 hs.listings.models = new Object();
 
 hs.listings.models.Listing = hs.models.Model.extend({
   key: 'listing',
-  fields: { //for the moment, this is just a referance
-    photo: '',
-    description: '',
-    created: '',
-    updated: '',
-    latitude: '',
-    longitude: '',
-    price: '',
-    best_offer: '',
-    offers: [],
-  },
+  fields: _.extend({
+    photo: null,
+    description: null,
+    latitude: null,
+    longitude: null,
+    price: null,
+    best_offer: null,
+    offers: function(){
+      return new hs.models.fields.CollectionField(hs.listings.models.OfferSet)
+    },
+  }, hs.models.Model.prototype.fields),
   defaults: {
     best_offer: {amount: 100}
   }
 });
 
-
 hs.listings.models.ListingSet = hs.models.ModelSet.extend({
   model: hs.listings.models.Listing,
-  url: hs.API_URL+'listing/'
 });
+
+
 
 hs.listings.models.Offer = hs.models.Model.extend({
   key: 'offer',
+  fields: _.extend({
+    amount: null,
+    listing: hs.models.fields.ModelField(hs.listings.models.Listing),
+  }, hs.models.Model.prototype.fields),
+});
+
+hs.listings.models.OfferSet = hs.models.ModelSet.extend({
+  model: hs.listings.models.Offer,
 });

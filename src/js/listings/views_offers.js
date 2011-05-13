@@ -4,18 +4,18 @@ hs.listings.views = hs.listings.views || new Object();
 
 hs.listings.views.Offers = hs.views.View.extend({
   template: 'offers',
-  initialize: function(){
-    hs.views.View.prototype.initialize.apply(this, arguments);
-    this.listing = this.options.listing;
-    if (_.isUndefined(this.listing))
-      throw(new Error('OfferForm requires a listing'));
+  modelEvents: {
+    'change:offers': 'offersChange'
   },
   render: function(){
     hs.views.View.prototype.render.apply(this, arguments);
     this.offerForm = new hs.listings.views.OfferForm({
       el: this.$('#offerForm'),
-      listing: this.listing
+      model: this.model
     });
+  },
+  offersChange: function(){
+
   }
 });
 
@@ -34,9 +34,6 @@ hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
   }, hs.auth.views.AuthForm.prototype.events),
   initialize: function(){
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
-    this.listing = this.options.listing;
-    if (_.isUndefined(this.listing))
-      throw(new Error('OfferForm requires a listing'));
     $('input[name=offer]').bind('mousedown', _.bind(function(e){
       e.preventDefault();
       e.stopPropagation();
@@ -77,7 +74,7 @@ hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
     this.model = this.model || new hs.listings.models.Offer();
     this.model.set({
       amount: this.get('amount'),
-      listing: this.listing.id
+      listing: this.model
     });
     this.model.save();
     this.hide();

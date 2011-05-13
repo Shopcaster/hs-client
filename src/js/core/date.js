@@ -1,8 +1,9 @@
 //depends: main.js
 
 Date.apiParse = function(dateString){
-    var da = dateString.split(/[-T:]/);
-    return new Date(da[0], da[1]-1, da[2], da[3], da[4], da[5]);
+    // var da = dateString.split(/[-T:]/);
+    // return new Date(da[0], da[1]-1, da[2], da[3], da[4], da[5]);
+    return new Date(dateString);
 }
 
 Date.since = function(date){
