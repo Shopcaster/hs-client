@@ -29,6 +29,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
       el: $('#listing-offers'),
       listing: this.model
     });
+    this.offers.render();
   },
   updatePhoto: function(){
     if (this.model.get('photo')){

@@ -26,26 +26,32 @@ hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
   fields: [{
     'name': 'amount',
     'type': 'text',
-    'placeholder': 'Amount'
+    'placeholder': 'Make an Offer'
   }].concat(hs.auth.views.AuthForm.prototype.fields),
   events: _.extend({
-    'click input[name=offer]': 'makeOffer',
-    'click #offerSubmit': '_submit'
+    'focus [name=amount]': 'amoutFocus',
+    'blur [name=amount]': 'amoutBlur'
   }, hs.auth.views.AuthForm.prototype.events),
   initialize: function(){
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     this.listing = this.options.listing;
     if (_.isUndefined(this.listing))
       throw(new Error('OfferForm requires a listing'));
+    $('input[name=offer]').bind('mousedown', _.bind(function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      this.focus();
+    }, this));
   },
   render: function(){
     hs.auth.views.AuthForm.prototype.render.apply(this, arguments);
-    $('body').click(_.bind(this.blue, this));
+    $('body').click(_.bind(this.blur, this));
     $('#offerForm').click(function(e){e.stopPropagation()});
   },
   focus: function(){
     if (!this.rendered) this.render();
     $('#offerForm').addClass('open').fadeIn(200);
+    this.$('[name=amount]').focus();
   },
   blur: function(){
     $('#offerForm').fadeOut(200).removeClass('open');
@@ -53,7 +59,16 @@ hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
   makeOffer: function(e){
     e.preventDefault();
     e.stopPropagation();
+    hs.log('click');
     this.focus();
+  },
+  amoutFocus: function(){
+    if (this.$('[name=amount]').val() == '')
+      this.$('[name=amount]').val('$');
+  },
+  amoutBlur: function(){
+    if (this.$('[name=amount]').val() == '$')
+      this.$('[name=amount]').val('');
   },
   validateAmount: function(value, clbk){
     clbk(/^\d+$/.test(value.replace('$', '')));
