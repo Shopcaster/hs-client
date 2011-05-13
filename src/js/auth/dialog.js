@@ -1,4 +1,4 @@
-//depends: main.js, auth/tmpl/dialog.tmpl, core/forms/views.js, auth/main.js
+//depends: main.js, auth/tmpl/loginForm.tmpl, core/forms/views.js, auth/main.js
 
 hs.auth.LoginForm = hs.views.Form.extend({
   _renderWith: 'append',

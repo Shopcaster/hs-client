@@ -1,9 +1,8 @@
-<script id="form" type="text/html">
-    {{#fields}}
-        <label id="{{name}}_label">
-            <input id="{{name}}" name="{{name}}" type="{{type}}"
-                placeholder="{{placeholder}}"
-                {{#hide}}style="display:none"{{/hide}} />
-        </label>
-    {{/fields}}
-</script>
+
+{{#fields}}
+    <label id="{{name}}_label">
+        <input id="{{name}}" name="{{name}}" type="{{type}}"
+            placeholder="{{placeholder}}"
+            {{#hide}}style="display:none"{{/hide}} />
+    </label>
+{{/fields}}

@@ -137,31 +137,31 @@ header{
 #body{
     padding:10px 0 0;
 
+    .section-left, .section-right{
+        margin:10px 0;
+        position:relative;
+        padding:10px;
+        background-color:$white;
+        @include box-shadow(0 4px 8px $black + #333);
+    }
+    .section-left{
+        width:560px;
+        float:left;
+    }
+    .section-right{
+        width:340px;
+        float:right;
+    }
+
     .listing{
-        padding:10px 0;
-
         #listing-image{
-            padding:10px;
-            background-color:$white;
             height:418px;
-            width:560px;
-            float:left;
-
-            @include box-shadow(0 4px 8px $black + #333);
-
             img{
                 border:1px solid $grey;
             }
         }
         #listing-sidebar{
-            float:right;
             height:418px;
-            width:340px;
-            padding:10px;
-            background-color:$white;
-            position:relative;
-
-            @include box-shadow(0 4px 8px $black + #333);
 
             .map{
                 width:340px;
@@ -211,15 +211,13 @@ header{
                     border-right:none;
                 }
             }
-
-            .button{
-                float:left;
-                display:block;
-                width:130px;
+        }
+        #listing-qa{
+            textarea{
+                width:550px;
             }
-            .button#offer{
-                color:$red - #222;
-            }
+        }
+        #listing-offers{
 
             #offerBox.open .button#offer{
                 @include box-shadow(none);
@@ -266,14 +264,6 @@ header{
                         float:right;
                     }
                 }
-            }
-
-            .button#question{
-                float:right;
-            }
-
-            #listing-description{
-                margin-top:70px;
             }
         }
     }

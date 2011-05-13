@@ -5,10 +5,10 @@
 //         listings/tmpl/listingPage.tmpl,
 //         listings/tmpl/listingForm.tmpl,
 //         listings/models.js,
+//         listings/views_offers.js,
 //         auth/views.js
 
-hs.listings.views = new Object();
-
+hs.listings.views = hs.listings.views || new Object();
 
 hs.listings.views.ListingPage = hs.views.Page.extend({
   template: 'listingPage',
@@ -25,8 +25,8 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
   render: function(){
     hs.views.Page.prototype.render.apply(this, arguments);
 
-    this.offerForm = new hs.listings.views.OfferForm({
-      el: $('#offerBox'),
+    this.offers = new hs.listings.views.Offers({
+      el: $('#listing-offers'),
       listing: this.model
     });
   },
@@ -70,65 +70,6 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
       this.$('.best-offer .listing-obi-value')
           .text('$'+this.model.get('best_offer').amount);
     }
-  }
-});
-
-
-hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
-  _renderWith: 'append',
-  template: 'offerForm',
-  fields: [{
-    'name': 'amount',
-    'type': 'text',
-    'placeholder': 'Amount'
-  }].concat(hs.auth.views.AuthForm.prototype.fields),
-  events: _.extend({
-    'click #offer': 'makeOffer',
-    'click #offerCancel': 'makeOffer',
-    'click #offerSubmit': '_submit'
-  }, hs.auth.views.AuthForm.prototype.events),
-  initialize: function(){
-    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
-    this.listing = this.options.listing;
-    if (_.isUndefined(this.listing))
-      throw(new Error('OfferForm requires a listing'));
-  },
-  render: function(){
-    hs.auth.views.AuthForm.prototype.render.apply(this, arguments);
-    $('body').click(_.bind(this.hide, this));
-    $('#offerForm').click(function(e){e.stopPropagation()});
-  },
-  show: function(){
-    if (!this.rendered) this.render();
-    $('#offerBox').addClass('open');
-    $('#offerForm').fadeIn(200);
-  },
-  hide: function(){
-    $('#offerBox').removeClass('open');
-    $('#offerForm').fadeOut(200);
-  },
-  toggle: function(){
-    if($('#offerForm:visible').length)
-      this.hide();
-    else
-      this.show();
-  },
-  makeOffer: function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    this.toggle();
-  },
-  validateAmount: function(value, clbk){
-    clbk(/^\d+$/.test(value.replace('$', '')));
-  },
-  submit: function(){
-    this.model = this.model || new hs.listings.models.Offer();
-    this.model.set({
-      amount: this.get('amount'),
-      listing: this.listing.id
-    });
-    this.model.save();
-    this.hide();
   }
 });
 
