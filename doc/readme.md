@@ -6,10 +6,10 @@ Isn't documentation lovely? Please fill out details you discover that aren't cle
 
 hs-client subclasses and extends pretty much everything in Backbone. There should be docs explaining each of these in more defail, but here is a quick map:
 
-`Backbone.Model` = `hs.models.Model`
-`Backbone.Collection` = `hs.models.ModelSet`
-`Backbone.Controller` = `hs.Controller`
-`Backbone.View` = `hs.views.View`
+* `Backbone.Model` = `hs.models.Model`
+* `Backbone.Collection` = `hs.models.ModelSet`
+* `Backbone.Controller` = `hs.Controller`
+* `Backbone.View` = `hs.views.View`
 
 ## Always super
 
