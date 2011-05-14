@@ -21,13 +21,19 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     this.SetClass = SetClass;
   },
   set: function(value){
-    if (!_.isArray(value))
-      throw(new Error('Collection fields must be set to arrays'));
+    if (value instanceof this.SetClass){
+      value = _.map(value, function(model){
+        return model.id;
+      });
+    }else if (!_.isArray(value))
+      throw(new Error('Collection fields must be set to arrays or collections'));
     value = _.uniq(value);
-    value = _.map(value, _.bind(function(id){
+    return value;
+  },
+  get: function(value){
+    return new this.SetClass(_.map(value, _.bind(function(id){
       return new this.SetClass.prototype.model({id: id});
-    }, this));
-    return new this.SetClass(value);
+    }, this)));
   }
 });
 

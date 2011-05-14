@@ -34,7 +34,7 @@ hs.views.View = Backbone.View.extend({
       throw('must define dialog template');
     var context = _.clone(this._tmplContext);
     if (this.model)
-      context = _.extend(context, this.model.toJSON());
+      context = _.extend(context, {model: this.model.toJSON()});
     var html = ich[this.template](context);
     return html;
   }

@@ -8,14 +8,15 @@ hs.listings.views.Offers = hs.views.View.extend({
     'change:offers': 'offersChange'
   },
   render: function(){
+    this._tmplContext.offers = this.model.get('offers').toJSON();
     hs.views.View.prototype.render.apply(this, arguments);
-    this.offerForm = new hs.listings.views.OfferForm({
+    this.offerForm = this.offerForm || new hs.listings.views.OfferForm({
       el: this.$('#offerForm'),
       model: this.model
     });
   },
   offersChange: function(){
-
+    this.render();
   }
 });
 
