@@ -43,13 +43,13 @@ By default only the view's model is inserted into the template context. To chang
             this._tmplContext.hello = value;
         }
     });
-
+\n
     <h1>{{hello}}</h1>
-
+\n
     var myView = new MyView({el: $('body')});
     myView.setHello('Hello Context!');
     myView.render();
-
+\n
     <body><h1>Hello Context!</h1></body>
 
 By default the template is rendered into `el` using jQuery's `html` method. You can change this using `_renderWith`.
