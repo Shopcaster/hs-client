@@ -2,7 +2,7 @@
 
 (function(){
   //figure out if we can use HTML5 history
-  var canUseHistory = window.history.pushState && true || false;
+  var canUseHistory = (window.history.pushState && true) || false;
   canUseHistory = false; //disabling this for now
 
   var contClasses = new Object();
