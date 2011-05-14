@@ -16,7 +16,7 @@ hs.listings.views.Offers = hs.views.View.extend({
     });
   },
   offersChange: function(){
-    this.render();
+    //this.render();
   }
 });
 

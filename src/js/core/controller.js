@@ -1,5 +1,7 @@
 //depends: main.js, core/init.js
 
+hs.Controller = Backbone.Controller.extend({});
+
 (function(){
   //figure out if we can use HTML5 history
   var canUseHistory = (window.history.pushState && true) || false;

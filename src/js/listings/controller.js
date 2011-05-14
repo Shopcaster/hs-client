@@ -1,6 +1,6 @@
 //depends: core/controller.js, listings/models.js
 
-hs.regController('listings', Backbone.Controller.extend({
+hs.regController('listings', hs.Controller.extend({
   routes: {
     '!/listings/new/': 'newListing',
     '!/listings/:id/': 'listing'
