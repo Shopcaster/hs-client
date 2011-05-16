@@ -12,11 +12,50 @@ hs.listings.views.Offers = hs.views.View.extend({
     hs.views.View.prototype.render.apply(this, arguments);
     this.offerForm = this.offerForm || new hs.listings.views.OfferForm({
       el: this.$('#offerForm'),
-      model: this.model
+      listing: this.model
     });
+    this.renderOffers();
+  },
+  offerViews: new Object(),
+  renderOffers: function(){
+    var newOffers = this.model.get('offers');
+    var newOfferIds = [];
+    // add new offers
+    _.each(newOffers, _.bind(function(o, i){
+      var offer = newOffers.at(i);
+      newOfferIds.push(offer.id);
+      if (_.isUndefined(this.offerViews[offer.id])){
+        this.offerViews[offer.id] = new hs.listings.views.Offer({
+          el: $('#offerList'),
+          model: offer
+        });
+      }
+    }, this));
+    // remove old offers
+    _.each(_.keys(this.offerViews), _.bind(function(id){
+      id = parseInt(id);
+      if (!_.include(newOfferIds, id))
+        delete this.offerViews[id];
+    }, this));
+    // render offers
+    _.each(this.offerViews, _.bind(function(view){
+      if (!view.rendered) view.render();
+    }, this));
   },
   offersChange: function(){
-    //this.render();
+    this.renderOffers();
+  }
+});
+
+
+hs.listings.views.Offer = hs.views.View.extend({
+  _renderWith: 'append',
+  template: 'offer',
+  modelEvents: {
+    'change:amount': 'amountChange'
+  },
+  amountChange: function(){
+    $('#offer-'+this.model.id+' .amount').text(this.model.get('amount'));
   }
 });
 
@@ -33,12 +72,19 @@ hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
     'focus [name=amount]': 'amoutFocus',
     'blur [name=amount]': 'amoutBlur'
   }, hs.auth.views.AuthForm.prototype.events),
-  initialize: function(){
+  initialize: function(opts){
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     $('input[name=offer]').bind('mousedown', _.bind(function(e){
       e.preventDefault();
       e.stopPropagation();
       this.focus();
+    }, this));
+    this.listing = opts.listing;
+    this.model = new hs.listings.models.Offer({
+      listing: this.listing.id
+    });
+    this.bind('change:amount', _.bind(function(amount){
+      this.model.set({amount: amount});
     }, this));
   },
   render: function(){
@@ -72,13 +118,12 @@ hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
     clbk(/^\d+$/.test(value.replace('$', '')));
   },
   submit: function(){
-    this.model = this.model || new hs.listings.models.Offer();
-    this.model.set({
-      amount: this.get('amount'),
-      listing: this.model
-    });
     this.model.save();
-    this.hide();
+    this.clear();
+    this.model = new hs.listings.models.Offer({
+      listing: this.listing.id
+    });
+    this.blur();
   }
 });
 

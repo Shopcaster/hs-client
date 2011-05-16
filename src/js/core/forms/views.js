@@ -30,15 +30,21 @@ hs.views.Form = hs.views.View.extend(_.extend({
   change: function(e){
     var name = $(e.target).attr('name')
     this.values[name] = $(e.target).val();
-    this.trigger('change:'+name);
+    this.trigger('change:'+name, this.values[name]);
   },
   get: function(name){
     return this.values[name];
   },
   set: function(name, value){
     this.values[name] = value;
+    this.trigger('change:'+name, value);
     this.$('[name="'+name+'"]').val(value);
     return this;
+  },
+  clear: function(){
+    _.each(this.fields, _.bind(function(field){
+      this.set(field.name, '');
+    }, this));
   },
   _submit: function(e){
     e.preventDefault();

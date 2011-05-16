@@ -222,6 +222,7 @@ header{
 
             #offerFormWrap{
                 position:relative;
+                z-index:2;
 
                 input{
                     width:325px;
@@ -255,6 +256,9 @@ header{
                         float:right;
                     }
                 }
+            }
+            #offerList{
+                margin-top:40px;
             }
         }
     }

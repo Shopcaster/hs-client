@@ -32,7 +32,9 @@ hs.listings.models.Offer = hs.models.Model.extend({
   key: 'offer',
   fields: _.extend({
     amount: null,
-    listing: hs.models.fields.ModelField(hs.listings.models.Listing),
+    listing: function(){
+      return new hs.models.fields.ModelField(hs.listings.models.Listing);
+    },
   }, hs.models.Model.prototype.fields),
 });
 

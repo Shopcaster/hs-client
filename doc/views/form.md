@@ -23,7 +23,9 @@ Forms in hs-client are a subclass of `hs.views.View`. The basic form superclass 
             hs.log('fieldName = ', this.values.fieldName);
         }
     });
--
+
+
+
     <div id="myFormTemplate">
         <form>
             {{#form}}{{/form}}

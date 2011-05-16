@@ -70,7 +70,7 @@ hs.con = {
     this.trigger('connected');
   },
   _recieved: function(msg){
-    console.log('revieved:', msg);
+    console.log('recd:', msg);
 
     var parsed = /^([\w-]+):(.*)$/.exec(msg);
     if (parsed){
