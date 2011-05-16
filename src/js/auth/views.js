@@ -1,4 +1,8 @@
-//depends: core/views.js, auth/main.js, core/init.js, auth/dialog.js
+//depends: core/views.js,
+//    auth/main.js,
+//    core/init.js,
+//    auth/login.js,
+//    auth/settings.js
 
 hs.auth = hs.auth || new Object();
 hs.auth.views = new Object();
@@ -6,12 +10,20 @@ hs.auth.views = new Object();
 hs.auth.views.Login = hs.views.View.extend({
   el: $('#top-bar')[0],
   initialize: function(){
+    hs.views.View.prototype.initialize.apply(this, arguments);
     hs.auth.bind('change:isAuthenticated', _.bind(this.authChange, this));
     this.authChange(hs.auth.isAuthenticated());
   },
   events: {
     'click a.login': 'login',
-    'click a.logout': 'logout'
+    'click a.logout': 'logout',
+    'click a.name': 'settings'
+  },
+  settings: function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    this.settingsForm = this.settingsForm || new hs.auth.SettingsForm();
+    this.settingsForm.toggle();
   },
   login: function(e){
     e.preventDefault();
@@ -30,14 +42,24 @@ hs.auth.views.Login = hs.views.View.extend({
       this.renderLoggedOut();
   },
   renderLoggedIn: function(){
+    this.user = hs.auth.getUser();
+    var name = this.user.get('name');
+
     $('#top-bar a.login').hide();
     $('#top-bar a.logout').show();
-    $('#top-bar a.email').text(hs.auth.email).show();
+
+    if (_.isUndefined(name)){
+      $('#top-bar a.name').html(hs.auth.email
+          +' (<span id="set-name">set your name!</span>)').show();
+    }else{
+      $('#top-bar a.name').text(name).show();
+    }
+
   },
   renderLoggedOut: function(){
     $('#top-bar a.login').show();
     $('#top-bar a.logout').hide();
-    $('#top-bar a.email').hide().text('');
+    $('#top-bar a.name').hide().text('');
   }
 });
 

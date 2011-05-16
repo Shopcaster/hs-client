@@ -19,7 +19,6 @@ textarea, input[type=text], input[type=email], input[type=password]{
 ::-webkit-input-placeholder {@include placeholder;}
 :-moz-placeholder {@include placeholder;}
 
-
 @include light-button(#d5d5d5);
 @include dark-button($black + #222, '.dark');
 
@@ -40,4 +39,29 @@ textarea, input[type=text], input[type=email], input[type=password]{
     height:100%;
     margin-left:auto;
     margin-right:auto;
+}
+
+.popup{
+    position:absolute;
+
+    background-color:$grey;
+    z-index:2;
+    font-size:13px;
+    padding:5px;
+    border:1px solid $grey - #555;
+    @include rounded();
+    @include box-shadow(0 2px 4px $black + #333);
+    @include dark-button($blue - #444, '.submit');
+
+    input{
+        margin-bottom:5px;
+    }
+
+    input.submit{
+        padding:3px 10px 4px !important;
+        width:77px;
+        color:$white !important;
+        margin-bottom:0;
+        float:right;
+    }
 }

@@ -48,13 +48,17 @@ body{
     .login, .logout{
         color:$white;
         margin-right:0px;
+    }
+    .login, .logout, .name{
         padding:0 6px 4px;
         border:1px solid $black;
         border-bottom:0;
     }
-    .logout, .email{display:none;}
+    .logout, .name{display:none;}
 
-    .login.open{
+    #set-name{color:$red;}
+
+    .open{
         background-color:$grey;
         border-color:$grey - #555;
         @include rounded-top();
@@ -63,31 +67,33 @@ body{
         color:$grey - #777;
         text-shadow: $grey + #444 0 1px 2px;
     }
+    .popup{
+        border-top:none;
+    }
     #loginForm{
-        position:absolute;
         right:0px;top:17px;
         width:160px;
-        background-color:$grey;
-        z-index:2;
-        font-size:13px;
-        padding:5px;
-        border:1px solid $grey - #555;
-        border-top:none;
         @include rounded-bottom();
         @include rounded-top-left();
 
-        @include box-shadow(0 2px 4px $black + #333);
-        @include dark-button($blue - #444, '.submit');
         input{
             float:right;
-            margin-bottom:5px;
             width:148px;
         }
         input.submit{
-            padding:3px 10px 4px !important;
             width:77px;
-            color:$white !important;
-            margin-bottom:0;
+        }
+    }
+    #settingsForm{
+        right:0px;top:17px;
+        width:300px;
+
+        input{
+            float:right;
+            width:288px;
+        }
+        input.submit{
+            width:77px;
         }
     }
 }

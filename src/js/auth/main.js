@@ -23,6 +23,13 @@ hs.auth = {
     localStorage.setItem('pass', this.pass);
     this.trigger('change:pass');
   },
+  setUserId: function(userId){
+    // fakeout for now
+    if (_.isUndefined(userId)) userId = 1;
+    this.userId = userId;
+    localStorage.setItem('userId', this.userId);
+    this.trigger('change:userId');
+  },
   signup: function(email, clbk){
     if (_.isFunction(email)){
       clbk = email;
@@ -32,10 +39,11 @@ hs.auth = {
     }
 
     var msgId = hs.con.send('auth', {email: this.email});
-    hs.con.bind('recieved:'+msgId, function(key){
+    hs.con.bind('recieved:'+msgId, function(key, data){
       if (key == 'auth-ok'){
-        this.trigger('change:isAuthenticated', true);
+        this.setUserId(data.userId);
         this._isAuthenticated = true;
+        this.trigger('change:isAuthenticated', true);
         if (clbk) clbk();
       }else if  (key == 'auth-bad')
         if (clbk) clbk(new Error('required:password'));
@@ -56,10 +64,11 @@ hs.auth = {
     if (pass) this.setPassword(pass);
 
     var msgId = hs.con.send('auth', {email: this.email, password: this.pass});
-    hs.con.bind('recieved:'+msgId, _.bind(function(key){
+    hs.con.bind('recieved:'+msgId, _.bind(function(key, data){
       if (key == 'auth-ok'){
-        this.trigger('change:isAuthenticated', true);
+        this.setUserId(data.userId);
         this._isAuthenticated = true;
+        this.trigger('change:isAuthenticated', true);
         if (clbk) clbk();
       }else if  (key == 'auth-bad')
         if (clbk) clbk(new Error('invalid:password'));
@@ -74,10 +83,10 @@ hs.auth = {
     localStorage.removeItem('email');
     this.trigger('change:pass');
     this.trigger('change:email');
-    this._isAuthenticated = false;
     hs.con.reconnect(_.bind(function(){
-      if (clbk) clbk();
+      this._isAuthenticated = false;
       this.trigger('change:isAuthenticated', false);
+      if (clbk) clbk();
     }, this));
   },
   hash: function(email, pass){
