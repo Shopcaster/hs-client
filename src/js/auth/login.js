@@ -24,11 +24,13 @@ hs.auth.LoginForm = hs.views.Form.extend({
   submit: function(){
     hs.auth.login(this.values.email, this.values.password, _.bind(function(err){
       if (err){
-        console.log(err);
         if (err.message == 'invalid:password')
           this.showInvalid('password');
+        else
+          hs.log(err);
       }else{
         this.hide();
+        this.clear();
       }
     }, this));
   },

@@ -24,6 +24,10 @@ hs.auth.views.Login = hs.views.View.extend({
     e.stopPropagation();
     this.settingsForm = this.settingsForm || new hs.auth.SettingsForm();
     this.settingsForm.toggle();
+    this.settingsForm.bind('submit', _.bind(function(){
+      this.settingsForm.unbind(arguments.callee);
+      this.renderLoggedIn();
+    }, this));
   },
   login: function(e){
     e.preventDefault();
@@ -35,8 +39,8 @@ hs.auth.views.Login = hs.views.View.extend({
     e.preventDefault();
     hs.auth.logout();
   },
-  authChange: function(isAuthed){
-    if (isAuthed)
+  authChange: function(){
+    if (hs.auth.isAuthenticated())
       this.renderLoggedIn();
     else
       this.renderLoggedOut();
@@ -50,7 +54,8 @@ hs.auth.views.Login = hs.views.View.extend({
 
     if (_.isUndefined(name)){
       $('#top-bar a.name').html(hs.auth.email
-          +' (<span id="set-name">set your name!</span>)').show();
+          +' <span id="set-name">(<span class="red">'
+          +'set your name!</span>)</span>').show();
     }else{
       $('#top-bar a.name').text(name).show();
     }

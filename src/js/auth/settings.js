@@ -24,6 +24,7 @@ hs.auth.SettingsForm = hs.views.Form.extend({
   submit: function(){
     this.user.set({name: this.get('name')});
     this.user.save();
+    this.hide();
   },
   show: function(){
     if (!this.rendered) this.render();

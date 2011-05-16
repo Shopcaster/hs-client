@@ -39,17 +39,18 @@ hs.auth = {
     }
 
     var msgId = hs.con.send('auth', {email: this.email});
-    hs.con.bind('recieved:'+msgId, function(key, data){
+    hs.con.bind('recieved:'+msgId, _.bind(function(key, data){
       if (key == 'auth-ok'){
         this.setUserId(data.userId);
+        this.setPassword(data.password);
         this._isAuthenticated = true;
-        this.trigger('change:isAuthenticated', true);
+        this.trigger('change:isAuthenticated', this._isAuthenticated);
         if (clbk) clbk();
       }else if  (key == 'auth-bad')
         if (clbk) clbk(new Error('required:password'));
       else
         if (clbk) clbk(new Error('unknown auth response: '+key));
-    });
+    }, this));
   },
   login: function(email, pass, clbk){
     if (_.isFunction(email)){
@@ -68,7 +69,7 @@ hs.auth = {
       if (key == 'auth-ok'){
         this.setUserId(data.userId);
         this._isAuthenticated = true;
-        this.trigger('change:isAuthenticated', true);
+        this.trigger('change:isAuthenticated', this._isAuthenticated);
         if (clbk) clbk();
       }else if  (key == 'auth-bad')
         if (clbk) clbk(new Error('invalid:password'));
@@ -79,15 +80,17 @@ hs.auth = {
   logout: function(clbk){
     this.pass = undefined;
     this.email = undefined;
+    this.userId = undefined;
     localStorage.removeItem('pass');
     localStorage.removeItem('email');
+    localStorage.removeItem('userId');
     this.trigger('change:pass');
     this.trigger('change:email');
-    hs.con.reconnect(_.bind(function(){
-      this._isAuthenticated = false;
-      this.trigger('change:isAuthenticated', false);
-      if (clbk) clbk();
-    }, this));
+    this.trigger('change:userId');
+    hs.con.reconnect();
+    this._isAuthenticated = false;
+    this.trigger('change:isAuthenticated', this._isAuthenticated);
+    if (clbk) clbk();
   },
   hash: function(email, pass){
     console.log(pass+email);

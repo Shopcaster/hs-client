@@ -49,14 +49,12 @@ body{
         color:$white;
         margin-right:0px;
     }
-    .login, .logout, .name{
+    .login, .name{
         padding:0 6px 4px;
         border:1px solid $black;
         border-bottom:0;
     }
     .logout, .name{display:none;}
-
-    #set-name{color:$red;}
 
     .open{
         background-color:$grey;

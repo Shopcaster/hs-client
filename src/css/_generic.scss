@@ -11,6 +11,8 @@ textarea, input[type=text], input[type=email], input[type=password]{
     @include rounded(0px);
 }
 
+.red{color:$red;}
+
 /* mixing placeholder because browser prefixes need thier own declaration */
 @mixin placeholder(){
     color:$black + #444 !important;

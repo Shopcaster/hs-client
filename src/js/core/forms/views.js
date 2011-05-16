@@ -50,8 +50,8 @@ hs.views.Form = hs.views.View.extend(_.extend({
     e.preventDefault();
     this.validate(_.bind(function(valid){
       if (valid){
-        this.trigger('submit');
         if (this.submit) this.submit();
+        this.trigger('submit');
       }
     }, this));
   },
