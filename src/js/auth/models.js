@@ -6,8 +6,11 @@ hs.auth.models.User = hs.models.Model.extend({
   key: 'user',
   fields: _.extend({
     name: '',
-    email: ''
-  }, hs.models.Model.prototype.fields)
+    avatar: ''
+  }, hs.models.Model.prototype.fields),
+  getAvatarUrl: function(){
+    return 'http://www.gravatar.com/avatar/'+this.get('avatar')+'?d=mm&s=60';
+  }
 });
 
 hs.auth.getUser = (function(){
