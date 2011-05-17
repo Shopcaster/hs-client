@@ -51,7 +51,10 @@ hs.models.Model = Backbone.Model.extend({
     var value = Backbone.Model.prototype.get.call(this, fieldname);
 
     if (this.fields[fieldname] instanceof hs.models.fields.Field)
-      value = this.fields[fieldname].get(value);
+      if (!_.isUndefined(value))
+        value = this.fields[fieldname].get(value);
+      else
+        value = this.fields[fieldname].default();
 
     return value;
   }

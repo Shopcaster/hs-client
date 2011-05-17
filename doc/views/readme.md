@@ -33,6 +33,8 @@ You would get:
     <body><h1>Hello View!</h1></body>
     ...
 
+*Note:* When you render a view with a template, rather then binding `this.$` to `view.el`, it gets bound to the rendered template. This is useful if you're using `_renderWith: 'append'` (below).
+
 #### Modifying default behavour
 
 By default only the view's model is inserted into the template context. To change this, impliment a `prepContext` method. This method takes the current context, and should return a new one.

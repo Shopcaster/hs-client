@@ -59,13 +59,12 @@ hs.listings.views.Offer = hs.views.View.extend({
     hs.views.View.prototype.initialize.apply(this, arguments);
     if (this.model.get('creator'))
       this.changeCreator();
+    if (this.model.get('amount'))
+      this.changeAmount();
   },
-  prepContext: function(ctx){
-    if (this.creator){
-      ctx.creator_name = this.creator.get('name');
-      ctx.creator_avatar = this.creator.getAvatarUrl(40);
-    }
-    return ctx;
+  render: function(){
+    hs.views.View.prototype.render.apply(this, arguments);
+    this.$('.offer').hover(_.bind(this.hoverOver, this), _.bind(this.hoverOut, this));
   },
   creatorChange: function(){
     this.creator = this.model.get('creator');
@@ -75,17 +74,31 @@ hs.listings.views.Offer = hs.views.View.extend({
       this.avatarChange();
     if (this.creator.get('name'))
       this.nameChange();
+
+    var userId = hs.auth.getUser().get('id');
+    if (this.creator.get('id') == userId){
+      this.owned = true;
+    }else if (this.model.get('listing').get('creator').get('id') == userId){
+      this.listingOwned = true;
+    }
+    this.controlsChange();
+  },
+  controlsChange: function(){
+    hs.log(this)
+    if (this.owned)
+      this.$('.controls').html('<a href="#" class="button withdraw">');
   },
   amountChange: function(){
-    $('#offer-'+this.model.id+' .amount').text(this.model.get('amount'));
+    this.$('.amount').text(this.model.get('amount'));
   },
   avatarChange: function(){
-    $('#offer-'+this.model.id+' .avatar')
-        .attr('src', this.creator.getAvatarUrl());
+    this.$('.avatar').attr('src', this.creator.getAvatarUrl(40));
   },
   nameChange: function(){
-    $('#offer-'+this.model.id+' .name').text(this.creator.get('name'));
-  }
+    this.$('.name').text(this.creator.get('name'));
+  },
+  hoverOver: function(){},
+  hoverOut: function(){}
 });
 
 

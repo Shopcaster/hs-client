@@ -11,6 +11,9 @@ hs.models.fields.Field = hs.Object.extend({
   get: function(value){
     return value;
   },
+  default: function(){
+    return undefined;
+  },
   setModelInstance: function(model){
     this.model = model;
   }
@@ -34,6 +37,9 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     return new this.SetClass(_.map(value, _.bind(function(id){
       return this.SetClass.prototype.model.get(id);
     }, this)));
+  },
+  default: function(){
+    return new this.SetClass();
   }
 });
 
@@ -51,10 +57,7 @@ hs.models.fields.ModelField = hs.models.fields.Field.extend({
       throw(new Error('invalid model: '+value));
   },
   get: function(value){
-    if (_.isUndefined(value))
-      return value;
-    else
-      return this.Model.get(value);
-  },
+    return this.Model.get(value);
+  }
 });
 

@@ -10,17 +10,22 @@ hs.views.View = Backbone.View.extend({
   rendered: false,
   initialize: function(opt){
     _.bindAll(this);
+    // bind modelEvents
     if (this.model)
       _.each(this.modelEvents, _.bind(function(method, event){
         this.model.bind(event, _.bind(this[method], this));
       }, this));
   },
   render: function(){
+    // render template
     if (this.template){
       var html = this.renderTmpl();
+      // re-bind this.$ to the rendered template
+      this.$ = function(sel){return $(sel, html)}
       $(this.el)[this._renderWith](html);
       this.rendered = true;
     }
+    // call all "change"-type modelEvents
     if (this.model)
       _.each(this.modelEvents, _.bind(function(method, event){
         event = /^(\w+):(\w+)$/.exec(event);

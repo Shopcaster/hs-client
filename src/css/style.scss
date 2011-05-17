@@ -263,6 +263,38 @@ header{
             }
             #offerList{
                 margin-top:40px;
+
+                .offer{
+                    height:40px;
+                    width:340px;
+                    margin-bottom:10px;
+
+                    .amount, .creator{
+                        height: 40px;
+                        float:left;
+                    }
+                    .creator{
+                        width:40px;
+                        img{
+                            display:block;
+                            font-size:13px;
+                            line-height:15px;
+                        }
+                        .name{display:none;}
+                    }
+                    .amount{
+                        margin-left:5px;
+                        font-size:36px;
+                        vertical-align:middle;
+                    }
+                    .control{
+                        float:right;
+                        width:60px;
+                    }
+                }
+                .offer:hover{
+                    background-color:$grey;
+                }
             }
         }
     }
