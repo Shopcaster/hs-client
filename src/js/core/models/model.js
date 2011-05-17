@@ -18,6 +18,7 @@ hs.models.Model = Backbone.Model.extend({
     else
       this.bind('change:id', _.bind(function(){
         this.unbind(arguments.callee);
+        this.constructor.register(this);
         this._sub();
       }, this));
     _.each(this.fields, _.bind(function(field, fieldname){
@@ -55,5 +56,28 @@ hs.models.Model = Backbone.Model.extend({
     return value;
   }
 });
+
+hs.models.Model.extend = function(){
+  var Model = Backbone.Model.extend.apply(this, arguments);
+
+  Model.instances = {};
+  Model.get = function(id, opts){
+    if (_.isString(id)) id = parseInt(id);
+    if (!_.isNumber(id)) opts = id, id = undefined;
+
+    if (Model.instances.hasOwnProperty(id))
+      return Model.instances[id];
+
+    var instance = new Model(_.extend(opts || {}, {id: id}));
+    Model.instances[id] = instance;
+    return instance;
+  };
+
+  Model.register = function(instance){
+    this.instances[instance.get('id')] = instance;
+  };
+
+  return Model;
+};
 
 hs.models.ModelSet = Backbone.Collection.extend({});

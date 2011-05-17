@@ -6,7 +6,7 @@ hs.regController('listings', hs.Controller.extend({
     '!/listings/:id/': 'listing'
   },
   listing: function(id){
-    var listing = new hs.listings.models.Listing({id: parseInt(id)});
+    var listing = hs.listings.models.Listing.get(id);
     var view = new hs.listings.views.ListingPage({
       model: listing,
       el: $('#main')

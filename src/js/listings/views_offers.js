@@ -52,10 +52,39 @@ hs.listings.views.Offer = hs.views.View.extend({
   _renderWith: 'append',
   template: 'offer',
   modelEvents: {
-    'change:amount': 'amountChange'
+    'change:amount': 'amountChange',
+    'change:creator': 'creatorChange'
+  },
+  initialize: function(){
+    hs.views.View.prototype.initialize.apply(this, arguments);
+    if (this.model.get('creator'))
+      this.changeCreator();
+  },
+  prepContext: function(ctx){
+    if (this.creator){
+      ctx.creator_name = this.creator.get('name');
+      ctx.creator_avatar = this.creator.getAvatarUrl(40);
+    }
+    return ctx;
+  },
+  creatorChange: function(){
+    this.creator = this.model.get('creator');
+    this.creator.bind('change:avatar', _.bind(this.avatarChange, this));
+    this.creator.bind('change:name', _.bind(this.nameChange, this));
+    if (this.creator.get('avatar'))
+      this.avatarChange();
+    if (this.creator.get('name'))
+      this.nameChange();
   },
   amountChange: function(){
     $('#offer-'+this.model.id+' .amount').text(this.model.get('amount'));
+  },
+  avatarChange: function(){
+    $('#offer-'+this.model.id+' .avatar')
+        .attr('src', this.creator.getAvatarUrl());
+  },
+  nameChange: function(){
+    $('#offer-'+this.model.id+' .name').text(this.creator.get('name'));
   }
 });
 
@@ -84,7 +113,7 @@ hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
       listing: this.listing.id
     });
     this.bind('change:amount', _.bind(function(amount){
-      this.model.set({amount: amount});
+      this.model.set({amount: amount.replace('$', '')});
     }, this));
   },
   render: function(){
@@ -118,6 +147,7 @@ hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
     clbk(/^\d+$/.test(value.replace('$', '')));
   },
   submit: function(){
+    this.model.set({creator: hs.auth.getUser()});
     this.model.save();
     this.clear();
     this.model = new hs.listings.models.Offer({

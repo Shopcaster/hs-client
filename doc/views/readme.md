@@ -35,12 +35,15 @@ You would get:
 
 #### Modifying default behavour
 
-By default only the view's model is inserted into the template context. To change this, modify `_tmplContext`.
+By default only the view's model is inserted into the template context. To change this, impliment a `prepContext` method. This method takes the current context, and should return a new one.
 
     MyView = hs.views.View.extend({
         tmpl: 'myTemplate',
         setHello: function(value){
-            this._tmplContext.hello = value;
+            this.hello = value;
+        },
+        prepContext: function(context){
+            context.hello = this.hello;
         }
     });
 

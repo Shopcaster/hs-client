@@ -52,7 +52,7 @@ hs.con = {
     }, this));
   },
   msgId: 1,
-  send: function(key, data){
+  send: function(key, data, clbk){
     var msgId = this.msgId++;
     this.isConnected(_.bind(function(){
       this.trigger('sending', key, data);
@@ -60,6 +60,12 @@ hs.con = {
       if (typeof data == 'undefined') data = {};
       data.id = msgId;
       var msg = key+':'+JSON.stringify(data);
+
+      if (clbk) this.bind('recieved:'+msgId, function(){
+        this.unbind(arguments.callee);
+        clbk.apply(this, arguments);
+      });
+
       this.socket.send(msg);
       console.log('sent:', msg);
     }, this));

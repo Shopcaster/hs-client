@@ -32,10 +32,11 @@ hs.views.View = Backbone.View.extend({
   renderTmpl: function(){
     if (typeof this.template == 'undefined')
       throw('must define dialog template');
-    var context = _.clone(this._tmplContext);
     if (this.model)
-      context = _.extend(context, this.model.toJSON());
-    var html = ich[this.template](context);
+      this._tmplContext = _.extend(this._tmplContext, this.model.toJSON());
+    if (this.prepContext)
+      this._tmplContext = this.prepContext(this._tmplContext);
+    var html = ich[this.template](this._tmplContext);
     return html;
   }
 });

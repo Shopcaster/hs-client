@@ -1,6 +1,7 @@
 //depends: listings/main.js,
 //         core/models/model.js,
-//         core/models/fields.js
+//         core/models/fields.js,
+//         auth/models.js
 
 hs.listings.models = new Object();
 
@@ -35,6 +36,9 @@ hs.listings.models.Offer = hs.models.Model.extend({
     listing: function(){
       return new hs.models.fields.ModelField(hs.listings.models.Listing);
     },
+    creator: function(){
+      return new hs.models.fields.ModelField(hs.auth.models.User);
+    }
   }, hs.models.Model.prototype.fields),
 });
 
