@@ -1,4 +1,4 @@
-//depends: main.js, core/con.js
+//depends: main.js, core/conn.js
 
 hs.pubsub = {
   subs: {},
