@@ -4,7 +4,7 @@
 hs.con = {
   connect: function(){
     var ioReady = _.bind(function(){
-      this.socket = new io.Socket(hs.API.host, {port: hs.API.port});
+      this.socket = new io.Socket(conf.server.host, {port: conf.server.port});
       this.socket.on('connect', this._connected);
       this.socket.on('message', this._recieved);
       this.socket.on('disconnect', this._disconnected);
@@ -13,7 +13,7 @@ hs.con = {
 
     if (typeof io == 'undefined'){
       var script = document.createElement("script");
-      script.src = hs.API.protocol+'://'+hs.API.host+':'+hs.API.port
+      script.src = conf.server.protocol+'://'+conf.server.host+':'+conf.server.port
           +'/socket.io/socket.io.js';
       document.body.appendChild(script);
       (function ioCheck(){

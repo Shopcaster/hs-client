@@ -58,11 +58,6 @@ Backbone.sync = function(method, model, success, error){
     var data = model.toJSON();
     data.deleted = true;
     hs.pubsub.pub(model.key+':'+model.id, data);
-  }else if (method == 'read'
-      && model.key == 'listing'
-      && model.get('id') == 40){
-    // fake out!
-    success({"active": true, "best_offer": null, "created_on": "2011-05-02T15:40:06.629056", "description": "MacBook Pro for sale. Excellent condition and fully loaded. 8GB RAM 64GB SSD. Must see. ", "id": "40", "latitude": 43.651702, "longitude": -79.373703000000006, "modified_on": "2011-05-02T15:40:06.629088", "photo": {"original": "http://lorempixum.com/560/418/technics/", "web": "http://lorempixum.com/560/418/technics/"}, "price": 1500.0, "resource_uri": "/api/v1/listing/40/", "user": "/api/v1/user/3/"});
   }else{
     error('cannot read via pubsub');
   }

@@ -2,13 +2,6 @@
 
 var hs = new Object();
 
-hs.API = {
-  port: 8000,
-  host: '0.0.0.0',
-  path: '/',
-  protocol: 'http'
-};
-
 hs.log = function(){
   if (window.console && _.isFunction(console.log))
     console.log.apply(console, arguments);
