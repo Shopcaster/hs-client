@@ -2,8 +2,7 @@
 //         auth/main.js
 
 hs.auth.SettingsForm = hs.views.Form.extend({
-  _renderWith: 'append',
-  el: $('#top-bar .width'),
+  appendTo: $('#top-bar .width'),
   template: 'settingsForm',
   fields: [{
     'name': 'name',

@@ -9,6 +9,7 @@ hs.models.Model = Backbone.Model.extend({
     'id': null,
     'created': null,
     'updated': null,
+    'deleted': null,
   },
   url: function(){return this.key},
   initialize: function(){
@@ -57,6 +58,10 @@ hs.models.Model = Backbone.Model.extend({
         value = this.fields[fieldname].default();
 
     return value;
+  },
+  delete: function(){
+    this.set({deleted: true});
+    this.save();
   }
 });
 

@@ -11,7 +11,7 @@ hs.listings.views.Offers = hs.views.View.extend({
     this._tmplContext.offers = this.model.get('offers').toJSON();
     hs.views.View.prototype.render.apply(this, arguments);
     this.offerForm = this.offerForm || new hs.listings.views.OfferForm({
-      el: this.$('#offerForm'),
+      appendTo: this.$('#offerForm'),
       listing: this.model
     });
     this.renderOffers();
@@ -26,7 +26,7 @@ hs.listings.views.Offers = hs.views.View.extend({
       newOfferIds.push(offer.id);
       if (_.isUndefined(this.offerViews[offer.id])){
         this.offerViews[offer.id] = new hs.listings.views.Offer({
-          el: $('#offerList'),
+          appendTo: $('#offerList'),
           model: offer
         });
       }
@@ -49,11 +49,11 @@ hs.listings.views.Offers = hs.views.View.extend({
 
 
 hs.listings.views.Offer = hs.views.View.extend({
-  _renderWith: 'append',
   template: 'offer',
   modelEvents: {
     'change:amount': 'amountChange',
-    'change:creator': 'creatorChange'
+    'change:creator': 'creatorChange',
+    'change:created': 'createdChange'
   },
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
@@ -75,35 +75,59 @@ hs.listings.views.Offer = hs.views.View.extend({
     if (this.creator.get('name'))
       this.nameChange();
 
-    var userId = hs.auth.getUser().get('id');
-    if (this.creator.get('id') == userId){
-      this.owned = true;
-    }else if (this.model.get('listing').get('creator').get('id') == userId){
-      this.listingOwned = true;
+    this.listingOwned = false;
+    this.owned = false;
+    if (hs.auth.isAuthenticated()){
+      var userId = hs.auth.getUser().get('id');
+      if (this.creator.get('id') == userId){
+        this.owned = true;
+      }else if (this.model.get('listing').get('creator').get('id') == userId){
+        this.listingOwned = true;
+      }
     }
     this.controlsChange();
   },
   controlsChange: function(){
-    hs.log(this)
-    if (this.owned)
-      this.$('.controls').html('<a href="#" class="button withdraw">');
+    if (this.owned){
+      this.$('.action').html('<a href="#" class="button withdraw">Withdraw</a>');
+      this.$('.withdraw').bind(_.bind(function(e){
+        e.preventDefault();
+        hs.log('deleting');
+        this.delete();
+      }, this));
+    }else if (this.listingOwner){
+      this.$('.action').html('<a href="#" class="button accept">Accept</a>');
+      this.$('.accept').bind(_.bind(function(e){
+        e.preventDefault();
+        this.accept();
+      }, this));
+    }else{
+      this.$('.action').html('');
+    }
   },
   amountChange: function(){
-    this.$('.amount').text(this.model.get('amount'));
+    this.$('.amount').text('$'+this.model.get('amount'));
   },
   avatarChange: function(){
-    this.$('.avatar').attr('src', this.creator.getAvatarUrl(40));
+    this.$('.avatar').attr('src', this.creator.getAvatarUrl(30));
   },
   nameChange: function(){
     this.$('.name').text(this.creator.get('name'));
   },
+  createdChange: function(){
+    var since = Date.since(this.model.get('created'));
+    this.$('.created').text(since.num+' '+since.text);
+  },
   hoverOver: function(){},
-  hoverOut: function(){}
+  hoverOut: function(){},
+  remove: function(){
+    $('#offer-'+this.model.get('id')).remove();
+    this.trigger('removed');
+  }
 });
 
 
 hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
-  _renderWith: 'append',
   template: 'offerForm',
   fields: [{
     'name': 'amount',
@@ -160,7 +184,10 @@ hs.listings.views.OfferForm = hs.auth.views.AuthForm.extend({
     clbk(/^\d+$/.test(value.replace('$', '')));
   },
   submit: function(){
-    this.model.set({creator: hs.auth.getUser()});
+    this.model.set({
+      creator: hs.auth.getUser(),
+      created: new Date()
+    });
     this.model.save();
     this.clear();
     this.model = new hs.listings.models.Offer({

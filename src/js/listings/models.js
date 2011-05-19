@@ -40,6 +40,9 @@ hs.listings.models.Offer = hs.models.Model.extend({
       return new hs.models.fields.ModelField(hs.auth.models.User);
     }
   }, hs.models.Model.prototype.fields),
+  accept: function(){
+    hs.log('TODO: accept offer is a noop');
+  }
 });
 
 hs.listings.models.OfferSet = hs.models.ModelSet.extend({

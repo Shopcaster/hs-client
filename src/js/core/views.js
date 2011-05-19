@@ -3,7 +3,6 @@
 hs.views = new Object();
 
 hs.views.View = Backbone.View.extend({
-  _renderWith: 'html',
   _tmplContext: {},
   events: {},
   modelEvents: {},
@@ -16,13 +15,23 @@ hs.views.View = Backbone.View.extend({
         this.model.bind(event, _.bind(this[method], this));
       }, this));
   },
+  _configure: function(){
+    Backbone.View.prototype._configure.apply(this, arguments);
+    if (this.options.appendTo) this.appendTo = this.options.appendTo;
+  },
   render: function(){
     // render template
     if (this.template){
       var html = this.renderTmpl();
-      // re-bind this.$ to the rendered template
-      this.$ = function(sel){return $(sel, html)}
-      $(this.el)[this._renderWith](html);
+      if (this.appendTo){
+        this.el = html;
+        this.delegateEvents();
+        $(this.appendTo).append(html);
+      }else if (this.el){
+        $(this.el).html(html);
+      }else{
+        throw(new Error('cannot render a view with neither el not appendTo set'));
+      }
       this.rendered = true;
     }
     // call all "change"-type modelEvents

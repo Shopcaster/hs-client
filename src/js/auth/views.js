@@ -8,16 +8,15 @@ hs.auth = hs.auth || new Object();
 hs.auth.views = new Object();
 
 hs.auth.views.Login = hs.views.View.extend({
-  el: $('#top-bar')[0],
+  appendTo: $('#top-bar')[0],
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
     hs.auth.bind('change:isAuthenticated', _.bind(this.authChange, this));
     this.authChange(hs.auth.isAuthenticated());
-  },
-  events: {
-    'click a.login': 'login',
-    'click a.logout': 'logout',
-    'click a.name': 'settings'
+
+    $('#top-bar .login').click(_.bind(this.login, this));
+    $('#top-bar .logout').click(_.bind(this.logout, this));
+    $('#top-bar .name').click(_.bind(this.settings, this));
   },
   settings: function(e){
     e.preventDefault();

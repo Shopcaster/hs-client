@@ -1,8 +1,7 @@
 //depends: main.js, auth/tmpl/loginForm.tmpl, core/forms/views.js, auth/main.js
 
 hs.auth.LoginForm = hs.views.Form.extend({
-  _renderWith: 'append',
-  el: $('#top-bar .width'),
+  appendTo: $('#top-bar .width'),
   template: 'loginForm',
   fields: [{
       'name': 'email',

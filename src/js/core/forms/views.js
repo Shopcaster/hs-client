@@ -6,7 +6,7 @@ hs.views.Form = hs.views.View.extend(_.extend({
     'change input[type=email]': 'change',
     'change input[type=password]': 'change',
     'change textarea': 'change',
-    'submit form': '_submit'
+    'submit': '_submit'
   }, hs.views.View.prototype.events),
   fields:[],
   initialize: function(){

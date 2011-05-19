@@ -6,9 +6,10 @@ ul, li{margin:0;padding:0;list-style:none;}
 textarea, input[type=text], input[type=email], input[type=password]{
     -webkit-appearance: none;
     padding:5px;
-    border:1px solid $grey - #333;
-    background-color:$white;
-    @include rounded(0px);
+    border:1px solid $grey - #282828;
+    background-color:$grey + #111;
+    @include rounded(5px);
+    @include box-shadow(inset 0 1px 5px $grey - #222);
 }
 
 .red{color:$red;}

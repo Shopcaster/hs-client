@@ -60,15 +60,11 @@ By default only the view's model is inserted into the template context. To chang
 
     <body><h1>Hello Context!</h1></body>
 
-By default the template is rendered into `el` using jQuery's `html` method. You can change this using `_renderWith`.
 
-    MyView = hs.views.View.extend({
-        tmpl: 'myTemplate',
-        _renderWith: 'append'
-    });
+By default the template is rendered into `el` using jQuery's `html` method. If you would prefer to append the view to an element, use `appendTo` when creating the view.
 
 
-    var myView = new MyView({el: $('body')});
+    var myView = new MyView({appendTo: $('body')});
     myView.render();
 
 

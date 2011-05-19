@@ -223,6 +223,7 @@ header{
         }
         #listing-offers{
             min-height:40px;
+            padding-bottom:0;
 
             #offerFormWrap{
                 position:relative;
@@ -265,31 +266,40 @@ header{
                 margin-top:40px;
 
                 .offer{
-                    height:40px;
+                    height:30px;
                     width:340px;
-                    margin-bottom:10px;
+                    margin-left:-10px;
+                    border-top:1px solid $grey;
+                    padding:10px;
 
-                    .amount, .creator{
+                    .amount, .meta, .action{
                         height: 40px;
-                        float:left;
                     }
-                    .creator{
-                        width:40px;
+                    .meta{
+                        float:left;
+                        position:relative;
+                        margin-left:35px;
                         img{
-                            display:block;
-                            font-size:13px;
-                            line-height:15px;
+                            position:absolute;
+                            top:0;left:-35px;
                         }
-                        .name{display:none;}
+                        .name {
+                            font-weight:bold;
+                        }
+                        .created {
+                            font-size:10px;
+                        }
                     }
                     .amount{
+                        float:right;
                         margin-left:5px;
-                        font-size:36px;
+                        font-size:26px;
+                        font-weight:bold;
+                        line-height:30px;
                         vertical-align:middle;
                     }
-                    .control{
+                    .action{
                         float:right;
-                        width:60px;
                     }
                 }
                 .offer:hover{
