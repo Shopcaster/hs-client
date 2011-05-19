@@ -13,38 +13,20 @@ hs.listings.models.Listing = hs.models.Model.extend({
     latitude: null,
     longitude: null,
     price: null,
-    best_offer: null,
     offers: function(){
-      return new hs.models.fields.CollectionField(hs.listings.models.OfferSet)
+      return new hs.models.fields.CollectionField(hs.offers.OfferSet)
     },
   }, hs.models.Model.prototype.fields),
-  defaults: {
-    best_offer: {amount: 100}
+  bestOffer: function(){
+    var top = [0, null];
+    _.each(this.get('offers'), function(offer){
+      if (offer.get('amount') > top[0])
+        top = [offer.get('amount'), offer];
+    });
+    return top[1];
   }
 });
 
 hs.listings.models.ListingSet = hs.models.ModelSet.extend({
   model: hs.listings.models.Listing,
-});
-
-
-
-hs.listings.models.Offer = hs.models.Model.extend({
-  key: 'offer',
-  fields: _.extend({
-    amount: null,
-    listing: function(){
-      return new hs.models.fields.ModelField(hs.listings.models.Listing);
-    },
-    creator: function(){
-      return new hs.models.fields.ModelField(hs.auth.models.User);
-    }
-  }, hs.models.Model.prototype.fields),
-  accept: function(){
-    hs.log('TODO: accept offer is a noop');
-  }
-});
-
-hs.listings.models.OfferSet = hs.models.ModelSet.extend({
-  model: hs.listings.models.Offer,
 });

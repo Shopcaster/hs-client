@@ -2,10 +2,8 @@
 //         core/date.js,
 //         core/forms/views.js,
 //         listings/main.js,
-//         listings/tmpl/listingPage.tmpl,
-//         listings/tmpl/listingForm.tmpl,
 //         listings/models.js,
-//         listings/views_offers.js,
+//         offers/views/list.js,
 //         auth/views.js
 
 hs.listings.views = hs.listings.views || new Object();
@@ -20,12 +18,12 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     'change:latitude': 'updateLoc',
     'change:longitude': 'updateLoc',
     'change:price': 'updatePrice',
-    'change:best_offer': 'updateBestOffer'
+    'change:offers': 'updateBestOffer'
   },
   render: function(){
     hs.views.Page.prototype.render.apply(this, arguments);
 
-    this.offers = new hs.listings.views.Offers({
+    this.offers = new hs.offers.views.Offers({
       el: $('#listing-offers'),
       model: this.model
     });
@@ -67,9 +65,9 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     }
   },
   updateBestOffer: function(){
-    if (this.model.get('best_offer')){
+    if (this.model.get('offers').length){
       this.$('.best-offer .listing-obi-value')
-          .text('$'+this.model.get('best_offer').amount);
+          .text('$'+this.model.bestOffer().get('amount'));
     }
   }
 });
