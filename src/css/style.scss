@@ -216,6 +216,9 @@ header{
                 }
             }
         }
+        #listing-qa, #listing-offers{
+            background-color:$grey;
+        }
         #listing-qa{
             input{
                 width:550px;
@@ -243,7 +246,7 @@ header{
                     top:-5px;left:-5px;
                     padding:5px;
 
-                    background-color:$grey;
+                    background-color:$grey - #111;
                     border:1px solid $grey - #444;
 
                     @include box-shadow(0 2px 4px $black + #333);
@@ -269,7 +272,7 @@ header{
                     height:30px;
                     width:340px;
                     margin-left:-10px;
-                    border-top:1px solid $grey;
+                    border-top:1px solid $grey - #111;
                     padding:10px;
 
                     .amount, .meta, .action{
@@ -303,7 +306,7 @@ header{
                     }
                 }
                 .offer:hover{
-                    background-color:$grey;
+                    background-color:$grey - #111;
                 }
             }
         }

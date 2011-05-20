@@ -18,6 +18,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     'change:latitude': 'updateLoc',
     'change:longitude': 'updateLoc',
     'change:price': 'updatePrice',
+    'loaded:offers': 'updateBestOffer',
     'change:offers': 'updateBestOffer'
   },
   render: function(){
@@ -65,14 +66,12 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     }
   },
   updateBestOffer: function(){
-    if (this.model.get('offers').length){
+    this.model.bestOffer(_.bind(function(best){
       this.$('.best-offer .listing-obi-value')
-          .text('$'+this.model.bestOffer().get('amount'));
-    }
+            .text('$'+best.get('amount'));
+    }, this));
   }
 });
-
-
 
 
 hs.listings.views.ListingForm = hs.views.Form.extend({

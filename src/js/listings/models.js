@@ -13,17 +13,52 @@ hs.listings.models.Listing = hs.models.Model.extend({
     latitude: null,
     longitude: null,
     price: null,
+    best_offer: null,
     offers: function(){
       return new hs.models.fields.CollectionField(hs.offers.OfferSet)
     },
   }, hs.models.Model.prototype.fields),
-  bestOffer: function(){
-    var top = [0, null];
-    _.each(this.get('offers'), function(offer){
-      if (offer.get('amount') > top[0])
-        top = [offer.get('amount'), offer];
+  initialize: function(){
+    this.bind('loaded', _.bind(function(){
+      var offers = this.get('offers');
+      var offersLoaded = _.after(offers.length, _.bind(function(){
+        this.trigger('loaded:offers');
+      }, this));
+      offers.each(function(offer){
+        offer.bind('loaded', offersLoaded);
+      }, this);
+    }, this));
+    hs.models.Model.prototype.initialize.apply(this, arguments);
+  },
+  bestOffer: function(clbk){
+    // hs.log('bestOffer');
+    var topAmount = 0, topOffer = null;
+    var offers = this.get('offers');
+    var done = _.after(offers.length, function(){
+      // hs.log('returning');
+      clbk(topOffer);
     });
-    return top[1];
+    offers.each(function(offer){
+      var check = function(){
+        if (offer.get('amount') > topAmount){
+          topAmount = offer.get('amount');
+          topOffer = offer;
+        }else{
+          // hs.log('not top amount', offer.get('amount'))
+        }
+        done();
+      };
+      if (!offer.loaded){
+        // hs.log('loading');
+        offer.bind('loaded', function(){
+          // hs.log('loaded');
+          check();
+        });
+      }else{
+        // hs.log('loaded');
+        check();
+      }
+    });
   }
 });
 

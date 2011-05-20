@@ -11,6 +11,7 @@ hs.models.Model = Backbone.Model.extend({
     'updated': null,
     'deleted': null,
   },
+  loaded: false,
   url: function(){return this.key},
   initialize: function(){
     _.bindAll(this);
@@ -30,8 +31,13 @@ hs.models.Model = Backbone.Model.extend({
     }, this));
   },
   _sub: function(){
+    var loaded = _.once(_.bind(function(){
+      this.loaded = true;
+      this.trigger('loaded');
+    }, this));
     hs.pubsub.sub(this.key+':'+this.get('id'), _.bind(function(fields){
-      if (fields && fields.id == this.id) this.set(fields);
+      if (fields) this.set(fields);
+      loaded();
     }, this));
   },
   set: function(fields){
