@@ -102,14 +102,14 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
   },
   _submit: function(e){
     e.preventDefault();
-    var super = _.bind(Function.prototype.apply,
+    var callSuper = _.bind(Function.prototype.apply,
         hs.views.Form.prototype._submit, this, arguments);
     if (hs.auth.isAuthenticated())
-      return super();
+      return callSuper();
     if (this.$('[name=password]:visible').length)
-      this.login(super);
+      this.login(callSuper);
     else
-      this.signup(super);
+      this.signup(callSuper);
   },
   login: function(clbk){
     var email = this.$('[name=email]').val(),

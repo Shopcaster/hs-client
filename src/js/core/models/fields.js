@@ -11,9 +11,7 @@ hs.models.fields.Field = hs.Object.extend({
   get: function(value){
     return value;
   },
-  default: function(){
-    return undefined;
-  },
+  getDefault: function(){},
   setModelInstance: function(model){
     this.model = model;
   }
@@ -38,7 +36,7 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
       return this.SetClass.prototype.model.get(id);
     }, this)));
   },
-  default: function(){
+  getDefault: function(){
     return new this.SetClass();
   }
 });

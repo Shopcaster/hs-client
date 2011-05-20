@@ -67,7 +67,7 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   withdraw: function(e){
     e.preventDefault();
-    this.model.delete();
+    this.model.del();
   },
   remove: function(){
     $('#offer-'+this.model.get('id')).remove();

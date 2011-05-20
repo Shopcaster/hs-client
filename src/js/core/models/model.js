@@ -61,11 +61,11 @@ hs.models.Model = Backbone.Model.extend({
       if (!_.isUndefined(value))
         value = this.fields[fieldname].get(value);
       else
-        value = this.fields[fieldname].default();
+        value = this.fields[fieldname].getDefault();
 
     return value;
   },
-  delete: function(){
+  del: function(){
     this.set({deleted: true});
     this.save();
   }
