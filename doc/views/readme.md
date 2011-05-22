@@ -19,7 +19,7 @@ Given the template (named `myTemplate.tmpl`):
 and the view class:
 
     MyView = hs.views.View.extend({
-        tmpl: 'myTemplate'
+        template: 'myTemplate'
     });
 
 If you then:
