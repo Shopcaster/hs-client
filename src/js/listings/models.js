@@ -31,7 +31,7 @@ hs.listings.models.Listing = hs.models.Model.extend({
     hs.models.Model.prototype.initialize.apply(this, arguments);
   },
   bestOffer: function(clbk){
-    // hs.log('bestOffer');
+    hs.log('bestOffer');
     var topAmount = 0, topOffer = null;
     var offers = this.get('offers');
     var done = _.after(offers.length, function(){

@@ -14,9 +14,9 @@ hs.offers.views.Offer = hs.views.View.extend({
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
     if (this.model.get('creator'))
-      this.changeCreator();
+      this.creatorChange();
     if (this.model.get('amount'))
-      this.changeAmount();
+      this.amountChange();
   },
   creatorChange: function(){
     this.creator = this.model.get('creator');

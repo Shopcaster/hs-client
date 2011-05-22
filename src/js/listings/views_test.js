@@ -14,7 +14,7 @@ test("test view reaction to data change", function() {
   c.setYear(2010);
   listing.set({
     description: 'Test Desc',
-    created_on: c,
+    created: c,
     latitude: 43.651702,
     longitude: -79.373703,
     price: 100

@@ -15,8 +15,10 @@ hs.pubsub = {
       clbk(msg.data);
     });
   },
-  pub: function(key, data, extra){
-    return hs.con.send('pub', _.extend({key: key, data: data}, extra));
+  pub: function(key, data, extra, clbk){
+    if (_.isFunction(extra))
+      clbk = extra, extra = {};
+    return hs.con.send('pub', _.extend({key: key, data: data}, extra), clbk);
   },
   sub: function(key, clbk) {
     var send = _.isUndefined(this.subs[key]);
@@ -49,10 +51,8 @@ Backbone.sync = function(method, model, success, error){
   if (method == 'update'){
     hs.pubsub.pub(model.key+':'+model.id, model.toJSON());
   }else if (method == 'create'){
-    var msgId = hs.pubsub.pub(model.key, model.toJSON());
-    hs.pubsub.bind('pubRecieved:'+msgId, function(msg){
-      model.set(msg.data);
-      hs.pubsub.unbind(arguments.callee);
+    hs.pubsub.pub(model.key, model.toJSON(), function(key, data){
+      model.set(data.data);
     });
   }else if (method == 'delete'){
     var data = model.toJSON();
