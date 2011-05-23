@@ -12,14 +12,21 @@ hs.models.fields.Field = hs.Object.extend({
     return value;
   },
   getDefault: function(){},
-  setModelInstance: function(model){
+  setModelInstance: function(model, fieldName){
     this.model = model;
+    this.fieldName = fieldName;
   }
 });
 
 hs.models.fields.CollectionField = hs.models.fields.Field.extend({
   initialize: function(SetClass){
     this.SetClass = SetClass;
+    this.setInstance =  new this.SetClass();
+  },
+  setModelInstance: function(){
+    hs.models.fields.Field.prototype.setModelInstance.apply(this, arguments);
+    this.setInstance.bind('change',
+        _.bind(this.model.trigger, this.model, 'change:'+this.fieldName));
   },
   set: function(value){
     if (value instanceof this.SetClass){
@@ -32,9 +39,8 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     return value;
   },
   get: function(value){
-    return new this.SetClass(_.map(value, _.bind(function(id){
-      return this.SetClass.prototype.model.get(id);
-    }, this)));
+    this.setInstance.addNew(value);
+    return this.setInstance;
   },
   getDefault: function(){
     return new this.SetClass();

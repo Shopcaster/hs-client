@@ -27,7 +27,7 @@ hs.models.Model = Backbone.Model.extend({
       if (_.isFunction(field))
         this.fields[fieldname] = field = field.call(this);
       if (field instanceof hs.models.fields.Field)
-        field.setModelInstance(this);
+        field.setModelInstance(this, fieldname);
     }, this));
   },
   _sub: function(){
@@ -94,4 +94,24 @@ hs.models.Model.extend = function(){
   return Model;
 };
 
-hs.models.ModelSet = Backbone.Collection.extend({});
+hs.models.ModelSet = Backbone.Collection.extend({
+  addNew: function(ids){
+    var newIds = _.select(ids, function(id){
+      return _.isUndefined(this.get(id));
+    }, this);
+    var cast = _.map(newIds, function(id){
+      return new this.model({id: id});
+    }, this);
+    if (cast.length) this.add(cast);
+  },
+  add: function(models){
+    var bind = _.bind(function(model){
+      model.bind('change', _.bind(this.trigger, this, 'change'));
+    }, this);
+    if (_.isArray(models))
+      _.each(models, bind);
+    else
+      bind(models);
+    return Backbone.Collection.prototype.add.apply(this, arguments);
+  }
+});
