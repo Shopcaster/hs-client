@@ -134,8 +134,10 @@ hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({
         latitude: this.position.latitude,
         longitude: this.position.longitude
       });
+    hs.log('saving');
     this.model.save(null, {
       success: function(){
+        hs.log('saved, goto');
         hs.goTo('!/listings/thanks/');
       },
       error: function(){
@@ -153,7 +155,7 @@ hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({
 hs.listings.views.Thanks = hs.views.Page.extend({
   template: 'thanks',
   initialize: function(){
-    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
+    // hs.auth.views.Page.prototype.initialize.apply(this, arguments);
     $('#newListing').parent().addClass('thanks');
     this.newBind = _.bind(this.again, this);
     $('#newListing').click(this.newBind);
@@ -165,4 +167,9 @@ hs.listings.views.Thanks = hs.views.Page.extend({
     $('#newListing').text('Post');
     hs.goTo('!/listings/new/');
   }
+});
+
+
+hs.listings.views.List = hs.views.Page.extend({
+  template: 'listings'
 });

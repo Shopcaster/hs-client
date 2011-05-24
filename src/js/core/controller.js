@@ -15,6 +15,7 @@ hs.Controller = Backbone.Controller.extend({});
     };
   } else {
     hs.goTo = function(url) {
+      hs.log('goTo: '+url);
       window.history.pushState(null, null, url.substr(1));
     };
   }

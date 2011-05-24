@@ -4,7 +4,13 @@ hs.regController('listings', hs.Controller.extend({
   routes: {
     '!/listings/new/': 'newListing',
     '!/listings/thanks/': 'thanks',
-    '!/listings/:id/': 'listing'
+    '!/listings/:id/': 'listing',
+    '': 'listings'
+  },
+  listings: function(){
+    hs.page.finish();
+    hs.page = new hs.listings.views.List();
+    hs.page.render();
   },
   listing: function(id){
     hs.page.finish();
@@ -37,5 +43,6 @@ hs.regController('listings', hs.Controller.extend({
     hs.page.finish();
     hs.page = new hs.listings.views.Thanks();
     hs.page.render();
+    hs.log('mainhtml: '+$('#main').html());
   }
 }));
