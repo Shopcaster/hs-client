@@ -131,6 +131,7 @@ header{
             @include dark-button();
         }
         li.active{@include dark-button($red - #555)}
+        li.thanks{@include dark-button($blue - #555)}
         li.right{
             float:right;
             margin-right:-6px;
@@ -339,6 +340,19 @@ header{
         }
         .form_item:after {@include clearfix();}
     }
+    #thanks{
+        width:93%;
+        padding:2%;
+        margin:2%;
+        display:block;
+        font-size:16px;
+        @include sans();
+
+        border:none;
+        background-color:$white;
+        @include box-shadow(0 2px 4px $black + #222);
+        @include rounded(0px);
+    }
 }
 
 footer{
@@ -384,6 +398,22 @@ footer{
     a.cancel-password{
         float:left;
     }
+}
+
+#loading {
+    display:none;
+
+    position:absolute;
+    top:80px;left:50%;
+    width:80px;margin-left:-25px;
+    height:40px;
+
+    text-align:center;
+    padding:10px;
+    color:$white;
+    background-color:transparentize($black, 0.2);
+    @include rounded();
+    z-index:2;
 }
 
 @import "mobile_tablet";

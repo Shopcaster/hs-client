@@ -3,16 +3,14 @@
 hs.regController('listings', hs.Controller.extend({
   routes: {
     '!/listings/new/': 'newListing',
+    '!/listings/thanks/': 'thanks',
     '!/listings/:id/': 'listing'
   },
   listing: function(id){
+    hs.page.finish();
     var listing = hs.listings.models.Listing.get(id);
-    var view = new hs.listings.views.ListingPage({
-      model: listing,
-      el: $('#main')
-    });
-    view.render();
-    listing.fetch();
+    hs.page = new hs.listings.views.ListingPage({model: listing});
+    hs.page.render();
   },
   newListing: function(){
     // var l = new hs.listings.models.Listing();
@@ -31,7 +29,13 @@ hs.regController('listings', hs.Controller.extend({
     //   hs.goTo('!/listings/'+l.get('id')+'/');
     // });
     // l.save();
-    var listingForm = new hs.listings.views.ListingForm({el: $('#main')});
-    listingForm.render();
+    hs.page.finish();
+    hs.page = new hs.listings.views.ListingForm({el: $('#main')});
+    hs.page.render();
+  },
+  thanks: function(){
+    hs.page.finish();
+    hs.page = new hs.listings.views.Thanks();
+    hs.page.render();
   }
 }));

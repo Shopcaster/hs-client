@@ -135,14 +135,34 @@ hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({
         longitude: this.position.longitude
       });
     this.model.save(null, {
-      success: _.bind(function(){
-        $('#newListing').parent().removeClass('active');
-        $('#newListing').unbind('click', this.newBind);
-        hs.goTo('!/listings/'+this.model.id+'/');
-      }, this),
+      success: function(){
+        hs.goTo('!/listings/thanks/');
+      },
       error: function(){
         console.log('save error', arguments);
       }
     });
+  },
+  finish: function(){
+    $('#newListing').parent().removeClass('active');
+    $('#newListing').unbind('click', this.newBind);
+  }
+});
+
+
+hs.listings.views.Thanks = hs.views.Page.extend({
+  template: 'thanks',
+  initialize: function(){
+    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
+    $('#newListing').parent().addClass('thanks');
+    this.newBind = _.bind(this.again, this);
+    $('#newListing').click(this.newBind);
+    $('#newListing').text('Again');
+  },
+  again: function(){
+    $('#newListing').parent().removeClass('thanks');
+    $('#newListing').unbind('click', this.newBind);
+    $('#newListing').text('Post');
+    hs.goTo('!/listings/new/');
   }
 });

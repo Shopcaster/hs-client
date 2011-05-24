@@ -13,8 +13,8 @@ hs.views.fields.reg = function(){
 };
 
 hs.views.fields.Field = hs.views.View.extend({
-  prepContext: function(ctx){
-    return _.extend(ctx, this.options);
+  prepContext: function(){
+    return this.options;
   },
   _configure: function(){
     hs.views.View.prototype._configure.apply(this, arguments);
