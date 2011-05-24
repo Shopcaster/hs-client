@@ -15,24 +15,23 @@ hs.regController('listings', hs.Controller.extend({
     listing.fetch();
   },
   newListing: function(){
-    var l = new hs.listings.models.Listing();
-    l.set({
-      "description": "MacBook Pro for sale. Excellent condition and fully loaded. 8GB RAM 64GB SSD. Must see. ",
-      "latitude": 43.651702,
-      "longitude": -79.373703000000006,
-      "updated": "2011-05-02T15:40:06.629088",
-      "photo": {
-        "original": "http://lorempixum.com/560/418/technics/",
-        "web": "http://lorempixum.com/560/418/technics/"
-      },
-      "price": 1500.0
-    });
-    l.bind('change:id', function(){
-      hs.goTo('!/listings/'+l.get('id')+'/');
-    });
-    l.save();
-    // var listingForm = new hs.listings.views.ListingForm({el: $('#main')});
-    // listingForm.render();
+    // var l = new hs.listings.models.Listing();
+    // l.set({
+    //   "description": "MacBook Pro for sale. Excellent condition and fully loaded. 8GB RAM 64GB SSD. Must see. ",
+    //   "latitude": 43.651702,
+    //   "longitude": -79.373703000000006,
+    //   "updated": "2011-05-02T15:40:06.629088",
+    //   "photo": {
+    //     "original": "http://lorempixum.com/560/418/technics/",
+    //     "web": "http://lorempixum.com/560/418/technics/"
+    //   },
+    //   "price": 1500.0
+    // });
+    // l.bind('change:id', function(){
+    //   hs.goTo('!/listings/'+l.get('id')+'/');
+    // });
+    // l.save();
+    var listingForm = new hs.listings.views.ListingForm({el: $('#main')});
+    listingForm.render();
   }
 }));
-

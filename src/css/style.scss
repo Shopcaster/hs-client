@@ -317,7 +317,7 @@ header{
         width:100%;
 
         li, ul {margin:0;padding:0;list-style:none;}
-        .form_item{
+        input, textarea, #image{
             width:93%;
             padding:2%;
             margin:2%;
@@ -325,21 +325,17 @@ header{
             font-size:16px;
             @include sans();
 
+            border:none;
             background-color:$white;
             @include box-shadow(0 2px 4px $black + #222);
+            @include rounded(0px);
 
-            input[type=button]{
-                float:right;
-            }
-
-            #image{
-                max-height:40px;
-                width:auto;
-                margin:0 0 -7px;
-                padding:0;
-            }
-
-            label{color:$grey;}
+        }
+        #image img{
+            max-height:40px;
+            width:auto;
+            margin:0 0 -7px;
+            padding:0;
         }
         .form_item:after {@include clearfix();}
     }
