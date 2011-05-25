@@ -1,44 +1,44 @@
-//depends: core/views.js
+//depends: core/views.js, core/forms/fields.js
 
 hs.views.Form = hs.views.View.extend(_.extend({
   events: _.extend({
-    'change input[type=text]': 'change',
-    'change input[type=email]': 'change',
-    'change input[type=password]': 'change',
-    'change textarea': 'change',
     'submit': '_submit'
   }, hs.views.View.prototype.events),
   fields:[],
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
-    this.values = _.reduce(this.fields, function(val, field){
-      val[field.name] = null;
-      return val;
-    }, {});
+    this.fields = _.reduce(this.fields, function(fields, field){
+      fields[field.name] = new hs.views.fields.byType[field.type](field);
+      return fields;
+    }, {}, this);
+  },
+  render: function(){
+    hs.views.View.prototype.render.apply(this, arguments);
+    // re-delegate after render due to pre-load issues
+    _.each(this.fields, function(field){
+      field.el = this.$('#'+field.name);
+      field.delegateEvents();
+    }, this);
   },
   renderTmpl: function(){
-    var ctx = {fields: this.fields};
+    var fields = this.fields;
     this._tmplContext.form = function(){
       return function(){
-        return _.reduce(ich.form(ctx), function(htm, rx){
-          return htm += rx.innerHTML || rx.nodeValue;
-          }, '');
+        var htm = $('<div>');
+        _.each(fields, function(field){
+          field.appendTo = htm;
+          field.render();
+        });
+        return htm.html();
       }
     };
     return hs.views.View.prototype.renderTmpl.apply(this, arguments);
   },
-  change: function(e){
-    var name = $(e.target).attr('name')
-    this.values[name] = $(e.target).val();
-    this.trigger('change:'+name, this.values[name]);
-  },
   get: function(name){
-    return this.values[name];
+    return this.fields[name].get();
   },
   set: function(name, value){
-    this.values[name] = value;
-    this.trigger('change:'+name, value);
-    this.$('[name="'+name+'"]').val(value);
+    this.fields[name].set(value);
     return this;
   },
   clear: function(){
@@ -56,16 +56,21 @@ hs.views.Form = hs.views.View.extend(_.extend({
     }, this));
   },
   validate: function(clbk){
-    var len = _.keys(this.values).length;
+    var len = _.keys(this.fields).length;
     if (len == 0) return clbk(false);
 
-    var valid = true,
-        done = _.after(len, function(){clbk(valid)});
+    var valid = true;
+    var done = _.after(len, function(){clbk(valid)});
 
-    _.each(this.values, _.bind(function(value, name){
+    _.each(this.fields, _.bind(function(field, name){
+      if (!field.isValid()){
+        valid = false;
+        this.showInvalid(name);
+        return done();
+      }
       var methodName = 'validate'+name.charAt(0).toUpperCase() + name.slice(1);
       if (typeof this[methodName] == 'function')
-        this[methodName](value, _.bind(function(valValid){
+        this[methodName](field.get(), _.bind(function(valValid){
           if (!valValid) this.showInvalid(name);
           valid = valid && valValid;
           done();
@@ -84,6 +89,9 @@ hs.views.Form = hs.views.View.extend(_.extend({
     // });
   },
   toJSON: function(){
-    return _.clone(this.values);
+    return _.reduce(_.values(this.fields), function(json, field){
+      json[field.name] = field.get();
+      return json;
+    }, {}, this);
   }
 }, Backbone.Events));

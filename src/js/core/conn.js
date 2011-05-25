@@ -1,4 +1,4 @@
-//depends: main.js
+//depends: main.js, core/util.js
 
 
 hs.con = {
@@ -12,10 +12,9 @@ hs.con = {
     }, this);
 
     if (typeof io == 'undefined'){
-      var script = document.createElement("script");
-      script.src = conf.server.protocol+'://'+conf.server.host+':'+conf.server.port
-          +'/socket.io/socket.io.js';
-      document.body.appendChild(script);
+      hs.loadScript(conf.server.protocol+'://'
+          +conf.server.host+':'+conf.server.port
+          +'/socket.io/socket.io.js');
       (function ioCheck(){
         if (typeof io == 'undefined')
           setTimeout(ioCheck, 10);

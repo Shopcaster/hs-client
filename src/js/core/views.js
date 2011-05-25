@@ -56,7 +56,12 @@ hs.views.View = Backbone.View.extend({
 });
 
 
+// global page view referance, starts as noop
+hs.page = {finish: function(){}}
 
 hs.views.Page = hs.views.View.extend({
-  id: 'main',
+  el: $('#main'),
+  finish: function(){
+    $(this.el).html('');
+  }
 });

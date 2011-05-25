@@ -48,17 +48,24 @@ _.bindAll(hs.pubsub);
 hs.con.bind('pub', hs.pubsub.pubRecieved);
 
 Backbone.sync = function(method, model, success, error){
+  hs.loading();
+  var done = function(){
+    hs.loaded();
+    success();
+  }
   if (method == 'update'){
-    hs.pubsub.pub(model.key+':'+model.id, model.toJSON());
+    hs.pubsub.pub(model.key+':'+model.id, model.toJSON(), done);
   }else if (method == 'create'){
     hs.pubsub.pub(model.key, model.toJSON(), function(key, data){
       model.set(data.data);
+      done();
     });
   }else if (method == 'delete'){
     var data = model.toJSON();
     data.deleted = true;
-    hs.pubsub.pub(model.key+':'+model.id, data);
+    hs.pubsub.pub(model.key+':'+model.id, data, done);
   }else{
+    hs.loaded();
     error('cannot read via pubsub');
   }
 };

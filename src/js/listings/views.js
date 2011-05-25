@@ -38,8 +38,12 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
   },
   updatePhoto: function(){
     if (this.model.get('photo')){
+      // this.$('#listing-image img')
+      //     .attr('src', this.model.get('photo').web);
+
+      // tmp, only works in webkit:
       this.$('#listing-image img')
-          .attr('src', this.model.get('photo').web);
+          .attr('src', 'data:image/jpeg;base64,'+this.model.get('photo'));
     }else{
       this.$('#listing-image img')
           .attr('src', 'http://lorempixum.com/560/418/technics/');
@@ -80,35 +84,42 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
 });
 
 
-hs.listings.views.ListingForm = hs.views.Form.extend({
+hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({
   template: 'listingForm',
-  fields: {
-    'image': '',
-    'description': '',
-    'price': ''
-  },
+  fields: [
+    {
+      'name': 'image',
+      'type': 'image_capture',
+      'placeholder': 'Image',
+      'required': true
+    },
+    {
+      'name': 'description',
+      'type': 'textarea',
+      'placeholder': 'Description',
+      'required': true
+    },
+    {
+      'name': 'price',
+      'type': 'text',
+      'placeholder': 'Price',
+      'required': true
+    }
+  ].concat(hs.auth.views.AuthForm.prototype.fields),
   initialize: function(){
-    hs.views.Form.prototype.initialize.apply(this, arguments);
+    this.model = new hs.listings.models.Listing();
+    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     $('#newListing').parent().addClass('active');
-    $('#newListing').click(_.bind(function(e){
-      this._submit(e);
-    }, this));
+    this.newBind = _.bind(this._submit, this);
+    $('#newListing').click(this.newBind);
     this.bind('change:price', _.bind(function(){
       this.set('price', this.get('price').replace('$', ''));
     }, this));
-    this.model = new hs.listings.models.Listing();
-    this.bind('change', _.bind(function(){
-      this.model.set(this.toJSON());
-    }, this));
+    if (Modernizr.geolocation)
+      navigator.geolocation.getCurrentPosition(_.bind(this.updateLocation, this));
   },
-  submit: function(){
-    this.model.bind('change', _.bind(function gt(){
-      this.model.unbind(gt);
-      hs.goTo('!/listings/'+this.model.id+'/');
-    }, this));
-    this.model.save(null, {error: function(){
-      console.log('save error', arguments);
-    }});
+  updateLocation: function(position){
+    this.position = position.coords;
   },
   validateDescription: function(value, clbk){
     clbk(value.length > 0 && value.length < 141);
@@ -119,4 +130,53 @@ hs.listings.views.ListingForm = hs.views.Form.extend({
   validateImage: function(value, clbk){
     clbk(value.length != 0);
   },
+  submit: function(){
+    this.model.set({
+      photo: this.get('image'),
+      description: this.get('description'),
+      price: this.get('price')
+    });
+    if (this.position)
+      this.model.set({
+        latitude: this.position.latitude,
+        longitude: this.position.longitude
+      });
+    hs.log('saving');
+    this.model.save(null, {
+      success: function(){
+        hs.log('saved, goto');
+        hs.goTo('!/listings/thanks/');
+      },
+      error: function(){
+        console.log('save error', arguments);
+      }
+    });
+  },
+  finish: function(){
+    $('#newListing').parent().removeClass('active');
+    $('#newListing').unbind('click', this.newBind);
+  }
+});
+
+
+hs.listings.views.Thanks = hs.views.Page.extend({
+  template: 'thanks',
+  initialize: function(){
+    // hs.auth.views.Page.prototype.initialize.apply(this, arguments);
+    $('#newListing').parent().addClass('thanks');
+    this.newBind = _.bind(this.again, this);
+    $('#newListing').click(this.newBind);
+    $('#newListing').text('Again');
+  },
+  again: function(){
+    $('#newListing').parent().removeClass('thanks');
+    $('#newListing').unbind('click', this.newBind);
+    $('#newListing').text('Post');
+    hs.goTo('!/listings/new/');
+  }
+});
+
+
+hs.listings.views.List = hs.views.Page.extend({
+  template: 'listings'
 });

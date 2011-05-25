@@ -1,4 +1,4 @@
-//depends: main.js, core/pubsub.js, core/models/fields.js
+//depends: main.js, core/pubsub.js, core/models/fields.js, core/loading.js
 
 
 hs.models = hs.models || new Object();
@@ -31,10 +31,12 @@ hs.models.Model = Backbone.Model.extend({
     }, this));
   },
   _sub: function(){
+    hs.loading();
     var loaded = _.once(_.bind(function(){
+      hs.loaded();
       this.loaded = true;
       this.trigger('loaded');
-    }, this));
+      }, this));
     hs.pubsub.sub(this.key+':'+this.get('id'), _.bind(function(fields){
       if (fields) this.set(fields);
       loaded();
