@@ -17,6 +17,9 @@ hs.listings.models.Listing = hs.models.Model.extend({
     offers: function(){
       return new hs.models.fields.CollectionField(hs.offers.OfferSet)
     },
+    inquiries: function(){
+      return new hs.models.fields.CollectionField(hs.inquiries.InquirySet)
+    },
   }, hs.models.Model.prototype.fields),
   bestOffer: function(clbk){
     var topAmount = 0, topOffer = null;

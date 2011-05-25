@@ -4,6 +4,7 @@
 //         listings/main.js,
 //         listings/models.js,
 //         offers/views/list.js,
+//         inquiries/views/list.js,
 //         auth/views.js
 
 hs.listings.views = hs.listings.views || new Object();
@@ -28,6 +29,12 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
       model: this.model
     });
     this.offers.render();
+
+    this.inquiries = new hs.inquiries.views.Inquiries({
+      el: $('#listing-inquiries'),
+      model: this.model
+    });
+    this.inquiries.render();
   },
   updatePhoto: function(){
     if (this.model.get('photo')){
