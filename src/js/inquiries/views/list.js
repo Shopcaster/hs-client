@@ -3,13 +3,13 @@
 //         inquiries/views/form.js,
 //         inquiries/views/inquiry.js
 
-hs.inquiries.views.Inquiry = hs.views.View.extend({
+hs.inquiries.views.Inquiries = hs.views.View.extend({
   template: 'inquiries',
   modelEvents: {
     'change:inquiries': 'inquiriesChange'
   },
   render: function(){
-    this._tmplContext.inquiries = this.model.get('inquires').toJSON();
+    this._tmplContext.inquiries = this.model.get('inquiries').toJSON();
     hs.views.View.prototype.render.apply(this, arguments);
     this.questionForm = this.questionForm || new hs.inquiries.views.QuestionForm({
       appendTo: this.$('#questionForm'),

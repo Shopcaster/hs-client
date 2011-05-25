@@ -3,7 +3,7 @@
 hs.inquiries.views.Inquiry = hs.views.View.extend({
   template: 'inquiry',
   modelEvents: {
-    'change:amount': 'amountChange',
+    'change:question': 'questionChange',
     'change:creator': 'creatorChange',
     'change:created': 'createdChange'
   },
@@ -15,8 +15,8 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     hs.views.View.prototype.initialize.apply(this, arguments);
     if (this.model.get('creator'))
       this.creatorChange();
-    if (this.model.get('amount'))
-      this.amountChange();
+    if (this.model.get('question'))
+      this.questionChange();
   },
   creatorChange: function(){
     this.creator = this.model.get('creator');
@@ -48,8 +48,8 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
       this.$('.action').html('');
     }
   },
-  amountChange: function(){
-    this.$('.amount').text('$'+this.model.get('amount'));
+  questionChange: function(){
+    this.$('.question').text(this.model.get('question'));
   },
   avatarChange: function(){
     this.$('.avatar').attr('src', this.creator.getAvatarUrl(30));
