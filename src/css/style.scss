@@ -219,13 +219,8 @@ header{
                 }
             }
         }
-        #listing-qa, #listing-offers{
+        #listing-inquiries, #listing-offers{
             background-color:$grey;
-        }
-        #listing-qa{
-            input{
-                width:550px;
-            }
         }
         #listing-inquiries{
             min-height:40px;
@@ -236,7 +231,7 @@ header{
                 z-index:2;
 
                 input{
-                    width:325px;
+                    width:550px;
                 }
 
                 #questionField{
