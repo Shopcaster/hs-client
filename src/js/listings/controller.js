@@ -26,10 +26,7 @@ hs.regController('listings', hs.Controller.extend({
       "latitude": 43.651702,
       "longitude": -79.373703000000006,
       "updated": "2011-05-02T15:40:06.629088",
-      "photo": {
-        "original": "http://lorempixum.com/560/418/technics/",
-        "web": "http://lorempixum.com/560/418/technics/"
-      },
+      "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
       "price": 1500.0
     });
     l.bind('change:id', function(){
