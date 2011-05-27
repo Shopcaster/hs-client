@@ -1,4 +1,4 @@
-//depends: core/views.js
+//depends: core/views/main.js
 
 module("View");
 

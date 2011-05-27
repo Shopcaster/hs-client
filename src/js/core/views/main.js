@@ -2,7 +2,7 @@
 
 hs.views = new Object();
 
-hs.views.View = Backbone.View.extend({
+hs.views.View = Backbone.View.extend(Backbone.Events).extend({
   _tmplContext: {},
   events: {},
   modelEvents: {},
@@ -52,16 +52,5 @@ hs.views.View = Backbone.View.extend({
       this._tmplContext = this.prepContext(this._tmplContext);
     var html = ich[this.template](this._tmplContext);
     return html;
-  }
-});
-
-
-// global page view referance, starts as noop
-hs.page = {finish: function(){}}
-
-hs.views.Page = hs.views.View.extend({
-  el: $('#main'),
-  finish: function(){
-    $(this.el).html('');
   }
 });

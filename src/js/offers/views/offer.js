@@ -1,4 +1,4 @@
-//depends: offers/views/main.js, core/views.js
+//depends: offers/views/main.js, core/views/main.js
 
 hs.offers.views.Offer = hs.views.View.extend({
   template: 'offer',
@@ -9,7 +9,8 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   events: _.extend({
     'click .withdraw': 'withdraw',
-    'click .accept': 'accept'
+    'click .accept': 'accept',
+    'click': 'showMessages'
   }, hs.views.View.prototype.events),
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
@@ -72,5 +73,11 @@ hs.offers.views.Offer = hs.views.View.extend({
   remove: function(){
     $('#offer-'+this.model.get('id')).remove();
     this.trigger('removed');
+  },
+  showMessages: function(){
+    this.messages = this.messages || new hs.messages.views.Conversation({
+      model: this.model
+    });
+    this.messages.render();
   }
 });

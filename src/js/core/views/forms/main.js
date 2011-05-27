@@ -1,6 +1,6 @@
-//depends: core/views.js, core/forms/fields.js
+//depends: core/views/main.js, core/views/forms/fields.js
 
-hs.views.Form = hs.views.View.extend(_.extend({
+hs.views.Form = hs.views.View.extend({
   events: _.extend({
     'submit': '_submit'
   }, hs.views.View.prototype.events),
@@ -94,4 +94,4 @@ hs.views.Form = hs.views.View.extend(_.extend({
       return json;
     }, {}, this);
   }
-}, Backbone.Events));
+});

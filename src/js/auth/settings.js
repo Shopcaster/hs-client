@@ -1,4 +1,4 @@
-//depends: main.js, auth/tmpl/settingsForm.tmpl, core/forms/views.js,
+//depends: main.js, auth/tmpl/settingsForm.tmpl, core/views/forms/main.js,
 //         auth/main.js
 
 hs.auth.SettingsForm = hs.views.Form.extend({

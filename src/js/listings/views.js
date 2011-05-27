@@ -1,6 +1,6 @@
-//depends: core/views.js,
+//depends: core/views/main.js,
 //         core/date.js,
-//         core/forms/views.js,
+//         core/views/forms/main.js,
 //         listings/main.js,
 //         listings/models.js,
 //         offers/views/list.js,

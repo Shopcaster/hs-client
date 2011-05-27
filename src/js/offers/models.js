@@ -6,11 +6,14 @@ hs.offers.Offer = hs.models.Model.extend({
   key: 'offer',
   fields: _.extend({
     amount: null,
+    creator: function(){
+      return new hs.models.fields.ModelField(hs.auth.models.User);
+    },
     listing: function(){
       return new hs.models.fields.ModelField(hs.listings.models.Listing);
     },
-    creator: function(){
-      return new hs.models.fields.ModelField(hs.auth.models.User);
+    messages: function(){
+      return new hs.models.fields.CollectionField(hs.messages.MessageSet)
     }
   }, hs.models.Model.prototype.fields),
   accept: function(){
