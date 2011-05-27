@@ -47,6 +47,8 @@ _.bindAll(hs.pubsub);
 
 hs.con.bind('pub', hs.pubsub.pubRecieved);
 
+hs.tmpId = 1;
+
 Backbone.sync = function(method, model, success, error){
   hs.loading();
   var done = function(){
