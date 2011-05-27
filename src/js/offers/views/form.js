@@ -22,9 +22,6 @@ hs.offers.views.Form = hs.auth.views.AuthForm.extend({
     this.model = new hs.offers.Offer({
       listing: this.listing.id
     });
-    this.bind('change:amount', _.bind(function(amount){
-      this.model.set({amount: amount.replace('$', '')});
-    }, this));
   },
   render: function(){
     hs.auth.views.AuthForm.prototype.render.apply(this, arguments);
@@ -42,7 +39,6 @@ hs.offers.views.Form = hs.auth.views.AuthForm.extend({
   makeOffer: function(e){
     e.preventDefault();
     e.stopPropagation();
-    hs.log('click');
     this.focus();
   },
   amoutFocus: function(){
@@ -59,7 +55,8 @@ hs.offers.views.Form = hs.auth.views.AuthForm.extend({
   submit: function(){
     this.model.set({
       creator: hs.auth.getUser(),
-      created: new Date()
+      created: new Date(),
+      amount: this.get('amount').replace('$', '')
     });
     this.model.save();
     this.clear();
