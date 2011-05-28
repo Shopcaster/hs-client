@@ -14,7 +14,7 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
     this.form = this.form || new hs.messages.views.Form({
       appendTo: this.$('#messageForm'),
       offer: this.model,
-      focusSelector: '#messageField'
+      focusSelector: '#convo-'+this.model.get('id')+' .messageField'
     });
     this.renderMessages();
   },
@@ -46,5 +46,9 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
   },
   messagesChange: function(){
     this.renderMessages();
+  },
+  focus: function(){
+    hs.views.mixins.Dialog.focus.apply(this, arguments);
+    this.$('input.messageField').focus();
   }
 });

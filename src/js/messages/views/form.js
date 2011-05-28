@@ -1,6 +1,6 @@
 //depends: messages/views/main.js, core/views/forms/dialog.js
 
-hs.messages.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
+hs.messages.views.Form = hs.auth.views.AuthForm.extend({
   template: 'messageForm',
   focusFieldName: 'message',
   fields: [{

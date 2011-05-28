@@ -353,6 +353,7 @@ header{
                 margin-top:40px;
 
                 .offer{
+                    position:relative;
                     height:30px;
                     width:340px;
                     margin-left:-10px;
@@ -391,6 +392,24 @@ header{
                 }
                 .offer:hover{
                     background-color:$grey - #111;
+                }
+                .conversation{
+                    position:absolute;
+                    width:390px;
+                    left:-400px;
+                    bottom:-10px;
+                    padding:5px;
+
+                    background-color:$grey - #111;
+                    border:1px solid $grey - #444;
+
+                    @include box-shadow(0 2px 4px $black + #333);
+                    @include dark-button($blue - #444, '.submit');
+                    @include rounded();
+
+                    input{
+                        width:380px;
+                    }
                 }
             }
         }

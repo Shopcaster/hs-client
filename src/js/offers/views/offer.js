@@ -22,7 +22,8 @@ hs.offers.views.Offer = hs.views.View.extend({
     hs.views.View.prototype.render.apply(this, arguments);
     this.messages = new hs.messages.views.Conversation({
       model: this.model,
-      focusSelector: '#offer-'+this.model.get('id')
+      focusSelector: '#offer-'+this.model.get('id'),
+      appendTo: this.el
     });
   },
   creatorChange: function(){
