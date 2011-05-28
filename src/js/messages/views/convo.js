@@ -3,7 +3,7 @@
 //         messages/views/form.js,
 //         messages/views/message.js
 
-hs.messages.views.Conversation = hs.views.View.extend({
+hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).extend({
   template: 'conversation',
   modelEvents: {
     'change:messages': 'messagesChange'
@@ -13,7 +13,8 @@ hs.messages.views.Conversation = hs.views.View.extend({
     hs.views.View.prototype.render.apply(this, arguments);
     this.form = this.form || new hs.messages.views.Form({
       appendTo: this.$('#messageForm'),
-      offer: this.model
+      offer: this.model,
+      focusSelector: '#messageField'
     });
     this.renderMessages();
   },

@@ -9,8 +9,7 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   events: _.extend({
     'click .withdraw': 'withdraw',
-    'click .accept': 'accept',
-    'click': 'showMessages'
+    'click .accept': 'accept'
   }, hs.views.View.prototype.events),
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
@@ -18,6 +17,13 @@ hs.offers.views.Offer = hs.views.View.extend({
       this.creatorChange();
     if (this.model.get('amount'))
       this.amountChange();
+  },
+  render: function(){
+    hs.views.View.prototype.render.apply(this, arguments);
+    this.messages = new hs.messages.views.Conversation({
+      model: this.model,
+      focusSelector: '#offer-'+this.model.get('id')
+    });
   },
   creatorChange: function(){
     this.creator = this.model.get('creator');
@@ -73,11 +79,5 @@ hs.offers.views.Offer = hs.views.View.extend({
   remove: function(){
     $('#offer-'+this.model.get('id')).remove();
     this.trigger('removed');
-  },
-  showMessages: function(){
-    this.messages = this.messages || new hs.messages.views.Conversation({
-      model: this.model
-    });
-    this.messages.render();
   }
 });

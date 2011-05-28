@@ -7,9 +7,11 @@ hs.views.mixins.Dialog = {
     'initialized': 'setMousedown',
     'rendered': 'setPropagation'
   },
-  focusFieldName: '',
   setMousedown: function(){
-    $('input[name='+this.focusFieldName+']').bind('mousedown', _.bind(function(e){
+    this.focusSelector = this.options.focusSelector || this.focusSelector;
+    if (_.isUndefined(this.focusSelector))
+      throw(new Error('this.focusSelector must be defined for hs.views.mixins.Dialog mixin.'));
+    $(this.focusSelector).bind('mousedown', _.bind(function(e){
       e.preventDefault();
       e.stopPropagation();
       this.focus();

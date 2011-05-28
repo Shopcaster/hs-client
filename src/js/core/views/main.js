@@ -12,6 +12,9 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
     _.bindAll(this);
     _.each(this.mixinEvents, function(methods, event){
       _.each(methods, function(methodName){
+        if (!_.isFunction(this[methodName]))
+          throw(new Error('cannot bind mixin event "'+event
+              +'" to non-existant method "'+methodName+'"'))
         this.bind(event, this[methodName]);
       }, this);
     }, this);
@@ -66,6 +69,8 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
 });
 
 hs.views.View.mixin = function(mixin) {
+  mixin = _.clone(mixin);
+  var view = this.extend({});
   var events = mixin.events;
   var mixinEvents = _.clone(this.prototype.mixinEvents);
   if (events){
@@ -75,8 +80,8 @@ hs.views.View.mixin = function(mixin) {
       mixinEvents[type].push(method);
     }, this);
   }
-  this.prototype = _.extend({}, mixin, this.prototype, {mixinEvents: mixinEvents});
-  return this;
+  view.prototype = _.extend({}, mixin, view.prototype, {mixinEvents: mixinEvents});
+  return view;
 };
 
 hs.views.View.extend = function(){

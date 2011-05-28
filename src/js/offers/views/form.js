@@ -2,7 +2,7 @@
 
 hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
   template: 'offerForm',
-  focusFieldName: 'offer',
+  focusSelector: 'input[name=offer]',
   fields: [{
     'name': 'amount',
     'type': 'text',
