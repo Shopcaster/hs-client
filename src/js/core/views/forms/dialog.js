@@ -1,17 +1,21 @@
 //depends: auth/views.js
 
-hs.views.AuthFormDialog = hs.auth.views.AuthForm.extend({
-  focusFieldName: 'main',
-  initialize: function(opts){
-    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
+hs.views.mixins = hs.views.mixins || new Object();
+
+hs.views.mixins.Dialog = {
+  events: {
+    'initialized': 'setMousedown',
+    'rendered': 'setPropagation'
+  },
+  focusFieldName: '',
+  setMousedown: function(){
     $('input[name='+this.focusFieldName+']').bind('mousedown', _.bind(function(e){
       e.preventDefault();
       e.stopPropagation();
       this.focus();
     }, this));
   },
-  render: function(){
-    hs.auth.views.AuthForm.prototype.render.apply(this, arguments);
+  setPropagation: function(){
     $('body').click(_.bind(this.blur, this));
     this.el.click(function(e){e.stopPropagation()});
   },
@@ -24,4 +28,4 @@ hs.views.AuthFormDialog = hs.auth.views.AuthForm.extend({
     this.el.fadeOut(200).removeClass('open');
     this.el.hide();
   }
-});
+};

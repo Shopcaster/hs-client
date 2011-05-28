@@ -1,4 +1,4 @@
-//depends:main.js
+//depends:main.js, core/util.js
 
 hs.views = new Object();
 
@@ -6,14 +6,22 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
   _tmplContext: {},
   events: {},
   modelEvents: {},
+  mixinEvents: {},
   rendered: false,
   initialize: function(opt){
     _.bindAll(this);
+    _.each(this.mixinEvents, function(methods, event){
+      _.each(methods, function(methodName){
+        this.bind(event, this[methodName]);
+      }, this);
+    }, this);
+
     // bind modelEvents
     if (this.model)
       _.each(this.modelEvents, _.bind(function(method, event){
         this.model.bind(event, _.bind(this[method], this));
       }, this));
+    this.trigger('initialized');
   },
   _configure: function(){
     Backbone.View.prototype._configure.apply(this, arguments);
@@ -35,6 +43,7 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
       }
       this.rendered = true;
     }
+    this.trigger('rendered');
     // call all "change"-type modelEvents
     if (this.model)
       _.each(this.modelEvents, _.bind(function(method, event){
@@ -55,3 +64,24 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
     return html;
   }
 });
+
+hs.views.View.mixin = function(mixin) {
+  var events = mixin.events;
+  var mixinEvents = _.clone(this.prototype.mixinEvents);
+  if (events){
+    delete mixin.events;
+    _.each(events, function(method, type){
+      mixinEvents[type] = mixinEvents[type] || [];
+      mixinEvents[type].push(method);
+    }, this);
+  }
+  this.prototype = _.extend({}, mixin, this.prototype, {mixinEvents: mixinEvents});
+  return this;
+};
+
+hs.views.View.extend = function(){
+  var View = Backbone.Model.extend.apply(this, arguments);
+  View.mixin = hs.views.View.mixin;
+  View.extend = arguments.callee;
+  return View;
+};

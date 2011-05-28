@@ -1,19 +1,19 @@
 //depends: offers/views/main.js, core/views/forms/dialog.js
 
-hs.offers.views.Form = hs.views.AuthFormDialog.extend({
+hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
   template: 'offerForm',
   focusFieldName: 'offer',
   fields: [{
     'name': 'amount',
     'type': 'text',
     'placeholder': 'Make an Offer'
-  }].concat(hs.views.AuthFormDialog.prototype.fields),
+  }].concat(hs.auth.views.AuthForm.prototype.fields),
   events: _.extend({
     'focus [name=amount]': 'amountFocus',
     'blur [name=amount]': 'amountBlur'
-  }, hs.views.AuthFormDialog.prototype.events),
+  }, hs.auth.views.AuthForm.prototype.events),
   initialize: function(opts){
-    hs.views.AuthFormDialog.prototype.initialize.apply(this, arguments);
+    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     this.listing = opts.listing;
     this.model = new hs.offers.Offer({
       listing: this.listing.id
@@ -28,7 +28,7 @@ hs.offers.views.Form = hs.views.AuthFormDialog.extend({
       this.$('[name=amount]').val('');
   },
   focus: function(){
-    hs.views.AuthFormDialog.prototype.focus.apply(this, arguments);
+    hs.views.mixins.Dialog.focus.apply(this, arguments);
     this.$('[name=amount]').focus();
   },
   validateAmount: function(value, clbk){

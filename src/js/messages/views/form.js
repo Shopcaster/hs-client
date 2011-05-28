@@ -1,14 +1,14 @@
 //depends: messages/views/main.js, core/views/forms/dialog.js
 
-hs.messages.views.Form = hs.views.AuthFormDialog.extend({
+hs.messages.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
   template: 'messageForm',
   focusFieldName: 'message',
   fields: [{
     'name': 'message',
     'type': 'text'
-  }].concat(hs.views.AuthFormDialog.prototype.fields),
+  }].concat(hs.auth.views.AuthForm.prototype.fields),
   initialize: function(opts){
-    hs.views.AuthFormDialog.prototype.initialize.apply(this, arguments);
+    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     this.offer = opts.offer;
     this.newModel();
   },
