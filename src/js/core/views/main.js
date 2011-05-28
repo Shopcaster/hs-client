@@ -21,14 +21,15 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
   },
   render: function(){
     // render template
+    if (this.el) this.el = $(this.el);
     if (this.template){
       var html = this.renderTmpl();
       if (this.appendTo){
-        this.el = html;
+        this.el = $(html);
         this.delegateEvents();
         $(this.appendTo).append(html);
       }else if (this.el){
-        $(this.el).html(html);
+        this.el.html(html);
       }else{
         throw(new Error('cannot render a view with neither el not appendTo set'));
       }

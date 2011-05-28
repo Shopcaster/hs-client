@@ -13,14 +13,15 @@ hs.views.AuthFormDialog = hs.auth.views.AuthForm.extend({
   render: function(){
     hs.auth.views.AuthForm.prototype.render.apply(this, arguments);
     $('body').click(_.bind(this.blur, this));
-    $('#messageForm').click(function(e){e.stopPropagation()});
+    this.el.click(function(e){e.stopPropagation()});
   },
   focus: function(){
     if (!this.rendered) this.render();
-    $(this.el).addClass('open').fadeIn(200);
-    this.$('[name='+this.focusFieldName+']').focus();
+    this.el.addClass('open').fadeIn(200);
+    this.el.show();
   },
   blur: function(){
-    $(this.el).fadeOut(200).removeClass('open');
+    this.el.fadeOut(200).removeClass('open');
+    this.el.hide();
   }
 });

@@ -2,15 +2,15 @@
 
 hs.offers.views.Form = hs.views.AuthFormDialog.extend({
   template: 'offerForm',
-  focusFieldName: 'amount',
+  focusFieldName: 'offer',
   fields: [{
     'name': 'amount',
     'type': 'text',
     'placeholder': 'Make an Offer'
   }].concat(hs.views.AuthFormDialog.prototype.fields),
   events: _.extend({
-    'focus [name=amount]': 'amoutFocus',
-    'blur [name=amount]': 'amoutBlur'
+    'focus [name=amount]': 'amountFocus',
+    'blur [name=amount]': 'amountBlur'
   }, hs.views.AuthFormDialog.prototype.events),
   initialize: function(opts){
     hs.views.AuthFormDialog.prototype.initialize.apply(this, arguments);
@@ -19,13 +19,17 @@ hs.offers.views.Form = hs.views.AuthFormDialog.extend({
       listing: this.listing.id
     });
   },
-  amoutFocus: function(){
+  amountFocus: function(){
     if (this.$('[name=amount]').val() == '')
       this.$('[name=amount]').val('$');
   },
-  amoutBlur: function(){
+  amountBlur: function(){
     if (this.$('[name=amount]').val() == '$')
       this.$('[name=amount]').val('');
+  },
+  focus: function(){
+    hs.views.AuthFormDialog.prototype.focus.apply(this, arguments);
+    this.$('[name=amount]').focus();
   },
   validateAmount: function(value, clbk){
     clbk(/^\d+$/.test(value.replace('$', '')));

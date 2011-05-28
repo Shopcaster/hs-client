@@ -12,7 +12,7 @@ hs.offers.views.Offers = hs.views.View.extend({
     this._tmplContext.offers = this.model.get('offers').toJSON();
     hs.views.View.prototype.render.apply(this, arguments);
     this.offerForm = this.offerForm || new hs.offers.views.Form({
-      appendTo: this.$('#offerForm'),
+      appendTo: this.$('#offerFormWrap'),
       listing: this.model
     });
     this.renderOffers();
