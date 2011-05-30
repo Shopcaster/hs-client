@@ -16,10 +16,11 @@ hs.auth = {
     localStorage.setItem('email', this.email);
     this.trigger('change:email');
   },
-  setPassword: function(pass){
+  setPassword: function(pass, hash){
     if (_.isUndefined(this.email))
       throw(new Error('must set email before password'));
-    this.pass = this.hash(this.email, pass);
+    if (hash !== false) this.pass = this.hash(this.email, pass);
+    else this.pass = pass;
     localStorage.setItem('pass', this.pass);
     this.trigger('change:pass');
   },
@@ -41,7 +42,7 @@ hs.auth = {
     hs.con.send('auth', {email: this.email}, _.bind(function(data){
       if (data){
         this.setUserId(data.userid);
-        this.setPassword(data.password);
+        this.setPassword(data.password, false);
         this._isAuthenticated = true;
         this.trigger('change:isAuthenticated', this._isAuthenticated);
         if (clbk) clbk();

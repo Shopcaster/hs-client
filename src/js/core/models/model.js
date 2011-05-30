@@ -67,8 +67,7 @@ hs.models.Model.extend = function(){
 
   Model.instances = {};
   Model.get = function(id, opts){
-    if (_.isString(id)) id = parseInt(id);
-    if (!_.isNumber(id)) opts = id, id = undefined;
+    if (_.isUndefined(id)) throw(new Error('cannot get a model without an id'));
 
     if (Model.instances.hasOwnProperty(id))
       return Model.instances[id];
