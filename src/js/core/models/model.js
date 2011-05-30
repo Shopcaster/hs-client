@@ -1,4 +1,4 @@
-//depends: main.js, core/pubsub.js, core/models/fields.js, core/loading.js
+//depends: main.js, core/data/sync.js, core/models/fields.js
 
 
 hs.models = hs.models || new Object();
@@ -8,7 +8,7 @@ hs.models.Model = Backbone.Model.extend({
   fields: {
     'id': null,
     'created': null,
-    'updated': null,
+    'modified': null,
     'deleted': null,
   },
   loaded: false,
@@ -16,30 +16,20 @@ hs.models.Model = Backbone.Model.extend({
   initialize: function(){
     _.bindAll(this);
     if (this.get('id'))
-      this._sub();
-    else
-      this.bind('change:id', _.bind(function(){
-        this.unbind(arguments.callee);
+      this.fetch();
+    else{
+      var bound;
+      this.bind('change:id', bound = _.bind(function(){
+        this.unbind(bound);
         this.constructor.register(this);
-        this._sub();
+        this.fetch();
       }, this));
+    }
     _.each(this.fields, _.bind(function(field, fieldname){
       if (_.isFunction(field))
         this.fields[fieldname] = field = field.call(this);
       if (field instanceof hs.models.fields.Field)
         field.setModelInstance(this, fieldname);
-    }, this));
-  },
-  _sub: function(){
-    hs.loading();
-    var loaded = _.once(_.bind(function(){
-      hs.loaded();
-      this.loaded = true;
-      this.trigger('loaded');
-      }, this));
-    hs.pubsub.sub(this.key+':'+this.get('id'), _.bind(function(fields){
-      if (fields) this.set(fields);
-      loaded();
     }, this));
   },
   set: function(fields){
@@ -66,10 +56,6 @@ hs.models.Model = Backbone.Model.extend({
         value = this.fields[fieldname].getDefault();
 
     return value;
-  },
-  del: function(){
-    this.set({deleted: true});
-    this.save();
   }
 });
 

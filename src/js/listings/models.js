@@ -13,7 +13,6 @@ hs.listings.models.Listing = hs.models.Model.extend({
     latitude: null,
     longitude: null,
     price: null,
-    best_offer: null,
     offers: function(){
       return new hs.models.fields.CollectionField(hs.offers.OfferSet)
     },

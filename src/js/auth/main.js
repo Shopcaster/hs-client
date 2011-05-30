@@ -1,4 +1,4 @@
-//depends: main.js, core/conn.js
+//depends: main.js, core/data/conn.js
 
 hs.auth = {
   init: function(){
@@ -38,17 +38,15 @@ hs.auth = {
       this.setEmail(email);
     }
 
-    hs.con.send('auth', {email: this.email}, _.bind(function(key, data){
-      if (key == 'auth-ok'){
+    hs.con.send('auth', {email: this.email}, _.bind(function(data){
+      if (data){
         this.setUserId(data.userId);
         this.setPassword(data.password);
         this._isAuthenticated = true;
         this.trigger('change:isAuthenticated', this._isAuthenticated);
         if (clbk) clbk();
-      }else if  (key == 'auth-bad')
-        if (clbk) clbk(new Error('required:password'));
-      else
-        if (clbk) clbk(new Error('unknown auth response: '+key));
+      }else if (clbk)
+        clbk(new Error('required:password'));
     }, this));
   },
   login: function(email, pass, clbk){
@@ -64,15 +62,16 @@ hs.auth = {
     if (pass) this.setPassword(pass);
 
     hs.con.send('auth', {email: this.email, password: this.pass},
-        _.bind(function(key, data){
-          if (key == 'auth-ok'){
+        _.bind(function(data){
+          if (data){
             this.setUserId(data.userId);
             this._isAuthenticated = true;
             this.trigger('change:isAuthenticated', this._isAuthenticated);
             if (clbk) clbk();
-          }else if  (key == 'auth-bad')
+          }else{
             if (clbk) clbk(new Error('invalid:password'));
             else this.logout();
+          }
         }, this));
   },
   logout: function(clbk){
