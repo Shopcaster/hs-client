@@ -25,7 +25,7 @@ hs.pubsub = {
     if (send) this.subs[key] = new Array();
     if (_.indexOf(this.subs[key], clbk) == -1){
       this.subs[key].push(clbk);
-      if (send) return hs.con.send('sub', {key: key});
+      if (send) return hs.con.send('sub', {type: key});
     }
   },
   unsub: function unsub(key, clbk) {
