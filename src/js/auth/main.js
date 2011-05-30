@@ -40,7 +40,7 @@ hs.auth = {
 
     hs.con.send('auth', {email: this.email}, _.bind(function(data){
       if (data){
-        this.setUserId(data.userId);
+        this.setUserId(data.userid);
         this.setPassword(data.password);
         this._isAuthenticated = true;
         this.trigger('change:isAuthenticated', this._isAuthenticated);
@@ -64,7 +64,7 @@ hs.auth = {
     hs.con.send('auth', {email: this.email, password: this.pass},
         _.bind(function(data){
           if (data){
-            this.setUserId(data.userId);
+            this.setUserId(data.userid);
             this._isAuthenticated = true;
             this.trigger('change:isAuthenticated', this._isAuthenticated);
             if (clbk) clbk();

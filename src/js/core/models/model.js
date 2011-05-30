@@ -7,6 +7,9 @@ hs.models.Model = Backbone.Model.extend({
   key: null,
   fields: {
     'id': null,
+    'creator': function(){
+      return new hs.models.fields.ModelField(hs.auth.models.User);
+    },
     'created': null,
     'modified': null,
     'deleted': null,

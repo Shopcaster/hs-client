@@ -62,7 +62,7 @@ hs.con = {
 
       if (clbk) this.bind('recieved:'+msgId, function(key, data){
         this.unbind('recieved:'+msgId, arguments.callee);
-        clbk(data, key);
+        clbk(data.value);
       });
 
       this.socket.send(msg);
@@ -77,13 +77,12 @@ hs.con = {
   _recieved: function(msg){
     hs.log('recd:', msg);
 
-    var parsed = /^([\w-]+):(.*)$/.exec(msg);
-    if (parsed){
-      var key = parsed[1], data = JSON.parse(parsed[2]);
-      this.trigger('recieved', key, data);
-      this.trigger('recieved:'+data.id, key, data);
-      this.trigger(key, data);
-    }
+    var parsed = msg.split(':'),
+        key = parsed.shift(),
+        data = JSON.parse(parsed.join(':'));
+    this.trigger('recieved', key, data);
+    this.trigger('recieved:'+data.id, key, data);
+    this.trigger(key, data);
   },
   _disconnected: function(){
     this.trigger('disconnected');
