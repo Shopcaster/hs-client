@@ -66,7 +66,7 @@ hs.con = {
       });
 
       this.socket.send(msg);
-      console.log('sent:', msg);
+      hs.log('sent:', msg);
     }, this));
     return msgId;
   },

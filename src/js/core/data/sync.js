@@ -2,10 +2,10 @@
 
 Backbone.sync = function(method, model, success, error){
   hs.loading();
-  var done = function(success){
+  var done = function(worked){
     hs.loaded();
-    if (success) success({model: model});
-    else error({model: model});
+    if (worked) success();
+    else error();
   }
   if (_.indexOf(['update', 'delete', 'read'], method) != -1
       && _.isUndefined(model._id)){
@@ -20,7 +20,7 @@ Backbone.sync = function(method, model, success, error){
     }, done);
   }else if (method == 'create'){
     hs.con.send('create', {
-      key: model.key,
+      type: model.key,
       data: model.toJSON()
     }, function(_id){
       if (_id){
