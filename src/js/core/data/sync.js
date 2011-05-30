@@ -33,7 +33,7 @@ Backbone.sync = function(method, model, success, error){
   }else if (method == 'delete'){
     hs.con.send('delete', {key: model.key+':'+model._id}, done);
   }else if (method == 'read'){
-    hs.pubsub.sub(model.key+':'+model._id, function(fields){
+    hs.pubsub.sub(model.key+':'+model._id, _.bind(model.set, model), function(fields){
       if (fields === false){
         done(false);
       }else{

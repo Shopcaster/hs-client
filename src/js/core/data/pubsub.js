@@ -20,12 +20,12 @@ hs.pubsub = {
       clbk = extra, extra = {};
     return hs.con.send('pub', _.extend({key: key, data: data}, extra), clbk);
   },
-  sub: function(key, clbk) {
+  sub: function(key, handler, clbk) {
     var send = _.isUndefined(this.subs[key]);
     if (send) this.subs[key] = new Array();
-    if (_.indexOf(this.subs[key], clbk) == -1){
-      this.subs[key].push(clbk);
-      if (send) return hs.con.send('sub', {key: key});
+    if (_.indexOf(this.subs[key], handler) == -1){
+      this.subs[key].push(handler);
+      if (send) return hs.con.send('sub', {key: key}, clbk);
     }
   },
   unsub: function unsub(key, clbk) {
