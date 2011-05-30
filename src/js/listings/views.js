@@ -15,7 +15,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     'change:photo': 'updatePhoto',
     'change:description': 'updateDesc',
     'change:created': 'updateCreated',
-    'change:updated': 'updateCreated',
+    'change:modified': 'updateCreated',
     'change:latitude': 'updateLoc',
     'change:longitude': 'updateLoc',
     'change:price': 'updatePrice',
