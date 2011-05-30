@@ -1,4 +1,4 @@
-//depends: main.js
+//depends: main.js, core/object.js
 
 
 hs.models = hs.models || new Object();
