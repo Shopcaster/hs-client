@@ -14,7 +14,7 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
     this.form = this.form || new hs.messages.views.Form({
       appendTo: this.$('#messageForm'),
       offer: this.model,
-      focusSelector: '#convo-'+this.model.get('id')+' .messageField'
+      focusSelector: '#convo-'+this.model._id+' .messageField'
     });
     this.renderMessages();
   },
@@ -25,9 +25,9 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
     // add new messages
     _.each(newMessages, _.bind(function(o, i){
       var message = newMessages.at(i);
-      newMessageIds.push(message.id);
-      if (_.isUndefined(this.messageViews[message.id])){
-        this.messageViews[message.id] = new hs.messages.views.Message({
+      newMessageIds.push(message._id);
+      if (_.isUndefined(this.messageViews[message._id])){
+        this.messageViews[message._id] = new hs.messages.views.Message({
           appendTo: $('#messageList'),
           model: message
         });

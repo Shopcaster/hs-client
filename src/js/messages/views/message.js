@@ -35,7 +35,7 @@ hs.messages.views.Message = hs.views.View.extend({
     this.$('.created').text(since.num+' '+since.text);
   },
   remove: function(){
-    $('#message-'+this.model.get('id')).remove();
+    $('#message-'+this.model._id).remove();
     this.trigger('removed');
   }
 });

@@ -171,7 +171,7 @@
       if (!options.silent && this.validate && !this._performValidation(attrs, options)) return false;
 
       // Check for changes of `id`.
-      if ('id' in attrs) this.id = attrs.id;
+      if ('_id' in attrs) this._id = attrs._id;
 
       // Update attributes.
       for (var attr in attrs) {
@@ -288,7 +288,7 @@
     url : function() {
       var base = getUrl(this.collection);
       if (this.isNew()) return base;
-      return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this.id;
+      return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this._id;
     },
 
     // **parse** converts a response into the hash of attributes to be `set` on
@@ -305,7 +305,7 @@
     // A model is new if it has never been saved to the server, and has a negative
     // ID.
     isNew : function() {
-      return !this.id;
+      return !this._id;
     },
 
     // Call this method to manually fire a `change` event for this model.
@@ -535,8 +535,8 @@
         model = new this.model(model, {collection: this});
       }
       var already = this.getByCid(model);
-      if (already) throw new Error(["Can't add the same model to a set twice", already.id]);
-      this._byId[model.id] = model;
+      if (already) throw new Error(["Can't add the same model to a set twice", already._id]);
+      this._byId[model._id] = model;
       this._byCid[model.cid] = model;
       model.collection = this;
       var index = this.comparator ? this.sortedIndex(model, this.comparator) : this.length;
@@ -553,7 +553,7 @@
       options || (options = {});
       model = this.getByCid(model) || this.get(model);
       if (!model) return null;
-      delete this._byId[model.id];
+      delete this._byId[model._id];
       delete this._byCid[model.cid];
       delete model.collection;
       this.models.splice(this.indexOf(model), 1);
@@ -567,9 +567,9 @@
     // Sets need to update their indexes when models change ids. All other
     // events simply proxy through.
     _onModelEvent : function(ev, model) {
-      if (ev === 'change:id') {
-        delete this._byId[model.previous('id')];
-        this._byId[model.id] = model;
+      if (ev === 'change:_id') {
+        delete this._byId[model.previous('_id')];
+        this._byId[model._id] = model;
       }
       this.trigger.apply(this, arguments);
     }

@@ -16,6 +16,7 @@ hs.auth.models.User = hs.models.Model.extend({
 
 hs.auth.getUser = (function(){
   var user;
+  hs.auth.bind('change:userId', function(){user = undefined});
   return function(){
     if (hs.auth.isAuthenticated()){
       if (_.isUndefined(user))

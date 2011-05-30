@@ -14,7 +14,7 @@ hs.messages.views.Form = hs.auth.views.AuthForm.extend({
   },
   newModel: function(){
     this.model = new hs.messages.Message({
-      offer: this.offer.id
+      offer: this.offer._id
     });
   },
   validateMessage: function(value, clbk){

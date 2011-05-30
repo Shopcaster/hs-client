@@ -6,7 +6,7 @@ hs.models = hs.models || new Object();
 hs.models.Model = Backbone.Model.extend({
   key: null,
   fields: {
-    'id': null,
+    '_id': null,
     'creator': function(){
       return new hs.models.fields.ModelField(hs.auth.models.User);
     },
@@ -18,11 +18,11 @@ hs.models.Model = Backbone.Model.extend({
   url: function(){return this.key},
   initialize: function(){
     _.bindAll(this);
-    if (this.get('id'))
+    if (this._id)
       this.fetch();
     else{
       var bound;
-      this.bind('change:id', bound = _.bind(function(){
+      this.bind('change:_id', bound = _.bind(function(){
         this.unbind(bound);
         this.constructor.register(this);
         this.fetch();
@@ -66,19 +66,19 @@ hs.models.Model.extend = function(){
   var Model = Backbone.Model.extend.apply(this, arguments);
 
   Model.instances = {};
-  Model.get = function(id, opts){
-    if (_.isUndefined(id)) throw(new Error('cannot get a model without an id'));
+  Model.get = function(_id, opts){
+    if (_.isUndefined(_id)) throw(new Error('cannot get a model without an _id'));
 
-    if (Model.instances.hasOwnProperty(id))
-      return Model.instances[id];
+    if (Model.instances.hasOwnProperty(_id))
+      return Model.instances[_id];
 
-    var instance = new Model(_.extend(opts || {}, {id: id}));
-    Model.instances[id] = instance;
+    var instance = new Model(_.extend(opts || {}, {_id: _id}));
+    Model.instances[_id] = instance;
     return instance;
   };
 
   Model.register = function(instance){
-    this.instances[instance.get('id')] = instance;
+    this.instances[instance._id] = instance;
   };
 
   return Model;
@@ -90,7 +90,7 @@ hs.models.ModelSet = Backbone.Collection.extend({
       return _.isUndefined(this.get(id));
     }, this);
     var cast = _.map(newIds, function(id){
-      return new this.model({id: id});
+      return new this.model({_id: id});
     }, this);
     if (cast.length) this.add(cast);
   },

@@ -31,7 +31,7 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
   set: function(value){
     if (value instanceof this.SetClass){
       value = _.map(value, function(model){
-        return model.id;
+        return model._id;
       });
     }else if (!_.isArray(value))
       throw(new Error('Collection fields must be set to arrays or collections'));
@@ -56,7 +56,7 @@ hs.models.fields.ModelField = hs.models.fields.Field.extend({
     if (_.isNumber(value))
       return value;
     else if (value instanceof this.Model)
-      return value.id;
+      return value._id;
     else
       throw(new Error('invalid model: '+value));
   },

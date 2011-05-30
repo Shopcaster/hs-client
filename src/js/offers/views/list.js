@@ -24,9 +24,9 @@ hs.offers.views.Offers = hs.views.View.extend({
     // add new offers
     _.each(newOffers, _.bind(function(o, i){
       var offer = newOffers.at(i);
-      newOfferIds.push(offer.id);
-      if (_.isUndefined(this.offerViews[offer.id])){
-        this.offerViews[offer.id] = new hs.offers.views.Offer({
+      newOfferIds.push(offer._id);
+      if (_.isUndefined(this.offerViews[offer._id])){
+        this.offerViews[offer._id] = new hs.offers.views.Offer({
           appendTo: $('#offerList'),
           model: offer
         });
@@ -34,7 +34,6 @@ hs.offers.views.Offers = hs.views.View.extend({
     }, this));
     // remove old offers
     _.each(_.keys(this.offerViews), _.bind(function(id){
-      id = parseInt(id);
       if (!_.include(newOfferIds, id))
         delete this.offerViews[id];
     }, this));

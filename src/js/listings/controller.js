@@ -25,12 +25,13 @@ hs.regController('listings', hs.Controller.extend({
       "description": "MacBook Pro for sale. Excellent condition and fully loaded. 8GB RAM 64GB SSD. Must see. ",
       "latitude": 43.651702,
       "longitude": -79.373703000000006,
-      "updated": "2011-05-02T15:40:06.629088",
+      "modified": "2011-05-02T15:40:06.629088",
+      "created": "2011-05-02T15:40:06.629088",
       "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
       "price": 1500.0
     });
     l.bind('change:id', function(){
-      hs.goTo('!/listings/'+l.get('id')+'/');
+      hs.goTo('!/listings/'+l._id+'/');
     });
     l.save();
   },
