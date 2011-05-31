@@ -133,7 +133,7 @@ hs.models.fields.ModelField = hs.models.fields.Field.extend({
     this.Model = Model;
   },
   set: function(value){
-    if (_.isNumber(value))
+    if (_.isString(value))
       return value;
     else if (value instanceof this.Model)
       return value._id;

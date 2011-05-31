@@ -55,7 +55,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
   },
   updateCreated: function(){
     if (this.model.get('created')){
-      var since = Date.since(this.model.get('created'));
+      var since = _.since(this.model.get('created'));
       this.$('.date .listing-obi-title').text(since.text);
       this.$('.date .listing-obi-value').text(since.num);
     }

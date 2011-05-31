@@ -16,10 +16,10 @@ _.mixin({
     return obj;
   },
   isFloat: function(n){
-    return n===+n && n!==(n|0);
+    return n===+n && !_.isInteger(n);
   },
   isInteger: function(n){
-    return n===+n && n===(n|0);
+    return n===+n && n===parseInt(n);
   },
   since: function(date, since){
     if (!_.isDate(date))
