@@ -99,12 +99,27 @@ hs.models.fields.MoneyField = hs.models.fields.FloatField.extend({
 // relationship fields
 
 hs.models.fields.CollectionField = hs.models.fields.Field.extend({
-  initialize: function(SetClass){
+  initialize: function(SetClass, foreignField){
     this.SetClass = SetClass;
     this.setInstance =  new this.SetClass();
+    this.foreignField = foreignField;
   },
   setModelInstance: function(){
     hs.models.fields.Field.prototype.setModelInstance.apply(this, arguments);
+
+    if (_.isUndefined(this.foreignField))
+      this.foreignField = this.model.key;
+
+    if (this.model._id)
+      this.sub();
+    else{
+      var bound;
+      this.model.bind('change:id', bound = _.bind(function(){
+        this.model.unbind('change:id', bound);
+        this.sub();
+      }, this));
+    }
+
     this.setInstance.bind('change',
         _.bind(this.model.trigger, this.model, 'change:'+this.fieldName));
   },
@@ -123,7 +138,11 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     return this.setInstance;
   },
   getDefault: function(){
-    return new this.SetClass();
+    return this.setInstance;
+  },
+  sub: function(){
+    var key = this.model.key+':'+this.model._id+':'
+        +this.setInstance.model.key+'.'+this.foreignField;
   }
 });
 
