@@ -6,13 +6,13 @@ hs.models = hs.models || new Object();
 hs.models.Model = Backbone.Model.extend({
   key: null,
   fields: {
-    '_id': null,
+    '_id': new hs.models.fields.StringField(),
     'creator': function(){
       return new hs.models.fields.ModelField(hs.auth.models.User);
     },
-    'created': null,
-    'modified': null,
-    'deleted': null,
+    'created': new hs.models.fields.DateField(),
+    'modified': new hs.models.fields.DateField(),
+    'deleted': new hs.models.fields.BooleanField()
   },
   loaded: false,
   url: function(){return this.key},

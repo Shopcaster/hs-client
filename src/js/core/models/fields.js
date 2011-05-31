@@ -4,6 +4,8 @@
 hs.models = hs.models || new Object();
 hs.models.fields = new Object();
 
+// super-field
+
 hs.models.fields.Field = hs.Object.extend({
   set: function(value){
     return value;
@@ -15,8 +17,86 @@ hs.models.fields.Field = hs.Object.extend({
   setModelInstance: function(model, fieldName){
     this.model = model;
     this.fieldName = fieldName;
+  },
+  invalid: function(value, msg){
+    var err = '"'+value+'" is an invalid value for "'
+        +this.model.key+'.'+this.fieldName+'".';
+    if (msg) err += ' '+msg;
+    throw(new Error(err));
   }
 });
+
+// basic data types
+
+hs.models.fields.FloatField = hs.models.fields.Field.extend({
+  set: function(value){
+    if (_.isFloat(value))
+      return value;
+    else
+      this.invalid(value, 'Extected a Float.');
+  }
+});
+
+
+hs.models.fields.IntegerField = hs.models.fields.Field.extend({
+  set: function(value){
+    if (_.isInteger(value))
+      return value;
+    else
+      this.invalid(value, 'Extected an Integer.');
+  }
+});
+
+
+hs.models.fields.StringField = hs.models.fields.Field.extend({
+  set: function(value){
+    if (_.isString(value))
+      return value;
+    else
+      this.invalid(value, 'Extected a String.');
+  }
+});
+
+
+hs.models.fields.DateField = hs.models.fields.Field.extend({
+  set: function(value){
+    if (_.isInteger(value))
+      value = new Date(value);
+    if (_.isDate(value))
+      return value.getTime();
+    else
+      this.invalid(value, 'Extected a Date.');
+  },
+  get: function(value){
+    return new Date(value);
+  }
+});
+
+
+hs.models.fields.BooleanField = hs.models.fields.Field.extend({
+  set: function(value){
+    if (_.isBoolean(value))
+      return value;
+    else
+      this.invalid(value, 'Extected a Boolean.');
+  }
+});
+
+// higher-level fields
+
+hs.models.fields.MoneyField = hs.models.fields.FloatField.extend({
+  set: function(value){
+    if (_.isNumber(value))
+      return parseInt(value*100);
+    else
+      this.invalid(value, 'Extected a Number.');
+  },
+  get: function(value){
+    return value/100;
+  }
+});
+
+// relationship fields
 
 hs.models.fields.CollectionField = hs.models.fields.Field.extend({
   initialize: function(SetClass){
@@ -58,23 +138,10 @@ hs.models.fields.ModelField = hs.models.fields.Field.extend({
     else if (value instanceof this.Model)
       return value._id;
     else
-      throw(new Error('invalid model: '+value));
+      this.invalid(value, 'Extected a Model.');
   },
   get: function(value){
     return this.Model.get(value);
-  }
-});
-
-
-hs.models.fields.MoneyField = hs.models.fields.Field.extend({
-  set: function(value){
-    if (_.isNumber(value))
-      return parseInt(value*100);
-    else
-      throw(new Error('invalid value for money field: '+value));
-  },
-  get: function(value){
-    return value/100;
   }
 });
 

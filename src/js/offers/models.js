@@ -5,7 +5,7 @@
 hs.offers.Offer = hs.models.Model.extend({
   key: 'offer',
   fields: _.extend({
-    amount: null,
+    amount: new hs.models.fields.MoneyField(),
     creator: function(){
       return new hs.models.fields.ModelField(hs.auth.models.User);
     },

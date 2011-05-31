@@ -8,10 +8,10 @@ hs.listings.models = new Object();
 hs.listings.models.Listing = hs.models.Model.extend({
   key: 'listing',
   fields: _.extend({
-    photo: null,
-    description: null,
-    latitude: null,
-    longitude: null,
+    photo: new hs.models.fields.StringField(),
+    description: new hs.models.fields.StringField(),
+    latitude: new hs.models.fields.FloatField(),
+    longitude: new hs.models.fields.FloatField(),
     price: new hs.models.fields.MoneyField(),
     offers: function(){
       return new hs.models.fields.CollectionField(hs.offers.OfferSet)

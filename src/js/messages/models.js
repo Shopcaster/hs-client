@@ -5,7 +5,7 @@
 hs.messages.Message = hs.models.Model.extend({
   key: 'message',
   fields: _.extend({
-    message: null,
+    message: new hs.models.fields.StringField(),
     offer: function(){
       return new hs.models.fields.ModelField(hs.offers.Offer);
     },
