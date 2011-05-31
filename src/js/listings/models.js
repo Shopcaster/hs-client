@@ -12,7 +12,7 @@ hs.listings.models.Listing = hs.models.Model.extend({
     description: null,
     latitude: null,
     longitude: null,
-    price: null,
+    price: new hs.models.fields.MoneyField(),
     offers: function(){
       return new hs.models.fields.CollectionField(hs.offers.OfferSet)
     },

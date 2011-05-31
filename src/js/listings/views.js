@@ -1,5 +1,4 @@
 //depends: core/views/main.js,
-//         core/date.js,
 //         core/views/forms/main.js,
 //         listings/main.js,
 //         listings/models.js,

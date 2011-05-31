@@ -65,3 +65,16 @@ hs.models.fields.ModelField = hs.models.fields.Field.extend({
   }
 });
 
+
+hs.models.fields.MoneyField = hs.models.fields.Field.extend({
+  set: function(value){
+    if (_.isNumber(value))
+      return parseInt(value*100);
+    else
+      throw(new Error('invalid value for money field: '+value));
+  },
+  get: function(value){
+    return value/100;
+  }
+});
+
