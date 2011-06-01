@@ -1,5 +1,5 @@
 //depends: core/views/main.js,
-//         core/views/forms/main.js,
+//         core/views/forms/form.js,
 //         listings/main.js,
 //         listings/models.js,
 //         offers/views/list.js,

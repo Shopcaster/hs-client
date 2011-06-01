@@ -1,4 +1,4 @@
-//depends: core/views/main.js
+//depends: core/views/view.js
 
 hs.views.fields = new Object();
 

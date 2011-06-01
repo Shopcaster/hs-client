@@ -4,8 +4,12 @@ hs.auth = {
   init: function(){
     this.pass = localStorage.getItem('pass');
     this.email = localStorage.getItem('email');
-    if (this.email && this.pass)
+    if (this.email && this.pass && hs.con.isConnected())
       this.login();
+    hs.con.bind('connected', function(){
+      if (this.email && this.pass)
+        this.login();
+    }, this);
   },
   _isAuthenticated: false,
   isAuthenticated: function(){
@@ -33,7 +37,7 @@ hs.auth = {
     localStorage.setItem('userId', this.userId);
     this.trigger('change:userId');
   },
-  signup: function(email, clbk){
+  signup: function(email, clbk, context){
     if (_.isFunction(email)){
       clbk = email;
       email = undefined;
@@ -41,18 +45,10 @@ hs.auth = {
       this.setEmail(email);
     }
 
-    hs.con.send('auth', {email: this.email}, _.bind(function(data){
-      if (data){
-        this.setUserId(data.userid);
-        this.setPassword(data.password, false);
-        this._isAuthenticated = true;
-        this.trigger('change:isAuthenticated', this._isAuthenticated);
-        if (clbk) clbk();
-      }else if (clbk)
-        clbk(new Error('required:password'));
-    }, this));
+    hs.con.send('auth', {email: this.email},
+        _.bind(this._handleResponse, this, clbk, context));
   },
-  login: function(email, pass, clbk){
+  login: function(email, pass, clbk, context){
     if (_.isFunction(email)){
       clbk = email;
       email = undefined;
@@ -65,19 +61,23 @@ hs.auth = {
     if (pass) this.setPassword(pass);
 
     hs.con.send('auth', {email: this.email, password: this.pass},
-        _.bind(function(data){
-          if (data){
-            this.setUserId(data.userid);
-            this._isAuthenticated = true;
-            this.trigger('change:isAuthenticated', this._isAuthenticated);
-            if (clbk) clbk();
-          }else{
-            if (clbk) clbk(new Error('invalid:password'));
-            else this.logout();
-          }
-        }, this));
+        _.bind(this._handleResponse, this, clbk, context));
   },
-  logout: function(clbk){
+  _handleResponse: function(clbk, context, data){
+    if (data){
+      this.setUserId(data.userid);
+      if (data.password)
+        this.setPassword(data.password, false);
+      this._isAuthenticated = true;
+      this.trigger('change:isAuthenticated', this._isAuthenticated);
+      if (clbk) clbk.call(context);
+    }else if (clbk){
+      clbk.call(context, new Error('auth error'));
+    }else{
+      this.logout();
+    }
+  },
+  logout: function(clbk, context){
     this.pass = undefined;
     this.email = undefined;
     this.userId = undefined;
@@ -92,7 +92,7 @@ hs.auth = {
       this._isAuthenticated = false;
       this.trigger('change:isAuthenticated', this._isAuthenticated);
     }
-    if (clbk) clbk();
+    if (clbk) clbk.call(context);
   },
   hash: function(email, pass){
     return Crypto.SHA256(pass+email).toUpperCase();

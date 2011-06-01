@@ -24,7 +24,7 @@ Backbone.sync = function(method, model, success, error){
       data: model.toJSON()
     }, function(_id){
       if (_id){
-        model.set({_id: _id});
+        model.set({_id: _id}, {raw: true});
         done(true);
       } else{
         done(false);
@@ -33,15 +33,21 @@ Backbone.sync = function(method, model, success, error){
   }else if (method == 'delete'){
     hs.con.send('delete', {key: model.key+':'+model._id}, done);
   }else if (method == 'read'){
-    hs.pubsub.sub(model.key+':'+model._id, _.bind(model.set, model), function(fields){
-      if (fields === false){
-        done(false);
-      }else{
-        model.set(fields);
-        model.trigger('loaded');
-        done(true);
+    hs.pubsub.sub(
+      model.key+':'+model._id,
+      function(fields){ // pub
+        model.set(fields, {raw: true});
+      },
+      function(fields){ // response
+        if (fields === false){
+          done(false);
+        }else{
+          model.set(fields, {raw: true});
+          model.trigger('loaded');
+          done(true);
+        }
       }
-    });
+    );
   }else{
     done(false);
   }

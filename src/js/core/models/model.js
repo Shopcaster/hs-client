@@ -35,14 +35,16 @@ hs.models.Model = Backbone.Model.extend({
         field.setModelInstance(this, fieldname);
     }, this));
   },
-  set: function(fields){
-    _.each(fields, _.bind(function(value, fieldname){
-      if (_.isUndefined(this.fields[fieldname]))
-        throw(new Error(fieldname+' is not a '+this.key+' field'));
-      else if (this.fields[fieldname] instanceof hs.models.fields.Field)
-        fields[fieldname] = this.fields[fieldname].set(value);
-    }, this));
-    arguments[0] = fields;
+  set: function(fields, options){
+    if (_.isUndefined(options) || options.raw !== true){
+      _.each(fields, _.bind(function(value, fieldname){
+        if (_.isUndefined(this.fields[fieldname]))
+          throw(new Error(fieldname+' is not a '+this.key+' field'));
+        else if (this.fields[fieldname] instanceof hs.models.fields.Field)
+          fields[fieldname] = this.fields[fieldname].set(value);
+      }, this));
+      arguments[0] = fields;
+    }
 
     return Backbone.Model.prototype.set.apply(this, arguments)
   },

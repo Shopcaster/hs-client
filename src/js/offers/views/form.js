@@ -1,4 +1,4 @@
-//depends: offers/views/main.js, core/views/forms/dialog.js
+//depends: offers/views/main.js, core/views/mixins/dialog.js, auth/views.js
 
 hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
   template: 'offerForm',
@@ -16,7 +16,7 @@ hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).exte
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     this.listing = opts.listing;
     this.model = new hs.offers.Offer({
-      listing: this.listing._id
+      listing: this.listing
     });
   },
   amountFocus: function(){
@@ -37,13 +37,12 @@ hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).exte
   submit: function(){
     this.model.set({
       creator: hs.auth.getUser(),
-      created: new Date(),
-      amount: this.get('amount').replace('$', '')
+      amount: parseFloat(this.get('amount').replace('$', ''))
     });
     this.model.save();
     this.clear();
     this.model = new hs.offers.Offer({
-      listing: this.listing._id
+      listing: this.listing
     });
     this.blur();
   }

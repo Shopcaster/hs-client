@@ -28,7 +28,7 @@ hs.regController('listings', hs.Controller.extend({
       "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
       "price": 1500
     });
-    l.bind('change:_id', function(){
+    l.once('change:_id', function(){
       hs.goTo('!/listings/'+l._id+'/');
     });
     l.save();

@@ -1,4 +1,4 @@
-//depends: messages/views/main.js, core/views/main.js
+//depends: messages/views/main.js, core/views/view.js
 
 hs.messages.views.Message = hs.views.View.extend({
   template: 'message',

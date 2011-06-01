@@ -1,6 +1,4 @@
-//depends: auth/views.js
-
-hs.views.mixins = hs.views.mixins || new Object();
+//depends: core/views/mixins/main.js
 
 hs.views.mixins.Dialog = {
   events: {

@@ -56,10 +56,20 @@
 
     // Bind an event, specified by a string name, `ev`, to a `callback` function.
     // Passing `"all"` will bind the callback to all events fired.
-    bind : function(ev, callback) {
+    bind : function(ev, callback, context) {
       var calls = this._callbacks || (this._callbacks = {});
       var list  = this._callbacks[ev] || (this._callbacks[ev] = []);
-      list.push(callback);
+      list.push([callback, context]);
+      return this;
+    },
+
+    // Operates the same as `bind`, however the first time it is fired it will
+    // be unbound as if `unbind` was called.
+    once : function(ev, callback, context) {
+      this.bind(ev, function(){
+        this.unbind(ev, arguments.callee);
+        callback.apply(context || this, arguments);
+      }, this)
       return this;
     },
 
@@ -77,7 +87,7 @@
           var list = calls[ev];
           if (!list) return this;
           for (var i = 0, l = list.length; i < l; i++) {
-            if (callback === list[i]) {
+            if (callback === list[i][0]) {
               list.splice(i, 1);
               break;
             }
@@ -95,12 +105,12 @@
       if (!(calls = this._callbacks)) return this;
       if (list = calls[ev]) {
         for (i = 0, l = list.length; i < l; i++) {
-          list[i].apply(this, Array.prototype.slice.call(arguments, 1));
+          list[i][0].apply(list[i][1] || this, Array.prototype.slice.call(arguments, 1));
         }
       }
       if (list = calls['all']) {
         for (i = 0, l = list.length; i < l; i++) {
-          list[i].apply(this, arguments);
+          list[i][0].apply(list[i][1] || this, arguments);
         }
       }
       return this;
@@ -867,16 +877,42 @@
 
   });
 
+  var mixin = function(mixin) {
+    var oldObj = this, newObj;
+
+    mixin = _.clone(mixin);
+    if (events = mixin.events)
+      delete mixin.events;
+
+    if (events && oldObj.prototype.bind){
+      newObj = oldObj.extend(_.extend({
+        constructor: function(){
+          _.each(events, function(methodname, ev){
+            this.bind(ev, this[methodname]);
+          }, this);
+
+          oldObj.apply(this, arguments);
+        }
+      }, mixin));
+    }else{
+      newObj = oldObj.extend(_.extend({}, mixin));
+    }
+    return newObj;
+  };
+
   // The self-propagating extend function that Backbone classes use.
   var extend = function (protoProps, classProps) {
     var child = inherits(this, protoProps, classProps);
     child.extend = extend;
+    child.mixin = mixin;
     return child;
   };
 
   // Set up inheritance for the model, collection, and view.
   Backbone.Model.extend = Backbone.Collection.extend =
     Backbone.Controller.extend = Backbone.View.extend = extend;
+  Backbone.Model.mixin = Backbone.Collection.mixin =
+    Backbone.Controller.mixin = Backbone.View.mixin = mixin;
 
   // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
   var methodMap = {

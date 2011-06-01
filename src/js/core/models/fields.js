@@ -58,21 +58,6 @@ hs.models.fields.StringField = hs.models.fields.Field.extend({
 });
 
 
-hs.models.fields.DateField = hs.models.fields.Field.extend({
-  set: function(value){
-    if (_.isInteger(value))
-      value = new Date(value);
-    if (_.isDate(value))
-      return value.getTime();
-    else
-      this.invalid(value, 'Extected a Date.');
-  },
-  get: function(value){
-    return new Date(value);
-  }
-});
-
-
 hs.models.fields.BooleanField = hs.models.fields.Field.extend({
   set: function(value){
     if (_.isBoolean(value))
@@ -83,6 +68,19 @@ hs.models.fields.BooleanField = hs.models.fields.Field.extend({
 });
 
 // higher-level fields
+
+
+hs.models.fields.DateField = hs.models.fields.Field.extend({
+  set: function(value){
+    if (_.isDate(value))
+      return value.getTime();
+    else
+      this.invalid(value, 'Extected a Date.');
+  },
+  get: function(value){
+    return new Date(value);
+  }
+});
 
 hs.models.fields.MoneyField = hs.models.fields.FloatField.extend({
   set: function(value){
@@ -128,7 +126,7 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
       value = _.map(value, function(model){
         return model._id;
       });
-    }else if (!_.isArray(value))
+    }else
       throw(new Error('Collection fields must be set to arrays or collections'));
     value = _.uniq(value);
     return value;
@@ -152,12 +150,10 @@ hs.models.fields.ModelField = hs.models.fields.Field.extend({
     this.Model = Model;
   },
   set: function(value){
-    if (_.isString(value))
-      return value;
-    else if (value instanceof this.Model)
+    if (value instanceof this.Model && !_.isUndefined(value._id))
       return value._id;
     else
-      this.invalid(value, 'Extected a Model.');
+      this.invalid(value, 'Extected a Model with an _id.');
   },
   get: function(value){
     return this.Model.get(value);

@@ -26,32 +26,24 @@ hs.con = {
     }
   },
   _isConnected: false,
-  isConnected: function(clbk){
-    if (!clbk && this._isConnected) return true;
-    else if (this._isConnected) clbk();
-    else if (!clbk) return false;
-    else this.bind('connected', clbk);
+  isConnected: function(clbk, context){
+    if (!clbk) return this._isConnected;
+
+    if (this._isConnected)
+      clbk.call(context);
+    else
+      this.bind('connected', clbk, context);
   },
-  disconnect: function(clbk){
-    if (clbk)
-      this.bind('disconnected', _.bind(function(){
-        this.unbind(arguments.callee);
-        clbk();
-      }, this));
+  disconnect: function(clbk, context){
+    if (clbk) this.once('disconnected', clbk, context);
     this.socket.disconnect();
   },
-  reconnect: function(clbk){
-    if (clbk)
-      this.bind('connected', _.bind(function(){
-        this.unbind(arguments.callee);
-        clbk();
-      }, this));
-    this.disconnect(_.bind(function(){
-      this.connect();
-    }, this));
+  reconnect: function(clbk, context){
+    if (clbk) this.once('connected', clbk, context);
+    this.disconnect(this.connect, this);
   },
   msgId: 1,
-  send: function(key, data, clbk){
+  send: function(key, data, clbk, context){
     var msgId = this.msgId++;
     this.isConnected(_.bind(function(){
       this.trigger('sending', key, data);
@@ -60,10 +52,9 @@ hs.con = {
       data.id = msgId;
       var msg = key+':'+JSON.stringify(data);
 
-      if (clbk) this.bind('recieved:'+msgId, function(key, data){
-        this.unbind('recieved:'+msgId, arguments.callee);
+      if (clbk) this.once('recieved:'+msgId, function(key, data){
         clbk(data.value);
-      });
+      }, context);
 
       this.socket.send(msg);
       hs.log('sent:', msg);
@@ -71,6 +62,7 @@ hs.con = {
     return msgId;
   },
   _connected: function(){
+    hs.log('connected to server');
     this._isConnected = true;
     this.trigger('connected');
   },
@@ -85,6 +77,8 @@ hs.con = {
     this.trigger(key, data);
   },
   _disconnected: function(){
+    hs.log('disconnected from server');
+    this._isConnected = false;
     this.trigger('disconnected');
   }
 }

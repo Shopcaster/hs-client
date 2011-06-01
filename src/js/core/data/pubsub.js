@@ -15,17 +15,17 @@ hs.pubsub = {
       clbk(msg.data);
     });
   },
-  pub: function(key, data, extra, clbk){
-    if (_.isFunction(extra))
-      clbk = extra, extra = {};
-    return hs.con.send('pub', _.extend({key: key, data: data}, extra), clbk);
-  },
-  sub: function(key, handler, clbk) {
+  // pub: function(key, data, extra, clbk){
+  //   if (_.isFunction(extra))
+  //     clbk = extra, extra = {};
+  //   return hs.con.send('pub', _.extend({key: key, data: data}, extra), clbk);
+  // },
+  sub: function(key, handler, clbk, context) {
     var send = _.isUndefined(this.subs[key]);
     if (send) this.subs[key] = new Array();
     if (_.indexOf(this.subs[key], handler) == -1){
       this.subs[key].push(handler);
-      if (send) return hs.con.send('sub', {key: key}, clbk);
+      if (send) return hs.con.send('sub', {key: key}, clbk, context);
     }
   },
   unsub: function unsub(key, clbk) {

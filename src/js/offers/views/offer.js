@@ -1,4 +1,4 @@
-//depends: offers/views/main.js, core/views/main.js
+//depends: offers/views/main.js, core/views/view.js
 
 hs.offers.views.Offer = hs.views.View.extend({
   template: 'offer',

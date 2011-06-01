@@ -1,4 +1,4 @@
-//depends: messages/views/main.js, core/views/forms/dialog.js
+//depends: messages/views/main.js, auth/views.js
 
 hs.messages.views.Form = hs.auth.views.AuthForm.extend({
   template: 'messageForm',

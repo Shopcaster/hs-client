@@ -1,4 +1,4 @@
-//depends: inquiries/views/main.js, core/views/main.js
+//depends: inquiries/views/main.js, core/views/view.js
 
 hs.inquiries.views.Inquiry = hs.views.View.extend({
   template: 'inquiry',

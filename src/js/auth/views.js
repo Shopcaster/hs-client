@@ -1,4 +1,4 @@
-//depends: core/views/main.js,
+//depends: core/views/view.js,
 //    auth/main.js,
 //    core/init.js,
 //    auth/login.js,

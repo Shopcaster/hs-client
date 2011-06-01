@@ -1,4 +1,4 @@
-//depends: core/views/main.js,
+//depends: core/views/view.js,
 //         messages/views/main.js,
 //         messages/views/form.js,
 //         messages/views/message.js
