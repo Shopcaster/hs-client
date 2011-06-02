@@ -2,7 +2,7 @@
 //    lib/jquery-1.5.1.js,
 //    lib/jquery-ui-1.8.11.custom.min.js,
 //    lib/json2.js,
-//    lib/modernizr-1.7.js,
+//    lib/modernizr.js,
 //    lib/underscore.js,
 //    lib/ICanHaz.js,
 //    lib/localStorage.js,

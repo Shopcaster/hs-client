@@ -5,7 +5,7 @@ module("Auth");
 test("Signup", function(){
   expect(3);
 
-  stop(10000);
+  stop(1000);
   hs.auth.signup('fake@email.info', function(err){
     if (err){
       start();
@@ -23,7 +23,7 @@ test("Signup", function(){
 test("Login", function(){
   expect(6);
 
-  stop(10000);
+  stop(1000);
   hs.auth.signup('fake2@email.info', function(err){
     if (err){
       start();

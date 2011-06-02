@@ -39,7 +39,7 @@ Backbone.sync = function(method, model, success, error){
         model.set(fields, {raw: true});
       },
       function(fields){ // response
-        if (fields === false){
+        if (fields === false || _.isString(fields)){
           done(false);
         }else{
           model.set(fields, {raw: true});
