@@ -1,6 +1,8 @@
-//depends: inquiries/views/main.js, auth/views.js
-hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.extend({
+//depends: inquiries/views/main.js, core/views/forms/dialog.js
+
+hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
   template: 'questionForm',
+  focusSelector: 'input[name=question]',
   fields: [{
     'name': 'question',
     'type': 'text',
@@ -11,39 +13,20 @@ hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.extend({
   }, hs.auth.views.AuthForm.prototype.events),
   initialize: function(opts){
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
-    $('input[name=question]').bind('mousedown', _.bind(function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      this.focus();
-    }, this));
     this.listing = opts.listing;
     this.model = new hs.inquiries.Inquiry({
       listing: this.listing.id
     });
-    this.bind('change:question', _.bind(function(question){
-      this.model.set({question: question});
-    }, this));
-  },
-  render: function(){
-    hs.auth.views.AuthForm.prototype.render.apply(this, arguments);
-    $('body').click(_.bind(this.blur, this));
-    $('#questionForm').click(function(e){e.stopPropagation()});
   },
   focus: function(){
-    if (!this.rendered) this.render();
-    $('#questionForm').addClass('open').fadeIn(200);
+    hs.views.mixins.Dialog.focus.apply(this, arguments);
     this.$('[name=question]').focus();
   },
-  blur: function(){
-    $('#questionForm').fadeOut(200).removeClass('open');
-  },
-  //validateQuestion: function(value, clbk){
-  //  //?
-  //},
   submit: function(){
     this.model.set({
       creator: hs.auth.getUser(),
-      created: new Date()
+      created: new Date(),
+      question: this.get('question')
     });
     this.model.save();
     this.clear();
@@ -51,5 +34,30 @@ hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.extend({
       listing: this.listing.id
     });
     this.blur();
+  }
+});
+
+hs.inquiries.views.AnswerForm = hs.auth.views.AuthForm.extend({
+  template: 'answerForm',
+  fields: [{
+    'name': 'answer',
+    'type': 'text',
+    'placeholder': 'Answer the question'
+  }].concat(hs.auth.views.AuthForm.prototype.fields),
+  events: _.extend({
+  }, hs.auth.views.AuthForm.prototype.events),
+    //?
+  initialize: function(opts){
+    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
+    this.listing = opts.listing;
+    this.model = new hs.inquiries.Inquiry({
+      listing: this.listing.id
+    });
+  },
+  submit: function(){
+    this.model.set({
+      question: this.get('answer')
+    });
+    this.model.save();
   }
 });
