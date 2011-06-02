@@ -103,12 +103,14 @@
     trigger : function(ev) {
       var list, calls, i, l;
       if (!(calls = this._callbacks)) return this;
-      if (list = calls[ev]) {
+      if (calls[ev]) {
+        list = _.clone(calls[ev]);
         for (i = 0, l = list.length; i < l; i++) {
           list[i][0].apply(list[i][1] || this, Array.prototype.slice.call(arguments, 1));
         }
       }
-      if (list = calls['all']) {
+      if (calls['all']) {
+        list = _.clone(calls['all']);
         for (i = 0, l = list.length; i < l; i++) {
           list[i][0].apply(list[i][1] || this, arguments);
         }

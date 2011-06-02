@@ -15,9 +15,7 @@ hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).exte
   initialize: function(opts){
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     this.listing = opts.listing;
-    this.model = new hs.offers.Offer({
-      listing: this.listing
-    });
+    this.model = new hs.offers.Offer();
   },
   amountFocus: function(){
     if (this.$('[name=amount]').val() == '')
@@ -36,14 +34,12 @@ hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).exte
   },
   submit: function(){
     this.model.set({
-      creator: hs.auth.getUser(),
+      listing: this.listing,
       amount: parseFloat(this.get('amount').replace('$', ''))
     });
     this.model.save();
     this.clear();
-    this.model = new hs.offers.Offer({
-      listing: this.listing
-    });
+    this.model = new hs.offers.Offer();
     this.blur();
   }
 });

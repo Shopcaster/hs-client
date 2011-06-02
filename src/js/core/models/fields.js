@@ -73,12 +73,12 @@ hs.models.fields.BooleanField = hs.models.fields.Field.extend({
 hs.models.fields.DateField = hs.models.fields.Field.extend({
   set: function(value){
     if (_.isDate(value))
-      return value.getTime();
+      return value.getTime() - 1307042003319;
     else
       this.invalid(value, 'Extected a Date.');
   },
   get: function(value){
-    return new Date(value);
+    return new Date(value + 1307042003319);
   }
 });
 
@@ -110,13 +110,8 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
 
     if (this.model._id)
       this.sub();
-    else{
-      var bound;
-      this.model.bind('change:id', bound = _.bind(function(){
-        this.model.unbind('change:id', bound);
-        this.sub();
-      }, this));
-    }
+    else
+      this.model.once('change:_id', this.sub, this);
 
     this.setInstance.bind('change',
         _.bind(this.model.trigger, this.model, 'change:'+this.fieldName));
@@ -139,8 +134,23 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     return this.setInstance;
   },
   sub: function(){
-    var key = this.model.key+':'+this.model._id+':'
-        +this.setInstance.model.key+'.'+this.foreignField;
+    hs.pubsub.sub(
+      // key
+      this.model.key+':'+this.model._id+':'
+        +this.setInstance.model.prototype.key+'.'+this.foreignField,
+      // pub
+      _.bind(function(ids){
+        if (ids.add)
+          this.setInstance.add(ids.add);
+        if (ids.remove)
+          this.setInstance.remove(ids.remove);
+      }, this),
+      // response
+      _.bind(function(ids, err){
+        if (err) throw(err);
+        this.setInstance.add(ids);
+      }, this)
+    );
   }
 });
 

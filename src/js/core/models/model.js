@@ -5,6 +5,7 @@ hs.models = hs.models || new Object();
 
 hs.models.Model = Backbone.Model.extend({
   key: null,
+  loaded: false,
   fields: {
     '_id': new hs.models.fields.StringField(),
     'creator': function(){
@@ -14,7 +15,6 @@ hs.models.Model = Backbone.Model.extend({
     'modified': new hs.models.fields.DateField(),
     'deleted': new hs.models.fields.BooleanField()
   },
-  loaded: false,
   url: function(){return this.key},
   initialize: function(attrs, opts){
     _.bindAll(this);
@@ -24,12 +24,10 @@ hs.models.Model = Backbone.Model.extend({
       var error = (opts && opts.error) ? opts.error : undefined;
       this.fetch({success: success, error: error});
     }else{
-      var bound;
-      this.bind('change:_id', bound = _.bind(function(){
-        this.unbind(bound);
+      this.once('change:_id', function(){
         this.constructor.register(this);
         this.fetch();
-      }, this));
+      }, this);
     }
 
     _.each(this.fields, _.bind(function(field, fieldname){
@@ -41,12 +39,17 @@ hs.models.Model = Backbone.Model.extend({
   },
   set: function(fields, options){
     if (_.isUndefined(options) || options.raw !== true){
+
       _.each(fields, _.bind(function(value, fieldname){
+
         if (_.isUndefined(this.fields[fieldname]))
           throw(new Error(fieldname+' is not a '+this.key+' field'));
         else if (this.fields[fieldname] instanceof hs.models.fields.Field)
           fields[fieldname] = this.fields[fieldname].set(value);
+
       }, this));
+
+      _.extend(this.updates = this.updates || {}, fields);
       arguments[0] = fields;
     }
 
@@ -78,7 +81,8 @@ hs.models.Model.extend = function(){
     if (Model.instances.hasOwnProperty(_id))
       return Model.instances[_id];
 
-    var instance = new Model(_.extend(opts || {}, {_id: _id}));
+    var instance = new Model(opts);
+    instance.set({_id: _id}, {raw: true});
     Model.instances[_id] = instance;
     return instance;
   };

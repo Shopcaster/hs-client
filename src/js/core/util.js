@@ -19,7 +19,7 @@ _.mixin({
     return n===+n && !_.isInteger(n);
   },
   isInteger: function(n){
-    return n===+n && n===parseInt(n);
+    return n===+n && n===Math.floor(n);
   },
   since: function(date, since){
     if (!_.isDate(date))

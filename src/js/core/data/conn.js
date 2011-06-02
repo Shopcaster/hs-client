@@ -1,4 +1,4 @@
-//depends: main.js, core/util.js
+//depends: main.js, core/util.js, core/loading.js
 
 
 hs.con = {
@@ -52,9 +52,11 @@ hs.con = {
       data.id = msgId;
       var msg = key+':'+JSON.stringify(data);
 
-      if (clbk) this.once('recieved:'+msgId, function(key, data){
-        clbk(data.value, data.error);
-      }, context);
+      hs.loading();
+      this.once('recieved:'+msgId, function(key, data){
+        hs.loaded();
+        if (clbk) clbk(data.value, data.error);
+      });
 
       this.socket.send(msg);
       hs.log('sent:', msg);
@@ -78,6 +80,7 @@ hs.con = {
   },
   _disconnected: function(){
     hs.log('disconnected from server');
+    hs.loaded();
     this._isConnected = false;
     this.trigger('disconnected');
   }

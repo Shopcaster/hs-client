@@ -50,6 +50,11 @@ test('basic fields', function(){
     bol: false
   });
 
+  equal(m.get('str'), 'string', 'str set correctly');
+  equal(m.get('int'), 20, 'int set correctly');
+  equal(m.get('flt'), 22.22, 'flt set correctly');
+  equal(m.get('bol'), false, 'bol set correctly');
+
 });
 
 test('complex fields', function(){
@@ -64,20 +69,20 @@ test('complex fields', function(){
   var m = new M();
 
   // date
-  raises(function(){ m.set({date: 1306967669769}) }, 'timestamp to date raises');
+  raises(function(){ m.set({date: 4766755}) }, 'timestamp to date raises');
   raises(function(){ m.set({date: '1306967669769'}) }, 'str to date raises');
 
-  var dateVal = new Date(1306967669769);
+  var dateVal = new Date(4766755 + 1307042003319);
 
   m.set({
     date: dateVal,
   });
 
-  equals(m.attributes.date, 1306967669769, 'date stores as timestamp');
+  equals(m.attributes.date, 4766755, 'date stores as timestamp with recent epoch');
 
   ok(_.isDate(m.get('date')), 'date casts on get');
 
-  equals(m.get('date').getTime(), dateVal.getTime(), 'date casts on get');
+  equals(m.get('date').getTime(), dateVal.getTime(), 'date casts correctly');
 
   // money
   raises(function(){ m.set({money: 'string'}) }, 'str to money raises');

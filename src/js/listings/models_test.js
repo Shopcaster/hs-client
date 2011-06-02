@@ -11,13 +11,18 @@ test('create', function(){
     "description": "MacBook 64GB SSD.",
     "latitude": 43.651702,
     "longitude": -79.373703400006,
-    "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
+    // "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
     "price": 1500
   });
-  l.save(null, {success: function(){
-    ok(!_.isUndefined(l._id), 'Listing created succesfully');
-    start();
-  }});
+  l.save(null, {
+    success: function(){
+      ok(!_.isUndefined(l._id), 'Listing created succesfully');
+      start();
+    }, error: function(model, err){
+      start();
+      throw(new Error('server error: '+JSON.stringify(err)));
+    }
+  });
 });
 
 test('update', function(){
@@ -29,19 +34,30 @@ test('update', function(){
     "description": "MacBook Pro Must see. ",
     "latitude": 43.651702,
     "longitude": -79.373730006,
-    "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
+    // "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
     "price": 1500
   });
 
-  l.save(null, {success: function(){
-    ok(!_.isUndefined(l._id), 'Listing created succesfully');
+  l.save(null, {
+    success: function(){
+      ok(!_.isUndefined(l._id), 'Listing created succesfully');
 
-    l.set({description: 'this is my new description'});
-    l.save(null, {success: function(){
-      equal(l.get('description'), 'this is my new description', 'description set');
-    }});
+      l.set({description: 'this is my new description'});
+      l.save(null, {
+        success: function(){
+          equal(l.get('description'), 'this is my new description', 'description set');
+          start();
+        }, error: function(model, err){
+          start();
+          throw(new Error('server error: '+JSON.stringify(err)));
+        }
+      });
 
-  }});
+    }, error: function(model, err){
+      start();
+      throw(new Error('server error: '+JSON.stringify(err)));
+    }
+  });
 });
 
 test('read', function(){
@@ -55,16 +71,21 @@ test('read', function(){
       "description": "MacBook Pro Must see. ",
       "latitude": 43.6533,
       "longitude": -79.373730006,
-      "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
+      // "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
       "price": 150000
     }
   }, function(_id){
     ok(_.isString(_id), 'id returned from create');
 
-    var l = new hs.listings.models.Listing({_id: _id}, {success: function(){
-      equal(l.get('latitude'), 43.6533, 'lat data succesfully fetched');
-      start();
-    }});
+    var l = new hs.listings.models.Listing({_id: _id}, {
+      success: function(){
+        equal(l.get('latitude'), 43.6533, 'lat data succesfully fetched');
+        start();
+      }, error: function(model, err){
+        start();
+        throw(new Error('server error: '+JSON.stringify(err)));
+      }
+    });
 
   });
 });

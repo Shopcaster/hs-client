@@ -1,9 +1,8 @@
-//depends: core/data/conn.js, core/data/pubsub.js, core/loading.js
+//depends: core/data/conn.js, core/data/pubsub.js
 
 Backbone.sync = function(method, model, success, error){
-  hs.loading();
+
   var done = function(err){
-    hs.loaded();
     if (err)
       error(err);
     else
@@ -15,16 +14,20 @@ Backbone.sync = function(method, model, success, error){
   }
 
   if (method == 'update'){
+    var diff = model.updates;
+    model.updates = new Object();
     hs.con.send('update', {
       key: model.key+':'+model._id,
-      data: model.toJSON()
+      diff: diff
     }, function(ok, err){
       done(err);
     });
   }else if (method == 'create'){
+    var diff = model.updates;
+    model.updates = new Object();
     hs.con.send('create', {
       type: model.key,
-      data: model.toJSON()
+      data: diff
     }, function(_id, err){
       if (_id)
         model.set({_id: _id}, {raw: true});
@@ -53,3 +56,4 @@ Backbone.sync = function(method, model, success, error){
     done('invalid method');
   }
 };
+

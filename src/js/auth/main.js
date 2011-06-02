@@ -49,20 +49,16 @@ hs.auth = {
         _.bind(this._handleResponse, this, clbk, context));
   },
   login: function(email, pass, clbk, context){
-    hs.log('login', email, _.isFunction(email));
     if (_.isFunction(email)){
-      hs.log('first arg is clbk');
       clbk = email;
       context = pass;
       email = undefined;
       pass = undefined;
     }else if (_.isFunction(pass)){
-      hs.log('second arg is clbk');
       context = clbk;
       clbk = pass;
       pass = undefined;
-    }else
-      hs.log('third arg is clbk');
+    }
     if (email) this.setEmail(email);
     if (pass) this.setPassword(pass);
 
@@ -76,7 +72,6 @@ hs.auth = {
         this.setPassword(data.password, false);
       this._isAuthenticated = true;
       this.trigger('change:isAuthenticated', this._isAuthenticated);
-      hs.log('auth clbk', clbk);
       if (clbk) clbk.call(context);
     }else if (clbk){
       clbk.call(context, new Error('auth error'));
