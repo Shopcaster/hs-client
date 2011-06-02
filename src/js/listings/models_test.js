@@ -56,16 +56,15 @@ test('read', function(){
       "latitude": 43.6533,
       "longitude": -79.373730006,
       "photo": hs.views.fields.byType['image_capture'].prototype.fakeImage,
-      "price": 1500
+      "price": 150000
     }
   }, function(_id){
     ok(_.isString(_id), 'id returned from create');
 
-    var l = new hs.listings.models.Listing({_id: _id});
-    l.bind('loaded', function(){
+    var l = new hs.listings.models.Listing({_id: _id}, {success: function(){
       equal(l.get('latitide'), 43.6533, 'lat data succesfully fetched');
       start();
-    });
+    }});
 
   });
 });

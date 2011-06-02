@@ -2,53 +2,54 @@
 
 Backbone.sync = function(method, model, success, error){
   hs.loading();
-  var done = function(worked){
+  var done = function(err){
     hs.loaded();
-    if (worked) success();
-    else error();
+    if (err)
+      error(err);
+    else
+      success();
   }
   if (_.indexOf(['update', 'delete', 'read'], method) != -1
       && _.isUndefined(model._id)){
-    hs.error('Cannot '+method+' a model with no _id.');
-    return done(false);
+    return done('Cannot '+method+' a model with no _id.');
   }
 
   if (method == 'update'){
     hs.con.send('update', {
       key: model.key+':'+model._id,
       data: model.toJSON()
-    }, done);
+    }, function(ok, err){
+      done(err);
+    });
   }else if (method == 'create'){
     hs.con.send('create', {
       type: model.key,
       data: model.toJSON()
-    }, function(_id){
-      if (_id){
+    }, function(_id, err){
+      if (_id)
         model.set({_id: _id}, {raw: true});
-        done(true);
-      } else{
-        done(false);
-      }
+
+      done(err);
     });
   }else if (method == 'delete'){
-    hs.con.send('delete', {key: model.key+':'+model._id}, done);
+    hs.con.send('delete', {key: model.key+':'+model._id}, function(ok, err){
+      done(err);
+    });
   }else if (method == 'read'){
     hs.pubsub.sub(
       model.key+':'+model._id,
       function(fields){ // pub
         model.set(fields, {raw: true});
       },
-      function(fields){ // response
-        if (fields === false || _.isString(fields)){
-          done(false);
-        }else{
+      function(fields, err){ // response
+        if (fields){
           model.set(fields, {raw: true});
           model.trigger('loaded');
-          done(true);
         }
+        done(err);
       }
     );
   }else{
-    done(false);
+    done('invalid method');
   }
 };

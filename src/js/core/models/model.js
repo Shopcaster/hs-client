@@ -16,11 +16,14 @@ hs.models.Model = Backbone.Model.extend({
   },
   loaded: false,
   url: function(){return this.key},
-  initialize: function(){
+  initialize: function(attrs, opts){
     _.bindAll(this);
-    if (this._id)
-      this.fetch();
-    else{
+
+    if (this._id){
+      var success = (opts && opts.success) ? opts.success : undefined;
+      var error = (opts && opts.error) ? opts.error : undefined;
+      this.fetch({success: success, error: error});
+    }else{
       var bound;
       this.bind('change:_id', bound = _.bind(function(){
         this.unbind(bound);
@@ -28,6 +31,7 @@ hs.models.Model = Backbone.Model.extend({
         this.fetch();
       }, this));
     }
+
     _.each(this.fields, _.bind(function(field, fieldname){
       if (_.isFunction(field))
         this.fields[fieldname] = field = field.call(this);

@@ -32,7 +32,7 @@ hs.con = {
     if (this._isConnected)
       clbk.call(context);
     else
-      this.bind('connected', clbk, context);
+      this.once('connected', clbk, context);
   },
   disconnect: function(clbk, context){
     if (clbk) this.once('disconnected', clbk, context);
@@ -53,7 +53,7 @@ hs.con = {
       var msg = key+':'+JSON.stringify(data);
 
       if (clbk) this.once('recieved:'+msgId, function(key, data){
-        clbk(data.value);
+        clbk(data.value, data.error);
       }, context);
 
       this.socket.send(msg);
