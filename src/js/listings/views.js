@@ -133,7 +133,7 @@ hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({
     this.model.set({
       photo: this.get('image'),
       description: this.get('description'),
-      price: this.get('price')
+      price: parseFloat(this.get('price').replace('$', ''))
     });
     if (this.position)
       this.model.set({
