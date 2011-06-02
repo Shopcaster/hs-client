@@ -61,7 +61,7 @@ test("Login", function(){
 });
 
 test("User", function(){
-  expect(2);
+  expect(3);
 
   stop(1000);
   hs.auth.signup('fake3@email.info', function(err){
@@ -73,14 +73,12 @@ test("User", function(){
 
     ok(!_.isUndefined(user), 'user exists');
 
-    if (user._id)
-      testUser();
-    else
-      user.once('loaded', testUser);
+    user.once('loaded', function(){
 
-    function testUser(){
       ok(!_.isUndefined(user._id), 'user has id');
+      ok(!_.isUndefined(user.get('created')), 'user has created field');
+
       start();
-    }
+    });
   });
 });
