@@ -141,7 +141,7 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
       // pub
       _.bind(function(ids){
         if (ids.add)
-          this.setInstance.add(ids.add);
+          this.setInstance.addNew(ids.add);
         if (ids.remove)
           this.setInstance.remove(ids.remove);
       }, this),

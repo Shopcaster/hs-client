@@ -12,7 +12,7 @@ hs.pubsub = {
     if (_.isUndefined(this.subs[key]))
       return this.unsub(key);
     _.each(this.subs[key], function(clbk){
-      clbk(msg.data);
+      clbk(msg.diff);
     });
   },
   // pub: function(key, data, extra, clbk){

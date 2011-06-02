@@ -31,7 +31,7 @@ hs.messages.views.Message = hs.views.View.extend({
     this.$('.name').text(this.creator.get('name'));
   },
   createdChange: function(){
-    var since = Date.since(this.model.get('created'));
+    var since = _.since(this.model.get('created'));
     this.$('.created').text(since.num+' '+since.text);
   },
   remove: function(){
