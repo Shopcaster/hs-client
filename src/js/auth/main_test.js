@@ -41,9 +41,7 @@ test("Login", function(){
       hs.auth.setEmail(email);
       hs.auth.setPassword(password, false);
 
-      hs.log('TO LOGIN');
       hs.auth.login(function(err){
-        hs.log('RETURNED FROM LOGIN');
         if (err){
           start();
           throw(err);

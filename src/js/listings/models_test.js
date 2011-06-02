@@ -15,7 +15,7 @@ test('create', function(){
     "price": 1500
   });
   l.save(null, {success: function(){
-    ok(_.isUndefined(l._id), 'Listing created succesfully');
+    ok(!_.isUndefined(l._id), 'Listing created succesfully');
     start();
   }});
 });
@@ -34,7 +34,7 @@ test('update', function(){
   });
 
   l.save(null, {success: function(){
-    ok(_.isUndefined(l._id), 'Listing created succesfully');
+    ok(!_.isUndefined(l._id), 'Listing created succesfully');
 
     l.set({description: 'this is my new description'});
     l.save(null, {success: function(){
@@ -62,7 +62,7 @@ test('read', function(){
     ok(_.isString(_id), 'id returned from create');
 
     var l = new hs.listings.models.Listing({_id: _id}, {success: function(){
-      equal(l.get('latitide'), 43.6533, 'lat data succesfully fetched');
+      equal(l.get('latitude'), 43.6533, 'lat data succesfully fetched');
       start();
     }});
 
