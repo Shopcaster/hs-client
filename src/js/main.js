@@ -6,9 +6,9 @@ hs.log = function(){
   if (hs.log.disabled) return;
 
   if (window.console && _.isFunction(console.log)){
-    if (hs.log._concat){
+    if (hs.log.concat){
       var op = '';
-      _.each(arguments, function(arg){
+      _.each(_.toArray(arguments), function(arg){
         if (_.isString(arg))
           op += arg+' ';
         else
@@ -21,15 +21,8 @@ hs.log = function(){
   }
 };
 
-hs.log.disabled = false;
-hs.log.disable = function(){
-  hs.log.disabled = true;
-};
-
-hs.log._concat = false;
-hs.log.concat = function(){
-  hs.log._concat = true;
-};
+hs.log.disabled = hs.log.disabled || false;
+hs.log.concat = hs.log.concat || false;
 
 hs.error = function(){
   if (hs.log.disabled) return;
