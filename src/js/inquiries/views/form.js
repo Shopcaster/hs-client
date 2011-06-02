@@ -15,7 +15,7 @@ hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.mixin(hs.views.mixins.D
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     this.listing = opts.listing;
     this.model = new hs.inquiries.Inquiry({
-      listing: this.listing.id
+      listing: this.listing._id
     });
   },
   focus: function(){
@@ -31,7 +31,7 @@ hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.mixin(hs.views.mixins.D
     this.model.save();
     this.clear();
     this.model = new hs.inquiries.Inquiry({
-      listing: this.listing.id
+      listing: this.listing._id
     });
     this.blur();
   }

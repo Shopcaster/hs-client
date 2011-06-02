@@ -1,4 +1,4 @@
-//depends: offers/views/main.js, core/views/main.js
+//depends: offers/views/main.js, core/views/view.js
 
 hs.offers.views.Offer = hs.views.View.extend({
   template: 'offer',
@@ -22,7 +22,8 @@ hs.offers.views.Offer = hs.views.View.extend({
     hs.views.View.prototype.render.apply(this, arguments);
     this.messages = new hs.messages.views.Conversation({
       model: this.model,
-      focusSelector: '#offer-'+this.model.get('id')
+      focusSelector: '#offer-'+this.model._id,
+      appendTo: this.el
     });
   },
   creatorChange: function(){
@@ -37,10 +38,10 @@ hs.offers.views.Offer = hs.views.View.extend({
     this.listingOwned = false;
     this.owned = false;
     if (hs.auth.isAuthenticated()){
-      var userId = hs.auth.getUser().get('id');
-      if (this.creator.get('id') == userId){
+      var userId = hs.auth.getUser()._id;
+      if (this.creator._id == userId){
         this.owned = true;
-      }else if (this.model.get('listing').get('creator').get('id') == userId){
+      }else if (this.model.get('listing').get('creator')._id == userId){
         this.listingOwned = true;
       }
     }
@@ -65,7 +66,7 @@ hs.offers.views.Offer = hs.views.View.extend({
     this.$('.name').text(this.creator.get('name'));
   },
   createdChange: function(){
-    var since = Date.since(this.model.get('created'));
+    var since = _.since(this.model.get('created'));
     this.$('.created').text(since.num+' '+since.text);
   },
   accept: function(e){
@@ -77,7 +78,7 @@ hs.offers.views.Offer = hs.views.View.extend({
     this.model.del();
   },
   remove: function(){
-    $('#offer-'+this.model.get('id')).remove();
+    $('#offer-'+this.model._id).remove();
     this.trigger('removed');
   }
 });

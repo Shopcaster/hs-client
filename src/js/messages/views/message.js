@@ -1,4 +1,4 @@
-//depends: messages/views/main.js, core/views/main.js
+//depends: messages/views/main.js, core/views/view.js
 
 hs.messages.views.Message = hs.views.View.extend({
   template: 'message',
@@ -31,11 +31,11 @@ hs.messages.views.Message = hs.views.View.extend({
     this.$('.name').text(this.creator.get('name'));
   },
   createdChange: function(){
-    var since = Date.since(this.model.get('created'));
+    var since = _.since(this.model.get('created'));
     this.$('.created').text(since.num+' '+since.text);
   },
   remove: function(){
-    $('#message-'+this.model.get('id')).remove();
+    $('#message-'+this.model._id).remove();
     this.trigger('removed');
   }
 });

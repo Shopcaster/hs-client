@@ -1,6 +1,6 @@
-//depends: messages/views/main.js, core/views/forms/dialog.js
+//depends: messages/views/main.js, auth/views.js
 
-hs.messages.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
+hs.messages.views.Form = hs.auth.views.AuthForm.extend({
   template: 'messageForm',
   focusFieldName: 'message',
   fields: [{
@@ -14,7 +14,7 @@ hs.messages.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).ex
   },
   newModel: function(){
     this.model = new hs.messages.Message({
-      offer: this.offer.id
+      offer: this.offer._id
     });
   },
   validateMessage: function(value, clbk){

@@ -48,35 +48,46 @@ hs.views.Form = hs.views.View.extend({
   },
   _submit: function(e){
     e.preventDefault();
-    this.validate(_.bind(function(valid){
+    this._validate(_.bind(function(valid){
       if (valid){
         if (this.submit) this.submit();
         this.trigger('submit');
       }
     }, this));
   },
-  validate: function(clbk){
-    var len = _.keys(this.fields).length;
-    if (len == 0) return clbk(false);
+  _validate: function(clbk){
 
-    var valid = true;
-    var done = _.after(len, function(){clbk(valid)});
+    var validateFields = function(){
+      var len = _.keys(this.fields).length;
+      if (len == 0) return clbk(false);
 
-    _.each(this.fields, _.bind(function(field, name){
-      if (!field.isValid()){
-        valid = false;
-        this.showInvalid(name);
-        return done();
-      }
-      var methodName = 'validate'+name.charAt(0).toUpperCase() + name.slice(1);
-      if (typeof this[methodName] == 'function')
-        this[methodName](field.get(), _.bind(function(valValid){
-          if (!valValid) this.showInvalid(name);
-          valid = valid && valValid;
-          done();
-        }, this));
-      else done();
-    }, this));
+      var valid = true;
+      var done = _.after(len, function(){clbk(valid)});
+
+      _.each(this.fields, _.bind(function(field, name){
+        if (!field.isValid()){
+          valid = false;
+          this.showInvalid(name);
+          return done();
+        }
+        var methodName = 'validate'+name.charAt(0).toUpperCase() + name.slice(1);
+        if (typeof this[methodName] == 'function')
+          this[methodName](field.get(), _.bind(function(valValid){
+            if (!valValid) this.showInvalid(name);
+            valid = valid && valValid;
+            done();
+          }, this));
+        else done();
+      }, this));
+    };
+
+    if (this.hasOwnProperty('validate'))
+      this.validate(_.bind(function(isValid){
+        if (!isValid) clbk(false);
+        else validateFields.call(this);
+      }, this));
+    else
+      validateFields.call(this);
   },
   showInvalid: function(name){
     alert(name+' invalid');

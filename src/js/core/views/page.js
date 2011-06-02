@@ -1,4 +1,4 @@
-//depends: core/views/main.js
+//depends: core/views/view.js
 
 // global page view referance, starts as noop
 hs.page = {finish: function(){}}

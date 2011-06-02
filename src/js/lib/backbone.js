@@ -56,10 +56,20 @@
 
     // Bind an event, specified by a string name, `ev`, to a `callback` function.
     // Passing `"all"` will bind the callback to all events fired.
-    bind : function(ev, callback) {
+    bind : function(ev, callback, context) {
       var calls = this._callbacks || (this._callbacks = {});
       var list  = this._callbacks[ev] || (this._callbacks[ev] = []);
-      list.push(callback);
+      list.push([callback, context]);
+      return this;
+    },
+
+    // Operates the same as `bind`, however the first time it is fired it will
+    // be unbound as if `unbind` was called.
+    once : function(ev, callback, context) {
+      this.bind(ev, function(){
+        this.unbind(ev, arguments.callee);
+        callback.apply(context || this, arguments);
+      }, this)
       return this;
     },
 
@@ -77,7 +87,7 @@
           var list = calls[ev];
           if (!list) return this;
           for (var i = 0, l = list.length; i < l; i++) {
-            if (callback === list[i]) {
+            if (callback === list[i][0]) {
               list.splice(i, 1);
               break;
             }
@@ -93,14 +103,16 @@
     trigger : function(ev) {
       var list, calls, i, l;
       if (!(calls = this._callbacks)) return this;
-      if (list = calls[ev]) {
+      if (calls[ev]) {
+        list = _.clone(calls[ev]);
         for (i = 0, l = list.length; i < l; i++) {
-          list[i].apply(this, Array.prototype.slice.call(arguments, 1));
+          list[i][0].apply(list[i][1] || this, Array.prototype.slice.call(arguments, 1));
         }
       }
-      if (list = calls['all']) {
+      if (calls['all']) {
+        list = _.clone(calls['all']);
         for (i = 0, l = list.length; i < l; i++) {
-          list[i].apply(this, arguments);
+          list[i][0].apply(list[i][1] || this, arguments);
         }
       }
       return this;
@@ -171,7 +183,7 @@
       if (!options.silent && this.validate && !this._performValidation(attrs, options)) return false;
 
       // Check for changes of `id`.
-      if ('id' in attrs) this.id = attrs.id;
+      if ('_id' in attrs) this._id = attrs._id;
 
       // Update attributes.
       for (var attr in attrs) {
@@ -288,7 +300,7 @@
     url : function() {
       var base = getUrl(this.collection);
       if (this.isNew()) return base;
-      return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this.id;
+      return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + this._id;
     },
 
     // **parse** converts a response into the hash of attributes to be `set` on
@@ -305,7 +317,7 @@
     // A model is new if it has never been saved to the server, and has a negative
     // ID.
     isNew : function() {
-      return !this.id;
+      return !this._id;
     },
 
     // Call this method to manually fire a `change` event for this model.
@@ -535,8 +547,8 @@
         model = new this.model(model, {collection: this});
       }
       var already = this.getByCid(model);
-      if (already) throw new Error(["Can't add the same model to a set twice", already.id]);
-      this._byId[model.id] = model;
+      if (already) throw new Error(["Can't add the same model to a set twice", already._id]);
+      this._byId[model._id] = model;
       this._byCid[model.cid] = model;
       model.collection = this;
       var index = this.comparator ? this.sortedIndex(model, this.comparator) : this.length;
@@ -553,7 +565,7 @@
       options || (options = {});
       model = this.getByCid(model) || this.get(model);
       if (!model) return null;
-      delete this._byId[model.id];
+      delete this._byId[model._id];
       delete this._byCid[model.cid];
       delete model.collection;
       this.models.splice(this.indexOf(model), 1);
@@ -567,9 +579,9 @@
     // Sets need to update their indexes when models change ids. All other
     // events simply proxy through.
     _onModelEvent : function(ev, model) {
-      if (ev === 'change:id') {
-        delete this._byId[model.previous('id')];
-        this._byId[model.id] = model;
+      if (ev === 'change:_id') {
+        delete this._byId[model.previous('_id')];
+        this._byId[model._id] = model;
       }
       this.trigger.apply(this, arguments);
     }
@@ -867,16 +879,42 @@
 
   });
 
+  var mixin = function(mixin) {
+    var oldObj = this, newObj;
+
+    mixin = _.clone(mixin);
+    if (events = mixin.events)
+      delete mixin.events;
+
+    if (events && oldObj.prototype.bind){
+      newObj = oldObj.extend(_.extend({
+        constructor: function(){
+          _.each(events, function(methodname, ev){
+            this.bind(ev, this[methodname]);
+          }, this);
+
+          oldObj.apply(this, arguments);
+        }
+      }, mixin));
+    }else{
+      newObj = oldObj.extend(_.extend({}, mixin));
+    }
+    return newObj;
+  };
+
   // The self-propagating extend function that Backbone classes use.
   var extend = function (protoProps, classProps) {
     var child = inherits(this, protoProps, classProps);
     child.extend = extend;
+    child.mixin = mixin;
     return child;
   };
 
   // Set up inheritance for the model, collection, and view.
   Backbone.Model.extend = Backbone.Collection.extend =
     Backbone.Controller.extend = Backbone.View.extend = extend;
+  Backbone.Model.mixin = Backbone.Collection.mixin =
+    Backbone.Controller.mixin = Backbone.View.mixin = mixin;
 
   // Map from CRUD to HTTP for our default `Backbone.sync` implementation.
   var methodMap = {

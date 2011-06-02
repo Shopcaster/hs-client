@@ -24,9 +24,9 @@ hs.inquiries.views.Inquiries = hs.views.View.extend({
     // add new inquiries
     _.each(newInquiries, _.bind(function(o, i){
       var inquiry = newInquiries.at(i);
-      newInquiryIds.push(inquiry.id);
-      if (_.isUndefined(this.inquiryViews[inquiry.id])){
-        this.inquiryViews[inquiry.id] = new hs.inquiries.views.Inquiry({
+      newInquiryIds.push(inquiry._id);
+      if (_.isUndefined(this.inquiryViews[inquiry._id])){
+        this.inquiryViews[inquiry._id] = new hs.inquiries.views.Inquiry({
           appendTo: $('#inquiryList'),
           model: inquiry
         });

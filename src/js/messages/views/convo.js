@@ -1,4 +1,4 @@
-//depends: core/views/main.js,
+//depends: core/views/view.js,
 //         messages/views/main.js,
 //         messages/views/form.js,
 //         messages/views/message.js
@@ -14,7 +14,7 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
     this.form = this.form || new hs.messages.views.Form({
       appendTo: this.$('#messageForm'),
       offer: this.model,
-      focusSelector: '#messageField'
+      focusSelector: '#convo-'+this.model._id+' .messageField'
     });
     this.renderMessages();
   },
@@ -25,9 +25,9 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
     // add new messages
     _.each(newMessages, _.bind(function(o, i){
       var message = newMessages.at(i);
-      newMessageIds.push(message.id);
-      if (_.isUndefined(this.messageViews[message.id])){
-        this.messageViews[message.id] = new hs.messages.views.Message({
+      newMessageIds.push(message._id);
+      if (_.isUndefined(this.messageViews[message._id])){
+        this.messageViews[message._id] = new hs.messages.views.Message({
           appendTo: $('#messageList'),
           model: message
         });
@@ -46,5 +46,9 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
   },
   messagesChange: function(){
     this.renderMessages();
+  },
+  focus: function(){
+    hs.views.mixins.Dialog.focus.apply(this, arguments);
+    this.$('input.messageField').focus();
   }
 });

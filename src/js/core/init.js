@@ -10,17 +10,23 @@
   }
 
   $(function(){
+    var init = function(){
+      initFired = true;
+      for (var i=0, len=initStack.length; i<len; i++)
+        initStack[i]();
+    }
+
     // auto-load new application cache
-    if (typeof window.applicationCache != 'undefined')
+    if (typeof window.applicationCache != 'undefined'){
       window.applicationCache.addEventListener('updateready', function(e) {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
           window.applicationCache.swapCache();
           window.location.reload();
         }
       }, false);
-
-    initFired = true;
-    for (var i=0, len=initStack.length; i<len; i++)
-    initStack[i]();
+      window.applicationCache.addEventListener('noupdate', init, false);
+    }else{
+      init();
+    }
   });
 })();

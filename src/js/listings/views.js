@@ -1,6 +1,5 @@
 //depends: core/views/main.js,
-//         core/date.js,
-//         core/views/forms/main.js,
+//         core/views/forms/form.js,
 //         listings/main.js,
 //         listings/models.js,
 //         offers/views/list.js,
@@ -15,7 +14,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     'change:photo': 'updatePhoto',
     'change:description': 'updateDesc',
     'change:created': 'updateCreated',
-    'change:updated': 'updateCreated',
+    'change:modified': 'updateCreated',
     'change:latitude': 'updateLoc',
     'change:longitude': 'updateLoc',
     'change:price': 'updatePrice',
@@ -56,7 +55,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
   },
   updateCreated: function(){
     if (this.model.get('created')){
-      var since = Date.since(this.model.get('created'));
+      var since = _.since(this.model.get('created'));
       this.$('.date .listing-obi-title').text(since.text);
       this.$('.date .listing-obi-value').text(since.num);
     }
@@ -134,7 +133,7 @@ hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({
     this.model.set({
       photo: this.get('image'),
       description: this.get('description'),
-      price: this.get('price')
+      price: parseFloat(this.get('price').replace('$', ''))
     });
     if (this.position)
       this.model.set({
