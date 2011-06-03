@@ -16,22 +16,12 @@ hs.auth.views.Login = hs.views.View.extend({
 
     $('#top-bar .login').click(_.bind(this.login, this));
     $('#top-bar .logout').click(_.bind(this.logout, this));
-    $('#top-bar .name').click(_.bind(this.settings, this));
-  },
-  settings: function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    this.settingsForm = this.settingsForm || new hs.auth.SettingsForm();
-    this.settingsForm.toggle();
-    this.settingsForm.bind('submit', _.bind(function(){
-      this.settingsForm.unbind(arguments.callee);
-      this.renderLoggedIn();
-    }, this));
+
+    this.settingsForm = new hs.auth.SettingsForm();
   },
   login: function(e){
     e.preventDefault();
     e.stopPropagation();
-    this.loginForm = this.loginForm || new hs.auth.LoginForm();
     this.loginForm.toggle();
   },
   logout: function(e){

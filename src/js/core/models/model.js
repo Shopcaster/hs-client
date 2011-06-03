@@ -101,10 +101,10 @@ hs.models.ModelSet = Backbone.Collection.extend({
     }, this);
   },
   addIds: function(ids){
-    this.add(this.cast(newIds));
+    this.add(this.cast(ids));
   },
   removeIds: function(ids){
-    this.remove(this.cast(newIds));
+    this.remove(this.cast(ids));
   },
   addNew: function(ids){
     var newIds = _.select(ids, function(id){
@@ -114,13 +114,12 @@ hs.models.ModelSet = Backbone.Collection.extend({
     if (cast.length) this.add(cast);
   },
   add: function(models){
-    var bind = _.bind(function(model){
-      model.bind('change', _.bind(this.trigger, this, 'change'));
-    }, this);
     if (_.isArray(models))
-      _.each(models, bind);
+      _.each(models, function(model){
+        model.bind('change', _.bind(this.trigger, this, 'change'));
+      }, this);
     else
-      bind(models);
+      models.bind('change', _.bind(this.trigger, this, 'change'));
     return Backbone.Collection.prototype.add.apply(this, arguments);
   }
 });

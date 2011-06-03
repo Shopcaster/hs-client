@@ -141,14 +141,14 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
       // pub
       _.bind(function(ids){
         if (ids.add)
-          this.setInstance.addNew(ids.add);
+          this.setInstance.addIds(ids.add);
         if (ids.remove)
-          this.setInstance.remove(ids.remove);
+          this.setInstance.removeIds(ids.remove);
       }, this),
       // response
       _.bind(function(ids, err){
         if (err) throw(err);
-        this.setInstance.add(ids);
+        this.setInstance.addIds(ids);
       }, this)
     );
   }
