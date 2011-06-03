@@ -20,6 +20,9 @@ hs.views.mixins.Dialog = {
       e.stopPropagation();
       this.focus();
     }, this));
+    $(this.focusSelector).click(function(e){
+      e.preventDefault();
+    });
   },
   dialogSetBlur: function(){
     $('body').click(_.bind(this.blur, this));

@@ -8,14 +8,15 @@ hs.auth = hs.auth || new Object();
 hs.auth.views = new Object();
 
 hs.auth.views.Login = hs.views.View.extend({
-  appendTo: $('#top-bar')[0],
+  events: {
+    'click .login': 'login',
+    'click .logout': 'logout'
+  },
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
+
     hs.auth.bind('change:isAuthenticated', _.bind(this.authChange, this));
     this.authChange(hs.auth.isAuthenticated());
-
-    $('#top-bar .login').click(_.bind(this.login, this));
-    $('#top-bar .logout').click(_.bind(this.logout, this));
 
     this.settingsForm = new hs.auth.SettingsForm();
   },
@@ -35,12 +36,13 @@ hs.auth.views.Login = hs.views.View.extend({
       this.renderLoggedOut();
   },
   renderLoggedIn: function(){
-    this.user = hs.auth.getUser();
-    var name = this.user.get('name');
-
     $('#top-bar a.login').hide();
     $('#top-bar a.logout').show();
 
+    this.user = hs.auth.getUser();
+    this.user.bind('change:name', this.renderLoggedIn, this);
+
+    var name = this.user.get('name');
     if (_.isUndefined(name)){
       $('#top-bar a.name').html(hs.auth.email
           +' <span id="set-name">(<span class="red">'
@@ -58,7 +60,7 @@ hs.auth.views.Login = hs.views.View.extend({
 });
 
 hs.init(function(){
-  hs.auth.views.login = new hs.auth.views.Login();
+  hs.auth.views.login = new hs.auth.views.Login({el: $('#top-bar')});
 });
 
 

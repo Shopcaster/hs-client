@@ -134,6 +134,8 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     return this.setInstance;
   },
   sub: function(){
+    if (_.isUndefined(this.model._id))
+      throw('cannot subscribe to relationship without _id');
     hs.pubsub.sub(
       // key
       this.model.key+':'+this.model._id+':'

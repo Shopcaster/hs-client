@@ -28,10 +28,12 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   creatorChange: function(){
     this.creator = this.model.get('creator');
-    this.creator.bind('change:avatar', _.bind(this.avatarChange, this));
-    this.creator.bind('change:name', _.bind(this.nameChange, this));
+
+    this.creator.bind('change:avatar', this.avatarChange, this);
     if (this.creator.get('avatar'))
       this.avatarChange();
+
+    this.creator.bind('change:name', this.nameChange, this);
     if (this.creator.get('name'))
       this.nameChange();
 
