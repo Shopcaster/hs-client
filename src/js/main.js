@@ -22,7 +22,7 @@ hs.log = function(){
 };
 
 hs.log.disabled = hs.log.disabled || false;
-hs.log.concat = hs.log.concat || false;
+hs.log.concat = hs.log.concat || Modernizr.touch;
 
 hs.error = function(){
   if (hs.log.disabled) return;
