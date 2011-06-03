@@ -47,3 +47,26 @@ test('relationship subscribe', function(){
     }
   });
 });
+
+test('rel sub event issue', function(){
+  stop(1000);
+
+  var l = new hs.listings.models.Listing({'description': 'test'});
+  l.save(null, {
+    success: function(){
+
+      var o = new hs.offers.Offer();
+      o.set({listing: l});
+      o.save();
+      var o2 = new hs.offers.Offer();
+      ok(o.fields.messages !== o2.fields.messages, 'offers have different collection fields');
+      ok(_.isUndefined(o2.get('listing')), 'o2 listing undefined');
+
+      start();
+
+    }, error: function(model, err){
+      start();
+      throw(new Error(SON.stringify(err)));
+    }
+  });
+});

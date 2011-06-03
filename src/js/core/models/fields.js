@@ -110,8 +110,9 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
 
     if (this.model._id)
       this.sub();
-    else
+    else{
       this.model.once('change:_id', this.sub, this);
+    }
 
     this.setInstance.bind('change',
         _.bind(this.model.trigger, this.model, 'change:'+this.fieldName));
@@ -135,7 +136,7 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
   },
   sub: function(){
     if (_.isUndefined(this.model._id))
-      throw('cannot subscribe to relationship without _id');
+      throw(new Error('cannot subscribe to relationship without _id'));
     hs.pubsub.sub(
       // key
       this.model.key+':'+this.model._id+':'
