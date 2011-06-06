@@ -37,12 +37,10 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
   },
   updatePhoto: function(){
     if (this.model.get('photo')){
-      // this.$('#listing-image img')
-      //     .attr('src', this.model.get('photo').web);
-
-      // tmp, only works in webkit:
       this.$('#listing-image img')
-          .attr('src', 'data:image/jpeg;base64,'+this.model.get('photo'));
+            .attr('src', 'http://' + conf.server.host + ':' + conf.server.port +
+                          '/static/' + this.model.get('photo'));
+
     }else{
       this.$('#listing-image img')
           .attr('src', 'http://lorempixum.com/560/418/technics/');
