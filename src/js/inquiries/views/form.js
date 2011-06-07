@@ -18,7 +18,7 @@ hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.extend({
     }, this));
     this.listing = opts.listing;
     this.model = new hs.inquiries.Inquiry({
-      listing: this.listing._id
+      listing: this.listing
     });
     this.bind('change:question', _.bind(function(question){
       this.model.set({question: question});

@@ -18,9 +18,9 @@ hs.models.fields.Field = hs.Object.extend({
     this.Model = Model;
   },
   modelInit: function(model, fieldname){},
-  invalid: function(value, msg){
+  invalid: function(value, msg, fieldname){
     var err = '"'+value+'" is an invalid value for "'
-        +this.model.key+'.'+this.fieldName+'".';
+        +this.Model.prototype.key+fieldname?'.'+fieldname:''+'".';
     if (msg) err += ' '+msg;
     throw(new Error(err));
   }
