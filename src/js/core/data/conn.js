@@ -4,7 +4,10 @@
 hs.con = {
   connect: function(){
     var ioReady = _.bind(function(){
-      this.socket = new io.Socket(conf.server.host, {port: conf.server.port});
+      this.socket = new io.Socket(conf.server.host, {
+        port: conf.server.port,
+        transports: ['xhr-multipart', 'xhr-polling', 'jsonp-polling']
+      });
       this.socket.on('connect', this._connected);
       this.socket.on('message', this._recieved);
       this.socket.on('disconnect', this._disconnected);
