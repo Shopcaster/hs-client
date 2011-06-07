@@ -42,14 +42,14 @@ hs.models.Model = Backbone.Model.extend({
   set: function(fields, options){
     if (_.isUndefined(options) || options.raw !== true){
 
-      _.each(fields, _.bind(function(value, fieldname){
+      _.each(fields, function(value, fieldname){
 
         if (_.isUndefined(this.fields[fieldname]))
           throw(new Error(fieldname+' is not a '+this.key+' field'));
         else if (this.fields[fieldname] instanceof hs.models.fields.Field)
           fields[fieldname] = this.fields[fieldname].set(value, this, fieldname);
 
-      }, this));
+      }, this);
 
       _.extend(this.updates = this.updates || {}, fields);
       arguments[0] = fields;
@@ -70,6 +70,25 @@ hs.models.Model = Backbone.Model.extend({
         value = this.fields[fieldname].getDefault(this, fieldname);
 
     return value;
+  },
+  withRel: function(rel, clbk, context){
+    var rels = rel.split('.').reverse();
+    var parent = this;
+    (function rev(){
+      var rel = rels.pop();
+
+      if (!rel){
+        clbk.call(parent);
+      }else if (parent.get(rel)){
+        parent = parent.get(rel);
+        rev();
+      }else{
+        parent.once('change:'+rel, function(){
+          parent = parent.get(rel);
+          rev();
+        });
+      }
+    })();
   }
 });
 

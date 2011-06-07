@@ -3,9 +3,8 @@
 hs.pubsub = {
   subs: {},
   msgId: 0,
+  init: true,
   pubRecieved: function(msg) {
-    this.trigger('pubRecieved', msg);
-    this.trigger('pubRecieved:'+msg.id, msg);
     var key = msg.key;
     if (_.isUndefined(key))
       return hs.error('pub with no key:', msg);
@@ -15,18 +14,25 @@ hs.pubsub = {
       clbk(msg.diff);
     });
   },
-  // pub: function(key, data, extra, clbk){
-  //   if (_.isFunction(extra))
-  //     clbk = extra, extra = {};
-  //   return hs.con.send('pub', _.extend({key: key, data: data}, extra), clbk);
-  // },
+  connected: function(){
+    if (!this.init){
+      hs.log('resubbing');
+      _.each(this.subs, function(handlers, key){
+        if (handlers.length) this._sub(key);
+      }, this);
+    }
+    this.init = false;
+  },
   sub: function(key, handler, clbk, context) {
     var send = _.isUndefined(this.subs[key]);
     if (send) this.subs[key] = new Array();
     if (_.indexOf(this.subs[key], handler) == -1){
       this.subs[key].push(handler);
-      if (send) return hs.con.send('sub', {key: key}, clbk, context);
+      if (send) return this._sub(key, clbk, context);
     }
+  },
+  _sub: function(key, clbk, context){
+    return hs.con.send('sub', {key: key}, clbk, context);
   },
   unsub: function unsub(key, clbk) {
     if (typeof clbk == 'undefined'){
@@ -46,3 +52,4 @@ _.extend(hs.pubsub, Backbone.Events);
 _.bindAll(hs.pubsub);
 
 hs.con.bind('pub', hs.pubsub.pubRecieved);
+hs.con.bind('connected', hs.pubsub.connected);

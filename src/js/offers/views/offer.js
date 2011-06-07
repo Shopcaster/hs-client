@@ -20,11 +20,7 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   render: function(){
     hs.views.View.prototype.render.apply(this, arguments);
-    this.messages = new hs.messages.views.Conversation({
-      model: this.model,
-      focusSelector: '#offer-'+this.model._id,
-      appendTo: this.el
-    });
+    this.initConvo();
   },
   creatorChange: function(){
     this.creator = this.model.get('creator');
@@ -43,9 +39,13 @@ hs.offers.views.Offer = hs.views.View.extend({
       var userId = hs.auth.getUser()._id;
       if (this.creator._id == userId){
         this.owned = true;
-      }else if (this.model.get('listing').get('creator')._id == userId){
-        this.listingOwned = true;
       }
+      this.model.withRel('listing.creator', function(){
+        if (this.model.get('listing').get('creator')._id == userId){
+          this.listingOwned = true;
+          this.controlsChange();
+        }
+      }, this);
     }
     this.controlsChange();
   },
@@ -57,6 +57,15 @@ hs.offers.views.Offer = hs.views.View.extend({
     }else{
       this.$('.action').html('');
     }
+    this.initConvo();
+  },
+  initConvo: function(){
+    if ((this.owned || this.listingOwner) && this.rendered)
+      this.messages = this.messages || new hs.messages.views.Conversation({
+        model: this.model,
+        focusSelector: '#offer-'+this.model._id,
+        appendTo: this.el
+      });
   },
   amountChange: function(){
     this.$('.amount').text('$'+this.model.get('amount'));

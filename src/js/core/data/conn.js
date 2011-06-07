@@ -3,10 +3,11 @@
 
 hs.con = {
   connect: function(){
+    hs.loading();
     var ioReady = _.bind(function(){
       this.socket = new io.Socket(conf.server.host, {
-        port: conf.server.port,
-        transports: ['xhr-multipart', 'xhr-polling', 'jsonp-polling']
+        port: conf.server.port
+        // ,transports: ['xhr-multipart', 'xhr-polling', 'jsonp-polling']
       });
       this.socket.on('connect', this._connected);
       this.socket.on('message', this._recieved);
@@ -69,6 +70,7 @@ hs.con = {
   },
   _connected: function(){
     hs.log('connected to server');
+    hs.loaded();
     this._isConnected = true;
     this.trigger('connected');
   },
@@ -84,7 +86,7 @@ hs.con = {
   },
   _disconnected: function(){
     hs.log('disconnected from server');
-    hs.loaded();
+    hs.loading();
     this._isConnected = false;
     this.trigger('disconnected');
   }

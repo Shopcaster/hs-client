@@ -1,34 +1,29 @@
 //depends: messages/views/main.js, auth/views.js
 
-hs.messages.views.Form = hs.auth.views.AuthForm.extend({
+hs.messages.views.Form = hs.views.Form.extend({
   template: 'messageForm',
-  focusFieldName: 'message',
   fields: [{
     'name': 'message',
     'type': 'text'
-  }].concat(hs.auth.views.AuthForm.prototype.fields),
+  }].concat(hs.views.Form.prototype.fields),
   initialize: function(opts){
-    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
+    hs.views.Form.prototype.initialize.apply(this, arguments);
     this.offer = opts.offer;
     this.newModel();
   },
   newModel: function(){
-    this.model = new hs.messages.Message({
-      offer: this.offer._id
-    });
+    this.model = new hs.messages.Message();
   },
   validateMessage: function(value, clbk){
-    clbk(/^\d+$/.test(value));
+    clbk(true);
   },
   submit: function(){
     this.model.set({
-      creator: hs.auth.getUser(),
-      created: new Date(),
+      offer: this.offer,
       message: this.get('message')
     });
     this.model.save();
     this.clear();
     this.newModel();
-    this.blur();
   }
 });

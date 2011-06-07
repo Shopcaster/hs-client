@@ -15,19 +15,17 @@ hs.views.mixins.Dialog = {
     this.dialogSetBlur();
   },
   dialogSetMousedown: function(){
-    $(this.focusSelector).one('mousedown', _.bind(function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      this.focus();
-    }, this));
+    $(this.focusSelector).one('mousedown', _.bind(this.focus, this));
     $(this.focusSelector).click(function(e){
       e.preventDefault();
     });
   },
   dialogSetBlur: function(){
     $('body').click(_.bind(this.blur, this));
-    this.el.click(function(e){e.stopPropagation()});
-    $(this.focusSelector).click(function(e){e.stopPropagation()});
+    this.el.click(function(e){
+      e.stopPropagation()});
+    $(this.focusSelector).click(function(e){
+      e.stopPropagation()});
   },
   focus: function(){
     if (!this.rendered) this.render();
