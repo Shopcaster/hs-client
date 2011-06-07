@@ -3,7 +3,9 @@
 
 hs.con = {
   connect: function(){
+    hs.log('starting connect');
     var ioReady = _.bind(function(){
+      hs.log('ioReady, connecting');
       this.socket = new io.Socket(conf.server.host, {port: conf.server.port});
       this.socket.on('connect', this._connected);
       this.socket.on('message', this._recieved);
