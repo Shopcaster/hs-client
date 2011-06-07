@@ -7,17 +7,17 @@ hs.models.fields = new Object();
 // super-field
 
 hs.models.fields.Field = hs.Object.extend({
-  set: function(value){
+  set: function(value, model, fieldname){
     return value;
   },
-  get: function(value){
+  getDefault: function(model, fieldname){},
+  get: function(value, model, fieldname){
     return value;
   },
-  getDefault: function(){},
-  setModelInstance: function(model, fieldName){
-    this.model = model;
-    this.fieldName = fieldName;
+  setModel: function(Model){
+    this.Model = Model;
   },
+  modelInit: function(model, fieldname){},
   invalid: function(value, msg){
     var err = '"'+value+'" is an invalid value for "'
         +this.model.key+'.'+this.fieldName+'".';
@@ -99,25 +99,27 @@ hs.models.fields.MoneyField = hs.models.fields.FloatField.extend({
 hs.models.fields.CollectionField = hs.models.fields.Field.extend({
   initialize: function(SetClass, foreignField){
     this.SetClass = SetClass;
-    this.setInstance =  new this.SetClass();
     this.foreignField = foreignField;
   },
-  setModelInstance: function(){
-    hs.models.fields.Field.prototype.setModelInstance.apply(this, arguments);
+  modelInit: function(model, fieldname){
+    hs.models.fields.Field.prototype.modelInit.apply(this, arguments);
 
-    if (_.isUndefined(this.foreignField))
-      this.foreignField = this.model.key;
-
-    if (this.model._id)
-      this.sub();
+    if (model._id)
+      this.sub(model, fieldname);
     else{
-      this.model.once('change:_id', this.sub, this);
+      model.once('change:_id', _.bind(this.sub, this, model, fieldname));
     }
 
-    this.setInstance.bind('change',
-        _.bind(this.model.trigger, this.model, 'change:'+this.fieldName));
+    if (_.isUndefined(this.foreignField))
+      this.foreignField = model.key;
+
+    model.sets = model.sets || {};
+    model.sets[fieldname] = new this.SetClass();
+
+    model.sets[fieldname].bind('change',
+        _.bind(model.trigger, model, 'change:'+fieldname));
   },
-  set: function(value){
+  set: function(value, model, fieldname){
     if (value instanceof this.SetClass){
       value = _.map(value, function(model){
         return model._id;
@@ -127,31 +129,31 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     value = _.uniq(value);
     return value;
   },
-  get: function(value){
-    this.setInstance.addNew(value);
-    return this.setInstance;
+  get: function(value, model, fieldname){
+    model.sets[fieldname].addNew(value);
+    return model.sets[fieldname];
   },
-  getDefault: function(){
-    return this.setInstance;
+  getDefault: function(model, fieldname){
+    return model.sets[fieldname];
   },
-  sub: function(){
-    if (_.isUndefined(this.model._id))
+  sub: function(model, fieldname){
+    if (_.isUndefined(model._id))
       throw(new Error('cannot subscribe to relationship without _id'));
     hs.pubsub.sub(
       // key
-      this.model.key+':'+this.model._id+':'
-        +this.setInstance.model.prototype.key+'.'+this.foreignField,
+      model.key+':'+model._id+':'
+        +model.sets[fieldname].model.prototype.key+'.'+this.foreignField,
       // pub
       _.bind(function(ids){
         if (ids.add)
-          this.setInstance.addIds(ids.add);
+          model.sets[fieldname].addIds(ids.add);
         if (ids.remove)
-          this.setInstance.removeIds(ids.remove);
+          model.sets[fieldname].removeIds(ids.remove);
       }, this),
       // response
       _.bind(function(ids, err){
         if (err) throw(err);
-        this.setInstance.addIds(ids);
+        model.sets[fieldname].addIds(ids);
       }, this)
     );
   }
@@ -159,17 +161,17 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
 
 
 hs.models.fields.ModelField = hs.models.fields.Field.extend({
-  initialize: function(Model){
-    this.Model = Model;
+  initialize: function(ForeignModel){
+    this.ForeignModel = ForeignModel;
   },
   set: function(value){
-    if (value instanceof this.Model && !_.isUndefined(value._id))
+    if (value instanceof this.ForeignModel && !_.isUndefined(value._id))
       return value._id;
     else
       this.invalid(value, 'Extected a Model with an _id.');
   },
   get: function(value){
-    return this.Model.get(value);
+    return this.ForeignModel.get(value);
   }
 });
 

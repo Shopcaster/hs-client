@@ -33,8 +33,10 @@ hs.models.Model = Backbone.Model.extend({
     _.each(this.fields, _.bind(function(field, fieldname){
       if (_.isFunction(field))
         this.fields[fieldname] = field = field.call(this);
-      if (field instanceof hs.models.fields.Field)
-        field.setModelInstance(this, fieldname);
+      if (field instanceof hs.models.fields.Field){
+        field.setModel(this.constructor);
+        field.modelInit(this, fieldname);
+      }
     }, this));
   },
   set: function(fields, options){
@@ -45,7 +47,7 @@ hs.models.Model = Backbone.Model.extend({
         if (_.isUndefined(this.fields[fieldname]))
           throw(new Error(fieldname+' is not a '+this.key+' field'));
         else if (this.fields[fieldname] instanceof hs.models.fields.Field)
-          fields[fieldname] = this.fields[fieldname].set(value);
+          fields[fieldname] = this.fields[fieldname].set(value, this, fieldname);
 
       }, this));
 
@@ -63,9 +65,9 @@ hs.models.Model = Backbone.Model.extend({
 
     if (this.fields[fieldname] instanceof hs.models.fields.Field)
       if (!_.isUndefined(value))
-        value = this.fields[fieldname].get(value);
+        value = this.fields[fieldname].get(value, this, fieldname);
       else
-        value = this.fields[fieldname].getDefault();
+        value = this.fields[fieldname].getDefault(this, fieldname);
 
     return value;
   }
