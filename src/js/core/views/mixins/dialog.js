@@ -10,6 +10,7 @@ hs.views.mixins.Dialog = {
     if (_.isUndefined(this.focusSelector))
       throw(new Error('this.focusSelector must be defined for hs.views.mixins.Dialog mixin.'));
     this.dialogSetMousedown();
+    this.blur = _.bind(this.blur, this);
   },
   dialogRender: function(){
     this.dialogSetBlur();
@@ -21,13 +22,12 @@ hs.views.mixins.Dialog = {
     });
   },
   dialogSetBlur: function(){
-    $('body').click(_.bind(this.blur, this));
-    this.el.click(function(e){
-      e.stopPropagation()});
-    $(this.focusSelector).click(function(e){
-      e.stopPropagation()});
+    $('body').click(this.blur);
+    this.el.click(function(e){e.stopPropagation()});
+    $(this.focusSelector).click(function(e){e.stopPropagation()});
   },
   focus: function(){
+    this.blurAllElse();
     if (!this.rendered) this.render();
     this.el.addClass('open').fadeIn(200);
     this.el.show();
@@ -36,5 +36,11 @@ hs.views.mixins.Dialog = {
     this.el.fadeOut(200).removeClass('open');
     this.el.hide();
     this.dialogSetMousedown();
+  },
+  blurAllElse: function(){
+    $('body')
+        .unbind('click', this.blur)
+        .click()
+        .bind('click', this.blur);
   }
 };

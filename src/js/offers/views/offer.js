@@ -40,8 +40,8 @@ hs.offers.views.Offer = hs.views.View.extend({
       if (this.creator._id == userId){
         this.owned = true;
       }
-      this.model.withRel('listing.creator', function(){
-        if (this.model.get('listing').get('creator')._id == userId){
+      this.model.withRel('listing.creator', function(listingCreator){
+        if (listingCreator._id == userId){
           this.listingOwned = true;
           this.controlsChange();
         }
@@ -52,7 +52,7 @@ hs.offers.views.Offer = hs.views.View.extend({
   controlsChange: function(){
     if (this.owned){
       this.$('.action').html('<a href="#" class="button withdraw">Withdraw</a>');
-    }else if (this.listingOwner){
+    }else if (this.listingOwned){
       this.$('.action').html('<a href="#" class="button accept">Accept</a>');
     }else{
       this.$('.action').html('');
@@ -60,7 +60,7 @@ hs.offers.views.Offer = hs.views.View.extend({
     this.initConvo();
   },
   initConvo: function(){
-    if ((this.owned || this.listingOwner) && this.rendered)
+    if ((this.owned || this.listingOwned) && this.rendered)
       this.messages = this.messages || new hs.messages.views.Conversation({
         model: this.model,
         focusSelector: '#offer-'+this.model._id,

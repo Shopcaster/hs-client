@@ -77,8 +77,8 @@ hs.models.Model = Backbone.Model.extend({
     (function rev(){
       var rel = rels.pop();
 
-      if (!rel){
-        clbk.call(parent);
+      if (_.isUndefined(rel)){
+        clbk.call(context, parent);
       }else if (parent.get(rel)){
         parent = parent.get(rel);
         rev();
