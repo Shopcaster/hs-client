@@ -61,7 +61,7 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   initConvo: function(){
     if ((this.owned || this.listingOwned) && this.rendered){
-      this.$('.clicky').show();
+      // this.$('.clicky').show();
       this.el.addClass('hasMessages');
       this.messages = this.messages || new hs.messages.views.Conversation({
         model: this.model,

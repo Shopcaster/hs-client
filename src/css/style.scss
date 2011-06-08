@@ -471,6 +471,9 @@ header{
                 .offer.hasMessages:hover{
                     background-color:$grey + #111;
                     z-index:2;
+                    .clicky{
+                        display:block;
+                    }
                 }
             }
         }
