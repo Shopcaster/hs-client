@@ -4,7 +4,8 @@ hs.messages.views.Form = hs.views.Form.extend({
   template: 'messageForm',
   fields: [{
     'name': 'message',
-    'type': 'text'
+    'type': 'text',
+    'placeholder': 'Send a Message'
   }].concat(hs.views.Form.prototype.fields),
   initialize: function(opts){
     hs.views.Form.prototype.initialize.apply(this, arguments);

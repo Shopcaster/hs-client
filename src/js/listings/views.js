@@ -18,7 +18,8 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     'change:latitude': 'updateLoc',
     'change:longitude': 'updateLoc',
     'change:price': 'updatePrice',
-    'change:offers': 'updateBestOffer'
+    'change:offers': 'updateBestOffer',
+    'change:sold': 'updateSold'
   },
   render: function(){
     hs.views.Page.prototype.render.apply(this, arguments);
@@ -77,6 +78,11 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
       if (best) this.$('.best-offer .listing-obi-value')
             .text('$'+best.get('amount'));
     }, this));
+  },
+  updateSold: function(){
+    if (this.model.get('sold')){
+      hs.log('!!SOLD!!');
+    }
   }
 });
 

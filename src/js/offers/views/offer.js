@@ -51,21 +51,24 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   controlsChange: function(){
     if (this.owned){
-      this.$('.action').html('<a href="#" class="button withdraw">Withdraw</a>');
+      this.$('.action').html('<a href="#" class="withdraw">Withdraw</a>');
     }else if (this.listingOwned){
-      this.$('.action').html('<a href="#" class="button accept">Accept</a>');
+      this.$('.action').html('<a href="#" class="accept">Accept</a>');
     }else{
       this.$('.action').html('');
     }
     this.initConvo();
   },
   initConvo: function(){
-    if ((this.owned || this.listingOwned) && this.rendered)
+    if ((this.owned || this.listingOwned) && this.rendered){
+      this.$('.clicky').show();
+      this.el.addClass('hasMessages');
       this.messages = this.messages || new hs.messages.views.Conversation({
         model: this.model,
         focusSelector: '#offer-'+this.model._id,
         appendTo: this.el
       });
+    }
   },
   amountChange: function(){
     this.$('.amount').text('$'+this.model.get('amount'));
@@ -86,7 +89,7 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   withdraw: function(e){
     e.preventDefault();
-    this.model.del();
+    this.model.destroy();
   },
   remove: function(){
     $('#offer-'+this.model._id).remove();

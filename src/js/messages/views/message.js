@@ -22,7 +22,7 @@ hs.messages.views.Message = hs.views.View.extend({
       this.nameChange();
   },
   messageChange: function(){
-    this.$('.message').text(this.model.get('message'));
+    this.$('.messageBody').text(this.model.get('message'));
   },
   avatarChange: function(){
     this.$('.avatar').attr('src', this.creator.getAvatarUrl(30));

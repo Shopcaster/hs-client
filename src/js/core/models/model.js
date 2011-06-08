@@ -71,6 +71,21 @@ hs.models.Model = Backbone.Model.extend({
 
     return value;
   },
+  with: function(field, clbk, context){
+    // use withRel is field is a relationship and it needs to span
+    if (/\./.test('field'))
+      if (this.fields[field] instanceof hs.models.fields.ModelField)
+        return this.withRel(field, clbk, context);
+      else
+        throw(new Error('Model.with can only span ModelField relationships'));
+
+    if (this.get(field))
+      clbk.call(context, this.get(field))
+    else
+      this.once('change:'+field, function(){
+        clbk.call(context, this.get(field));
+      }, this);
+  },
   withRel: function(rel, clbk, context){
     var rels = rel.split('.').reverse();
     var parent = this;

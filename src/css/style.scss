@@ -220,7 +220,7 @@ header{
             }
         }
         #listing-inquiries, #listing-offers{
-            background-color:$grey;
+
         }
         #listing-inquiries{
             min-height:40px;
@@ -354,17 +354,57 @@ header{
 
                 .offer{
                     position:relative;
-                    height:30px;
-                    width:340px;
+                    height:50px;
+                    width:360px;
                     margin-left:-10px;
-                    border-top:1px solid $grey - #111;
-                    padding:10px;
+                    z-index:3;
 
-                    .amount, .meta, .action{
-                        height: 40px;
+                    .offerData{
+                        position:absolute;
+                        top:0;left:0;
+                        height:30px;
+                        width:340px;
+                        border-top:1px solid $grey - #111;
+                        padding:10px;
+                        z-index:1;
+
+                        .amount{
+                            position:absolute;
+                            right:10px;top:10px;
+                            font-size:26px;
+                            font-weight:bold;
+                            line-height:30px;
+                            vertical-align:middle;
+                        }
+                        .action{
+                            margin-left:35px;
+                            font-size:12px;
+                        }
+
+                        .clicky{
+                            display:none;
+                            position:absolute;
+                            top:2px;left:2px;
+                            height:15px;width:15px;
+                            @include rounded(3px);
+
+                            font-size:12px;
+                            line-height:12px;
+                            font-weight:bold;
+                            color:$grey - #666;
+                            text-shadow: $white 0 -1px 1px;
+                            text-align:center;
+                            vertical-align:middle;
+
+                            @include left-arrow-sprite();
+                            border:0px solid $grey - #111;
+                            background-color: $grey - #111;
+                            @include box-shadow((inset 0 -1px 1px $grey + #222,
+                                                 inset 0 1px 1px $grey - #333));
+                        }
                     }
+
                     .meta{
-                        float:left;
                         position:relative;
                         margin-left:35px;
                         img{
@@ -378,53 +418,59 @@ header{
                             font-size:10px;
                         }
                     }
-                    .amount{
-                        float:right;
-                        margin-left:5px;
-                        font-size:26px;
-                        font-weight:bold;
-                        line-height:30px;
-                        vertical-align:middle;
+                    .offerData.selected{
+                        z-index:3;
+                        background-color:#EAF1F6/*$blue + #c8c8c8*/;
+                        border:1px solid $grey - #444;
+                        border-left:none;
+                        border-bottom:none;
+                        @include box-shadow(2px 1px 2px $black + #333);
+
+                        .clicky{display:none !important;}
                     }
-                    .action{
-                        float:right;
+                    .conversation{
+                        position:absolute;
+                        width:380px; min-height:45px;
+                        left:-401px; top:0px;
+                        padding:10px;
+                        z-index:2;
+
+                        background-color:#EAF1F6/*$blue + #cacaca*/;
+                        border:1px solid $grey - #444;
+
+                        @include box-shadow(0 2px 4px $black + #333);
+                        @include dark-button($blue - #444, '.submit');
+                        @include rounded();
+                        @include rounded-top-right(0px);
+
+                        .messageForm{
+                            margin-bottom:5px;
+
+                            input[type=text]{
+                                width:290px;
+                            }
+                            input[type=submit]{
+                                width:70px;
+                                margin-top:1px;
+                                padding: 3px 15px 5px !important;
+                                float:right;
+                            }
+                        }
+
+                        .message{
+                            height:30px;
+                            padding:10px 0;
+                            border-bottom:1px solid $grey;
+
+                            .messageBody{
+                                margin-left:35px;
+                            }
+                        }
                     }
                 }
-                .offer:hover{
-                    background-color:$grey - #111;
-                }
-                .conversation{
-                    position:absolute;
-                    width:390px;
-                    left:-400px;
-                    top:0;
-                    padding:5px;
-                    z-index:3;
-
-                    background-color:$grey - #111;
-                    border:1px solid $grey - #444;
-
-                    @include box-shadow(0 2px 4px $black + #333);
-                    @include dark-button($blue - #444, '.submit');
-                    @include rounded();
-
-                    .messageForm{
-                        margin-bottom:10px;
-
-                        input[type=text]{
-                            width:300px;
-                        }
-                        input[type=submit]{
-                            width:70px;
-                            margin-top:1px;
-                            padding: 3px 15px 5px !important;
-                            float:right;
-                        }
-                    }
-
-                    .message{
-                        min-height:40px;
-                    }
+                .offer.hasMessages:hover{
+                    background-color:$grey + #111;
+                    z-index:2;
                 }
             }
         }

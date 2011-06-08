@@ -8,6 +8,7 @@ hs.listings.models = new Object();
 hs.listings.models.Listing = hs.models.Model.extend({
   key: 'listing',
   fields: _.extend({
+    sold: new hs.models.fields.BooleanField(),
     photo: new hs.models.fields.StringField(),
     description: new hs.models.fields.StringField(),
     latitude: new hs.models.fields.FloatField(),

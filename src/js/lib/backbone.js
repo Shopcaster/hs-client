@@ -256,7 +256,8 @@
       var model = this;
       var success = function(resp) {
         if (!model.set(model.parse(resp), options)) return false;
-        if (options.success) options.success(model, resp);
+        if (options.success)
+          options.success.call(options.context, model, resp);
       };
       var error = wrapError(options.error, model, options);
       (this.sync || Backbone.sync)('read', this, success, error);
@@ -272,7 +273,8 @@
       var model = this;
       var success = function(resp) {
         if (!model.set(model.parse(resp), options)) return false;
-        if (options.success) options.success(model, resp);
+        if (options.success)
+          options.success.call(options.context, model, resp);
       };
       var error = wrapError(options.error, model, options);
       var method = this.isNew() ? 'create' : 'update';
@@ -287,7 +289,8 @@
       var model = this;
       var success = function(resp) {
         if (model.collection) model.collection.remove(model);
-        if (options.success) options.success(model, resp);
+        if (options.success)
+          options.success.call(options.context, model, resp);
       };
       var error = wrapError(options.error, model, options);
       (this.sync || Backbone.sync)('delete', this, success, error);
@@ -494,7 +497,8 @@
       var collection = this;
       var success = function(resp) {
         collection.refresh(collection.parse(resp));
-        if (options.success) options.success(collection, resp);
+        if (options.success)
+          options.success.call(options.context, model, resp);
       };
       var error = wrapError(options.error, collection, options);
       (this.sync || Backbone.sync)('read', this, success, error);
@@ -1035,7 +1039,7 @@
   var wrapError = function(onError, model, options) {
     return function(resp) {
       if (onError) {
-        onError(model, resp);
+        onError.call(options.context, model, resp);
       } else {
         model.trigger('error', model, resp, options);
       }

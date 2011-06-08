@@ -13,8 +13,10 @@ hs.offers.Offer = hs.models.Model.extend({
       return new hs.models.fields.CollectionField(hs.messages.MessageSet)
     }
   }, hs.models.Model.prototype.fields),
-  accept: function(){
-    hs.log('TODO: accept offer is a noop');
+  accept: function(clbk, context){
+    this.with('listing', function(listing){
+      listing.save({sold: true}, {success: clbk, error: clbk, context: context});
+    }, this);
   }
 });
 
