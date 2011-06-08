@@ -8,8 +8,7 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     'change:created': 'createdChange'
   },
   events: _.extend({
-    'click .withdraw': 'withdraw',
-    'click .accept': 'accept'
+    //'click .answer': 'answer',
   }, hs.views.View.prototype.events),
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
@@ -40,13 +39,11 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     this.controlsChange();
   },
   controlsChange: function(){
-    if (this.owned){
-      this.$('.action').html('<a href="#" class="button withdraw">Withdraw</a>');
-    }else if (this.listingOwner){
-      this.$('.action').html('<a href="#" class="button accept">Accept</a>');
-    }else{
-      this.$('.action').html('');
-    }
+    //if (!this.listingOwner){
+    //  this.$('.action').html('<a href="#" class="button answer">Answer</a>');
+    //}else{
+    //  this.$('.action').html('');
+    //}
   },
   questionChange: function(){
     this.$('.question').text(this.model.get('question'));
@@ -65,7 +62,7 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     e.preventDefault();
     this.model.accept();
   },
-  withdraw: function(e){
+  answer: function(e){
     e.preventDefault();
     this.model.del();
   },
