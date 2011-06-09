@@ -32,18 +32,22 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
       var userId = hs.auth.getUser()._id;
       if (this.creator._id == userId){
         this.owned = true;
-      }else if (this.model.get('listing').get('creator')._id == userId){
-        this.listingOwned = true;
       }
+      this.model.withRel('listing.creator', function(listingCreator){
+        if (listingCreator._id == userId){
+          this.listingOwned = true;
+          this.controlsChange();
+        }
+        }, this);
     }
     this.controlsChange();
   },
   controlsChange: function(){
-    //if (!this.listingOwner){
-    //  this.$('.action').html('<a href="#" class="button answer">Answer</a>');
-    //}else{
-    //  this.$('.action').html('');
-    //}
+    if (this.owned){
+      // TODO: edit question
+    }else if (this.listingOwned){
+      this.el.addClass('canAnswer');
+    }
   },
   questionChange: function(){
     this.$('.question').text(this.model.get('question'));

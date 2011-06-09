@@ -238,13 +238,14 @@ header{
         }
         #listing-inquiries{
             padding:0;
+            width:580px;
 
             #inquiryFormWrap{
                 position:relative;
                 padding:10px;
 
                 input{
-                    width:525px;
+                    width:545px;
                 }
                 #questionForm{
                     top:5px;left:5px;
@@ -256,10 +257,17 @@ header{
             .inquiry{
                 min-height:30px;
                 padding:10px;
-                border-bottom:1px solid $grey;
+                border-top:1px solid $grey - #111;
 
                 .question{
                     margin-left:35px;
+                }
+            }
+            .inquiry.canAnswer:hover{
+                background-color:$grey + #111;
+                z-index:2;
+                .clicky{
+                    display:block;
                 }
             }
         }
@@ -314,28 +322,6 @@ header{
                         .action{
                             margin-left:35px;
                             font-size:12px;
-                        }
-
-                        .clicky{
-                            display:none;
-                            position:absolute;
-                            top:2px;left:2px;
-                            height:15px;width:15px;
-                            @include rounded(3px);
-
-                            font-size:12px;
-                            line-height:12px;
-                            font-weight:bold;
-                            color:$grey - #666;
-                            text-shadow: $white 0 -1px 1px;
-                            text-align:center;
-                            vertical-align:middle;
-
-                            @include left-arrow-sprite();
-                            border:0px solid $grey - #111;
-                            background-color: $grey - #111;
-                            @include box-shadow((inset 0 -1px 1px $grey + #222,
-                                                 inset 0 1px 1px $grey - #333));
                         }
                     }
 
@@ -523,6 +509,29 @@ footer{
     background-color:transparentize($black, 0.2);
     @include rounded();
     z-index:2;
+}
+
+
+.clicky{
+    display:none;
+    position:absolute;
+    top:2px;left:2px;
+    height:15px;width:15px;
+    @include rounded(3px);
+
+    font-size:12px;
+    line-height:12px;
+    font-weight:bold;
+    color:$grey - #666;
+    text-shadow: $white 0 -1px 1px;
+    text-align:center;
+    vertical-align:middle;
+
+    @include left-arrow-sprite();
+    border:0px solid $grey - #111;
+    background-color: $grey - #111;
+    @include box-shadow((inset 0 -1px 1px $grey + #222,
+                         inset 0 1px 1px $grey - #333));
 }
 
 @import "mobile_tablet";
