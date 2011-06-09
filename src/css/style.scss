@@ -221,8 +221,47 @@ header{
         }
         #listing-inquiries, #listing-offers{
 
+            .meta{
+                position:relative;
+                margin-left:35px;
+                img{
+                    position:absolute;
+                    top:0;left:-35px;
+                }
+                .name {
+                    font-weight:bold;
+                }
+                .created {
+                    font-size:10px;
+                }
+            }
         }
         #listing-inquiries{
+            padding:0;
+
+            #inquiryFormWrap{
+                position:relative;
+                padding:10px;
+
+                input{
+                    width:525px;
+                }
+                #questionForm{
+                    top:5px;left:5px;
+                    width:540px;
+                    z-index:3;
+                }
+            }
+
+            .inquiry{
+                min-height:30px;
+                padding:10px;
+                border-bottom:1px solid $grey;
+
+                .question{
+                    margin-left:35px;
+                }
+            }
         }
         #listing-offers{
             min-height:40px;
@@ -242,27 +281,7 @@ header{
                 }
                 #offerForm{
                     display:none;
-                    position:absolute;
                     top:-5px;left:-5px;
-                    padding:5px;
-
-                    background-color:$grey - #111;
-                    border:1px solid $grey - #444;
-
-                    @include box-shadow(0 2px 4px $black + #333);
-                    @include dark-button($blue - #444, '.submit');
-                    @include rounded();
-
-                    input{
-                        margin-bottom:5px;
-                    }
-                    .submit{
-                        padding:3px 10px 4px !important;
-                        width:77px;
-                        color:$white !important;
-                        margin-bottom:0;
-                        float:right;
-                    }
                 }
             }
             #offerList{
@@ -320,20 +339,6 @@ header{
                         }
                     }
 
-                    .meta{
-                        position:relative;
-                        margin-left:35px;
-                        img{
-                            position:absolute;
-                            top:0;left:-35px;
-                        }
-                        .name {
-                            font-weight:bold;
-                        }
-                        .created {
-                            font-size:10px;
-                        }
-                    }
                     .offerData.selected{
                         z-index:3;
                         background-color:#EAF1F6/*$blue + #c8c8c8*/;
@@ -478,6 +483,29 @@ footer{
     }
     a.cancel-password{
         float:left;
+    }
+}
+
+.formDialog{
+    position:absolute;
+    padding:5px;
+
+    background-color:$grey - #111;
+    border:1px solid $grey - #444;
+
+    @include box-shadow(0 2px 4px $black + #333);
+    @include dark-button($blue - #444, '.submit');
+    @include rounded();
+
+    input{
+        margin-bottom:5px;
+    }
+    .submit{
+        padding:3px 10px 4px !important;
+        width:77px !important;
+        color:$white !important;
+        margin-bottom:0;
+        float:right;
     }
 }
 

@@ -45,13 +45,12 @@ hs.inquiries.views.AnswerForm = hs.auth.views.AuthForm.extend({
   initialize: function(opts){
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     this.listing = opts.listing;
-    this.model = new hs.inquiries.Inquiry({
-      listing: this.listing.id
-    });
+    this.model = new hs.inquiries.Inquiry();
   },
   submit: function(){
     this.model.set({
-      question: this.get('answer')
+      question: this.get('answer'),
+      listing: this.listing
     });
     this.model.save();
   }
