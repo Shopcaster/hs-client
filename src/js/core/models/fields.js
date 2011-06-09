@@ -106,9 +106,8 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
 
     if (model._id)
       this.sub(model, fieldname);
-    else{
+    else
       model.once('change:_id', _.bind(this.sub, this, model, fieldname));
-    }
 
     if (_.isUndefined(this.foreignField))
       this.foreignField = model.key;
@@ -116,8 +115,11 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     model.sets = model.sets || {};
     model.sets[fieldname] = new this.SetClass();
 
-    model.sets[fieldname].bind('change',
-        _.bind(model.trigger, model, 'change:'+fieldname));
+    model.sets[fieldname].bind('change', function(){
+      // hs.log('change trigger');
+      _.bind(model.trigger, model, 'change:'+fieldname)();
+    }, this);
+
   },
   set: function(value, model, fieldname){
     if (value instanceof this.SetClass){

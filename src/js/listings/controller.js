@@ -10,8 +10,9 @@ hs.regController('listings', hs.Controller.extend({
   },
   listings: function(){
     hs.page.finish();
-    hs.page = new hs.listings.views.List();
-    hs.page.render();
+    hs.auth.logout();
+    // hs.page = new hs.listings.views.List();
+    // hs.page.render();
   },
   listing: function(id){
     hs.page.finish();

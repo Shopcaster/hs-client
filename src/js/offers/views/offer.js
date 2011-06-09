@@ -5,7 +5,8 @@ hs.offers.views.Offer = hs.views.View.extend({
   modelEvents: {
     'change:amount': 'amountChange',
     'change:creator': 'creatorChange',
-    'change:created': 'createdChange'
+    'change:created': 'createdChange',
+    'change:messages': 'messagesChange'
   },
   events: _.extend({
     'click .withdraw': 'withdraw',
@@ -69,6 +70,12 @@ hs.offers.views.Offer = hs.views.View.extend({
         appendTo: this.el
       });
     }
+  },
+  messagesChange: function(){
+    // hs.log('animating');
+    this.el.animate({backgroundColor: 'yellow'}, 250, function(){
+      $(this).animate({backgroundColor: 'white'}, 250);
+    });
   },
   amountChange: function(){
     this.$('.amount').text('$'+this.model.get('amount'));
