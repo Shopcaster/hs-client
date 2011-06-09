@@ -230,7 +230,7 @@ header{
 
             #offerFormWrap{
                 position:relative;
-                z-index:2;
+                z-index:4;
 
                 input{
                     width:325px;
@@ -346,9 +346,9 @@ header{
                     }
                     .conversation{
                         position:absolute;
-                        width:380px; min-height:45px;
+                        width:400px; min-height:45px;
                         left:-401px; top:0px;
-                        padding:10px;
+                        padding:0px;
                         z-index:2;
 
                         background-color:#EAF1F6/*$blue + #cacaca*/;
@@ -361,6 +361,7 @@ header{
 
                         .messageForm{
                             margin-bottom:5px;
+                            padding:10px;
 
                             input[type=text]{
                                 width:290px;
@@ -374,8 +375,8 @@ header{
                         }
 
                         .message{
-                            height:30px;
-                            padding:10px 0;
+                            min-height:30px;
+                            padding:10px;
                             border-bottom:1px solid $grey;
 
                             .messageBody{

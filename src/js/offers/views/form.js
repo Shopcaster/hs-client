@@ -38,6 +38,7 @@ hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).exte
       amount: parseFloat(this.get('amount').replace('$', ''))
     });
     this.model.save();
+    this.blur();
     this.clear();
     this.model = new hs.offers.Offer();
   }

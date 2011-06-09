@@ -11,23 +11,24 @@
 
   $(function(){
     var init = function(){
+      hs.log('init')
       initFired = true;
       for (var i=0, len=initStack.length; i<len; i++)
         initStack[i]();
     }
 
-    // auto-load new application cache
-    if (typeof window.applicationCache != 'undefined'){
-      window.applicationCache.addEventListener('updateready', function(e) {
-        if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-          hs.loading();
-          window.applicationCache.swapCache();
-          window.location.reload();
-        }
-      }, false);
-      window.applicationCache.addEventListener('noupdate', init, false);
-    }else{
-      init();
-    }
+    init();
+
+    window.applicationCache.addEventListener('updateready', function(e) {
+      if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+        window.applicationCache.swapCache();
+        window.location.reload();
+      }
+    }, false);
+    // if (window.noupdate === false){
+    //   window.onNoUpdate = init;
+    // }else{
+    //   init();
+    // }
   });
 })();

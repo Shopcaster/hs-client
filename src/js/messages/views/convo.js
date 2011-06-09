@@ -22,13 +22,14 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
   renderMessages: function(){
     if (!this.rendered) return;
     var newMessages = this.model.get('messages');
+    newMessages.sort();
     var newMessageIds = [];
     // add new messages
     newMessages.each(function(message, i){
       newMessageIds.push(message._id);
       if (_.isUndefined(this.messageViews[message._id])){
         this.messageViews[message._id] = new hs.messages.views.Message({
-          appendTo: this.$('.messageList'),
+          prependTo: this.$('.messageList'),
           model: message
         });
       }

@@ -17,4 +17,10 @@ hs.messages.Message = hs.models.Model.extend({
 
 hs.messages.MessageSet = hs.models.ModelSet.extend({
   model: hs.messages.Message,
+  comparator: function(message){
+    if (message.get('created'))
+      return message.get('created').getTime();
+    else
+      return 1;
+  }
 });

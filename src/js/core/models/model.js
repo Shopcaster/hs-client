@@ -71,7 +71,7 @@ hs.models.Model = Backbone.Model.extend({
 
     return value;
   },
-  with: function(field, clbk, context){
+  withField: function(field, clbk, context){
     // use withRel is field is a relationship and it needs to span
     if (/\./.test('field'))
       if (this.fields[field] instanceof hs.models.fields.ModelField)

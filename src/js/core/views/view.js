@@ -27,16 +27,20 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
   _configure: function(){
     Backbone.View.prototype._configure.apply(this, arguments);
     if (this.options.appendTo) this.appendTo = this.options.appendTo;
+    if (this.options.prependTo) this.prependTo = this.options.prependTo;
   },
   render: function(){
     // render template
     if (this.el) this.el = $(this.el);
     if (this.template){
       var html = this.renderTmpl();
-      if (this.appendTo){
+      if (this.appendTo || this.prependTo){
         this.el = $(html);
         this.delegateEvents();
-        $(this.appendTo).append(html);
+        if (this.prependTo)
+          this.el.prependTo(this.prependTo);
+        else
+          this.el.appendTo(this.appendTo);
       }else if (this.el){
         this.el.html(html);
       }else{
