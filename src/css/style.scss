@@ -7,7 +7,7 @@ $red: #D31920;
 $green: #009345;
 $blue: #1b75bb;
 $lightBlue: #EAF1F6;
-$yellow: #333;
+$yellow: #fffaaf;
 
 $layout_width: 960px;
 
@@ -272,6 +272,11 @@ header{
                 .question{
                     margin-left:35px;
                 }
+
+                .answer{
+                    margin:5px 0 0;
+                    font-weight:bold;
+                }
             }
 
             .inquiry.canAnswer:hover{
@@ -289,7 +294,8 @@ header{
                 .inquiryData{
                     z-index:1;
                     background-color:$lightBlue !important;
-                    border:1px solid $grey - #444;
+                    border-left:1px solid $grey - #444;
+                    border-right:1px solid $grey - #444;
 
                     @include box-shadow(0 2px 4px $black + #333);
                     /*@include rounded-bottom();*/

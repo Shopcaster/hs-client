@@ -70,7 +70,8 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     this.$('.avatar').attr('src', this.creator.getAvatarUrl(30));
   },
   nameChange: function(){
-    this.$('.name').text(this.creator.get('name'));
+    if (this.creator.get('name'))
+      this.$('.name').text(this.creator.get('name'));
   },
   createdChange: function(){
     var since = _.since(this.model.get('created'));
