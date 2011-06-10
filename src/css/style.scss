@@ -262,16 +262,20 @@ header{
                 min-height:30px;
                 padding:10px;
                 border-top:1px solid $grey - #111;
+                position:relative;
 
                 .question{
                     margin-left:35px;
                 }
+
             }
             .inquiry.canAnswer:hover{
                 background-color:$grey + #111;
                 z-index:2;
                 .clicky{
                     display:block;
+                    bottom:2px;right:2px;
+                    @include down-arrow-sprite();
                 }
             }
         }
@@ -300,6 +304,7 @@ header{
                 margin-top:40px;
 
                 .offer{
+                    background-color:$white;
                     position:relative;
                     height:50px;
                     width:360px;
@@ -326,6 +331,10 @@ header{
                         .action{
                             margin-left:35px;
                             font-size:12px;
+                        }
+                        .clicky{
+                            @include left-arrow-sprite();
+                            top:2px;left:2px;
                         }
                     }
 
@@ -519,7 +528,6 @@ footer{
 .clicky{
     display:none;
     position:absolute;
-    top:2px;left:2px;
     height:15px;width:15px;
     @include rounded(3px);
 
@@ -531,7 +539,6 @@ footer{
     text-align:center;
     vertical-align:middle;
 
-    @include left-arrow-sprite();
     border:0px solid $grey - #111;
     background-color: $grey - #111;
     @include box-shadow((inset 0 -1px 1px $grey + #222,

@@ -9,21 +9,16 @@ hs.auth.views = new Object();
 
 hs.auth.views.Login = hs.views.View.extend({
   events: {
-    'click .login': 'login',
     'click .logout': 'logout'
   },
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
 
-    hs.auth.bind('change:isAuthenticated', _.bind(this.authChange, this));
+    hs.auth.bind('change:isAuthenticated', this.authChange, this);
     this.authChange(hs.auth.isAuthenticated());
 
     this.settingsForm = new hs.auth.SettingsForm();
-  },
-  login: function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    this.loginForm.toggle();
+    this.loginForm = new hs.auth.LoginForm();
   },
   logout: function(e){
     e.preventDefault();

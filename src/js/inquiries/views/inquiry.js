@@ -7,15 +7,16 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     'change:creator': 'creatorChange',
     'change:created': 'createdChange'
   },
-  events: _.extend({
-    //'click .answer': 'answer',
-  }, hs.views.View.prototype.events),
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
     if (this.model.get('creator'))
       this.creatorChange();
     if (this.model.get('question'))
       this.questionChange();
+  },
+  render: function(){
+    hs.views.View.prototype.render.apply(this, arguments);
+    this.initAnswer();
   },
   creatorChange: function(){
     this.creator = this.model.get('creator');
@@ -45,8 +46,18 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
   controlsChange: function(){
     if (this.owned){
       // TODO: edit question
-    }else if (this.listingOwned){
-      this.el.addClass('canAnswer');
+    }
+    this.initAnswer();
+  },
+  initAnswer: function(){
+    hs.log('initAnswer', this.listingOwned, this.rendered);
+    if (this.listingOwned && this.rendered){
+      $(this.el).addClass('canAnswer');
+      this.answer = this.answer || new hs.inquiries.views.AnswerForm({
+        model: this.model,
+        focusSelector: '#inquiry-'+this.model._id,
+        appendTo: this.el
+      });
     }
   },
   questionChange: function(){

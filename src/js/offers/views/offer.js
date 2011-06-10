@@ -73,8 +73,8 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   messagesChange: function(){
     // hs.log('animating');
-    this.el.animate({backgroundColor: 'yellow'}, 250, function(){
-      $(this).animate({backgroundColor: 'white'}, 250);
+    this.el.animate({backgroundColor: '#fffaaf'}, 250, function(){
+      $(this).animate({backgroundColor: '#F1F1F2'}, 250);
     });
   },
   amountChange: function(){

@@ -182,12 +182,16 @@
 /* Sprites! */
 @mixin sprite($top: 0px, $left: 0px, $height: 0px, $width: 0px) {
     background-image:url(../img/sprites.png);
-    height:$height;
-    width:$width;
+    background-position: $left $top;
+    height:$height; width:$width;
 }
 
 @mixin left-arrow-sprite() {
     @include sprite(0px, 0px, 15px, 15px);
+}
+
+@mixin down-arrow-sprite() {
+    @include sprite(-15px, 0px, 15px, 15px);
 }
 
 
