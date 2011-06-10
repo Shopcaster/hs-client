@@ -41,16 +41,18 @@ hs.listings.models.Listing = hs.models.Model.extend({
       return Backbone.sync.apply(this, arguments);
 
     var url = conf.server.protocol+'://'+conf.server.host+':'+conf.server.port
-          +'/iapi/listings/';
+          +'/iapi/listings';
 
-    var data = this.toJSON();
+    var data = model.toJSON();
     data.password = hs.auth.pass;
     data.email = hs.auth.email;
     $.post(url, data, function(resp, status){
-      if (status == 200)
+      if (status == 'success') {
+        model.set({_id: resp}, {raw: true});
         success();
-      else
+      } else {
         error();
+      }
     });
   }
 });
