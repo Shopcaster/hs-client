@@ -4,6 +4,7 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
   template: 'inquiry',
   modelEvents: {
     'change:question': 'questionChange',
+    'change:answer': 'answerChange',
     'change:creator': 'creatorChange',
     'change:created': 'createdChange'
   },
@@ -50,10 +51,10 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     this.initAnswer();
   },
   initAnswer: function(){
-    hs.log('initAnswer', this.listingOwned, this.rendered);
     if (this.listingOwned && this.rendered){
-      $(this.el).addClass('canAnswer');
-      this.answer = this.answer || new hs.inquiries.views.AnswerForm({
+      this.el.addClass('canAnswer');
+      hs.log('')
+      this.answerForm = this.answerForm || new hs.inquiries.views.AnswerForm({
         model: this.model,
         focusSelector: '#inquiry-'+this.model._id,
         appendTo: this.el
@@ -62,6 +63,9 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
   },
   questionChange: function(){
     this.$('.question').text(this.model.get('question'));
+  },
+  answerChange: function(){
+    this.$('.answer').text(this.model.get('answer'));
   },
   avatarChange: function(){
     this.$('.avatar').attr('src', this.creator.getAvatarUrl(30));

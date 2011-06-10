@@ -6,6 +6,7 @@ $black: #0A0A0A;
 $red: #D31920;
 $green: #009345;
 $blue: #1b75bb;
+$lightBlue: #EAF1F6;
 $yellow: #333;
 
 $layout_width: 960px;
@@ -259,23 +260,49 @@ header{
             }
 
             .inquiry{
+                position:relative;
                 min-height:30px;
                 padding:10px;
                 border-top:1px solid $grey - #111;
-                position:relative;
 
                 .question{
                     margin-left:35px;
                 }
-
             }
+
             .inquiry.canAnswer:hover{
                 background-color:$grey + #111;
-                z-index:2;
                 .clicky{
                     display:block;
                     bottom:2px;right:2px;
                     @include down-arrow-sprite();
+                }
+            }
+
+            .inquiry.selected{
+                background-color:$lightBlue !important;
+                border:1px solid $grey - #444;
+
+                @include box-shadow(0 2px 4px $black + #333);
+                @include dark-button($blue - #444, '.submit');
+                /*@include rounded-bottom();*/
+
+                .clicky{display:none !important;}
+
+                .answerForm{
+                    padding:10px 0;
+                    position:relative;
+
+                    input[type=text]{
+                        width:465px;
+                    }
+                    .submit{
+                        width:70px;
+                        padding: 3px 15px 5px !important;
+                        position:absolute;
+                        right:0;
+                        top:12px;
+                    }
                 }
             }
         }
@@ -340,7 +367,7 @@ header{
 
                     .offerData.selected{
                         z-index:3;
-                        background-color:#EAF1F6/*$blue + #c8c8c8*/;
+                        background-color:$lightBlue;
                         border:1px solid $grey - #444;
                         border-left:none;
                         border-bottom:none;
@@ -355,7 +382,7 @@ header{
                         padding:0px;
                         z-index:2;
 
-                        background-color:#EAF1F6/*$blue + #cacaca*/;
+                        background-color:$lightBlue;
                         border:1px solid $grey - #444;
 
                         @include box-shadow(0 2px 4px $black + #333);

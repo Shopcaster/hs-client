@@ -16,10 +16,10 @@ hs.views.mixins.Dialog = {
     this.dialogSetBlur();
   },
   dialogSetMousedown: function(){
-    $(this.focusSelector).one('mousedown', _.bind(this.focus, this));
-    $(this.focusSelector).click(function(e){
-      e.preventDefault();
-    });
+    hs.log('dialogSetMousedown', this.focusSelector);
+    $(this.focusSelector)
+      .one('mousedown', _.bind(this.focus, this))
+      .click(function(e){e.preventDefault()});
   },
   dialogSetBlur: function(){
     $('body').click(this.blur);

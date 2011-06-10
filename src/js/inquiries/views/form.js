@@ -40,5 +40,15 @@ hs.inquiries.views.AnswerForm = hs.views.Form.mixin(hs.views.mixins.Dialog).exte
     this.model.save({
       answer: this.get('answer')
     });
+    this.clear();
+    this.blur();
+  },
+  focus: function(){
+    hs.views.mixins.Dialog.focus.apply(this, arguments);
+    $('#inquiry-'+this.model._id).addClass('selected');
+  },
+  blur: function(){
+    hs.views.mixins.Dialog.blur.apply(this, arguments);
+    $('#inquiry-'+this.model._id).removeClass('selected');
   }
 });
