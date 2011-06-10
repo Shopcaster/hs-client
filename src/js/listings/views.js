@@ -74,10 +74,18 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     }
   },
   updateBestOffer: function(){
-    this.model.bestOffer(_.bind(function(best){
-      if (best) this.$('.best-offer .listing-obi-value')
-            .text('$'+best.get('amount'));
-    }, this));
+    this.model.bestOffer(function(best){
+      if (best){
+        var node = this.$('.best-offer .listing-obi-value');
+
+        node.text('$'+best.get('amount'));
+
+        node.animate({color: '#828200'}, 250, function(){
+          node.animate({color: '#5E5E5E'}, 250);
+        });
+      }
+
+    }, this);
   },
   updateSold: function(){
     if (this.model.get('sold')){

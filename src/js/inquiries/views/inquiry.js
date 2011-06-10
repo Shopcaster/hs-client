@@ -53,7 +53,6 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
   initAnswer: function(){
     if (this.listingOwned && this.rendered){
       this.el.addClass('canAnswer');
-      hs.log('')
       this.answerForm = this.answerForm || new hs.inquiries.views.AnswerForm({
         model: this.model,
         focusSelector: '#inquiry-'+this.model._id,
@@ -71,7 +70,8 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     this.$('.avatar').attr('src', this.creator.getAvatarUrl(30));
   },
   nameChange: function(){
-    this.$('.name').text(this.creator.get('name'));
+    if (this.creator.get('name'))
+      this.$('.name').text(this.creator.get('name'));
   },
   createdChange: function(){
     var since = _.since(this.model.get('created'));

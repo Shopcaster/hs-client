@@ -34,7 +34,7 @@ hs.inquiries.views.AnswerForm = hs.views.Form.mixin(hs.views.mixins.Dialog).exte
   fields: [{
     'name': 'answer',
     'type': 'text',
-    'placeholder': 'Answer the question'
+    'placeholder': 'Post an Answer'
   }].concat(hs.views.Form.prototype.fields),
   submit: function(){
     this.model.save({

@@ -21,12 +21,12 @@ hs.listings.models.Listing = hs.models.Model.extend({
       return new hs.models.fields.CollectionField(hs.inquiries.InquirySet)
     },
   }, hs.models.Model.prototype.fields),
-  bestOffer: function(clbk){
+  bestOffer: function(clbk, context){
     var topAmount = 0, topOffer = null;
     var offers = this.get('offers');
     var done = _.after(offers.length, function(){
       // hs.log('returning');
-      clbk(topOffer);
+      clbk.call(context, topOffer);
     });
     offers.each(function(offer){
       if (parseInt(offer.get('amount')) > topAmount){
