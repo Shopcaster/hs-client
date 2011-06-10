@@ -46,7 +46,9 @@ hs.listings.models.Listing = hs.models.Model.extend({
     var data = model.toJSON();
     data.password = hs.auth.pass;
     data.email = hs.auth.email;
+    hs.loading();
     $.post(url, data, function(resp, status){
+      hs.loaded();
       if (status == 'success') {
         model.set({_id: resp}, {raw: true});
         success();
