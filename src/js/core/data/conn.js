@@ -69,7 +69,7 @@ hs.con = {
   },
   _connected: function(){
     hs.log('connected to server');
-    hs.loaded();
+    hs.resetLoading();
     this._isConnected = true;
     this.trigger('connected');
   },

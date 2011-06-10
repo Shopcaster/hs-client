@@ -20,4 +20,9 @@
     loading--;
     setLoading();
   }
+
+  hs.resetLoading = function(){
+    loading = 0;
+    setLoading();
+  }
 })();
