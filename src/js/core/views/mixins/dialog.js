@@ -16,7 +16,6 @@ hs.views.mixins.Dialog = {
     this.dialogSetBlur();
   },
   dialogSetMousedown: function(){
-    hs.log('dialogSetMousedown', this.focusSelector);
     $(this.focusSelector)
       .one('mousedown', _.bind(this.focus, this))
       .click(function(e){e.preventDefault()});
@@ -29,12 +28,11 @@ hs.views.mixins.Dialog = {
   focus: function(){
     this.blurAllElse();
     if (!this.rendered) this.render();
-    this.el.addClass('open').fadeIn(200);
+    this.el.addClass('open').show();
     this.el.show();
   },
   blur: function(){
-    this.el.fadeOut(200).removeClass('open');
-    this.el.hide();
+    this.el.hide().removeClass('open');
     this.dialogSetMousedown();
   },
   blurAllElse: function(){

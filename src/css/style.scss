@@ -260,10 +260,14 @@ header{
             }
 
             .inquiry{
+                z-index:1;
                 position:relative;
                 min-height:30px;
-                padding:10px;
-                border-top:1px solid $grey - #111;
+
+                .inquiryData{
+                    padding:10px;
+                    border-top:1px solid $grey - #111;
+                }
 
                 .question{
                     margin-left:35px;
@@ -280,18 +284,32 @@ header{
             }
 
             .inquiry.selected{
-                background-color:$lightBlue !important;
-                border:1px solid $grey - #444;
+                z-index:2;
 
-                @include box-shadow(0 2px 4px $black + #333);
-                @include dark-button($blue - #444, '.submit');
-                /*@include rounded-bottom();*/
+                .inquiryData{
+                    z-index:1;
+                    background-color:$lightBlue !important;
+                    border:1px solid $grey - #444;
 
-                .clicky{display:none !important;}
+                    @include box-shadow(0 2px 4px $black + #333);
+                    /*@include rounded-bottom();*/
+
+                    .clicky{display:none !important;}
+                }
 
                 .answerForm{
-                    padding:10px 0;
-                    position:relative;
+                    z-index:2;
+                    padding:10px;
+                    position:absolute;
+                    bottom:-50px;left:0;
+                    height:30px;width:558px;
+
+                    background-color:$lightBlue !important;
+                    border:1px solid $grey - #444;
+                    border-top:none;
+                    @include box-shadow(0 2px 4px $black + #333);
+
+                    @include dark-button($blue - #444, '.submit');
 
                     input[type=text]{
                         width:465px;
@@ -300,7 +318,7 @@ header{
                         width:70px;
                         padding: 3px 15px 5px !important;
                         position:absolute;
-                        right:0;
+                        right:10px;
                         top:12px;
                     }
                 }
@@ -331,12 +349,13 @@ header{
                 margin-top:40px;
 
                 .offer{
-                    background-color:$white;
                     position:relative;
                     height:50px;
                     width:360px;
                     margin-left:-10px;
-                    z-index:3;
+                    z-index:1;
+
+                    background-color:$white;
 
                     .offerData{
                         position:absolute;
@@ -365,7 +384,15 @@ header{
                         }
                     }
 
-                    .offerData.selected{
+                }
+                .offer.hasMessages:hover{
+                    background-color:$grey + #111 !important;
+                    .clicky{display:block;}
+                }
+                .offer.selected{
+                    z-index:2;
+
+                    .offerData{
                         z-index:3;
                         background-color:$lightBlue;
                         border:1px solid $grey - #444;
@@ -414,13 +441,6 @@ header{
                                 margin-left:35px;
                             }
                         }
-                    }
-                }
-                .offer.hasMessages:hover{
-                    background-color:$grey + #111;
-                    z-index:2;
-                    .clicky{
-                        display:block;
                     }
                 }
             }

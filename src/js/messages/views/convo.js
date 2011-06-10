@@ -47,10 +47,10 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
   focus: function(){
     hs.views.mixins.Dialog.focus.apply(this, arguments);
     this.$('input.messageField').focus();
-    $('#offer-'+this.model._id+' .offerData').addClass('selected');
+    $('#offer-'+this.model._id).addClass('selected');
   },
   blur: function(){
     hs.views.mixins.Dialog.blur.apply(this, arguments);
-    $('#offer-'+this.model._id+' .offerData').removeClass('selected');
+    $('#offer-'+this.model._id).removeClass('selected');
   }
 });
