@@ -35,6 +35,13 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
       model: this.model
     });
     this.inquiries.render();
+
+    this.$('.twitter').html('<a href="http://twitter.com/share" '
+        +'class="twitter-share-button" data-text="'
+          +'Check out this awesome item for sale on Hipsell. '
+          +'Snap it up before it\'s too late.'
+        +'" data-count="horizontal" data-via="hipsellapp">Tweet</a>'
+        +'<script src="http://platform.twitter.com/widgets.js"></script>');
   },
   updatePhoto: function(){
     if (this.model.get('photo')){
