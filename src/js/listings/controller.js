@@ -9,8 +9,8 @@ hs.regController('listings', hs.Controller.extend({
     '': 'listings'
   },
   listings: function(){
-    hs.page.finish();
-    hs.auth.logout();
+    // hs.page.finish();
+    // hs.auth.logout();
     // hs.page = new hs.listings.views.List();
     // hs.page.render();
   },
