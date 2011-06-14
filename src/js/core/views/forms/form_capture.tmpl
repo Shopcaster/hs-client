@@ -1,7 +1,16 @@
 
 <div id="{{name}}" class="{{class}} image_capture clearfix"
         {{#hide}}style="display:none"{{/hide}}>
+
     <img />
+
     <span class="placeheld">{{placeholder}}</span>
-    <a href="#" class="take button">Take</a>
+
+    {{^noCam}}
+        <a href="#" class="take button">Take</a>
+    {{/noCam}}
+
+    {{#noCam}}
+        <input type="file" accept="image/*" class="selectFile">
+    {{/noCam}}
 </div>

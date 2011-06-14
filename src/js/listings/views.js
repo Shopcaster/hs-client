@@ -131,7 +131,7 @@ hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     $('#newListing').parent().addClass('active');
     this.newBind = _.bind(this._submit, this);
-    $('#newListing').click(this.newBind);
+    $('#newListing').css({display: 'block'}).click(this.newBind);
     this.bind('change:price', _.bind(function(){
       this.set('price', this.get('price').replace('$', ''));
     }, this));
