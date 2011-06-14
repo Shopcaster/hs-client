@@ -50,6 +50,7 @@ hs.listings.models.Listing = hs.models.Model.extend({
     $.post(url, data, function(resp, status){
       hs.loaded();
       if (status == 'success') {
+        model.unset('photo');
         model.set({_id: resp}, {raw: true});
         success();
       } else {
