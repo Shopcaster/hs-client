@@ -61,10 +61,10 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     }
   },
   questionChange: function(){
-    this.$('.question').text(this.model.get('question'));
+    this.$('.question').text('Q: '+this.model.get('question'));
   },
   answerChange: function(){
-    this.$('.answer').text(this.model.get('answer'));
+    this.$('.answer').text('A: '+this.model.get('answer'));
   },
   avatarChange: function(){
     this.$('.avatar').attr('src', this.creator.getAvatarUrl(30));

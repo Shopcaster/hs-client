@@ -1,5 +1,4 @@
-//depends: main.js, auth/tmpl/settingsForm.tmpl, core/views/forms/form.js,
-//         auth/main.js
+//depends: main.js, core/views/forms/form.js, auth/main.js
 
 hs.auth.SettingsForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
   appendTo: $('#top-bar .width'),

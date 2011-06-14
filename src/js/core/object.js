@@ -1,7 +1,7 @@
 //depends: main.js, core/util.js
 
 // Backbone-like extendable base object
-(function(){
+;(function(){
   var ctor = function(){};
   var inherits = function(parent, protoProps, staticProps) {
     var child;
