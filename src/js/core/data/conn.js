@@ -72,6 +72,40 @@ hs.con = {
     hs.resetLoading();
     this._isConnected = true;
     this.trigger('connected');
+
+    // After 20 seconds with zero mouse movement, go offline
+
+    //keeps track of how many times the timeout runs
+    var tickCount = 0;
+    //every time the mouse is moved, reset the tick count
+    var move = function() { tickCount = 0; };
+
+    //this interval runs every second and increments the tickcount.  if
+    //the tickcount ever reaches 20, that means 20 seconds have passed
+    //with no mouse movement, and we should go away/offline
+    var to = setInterval(function() {
+      //not sure if this does 20 or 21 seconds, but not worth
+      //thinking about
+      if (++tickCount == 30) {
+        hs.log('user is away');
+
+        //stop listening on that mousemove event
+        $(document.body).unbind('mousemove');
+        //and bind a new mousemove; as soon as the mouse moves, reconnect
+        $(document.body).mousemove(function() {
+          hs.log('user is no longer away');
+          hs.con.connect();
+
+          $(document.body).unbind('mousemove');
+        });
+
+        //clear this interval
+        clearInterval(to);
+
+        //log out
+        hs.con.disconnect();
+      }
+    }, 1000);
   },
   _recieved: function(msg){
     hs.log('recd:', msg);
