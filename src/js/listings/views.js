@@ -66,6 +66,8 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
       this.$('img.map').attr('src', 'http://maps.google.com/'
           +'maps/api/staticmap?center='+lat+','+lng
           +'&zoom=14&size=340x200&sensor=false');
+      this.$('.mapLink').attr('href', 'http://maps.google.com/?'
+          +'ll='+lat+','+lng+'&z=16')
     }
   },
   updatePrice: function(){
