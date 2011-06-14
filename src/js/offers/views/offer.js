@@ -51,31 +51,49 @@ hs.offers.views.Offer = hs.views.View.extend({
     this.controlsChange();
   },
   controlsChange: function(){
-    if (this.owned){
-      this.$('.action').html('<a href="#" class="withdraw">Withdraw</a>');
-    }else if (this.listingOwned){
-      this.$('.action').html('<a href="#" class="accept">Accept</a>');
-    }else{
-      this.$('.action').html('');
-    }
+
+    if (this.owned && this.$('.withdraw').length == 0)
+      this.$('.actions').append('<a href="javascript:;" class="withdraw">Withdraw</a> ');
+    else if (!this.owned)
+      this.$('.withdraw').remove();
+
+    if (this.listingOwned && this.$('.accept').length == 0)
+      this.$('.actions').append('<a href="javascript:;" class="accept">Accept</a> ');
+    else if (!this.listingOwned)
+      this.$('.accept').remove();
+
     this.initConvo();
   },
   initConvo: function(){
-    if ((this.owned || this.listingOwned) && this.rendered){
-      // this.$('.clicky').show();
+    this.canMessage = (this.owned || this.listingOwned) && this.rendered;
+
+    if (this.canMessage){
       this.el.addClass('hasMessages');
+
+      var messages = this.model.get('messages').length;
+      if (this.$('.messagesCount').length == 0)
+        this.$('.actions').prepend('<a href="javascript:;" class="messagesCount">'
+            +messages+' Messages</a> | ');
+      else
+        this.$('.messagesCount').text(messages+' Messages');
+
       this.messages = this.messages || new hs.messages.views.Conversation({
         model: this.model,
         focusSelector: '#offer-'+this.model._id,
         appendTo: this.el
       });
+
+    }else{
+      this.$('.messages').remove();
     }
   },
   messagesChange: function(){
-    // hs.log('animating');
-    this.el.animate({backgroundColor: '#fffaaf'}, 250, function(){
-      $(this).animate({backgroundColor: '#F1F1F2'}, 250);
-    });
+    if (this.canMessage){
+      this.el.animate({backgroundColor: '#fffaaf'}, 250, function(){
+        $(this).animate({backgroundColor: '#F1F1F2'}, 250);
+      });
+      this.$('.messagesCount').text(this.model.get('messages').length+' Messages');
+    }
   },
   amountChange: function(){
     this.$('.amount').text('$'+this.model.get('amount'));
