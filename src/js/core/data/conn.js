@@ -3,7 +3,6 @@
 
 hs.con = {
   connect: function(){
-    hs.loading();
     var ioReady = _.bind(function(){
       this.socket = new io.Socket(conf.server.host, {
         port: conf.server.port
@@ -69,7 +68,6 @@ hs.con = {
   },
   _connected: function(){
     hs.log('connected to server');
-    hs.resetLoading();
     this._isConnected = true;
     this.trigger('connected');
 
@@ -119,7 +117,7 @@ hs.con = {
   },
   _disconnected: function(){
     hs.log('disconnected from server');
-    hs.loading();
+    hs.resetLoading();
     this._isConnected = false;
     this.trigger('disconnected');
   }

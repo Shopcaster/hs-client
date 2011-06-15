@@ -4,7 +4,7 @@
   var loading = 0;
 
   var setLoading = function(){
-    if (loading){
+    if (loading > 0){
       $('#loading').show();
     }else{
       $('#loading').hide();
@@ -18,6 +18,10 @@
 
   hs.loaded = function(){
     loading--;
+    if (loading < 0){
+      loading = 0;
+      hs.error('loading < 0');
+    }
     setLoading();
   }
 
