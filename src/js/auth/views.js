@@ -104,15 +104,6 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
           this.signup(sub, this);
       }
     }, this);
-
-    // var callSuper = _.bind(Function.prototype.apply,
-    //     hs.views.Form.prototype._submit, this, arguments);
-    // if (hs.auth.isAuthenticated())
-    //   return callSuper();
-    // if (this.$('[name=password]:visible').length)
-    //   this.login(callSuper);
-    // else
-    //   this.signup(callSuper);
   },
   validateEmail: function(email, clbk){
     hs.log('email validation');

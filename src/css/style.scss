@@ -534,7 +534,7 @@ footer{
     a:hover{text-decoration:underline;}
 }
 
-#dialog{
+/*#dialog{
 
     label{
         vertical-align:top;
@@ -563,6 +563,22 @@ footer{
     }
     a.cancel-password{
         float:left;
+    }
+}*/
+
+#notifications{
+    position:absolute;
+    left:50%;top:100px;
+    width:340px;
+    margin-left:130px;
+
+    .notification{
+        padding:10px;
+        margin-bottom:10px;
+        color:$white;
+
+        background-color:rgba($black, 0.7);
+        @include rounded();
     }
 }
 
