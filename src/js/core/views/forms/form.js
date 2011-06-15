@@ -48,42 +48,42 @@ hs.views.Form = hs.views.View.extend({
   },
   _submit: function(e){
     e.preventDefault();
-    this._validate(_.bind(function(valid){
+    this._validate(function(valid){
       if (valid){
         if (this.submit) this.submit();
         this.trigger('submit');
       }
-    }, this));
+    }, this);
   },
-  _validate: function(clbk){
+  _validate: function(clbk, context){
 
     var validateFields = function(){
       var len = _.keys(this.fields).length;
-      if (len == 0) return clbk(false);
+      if (len == 0) return clbk.call(context, false);
 
       var valid = true;
-      var done = _.after(len, function(){clbk(valid)});
+      var done = _.after(len, function(){clbk.call(context, valid)});
 
-      _.each(this.fields, _.bind(function(field, name){
+      _.each(this.fields, function(field, name){
         if (!field.isValid()){
           valid = false;
           this.showInvalid(name);
           return done();
         }
         var methodName = 'validate'+name.charAt(0).toUpperCase() + name.slice(1);
-        if (typeof this[methodName] == 'function')
+        if (_.isFunction(this[methodName]))
           this[methodName](field.get(), _.bind(function(valValid){
             if (!valValid) this.showInvalid(name);
             valid = valid && valValid;
             done();
           }, this));
         else done();
-      }, this));
+      }, this);
     };
 
     if (this.hasOwnProperty('validate'))
       this.validate(_.bind(function(isValid){
-        if (!isValid) clbk(false);
+        if (!isValid) clbk.call(context, false);
         else validateFields.call(this);
       }, this));
     else

@@ -89,16 +89,42 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
   },
   _submit: function(e){
     e.preventDefault();
-    var callSuper = _.bind(Function.prototype.apply,
-        hs.views.Form.prototype._submit, this, arguments);
-    if (hs.auth.isAuthenticated())
-      return callSuper();
-    if (this.$('[name=password]:visible').length)
-      this.login(callSuper);
-    else
-      this.signup(callSuper);
+
+    this._validate(function(valid){
+      var sub = function(){
+        if (this.submit) this.submit();
+        this.trigger('submit');
+      }
+      if (valid){
+        if (hs.auth.isAuthenticated()){
+          sub.call(this);
+        }if (this.$('[name=password]:visible').length)
+          this.login(sub, this);
+        else
+          this.signup(sub, this);
+      }
+    }, this);
+
+    // var callSuper = _.bind(Function.prototype.apply,
+    //     hs.views.Form.prototype._submit, this, arguments);
+    // if (hs.auth.isAuthenticated())
+    //   return callSuper();
+    // if (this.$('[name=password]:visible').length)
+    //   this.login(callSuper);
+    // else
+    //   this.signup(callSuper);
   },
-  login: function(clbk){
+  validateEmail: function(email, clbk){
+    hs.log('email validation');
+    clbk(email
+        && new RegExp('^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            .test(email));
+  },
+  validatePassword: function(password, clbk){
+    clbk(this.$('[name=password]:visible').length == 0
+        || (password && password.length > 0));
+  },
+  login: function(clbk, context){
     var email = this.$('[name=email]').val(),
         password = this.$('[name=password]').val();
 
@@ -106,17 +132,17 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
       if (err)
         this.showInvalid('password');
       else if (clbk)
-        clbk();
+        clbk.call(context);
     }, this));
   },
-  signup: function(clbk){
+  signup: function(clbk, context){
     var email = this.$('[name=email]').val();
 
     hs.auth.signup(email, _.bind(function(err){
       if (err)
         this.renderLogin();
       else if (clbk)
-        clbk();
+        clbk.call(context);
     }, this));
   }
 });
