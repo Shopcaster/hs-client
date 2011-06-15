@@ -70,9 +70,9 @@ hs.views.fields.reg('image_capture', hs.views.fields.Field.extend({
     var that = this;
     var reader = new FileReader();
     reader.onload = function(){
-      that.set(Base64.encode(reader.result));
+      that.set(/;base64,([\w\+\/\=]+)$/.exec(reader.result)[1]);
     }
-    reader.readAsBinaryString(file);
+    reader.readAsDataURL(file);
 
     var urlReader = new FileReader();
     urlReader.onload = function(){
