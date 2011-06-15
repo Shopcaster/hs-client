@@ -41,7 +41,7 @@ hs.auth.views.Login = hs.views.View.extend({
     if (_.isUndefined(name)){
       $('#top-bar a.name').html(hs.auth.email
           +' <span id="set-name">(<span class="red">'
-          +'set your name!</span>)</span>').show();
+          +'set public name!</span>)</span>').show();
     }else{
       $('#top-bar a.name').text(name).show();
     }
