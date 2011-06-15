@@ -32,30 +32,29 @@ body{
 .width{position:relative;}
 
 #top-bar{
-    background-color:$black;
-    /*background-image:url(../img/chalkboard_thin.jpg);*/
     text-align:right;
     font-size:12px;
+    color:$grey - #222;
 
     padding:5px;
-    color:$grey - #222;
     font-weight:bold;
-
-    a {
-        color:$grey - #222;
-        margin-right:10px;
-    }
+    background-color:$black;
 
     .login, .logout{
         color:$white;
         margin-right:0px;
     }
-    .login, .name{
+    .login, & > .width > .name{
         padding:0 6px 4px;
         border:1px solid $black;
         border-bottom:0;
     }
-    .logout, .name{display:none;}
+    .logout, & > .width > .name{display:none;}
+
+    & > .width > a {
+        color:$grey - #222;
+        margin-right:10px;
+    }
 
     .open{
         background-color:$grey;
@@ -66,9 +65,17 @@ body{
         color:$grey - #777;
         text-shadow: $grey + #444 0 1px 2px;
     }
-    .popup{
-        border-top:none;
+
+    .settings{
+        position:relative;
+        padding-right:15px;
+        .downArrow{
+            position:absolute;
+            right:0;top:2px;
+            @include down-arrow-noShaodw-sprite()
+        }
     }
+
     #loginForm{
         right:0px;top:17px;
         width:160px;
@@ -83,16 +90,29 @@ body{
             width:77px;
         }
     }
-    #settingsForm{
-        right:0px;top:17px;
+    #settings{
+        right:55px;top:17px;
+        width:170px;
+        padding:0;
+        text-align:left;
+
+
+        a{
+            padding:10px;
+            display:block;
+            @include rounded();
+            &:hover{
+                background-color:$lightBlue;
+                text-decoration:none;
+            }
+        }
+    }
+    .settingsForm{
+        right:5px;top:17px;
         width:300px;
 
         input{
-            float:right;
             width:288px;
-        }
-        input.submit{
-            width:77px;
         }
     }
 }
@@ -371,7 +391,6 @@ header{
                     top:0;left:0;
                 }
                 #offerForm{
-                    display:none;
                     top:-5px;left:-5px;
                 }
             }
@@ -550,7 +569,8 @@ footer{
     }
 }
 
-.formDialog{
+.dialog{
+    display:none;
     position:absolute;
     padding:5px;
 
@@ -558,8 +578,11 @@ footer{
     border:1px solid $grey - #444;
 
     @include box-shadow(0 2px 4px $black + #333);
-    @include dark-button($blue - #444, '.submit');
     @include rounded();
+}
+
+.formDialog{
+    @include dark-button($blue - #444, '.submit');
 
     input{
         margin-bottom:5px;

@@ -13,6 +13,7 @@ hs.views.mixins.Dialog = {
     this.blur = _.bind(this.blur, this);
   },
   dialogRender: function(){
+    this.el.addClass('dialog');
     this.dialogSetBlur();
   },
   dialogSetMousedown: function(){

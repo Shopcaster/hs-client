@@ -193,4 +193,8 @@
     @include sprite(-15px, 0px, 15px, 15px);
 }
 
+@mixin down-arrow-noShaodw-sprite() {
+    @include sprite(-15px, 15px, 15px, 15px);
+}
+
 

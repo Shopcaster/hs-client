@@ -65,6 +65,12 @@ hs.auth = {
     hs.con.send('auth', {email: this.email, password: this.pass},
         _.bind(this._handleResponse, this, clbk, context));
   },
+  changePassword: function(oldPass, newPass, clbk, context){
+    hs.con.send('passwd', {
+      old: oldPass,
+      password: newPass
+    }, clbk, context);
+  },
   _handleResponse: function(clbk, context, data){
     if (data){
       this.setUserId(data.userid);
