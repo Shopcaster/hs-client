@@ -3,7 +3,7 @@
     input[type=button]#{$class}, input[type=submit]#{$class},
     .button#{$class}{
         display:block;
-        padding:6px 15px 8px;
+        padding:3px 10px 4px;
 
         font-size:12px;
         font-weight:bold;
@@ -23,9 +23,8 @@
         color:$white;
         text-decoration:none;
     }
-    nput[type=button]:active#{$class}, input[type=submit]:active#{$class},
+    input[type=button]:active#{$class}, input[type=submit]:active#{$class},
     .button:active#{$class}{
-        padding:8px 15px 6px;
         border:1px solid $color - #333;
         @include gradient($color + #111, $color + #222);
         @include rounded();
@@ -37,7 +36,7 @@
 @mixin light-button($color: $white - #222){
     input[type=button], input[type=submit], .button{
         display:block;
-        padding:6px 15px 8px;
+        padding:3px 10px 4px;
 
         font-size:12px;
         font-weight:bold;

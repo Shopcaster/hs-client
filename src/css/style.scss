@@ -280,6 +280,8 @@ header{
                 position:relative;
                 min-height:30px;
 
+                @include dark-button($blue - #444);
+
                 .inquiryData{
                     padding:10px;
                     border-top:1px solid $grey - #111;
@@ -292,6 +294,11 @@ header{
                 .answer{
                     margin:5px 0 0;
                     font-weight:bold;
+                }
+                .ansButton{
+                    position:absolute;
+                    top:5px;right:5px;
+                    display:none;
                 }
             }
 
@@ -317,6 +324,7 @@ header{
                     /*@include rounded-bottom();*/
 
                     .clicky{display:none !important;}
+                    .ansButton{display:none !important;}
                 }
 
                 .answerForm{

@@ -53,6 +53,7 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
   initAnswer: function(){
     if (this.listingOwned && this.rendered){
       this.el.addClass('canAnswer');
+      this.$('.ansButton').show();
       this.answerForm = this.answerForm || new hs.inquiries.views.AnswerForm({
         model: this.model,
         focusSelector: '#inquiry-'+this.model._id,
