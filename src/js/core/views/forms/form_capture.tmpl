@@ -6,9 +6,9 @@
 
     <span class="placeheld">{{placeholder}}</span>
 
-    {{^noCam}}
+    {{#cam}}
         <a href="#" class="take button">Take</a>
-    {{/noCam}}
+    {{/cam}}
 
     {{#noCam}}
         <input type="file" accept="image/*" class="selectFile">

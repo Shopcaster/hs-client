@@ -50,6 +50,7 @@ hs.views.fields.reg('image_capture', hs.views.fields.Field.extend({
   prepContext: function(context){
     context = hs.views.fields.Field.prototype.prepContext.apply(this, arguments);
     context.noCam = _.isUndefined(navigator.camera);
+    context.cam = !context.noCam;
     return context;
   },
   take: function(e){
