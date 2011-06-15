@@ -554,7 +554,7 @@ footer{
 }
 
 #notifications{
-    position:absolute;
+    position:fixed;
     left:50%;top:100px;
     width:340px;
     margin-left:130px;
@@ -566,6 +566,11 @@ footer{
 
         background-color:rgba($black, 0.7);
         @include rounded();
+
+        a{
+            color:$white;
+            text-decoration:underline;
+        }
     }
 }
 

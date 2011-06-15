@@ -28,13 +28,15 @@ hs.nots.Notification = hs.views.View.extend({
     this.getListingLink(function(listingLink){
       var htm = '<div class="notification">';
       htm += this.message;
-      htm += '<a href="'+listingLink+'">Go to Listing</a>';
+      htm += ' <a href="'+listingLink+'">Check it out.</a>';
       htm += '</div>';
-      $('#notifications').append(htm);
+      this.el = $(htm).hide()
+      $('#notifications').append(this.el);
+      this.el.fadeIn(200);
     });
   },
   getListingLink: function(clbk){
-    var key = this.ket.split(':'),
+    var key = this.key.split(':'),
         id = key[1],
         key = key[0],
         Model = null,
@@ -42,14 +44,14 @@ hs.nots.Notification = hs.views.View.extend({
 
     switch(key){
       case 'offer':
-        model = hs.offers.Offer;
+        Model = hs.offers.Offer;
       break;
       case 'message':
-        model = hs.messages.Message;
+        Model = hs.messages.Message;
         rel = 'offer.listing';
       break;
       case 'inquiry':
-        model = hs.inquiries.Inquiry;
+        Model = hs.inquiries.Inquiry;
       break;
     }
 
@@ -58,4 +60,7 @@ hs.nots.Notification = hs.views.View.extend({
       clbk.call(this, '#!/listings/'+listing._id+'/');
     }, this);
   },
+  remove: function(){
+    this.el.fadeOut(200)
+  }
 });
