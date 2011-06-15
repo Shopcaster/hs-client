@@ -73,7 +73,8 @@ hs.offers.views.Offer = hs.views.View.extend({
       var messages = this.model.get('messages').length;
       if (this.$('.messagesCount').length == 0)
         this.$('.actions').prepend('<a href="javascript:;" class="messagesCount">'
-            +messages+' Messages</a> | ');
+            +messages+' Messages</a> | '
+            +'<a href="javascript:;">Send a Messages</a> | ');
       else
         this.$('.messagesCount').text(messages+' Messages');
 
