@@ -107,11 +107,6 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
       }
     }, this);
   },
-  validateEmail: function(email, clbk){
-    clbk(this.$('[name=email]:visible').length == 0
-        || (email
-          && /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)));
-  },
   validatePassword: function(password, clbk){
     clbk(this.$('[name=password]:visible').length == 0
         || (password && password.length > 0));
@@ -136,5 +131,10 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
       else if (clbk)
         clbk.call(context);
     }, this));
+  },
+  validateEmail: function(email, clbk){
+    clbk(this.$('[name=email]:visible').length == 0
+        || (email
+          && /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)));
   }
 });
