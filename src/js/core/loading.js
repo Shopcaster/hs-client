@@ -13,7 +13,7 @@
 
   hs.loading = function(){
     loading++;
-    setLoading();
+    setTimeout(setLoading, 2000);
   }
 
   hs.loaded = function(){
