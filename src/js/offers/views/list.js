@@ -22,7 +22,7 @@ hs.offers.views.Offers = hs.views.View.extend({
     var newOffers = this.model.get('offers');
     var newOfferIds = [];
     // add new offers
-    _.each(newOffers, _.bind(function(o, i){
+    _.each(newOffers, function(o, i){
       var offer = newOffers.at(i);
       newOfferIds.push(offer._id);
       if (_.isUndefined(this.offerViews[offer._id])){
@@ -31,16 +31,19 @@ hs.offers.views.Offers = hs.views.View.extend({
           model: offer
         });
       }
-    }, this));
+    }, this);
     // remove old offers
-    _.each(_.keys(this.offerViews), _.bind(function(id){
-      if (!_.include(newOfferIds, id))
+    _.each(_.keys(this.offerViews), function(id){
+      if (!_.include(newOfferIds, id)){
+        hs.log('removing', id);
+        this.offerViews[id].remove();
         delete this.offerViews[id];
-    }, this));
+      }
+    }, this);
     // render offers
-    _.each(this.offerViews, _.bind(function(view){
+    _.each(this.offerViews, function(view){
       if (!view.rendered) view.render();
-    }, this));
+    }, this);
   },
   offersChange: function(){
     this.renderOffers();

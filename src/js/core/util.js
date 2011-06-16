@@ -63,5 +63,5 @@ _.mixin({
     }else{
         hs.error('_.since only accepts dates from the past', date);
     };
-}
+  }
 })

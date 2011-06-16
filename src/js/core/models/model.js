@@ -163,13 +163,4 @@ hs.models.ModelSet = Backbone.Collection.extend({
     var cast = this.cast(newIds);
     if (cast.length) this.add(cast);
   }
-  // add: function(models){
-  //   // if (_.isArray(models))
-  //   //   _.each(models, function(model){
-  //   //     model.bind('change', _.bind(this.trigger, this, 'change'));
-  //   //   }, this);
-  //   // else
-  //   //   models.bind('change', _.bind(this.trigger, this, 'change'));
-  //   return Backbone.Collection.prototype.add.apply(this, arguments);
-  // }
 });

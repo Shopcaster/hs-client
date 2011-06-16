@@ -115,10 +115,8 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     model.sets = model.sets || {};
     model.sets[fieldname] = new this.SetClass();
 
-    model.sets[fieldname].bind('change', function(){
-      // hs.log('change trigger');
-      _.bind(model.trigger, model, 'change:'+fieldname)();
-    }, this);
+    model.sets[fieldname].bind('change',
+        _.bind(model.trigger, model, 'change:'+fieldname));
 
   },
   set: function(value, model, fieldname){

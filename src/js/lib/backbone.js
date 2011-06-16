@@ -574,7 +574,10 @@
       delete model.collection;
       this.models.splice(this.indexOf(model), 1);
       this.length--;
-      if (!options.silent) model.trigger('remove', model, this, options);
+      if (!options.silent){
+        model.trigger('remove', model, this, options);
+        this.trigger('change');
+      }
       model.unbind('all', this._boundOnModelEvent);
       return model;
     },
