@@ -53,12 +53,14 @@ hs.offers.views.Offer = hs.views.View.extend({
   controlsChange: function(){
 
     if (this.owned && this.$('.withdraw').length == 0)
-      this.$('.actions').append('<a href="javascript:;" class="withdraw">Withdraw</a> ');
+      this.$('.actions').append('<a href="javascript:;" '
+          +'class="withdraw dontOpen">Withdraw</a> ');
     else if (!this.owned)
       this.$('.withdraw').remove();
 
     if (this.listingOwned && this.$('.accept').length == 0)
-      this.$('.actions').append('<a href="javascript:;" class="accept">Accept</a> ');
+      this.$('.actions').append('<a href="javascript:;" '
+          +'class="accept dontOpen">Accept</a> ');
     else if (!this.listingOwned)
       this.$('.accept').remove();
 
@@ -111,10 +113,12 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   accept: function(e){
     e.preventDefault();
+    e.stopPropagation();
     this.model.accept();
   },
   withdraw: function(e){
     e.preventDefault();
+    e.stopPropagation();
     this.model.destroy();
   },
   remove: function(){

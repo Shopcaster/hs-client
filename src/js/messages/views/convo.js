@@ -44,7 +44,8 @@ hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).ext
       if (!view.rendered) view.render();
     }, this);
   },
-  focus: function(){
+  focus: function(e){
+    if ($(e.target).is('.dontOpen')) return;
     hs.views.mixins.Dialog.focus.apply(this, arguments);
     this.$('input.messageField').focus();
     $('#offer-'+this.model._id).addClass('selected');
