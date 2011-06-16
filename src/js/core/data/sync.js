@@ -31,7 +31,7 @@ Backbone.sync = function(method, model, success, error){
     }, function(_id, err){
       if (_id){
         model.set({_id: _id}, {raw: true});
-        mpq.push(['track', 'create', {key: model.key, _id: _id}]);
+        mpq.push(['track', 'create:'+model.key, {key: model.key, _id: _id}]);
       }
 
       done(err);
