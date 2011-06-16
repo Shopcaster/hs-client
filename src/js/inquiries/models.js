@@ -13,10 +13,7 @@ hs.inquiries.Inquiry = hs.models.Model.extend({
     listing: function(){
       return new hs.models.fields.ModelField(hs.listings.models.Listing);
     }
-  }, hs.models.Model.prototype.fields),
-  answer: function(){
-    hs.log('TODO: answer question');
-  }
+  }, hs.models.Model.prototype.fields)
 });
 
 hs.inquiries.InquirySet = hs.models.ModelSet.extend({
