@@ -746,14 +746,14 @@
     // returns `false`.
     loadUrl : function() {
       var fragment = this.fragment = this.getFragment();
+      Backbone.history.trigger('loadUrl', fragment);
+      Backbone.history.trigger('loadUrl:'+fragment);
       var matched = _.any(this.handlers, function(handler) {
         if (handler.route.test(fragment)) {
           handler.callback(fragment);
           return true;
         }
       });
-      this.trigger('loadUrl', fragment);
-      this.trigger('loadUrl:'+fragment);
       return matched;
     },
 

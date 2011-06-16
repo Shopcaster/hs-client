@@ -41,8 +41,8 @@ hs.Controller = Backbone.Controller.extend({});
     //if we're not using HTML5 history, fall back to backbone's handler
     if (!canUseHistory) {
       Backbone.history.start();
-      Backbone.history.bind('loadURL', function(fragment){
-        mpq.push(['track', 'pageLoad', {hash: fragment}]);
+      Backbone.history.bind('loadUrl', function(fragment){
+        mpq.push(['track', 'page load', {hash: fragment}]);
       });
     //otherwise, we have to manually trigger backbone's stuff
     } else {
