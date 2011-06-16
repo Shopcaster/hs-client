@@ -752,6 +752,8 @@
           return true;
         }
       });
+      this.trigger('loadUrl', fragment);
+      this.trigger('loadUrl:'+fragment);
       return matched;
     },
 
@@ -768,7 +770,7 @@
       }
     }
 
-  });
+  }, Backbone.Events);
 
   // Backbone.View
   // -------------

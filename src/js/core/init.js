@@ -11,7 +11,6 @@
 
   $(function(){
     var init = function(){
-      hs.log('init')
       initFired = true;
       for (var i=0, len=initStack.length; i<len; i++)
         initStack[i]();
