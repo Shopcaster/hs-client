@@ -118,6 +118,12 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     model.sets[fieldname].bind('change',
         _.bind(model.trigger, model, 'change:'+fieldname));
 
+    model.sets[fieldname].bind('add',
+        _.bind(model.trigger, model, 'add:'+fieldname));
+
+    model.sets[fieldname].bind('remove',
+        _.bind(model.trigger, model, 'remove:'+fieldname));
+
   },
   set: function(value, model, fieldname){
     if (value instanceof this.SetClass){

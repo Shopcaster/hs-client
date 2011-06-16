@@ -140,15 +140,19 @@ hs.models.ModelSet = Backbone.Collection.extend({
     }, this);
   },
   diffIds: function(ids){
-    this.remove(this.reduce(function(rem, model){
-      if (!_.include(ids, model._id));
+    var rem = this.reduce(function(rem, model){
+      if (!_.include(ids, model._id))
         rem.push(model);
       return rem;
-    }, [], this));
+    }, [], this);
+    if (rem.length)
+      this.remove(rem);
 
-    this.addIds(_.select(ids, function(id){
+    var add = _.select(ids, function(id){
       return !this.include(this.model.get(id));
-    }, this));
+    }, this);
+    if (add)
+      this.addIds(add);
   },
   addIds: function(ids){
     this.add(this.cast(ids));

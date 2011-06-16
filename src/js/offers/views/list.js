@@ -6,7 +6,9 @@
 hs.offers.views.Offers = hs.views.View.extend({
   template: 'offers',
   modelEvents: {
-    'change:offers': 'offersChange'
+    'change:offers': 'offersChange',
+    'add:offers': 'offersAdd',
+    'remove:offers': 'offersRemove'
   },
   render: function(){
     this._tmplContext.offers = this.model.get('offers').toJSON();
@@ -19,31 +21,29 @@ hs.offers.views.Offers = hs.views.View.extend({
   },
   offerViews: new Object(),
   renderOffers: function(){
-    var offers = this.model.get('offers');
-    // add new offers
-    offers.each(function(offer){
+    this.model.get('offers').each(function(offer){
       if (_.isUndefined(this.offerViews[offer._id])){
         this.offerViews[offer._id] = new hs.offers.views.Offer({
           appendTo: $('#offerList'),
           model: offer
         });
-      }else hs.log('didn\'t render offer', offer._id);
-    }, this);
-    // remove old offers
-    var offerIds = offers.map(function(o){return o._id});
-    _.each(_.keys(this.offerViews), function(id){
-      if (!_.include(offerIds, id)){
-        hs.log('removing', newOfferIds, id);
-        this.offerViews[id].remove();
-        delete this.offerViews[id];
       }
-    }, this);
-    // render offers
-    _.each(this.offerViews, function(view){
-      if (!view.rendered) view.render();
+      if (!this.offerViews[offer._id].rendered)
+        this.offerViews[offer._id].render();
     }, this);
   },
   offersChange: function(){
     this.renderOffers();
+  },
+  offersAdd: function(){
+    this.renderOffers();
+  },
+  offersRemove: function(offers){
+    _.each(offers, function(offer){
+      if (!_.isUndefined(this.offerViews[offer._id])){
+        this.offerViews[offer._id].remove();
+        delete this.offerViews[offer._id];
+      }
+    }, this);
   }
 });

@@ -431,6 +431,7 @@
       } else {
         this._add(models, options);
       }
+      this.trigger('add', models);
       return this;
     },
 
@@ -444,6 +445,7 @@
       } else {
         this._remove(models, options);
       }
+      this.trigger('remove', models);
       return this;
     },
 
@@ -574,10 +576,7 @@
       delete model.collection;
       this.models.splice(this.indexOf(model), 1);
       this.length--;
-      if (!options.silent){
-        model.trigger('remove', model, this, options);
-        this.trigger('change');
-      }
+      if (!options.silent)  model.trigger('remove', model, this, options);
       model.unbind('all', this._boundOnModelEvent);
       return model;
     },
