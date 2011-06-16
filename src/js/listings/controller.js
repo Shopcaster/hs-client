@@ -3,7 +3,7 @@
 hs.regController('listings', hs.Controller.extend({
   routes: {
     '!/listings/new/': 'newListing',
-    '!/listing/fake/': 'fake',
+    '!/listings/fake/': 'fake',
     '!/listings/thanks/': 'thanks',
     '!/listings/:id/': 'listing',
     '': 'listings'

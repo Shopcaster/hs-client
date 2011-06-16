@@ -5,7 +5,10 @@ hs.nots = {
     hs.con.bind('not', this.recieved);
   },
   recieved: function(data){
-    var notView = new hs.nots.Notification(data);
+    this.send(data.message, data.key);
+  },
+  send: function(message, key){
+    var notView = new hs.nots.Notification({message: message, key: key});
     notView.render();
     setTimeout(function(){
       notView.remove();
@@ -25,10 +28,10 @@ hs.nots.Notification = hs.views.View.extend({
     if (this.options.key) this.key = this.options.key;
   },
   render: function(){
-    this.getListingLink(function(listingLink){
+    this.getListingLink(function(link){
       var htm = '<div class="notification">';
       htm += this.message;
-      htm += ' <a href="'+listingLink+'">Check it out.</a>';
+      if (link) htm += ' <a href="'+link+'">Check it out.</a>';
       htm += '</div>';
       this.el = $(htm).hide()
       $('#notifications').append(this.el);
@@ -36,6 +39,8 @@ hs.nots.Notification = hs.views.View.extend({
     });
   },
   getListingLink: function(clbk){
+    if (_.isUndefined(this.key))
+      return clbk.call(this);
     var key = this.key.split(':'),
         id = key[1],
         key = key[0],

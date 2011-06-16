@@ -23,6 +23,7 @@
       window.applicationCache.addEventListener('updateready', function(e) {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
           window.applicationCache.swapCache();
+          hs.nots.send('A new version of Hipsell is available! Refresh the page to update.');
           // window.location.reload();
         }
       }, false);

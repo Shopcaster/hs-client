@@ -130,11 +130,25 @@ hs.models.Model.extend = function(){
   return Model;
 };
 
+
+
+
 hs.models.ModelSet = Backbone.Collection.extend({
   cast: function(ids){
     return _.map(ids, function(id){
       return this.model.get(id);
     }, this);
+  },
+  diffIds: function(ids){
+    this.remove(this.reduce(function(rem, model){
+      if (!_.include(ids, model._id));
+        rem.push(model);
+      return rem;
+    }, [], this));
+
+    this.addIds(_.select(ids, function(id){
+      return !this.include(this.model.get(id));
+    }, this));
   },
   addIds: function(ids){
     this.add(this.cast(ids));

@@ -74,12 +74,6 @@ hs.views.fields.reg('image_capture', hs.views.fields.Field.extend({
       that.set(/;base64,([\w\+\/\=]+)$/.exec(reader.result)[1]);
     }
     reader.readAsDataURL(file);
-
-    var urlReader = new FileReader();
-    urlReader.onload = function(){
-      hs.log(urlReader.result);
-    }
-    urlReader.readAsDataURL(file);
   },
   set: function(value){
     this.image = value;

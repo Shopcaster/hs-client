@@ -146,17 +146,21 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
       model.key+':'+model._id+':'
         +model.sets[fieldname].model.prototype.key+'.'+this.foreignField,
       // pub
-      _.bind(function(ids){
-        if (ids.add)
-          model.sets[fieldname].addIds(ids.add);
-        if (ids.remove)
-          model.sets[fieldname].removeIds(ids.remove);
-      }, this),
+      function(ids){
+        if (_.isArray(ids)){
+          model.sets[fieldname].diffIds(ids);
+        }else{
+          if (ids.add)
+            model.sets[fieldname].addIds(ids.add);
+          if (ids.remove)
+            model.sets[fieldname].removeIds(ids.remove);
+        }
+      },
       // response
-      _.bind(function(ids, err){
+      function(ids, err){
         if (err) throw(err);
         model.sets[fieldname].addIds(ids);
-      }, this)
+      }, this
     );
   }
 });

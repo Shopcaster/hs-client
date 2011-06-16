@@ -16,9 +16,12 @@ hs.pubsub = {
   },
   connected: function(){
     if (!this.init){
-      hs.log('resubbing');
       _.each(this.subs, function(handlers, key){
-        if (handlers.length) this._sub(key);
+        if (handlers.length) this._sub(key, function(fields, err){
+          if (fields) _.each(handlers, function(handler){
+            handler(fields);
+          }, this);
+        }, this);
       }, this);
     }
     this.init = false;
