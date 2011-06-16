@@ -77,17 +77,17 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
     hs.views.Form.prototype.render.apply(this, arguments);
     if (!hs.auth.isAuthenticated())
       this.$('[name=email]').show();
-    hs.auth.bind('change:isAuthenticated', _.bind(function(isA){
+    hs.auth.bind('change:isAuthenticated', function(isA){
       if (isA){
         this.$('[name=email]').hide();
         this.$('[name=password]').hide();
       }else{
         this.$('[name=email]').show();
       }
-    }, this));
+    }, this);
   },
   renderLogin: function(){
-    this.$('[name=password]').fadeIn(100);
+    this.$('[name=password]').show();
   },
   _submit: function(e){
     e.preventDefault();
@@ -106,10 +106,6 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
           this.signup(sub, this);
       }
     }, this);
-  },
-  validatePassword: function(password, clbk){
-    clbk(this.$('[name=password]:visible').length == 0
-        || (password && password.length > 0));
   },
   login: function(clbk, context){
     var email = this.$('[name=email]').val(),
@@ -131,6 +127,10 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
       else if (clbk)
         clbk.call(context);
     }, this));
+  },
+  validatePassword: function(password, clbk){
+    clbk(this.$('[name=password]:visible').length == 0
+        || (password && password.length > 0));
   },
   validateEmail: function(email, clbk){
     clbk(this.$('[name=email]:visible').length == 0

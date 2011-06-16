@@ -19,23 +19,21 @@ hs.offers.views.Offers = hs.views.View.extend({
   },
   offerViews: new Object(),
   renderOffers: function(){
-    var newOffers = this.model.get('offers');
-    var newOfferIds = [];
+    var offers = this.model.get('offers');
     // add new offers
-    _.each(newOffers, function(o, i){
-      var offer = newOffers.at(i);
-      newOfferIds.push(offer._id);
+    offers.each(function(offer){
       if (_.isUndefined(this.offerViews[offer._id])){
         this.offerViews[offer._id] = new hs.offers.views.Offer({
           appendTo: $('#offerList'),
           model: offer
         });
-      }
+      }else hs.log('didn\'t render offer', offer._id);
     }, this);
     // remove old offers
+    var offerIds = offers.map(function(o){return o._id});
     _.each(_.keys(this.offerViews), function(id){
-      if (!_.include(newOfferIds, id)){
-        hs.log('removing', id);
+      if (!_.include(offerIds, id)){
+        hs.log('removing', newOfferIds, id);
         this.offerViews[id].remove();
         delete this.offerViews[id];
       }
