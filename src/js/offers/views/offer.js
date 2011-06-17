@@ -10,7 +10,8 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   events: _.extend({
     'click .withdraw': 'withdraw',
-    'click .accept': 'accept'
+    'click .accept': 'accept',
+    'click .cancel': 'cancel'
   }, hs.views.View.prototype.events),
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
@@ -66,6 +67,13 @@ hs.offers.views.Offer = hs.views.View.extend({
 
     this.initConvo();
   },
+  accepted: function(){
+    this.$('.withdraw').remove();
+    this.$('.accept').remove();
+    if (this.listingOwned && this.$('.cancel').length == 0)
+      this.$('.actions').append('<a href="javascript:;" '
+          +'class="cancel dontOpen">Cancel</a> ');
+  },
   initConvo: function(){
     this.canMessage = (this.owned || this.listingOwned) && this.rendered;
 
@@ -114,15 +122,34 @@ hs.offers.views.Offer = hs.views.View.extend({
   accept: function(e){
     e.preventDefault();
     e.stopPropagation();
+    if (this.locked) return;
     this.model.accept();
+    this.accepted();
   },
   withdraw: function(e){
     e.preventDefault();
     e.stopPropagation();
+    if (this.locked) return;
     this.model.destroy();
+  },
+  cancel: function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    this.model.unaccept();
   },
   remove: function(){
     $('#offer-'+this.model._id).remove();
     this.trigger('removed');
+  },
+  lock: function(){
+    hs.log('locking offer');
+    this.locked = true;
+    this.$('.withdraw').remove();
+    this.$('.accept').remove();
+  },
+  unlock: function(){
+    hs.log('unlocking offer');
+    this.locked = false;
+    this.controlsChange();
   }
 });

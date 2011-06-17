@@ -17,7 +17,7 @@ hs.regController('listings', hs.Controller.extend({
   listing: function(id){
     hs.page.finish();
     var listing = hs.listings.models.Listing.get(id);
-    hs.page = new hs.listings.views.ListingPage({model: listing});
+    hs.page = new hs.listings.views.Listing({model: listing});
     hs.page.render();
   },
   fake: function(){

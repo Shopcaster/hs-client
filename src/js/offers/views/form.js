@@ -26,6 +26,7 @@ hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).exte
       this.$('[name=amount]').val('');
   },
   focus: function(){
+    if (this.disabled) return;
     hs.views.mixins.Dialog.focus.apply(this, arguments);
     this.$('[name=amount]').focus();
   },
@@ -33,6 +34,7 @@ hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).exte
     clbk(/^\d+$/.test(value.replace('$', '')));
   },
   submit: function(){
+    if (this.disabled) return;
     this.model.set({
       listing: this.listing,
       amount: parseFloat(this.get('amount').replace('$', ''))
@@ -41,5 +43,11 @@ hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).exte
     this.blur();
     this.clear();
     this.model = new hs.offers.Offer();
+  },
+  disable: function(){
+    this.disabled = true;
+  },
+  enable: function(){
+    this.disabled = false;
   }
 });

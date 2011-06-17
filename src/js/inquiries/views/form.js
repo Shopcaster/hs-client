@@ -14,10 +14,12 @@ hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.mixin(hs.views.mixins.D
     this.model = new hs.inquiries.Inquiry();
   },
   focus: function(){
+    if (this.disabled) return;
     hs.views.mixins.Dialog.focus.apply(this, arguments);
     this.$('[name=question]').focus();
   },
   submit: function(){
+    if (this.disabled) return;
     this.model.set({
       question: this.get('question'),
       listing: this.listing
@@ -26,6 +28,12 @@ hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.mixin(hs.views.mixins.D
     this.clear();
     this.model = new hs.inquiries.Inquiry();
     this.blur();
+  },
+  disable: function(){
+    this.disabled = true;
+  },
+  enable: function(){
+    this.disabled = false;
   }
 });
 

@@ -88,6 +88,11 @@
     box-shadow: $value;
 }
 
+@mixin tilt($deg: 30){
+    -webkit-transform: skewY(#{$deg}deg);
+    -moz-transform: skewY(#{$deg}deg);
+}
+
 @mixin sans(){
     font-family: 'Cantarell', arial, sans-serif;
 }

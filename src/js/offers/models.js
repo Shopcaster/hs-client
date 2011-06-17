@@ -15,7 +15,12 @@ hs.offers.Offer = hs.models.Model.extend({
   }, hs.models.Model.prototype.fields),
   accept: function(clbk, context){
     this.withField('listing', function(listing){
-      listing.save({sold: true}, {success: clbk, error: clbk, context: context});
+      listing.save({accepted: this}, {success: clbk, error: clbk, context: context});
+    }, this);
+  },
+  unaccept: function(clbk, context){
+    this.withField('listing', function(listing){
+      listing.save({accepted: null}, {success: clbk, error: clbk, context: context});
     }, this);
   }
 });

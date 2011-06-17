@@ -45,5 +45,11 @@ hs.inquiries.views.Inquiries = hs.views.View.extend({
   },
   inquiriesChange: function(){
     this.renderInquiries();
+  },
+  disable: function(){
+    this.questionForm.disable();
+  },
+  enable: function(){
+    this.questionForm.enable();
   }
 });

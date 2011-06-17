@@ -30,6 +30,13 @@ hs.offers.views.Offers = hs.views.View.extend({
       }
       if (!this.offerViews[offer._id].rendered)
         this.offerViews[offer._id].render();
+
+      if (this.disabled){
+        this.offerViews[offer._id].lock();
+        if (this.acceptedOffer._id == offer._id)
+          this.offerViews[offer._id].accepted();
+      }
+
     }, this);
   },
   offersChange: function(){
@@ -45,5 +52,23 @@ hs.offers.views.Offers = hs.views.View.extend({
         delete this.offerViews[offer._id];
       }
     }, this);
+  },
+  disable: function(accepted){
+    this.disabled = true;
+    this.acceptedOffer = accepted;
+    this.offerForm.disable();
+    _.each(this.offerViews, function(view, id){
+      view.lock();
+      if (id == accepted._id)
+        view.accepted();
+    });
+  },
+  enable: function(){
+    this.disabled = false;
+    this.acceptedOffer = null;
+    this.offerForm.enable();
+    _.each(this.offerViews, function(view){
+      view.unlock();
+    });
   }
 });

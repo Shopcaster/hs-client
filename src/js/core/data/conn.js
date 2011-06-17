@@ -2,6 +2,7 @@
 
 
 hs.con = {
+  log: false,
   connect: function(){
     var ioReady = _.bind(function(){
       this.socket = new io.Socket(conf.server.host, {
@@ -62,7 +63,7 @@ hs.con = {
       });
 
       this.socket.send(msg);
-      hs.log('sent:', msg);
+      if (this.log) hs.log('sent:', msg);
     }, this));
     return msgId;
   },
@@ -124,7 +125,7 @@ hs.con = {
 
   },
   _recieved: function(msg){
-    hs.log('recd:', msg);
+    if (this.log) hs.log('recd:', msg);
 
     var parsed = msg.split(':'),
         key = parsed.shift(),

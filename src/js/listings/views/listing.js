@@ -1,14 +1,11 @@
 //depends: core/views/main.js,
-//         core/views/forms/form.js,
-//         listings/main.js,
+//         listings/views/main.js,
 //         listings/models.js,
 //         offers/views/list.js,
 //         inquiries/views/list.js,
 //         auth/views.js
 
-hs.listings.views = hs.listings.views || new Object();
-
-hs.listings.views.ListingPage = hs.views.Page.extend({
+hs.listings.views.Listing = hs.views.Page.extend({
   template: 'listingPage',
   modelEvents: {
     'change:photo': 'updatePhoto',
@@ -19,6 +16,7 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     'change:longitude': 'updateLoc',
     'change:price': 'updatePrice',
     'change:offers': 'updateBestOffer',
+    'change:accepted': 'updateAccepted',
     'change:sold': 'updateSold'
   },
   render: function(){
@@ -100,103 +98,19 @@ hs.listings.views.ListingPage = hs.views.Page.extend({
     if (this.model.get('sold')){
       hs.log('!!SOLD!!');
     }
-  }
-});
-
-
-hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({
-  template: 'listingForm',
-  fields: [
-    {
-      'name': 'image',
-      'type': 'image_capture',
-      'placeholder': 'Image',
-      'required': true
-    },
-    {
-      'name': 'description',
-      'type': 'textarea',
-      'placeholder': 'Description',
-      'required': true
-    },
-    {
-      'name': 'price',
-      'type': 'text',
-      'placeholder': 'Price',
-      'required': true
+  },
+  updateAccepted: function(){
+    var accepted = this.model.get('accepted');
+    if (accepted){
+      this.$('.status').text('Offer Accepted').show();
+      this.accepted = true;
+      this.offers.disable(accepted);
+      this.inquiries.disable();
+    }else if (this.accepted){
+      this.$('.status').hide();
+      this.accepted = false;
+      this.offers.enable();
+      this.inquiries.enable();
     }
-  ].concat(hs.auth.views.AuthForm.prototype.fields),
-  initialize: function(){
-    this.model = new hs.listings.models.Listing();
-    hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
-    $('#newListing').parent().addClass('active');
-    this.newBind = _.bind(this._submit, this);
-    $('#newListing').css({display: 'block'}).click(this.newBind);
-    this.bind('change:price', _.bind(function(){
-      this.set('price', this.get('price').replace('$', ''));
-    }, this));
-    if (Modernizr.geolocation)
-      navigator.geolocation.getCurrentPosition(_.bind(this.updateLocation, this));
-  },
-  updateLocation: function(position){
-    this.position = position.coords;
-  },
-  validateDescription: function(value, clbk){
-    clbk(value.length > 0 && value.length < 141);
-  },
-  validatePrice: function(value, clbk){
-    clbk(/^\d+$/.test(value));
-  },
-  validateImage: function(value, clbk){
-    clbk(value.length != 0);
-  },
-  submit: function(){
-    this.model.set({
-      photo: this.get('image'),
-      description: this.get('description'),
-      price: parseFloat(this.get('price').replace('$', ''))
-    });
-    if (this.position)
-      this.model.set({
-        latitude: this.position.latitude,
-        longitude: this.position.longitude
-      });
-    hs.log('saving');
-    this.model.save(null, {
-      success: function(){
-        hs.log('saved, goto');
-        hs.goTo('!/listings/thanks/');
-      },
-      error: function(){
-        console.log('save error', arguments);
-      }
-    });
-  },
-  finish: function(){
-    $('#newListing').parent().removeClass('active');
-    $('#newListing').unbind('click', this.newBind);
   }
-});
-
-
-hs.listings.views.Thanks = hs.views.Page.extend({
-  template: 'thanks',
-  initialize: function(){
-    // hs.auth.views.Page.prototype.initialize.apply(this, arguments);
-    $('#newListing').parent().addClass('thanks');
-    this.newBind = _.bind(this.again, this);
-    $('#newListing').click(this.newBind);
-    $('#newListing').text('Again');
-  },
-  again: function(){
-    $('#newListing').parent().removeClass('thanks');
-    $('#newListing').unbind('click', this.newBind);
-    $('#newListing').text('Post');
-    hs.goTo('!/listings/new/');
-  }
-});
-
-
-hs.listings.views.List = hs.views.Page.extend({
-  template: 'listings'
 });

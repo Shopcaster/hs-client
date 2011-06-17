@@ -184,6 +184,28 @@ header{
     }
 
     .listing{
+        position:relative;
+
+        .status{
+            display:none;
+            position:absolute;
+            top:50px;left:50%;
+            width:300px;
+            margin-left:-160px;
+            padding:10px;
+            z-index:3;
+
+            text-align:center;
+            color:$red;
+            font-size:40px;
+            font-weight:bold;
+
+            border:4px solid $red;
+            background-color:rgba($black, 0.7);
+
+            @include tilt(10);
+        }
+
         #listing-image{
             height:418px;
             img{
