@@ -33,6 +33,8 @@ hs.offers.views.Offers = hs.views.View.extend({
 
       if (this.disabled){
         this.offerViews[offer._id].lock();
+        if (this.acceptedOffer._id == offer._id)
+          this.offerViews[offer._id].accepted();
       }
 
     }, this);

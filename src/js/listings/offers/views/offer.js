@@ -53,10 +53,10 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   controlsChange: function(){
 
-    if (this.locked && this.listingOwned && this.$('.cancel').length == 0)
+    if (this.isAccepted && this.locked && this.listingOwned && this.$('.cancel').length == 0)
       this.$('.actions').append('<a href="javascript:;" '
           +'class="cancel dontOpen">Cancel</a> ');
-    else if (!this.locked || !this.listingOwned)
+    else if (!this.isAccepted || !this.locked || !this.listingOwned)
       this.$('.cancel').remove();
 
     if (!this.locked && this.owned && this.$('.withdraw').length == 0)
@@ -140,12 +140,17 @@ hs.offers.views.Offer = hs.views.View.extend({
     $('#offer-'+this.model._id).remove();
     this.trigger('removed');
   },
+  accepted: function(){
+    this.isAccepted = true;
+    this.controlsChange();
+  },
   lock: function(){
     this.locked = true;
     this.controlsChange();
   },
   unlock: function(){
     this.locked = false;
+    this.isAccepted = false;
     this.controlsChange();
   }
 });
