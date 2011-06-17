@@ -21,7 +21,7 @@ hs.listings.models.Listing = hs.models.Model.extend({
       return new hs.models.fields.CollectionField(hs.inquiries.InquirySet)
     },
     accepted: function(){
-      return new hs.models.fields.ModelField(hs.offers.Offer);
+      return new hs.models.fields.ModelField(hs.offers.Offer, {nullable: true});
     },
   }, hs.models.Model.prototype.fields),
   bestOffer: function(clbk, context){

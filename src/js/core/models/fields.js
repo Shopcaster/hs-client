@@ -7,11 +7,15 @@ hs.models.fields = new Object();
 // super-field
 
 hs.models.fields.Field = hs.Object.extend({
+  initialize: function(options){
+    this.options = options
+  },
   set: function(value, model, fieldname){
     return value;
   },
   getDefault: function(model, fieldname){},
   get: function(value, model, fieldname){
+    if (_.isNull(value)) return;
     return value;
   },
   setModel: function(Model){
@@ -30,7 +34,7 @@ hs.models.fields.Field = hs.Object.extend({
 
 hs.models.fields.FloatField = hs.models.fields.Field.extend({
   set: function(value){
-    if (_.isFloat(value))
+    if (_.isFloat(value) || (_.isNull(value) && this.options.nullable))
       return value;
     else
       this.invalid(value, 'Extected a Float.');
@@ -40,7 +44,7 @@ hs.models.fields.FloatField = hs.models.fields.Field.extend({
 
 hs.models.fields.IntegerField = hs.models.fields.Field.extend({
   set: function(value){
-    if (_.isInteger(value))
+    if (_.isInteger(value) || (_.isNull(value) && this.options.nullable))
       return value;
     else
       this.invalid(value, 'Extected an Integer.');
@@ -50,7 +54,7 @@ hs.models.fields.IntegerField = hs.models.fields.Field.extend({
 
 hs.models.fields.StringField = hs.models.fields.Field.extend({
   set: function(value){
-    if (_.isString(value))
+    if (_.isString(value) || (_.isNull(value) && this.options.nullable))
       return value;
     else
       this.invalid(value, 'Extected a String.');
@@ -60,7 +64,7 @@ hs.models.fields.StringField = hs.models.fields.Field.extend({
 
 hs.models.fields.BooleanField = hs.models.fields.Field.extend({
   set: function(value){
-    if (_.isBoolean(value))
+    if (_.isBoolean(value) || (_.isNull(value) && this.options.nullable))
       return value;
     else
       this.invalid(value, 'Extected a Boolean.');
@@ -72,24 +76,26 @@ hs.models.fields.BooleanField = hs.models.fields.Field.extend({
 
 hs.models.fields.DateField = hs.models.fields.Field.extend({
   set: function(value){
-    if (_.isDate(value))
+    if (_.isDate(value) || (_.isNull(value) && this.options.nullable))
       return value.getTime() - 1307042003319;
     else
       this.invalid(value, 'Extected a Date.');
   },
   get: function(value){
+    if (_.isNull(value)) return;
     return new Date(value + 1307042003319);
   }
 });
 
 hs.models.fields.MoneyField = hs.models.fields.FloatField.extend({
   set: function(value){
-    if (_.isNumber(value))
+    if (_.isNumber(value) || (_.isNull(value) && this.options.nullable))
       return parseInt(value*100);
     else
       this.invalid(value, 'Extected a Number.');
   },
   get: function(value){
+    if (_.isNull(value)) return;
     return value/100;
   }
 });
@@ -97,9 +103,10 @@ hs.models.fields.MoneyField = hs.models.fields.FloatField.extend({
 // relationship fields
 
 hs.models.fields.CollectionField = hs.models.fields.Field.extend({
-  initialize: function(SetClass, foreignField){
+  initialize: function(SetClass, foreignField, options){
     this.SetClass = SetClass;
     this.foreignField = foreignField;
+    this.options = options;
   },
   modelInit: function(model, fieldname){
     hs.models.fields.Field.prototype.modelInit.apply(this, arguments);
@@ -126,6 +133,8 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
 
   },
   set: function(value, model, fieldname){
+    if (_.isNull(value) && this.options.nullable)
+      return value;
     if (value instanceof this.SetClass){
       value = _.map(value, function(model){
         return model._id;
@@ -136,6 +145,7 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     return value;
   },
   get: function(value, model, fieldname){
+    if (_.isNull(value)) return;
     model.sets[fieldname].addNew(value);
     return model.sets[fieldname];
   },
@@ -171,16 +181,20 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
 
 
 hs.models.fields.ModelField = hs.models.fields.Field.extend({
-  initialize: function(ForeignModel){
+  initialize: function(ForeignModel, options){
     this.ForeignModel = ForeignModel;
+    this.options = options;
   },
   set: function(value){
+    if (_.isNull(value) && this.options.nullable)
+      return value;
     if (value instanceof this.ForeignModel && !_.isUndefined(value._id))
       return value._id;
     else
       this.invalid(value, 'Extected a Model with an _id.');
   },
   get: function(value){
+    if (_.isNull(value)) return;
     return this.ForeignModel.get(value);
   }
 });
