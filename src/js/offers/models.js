@@ -20,7 +20,7 @@ hs.offers.Offer = hs.models.Model.extend({
   },
   unaccept: function(clbk, context){
     this.withField('listing', function(listing){
-      listing.save({accepted: null}, {success: clbk, error: clbk, context: context});
+      // listing.save({accepted: null}, {success: clbk, error: clbk, context: context});
     }, this);
   }
 });

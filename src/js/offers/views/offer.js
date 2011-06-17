@@ -142,13 +142,11 @@ hs.offers.views.Offer = hs.views.View.extend({
     this.trigger('removed');
   },
   lock: function(){
-    hs.log('locking offer');
     this.locked = true;
     this.$('.withdraw').remove();
     this.$('.accept').remove();
   },
   unlock: function(){
-    hs.log('unlocking offer');
     this.locked = false;
     this.controlsChange();
   }
