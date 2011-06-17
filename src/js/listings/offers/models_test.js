@@ -1,4 +1,3 @@
-//depends: offers/models.js
 
 module('Offer Model');
 

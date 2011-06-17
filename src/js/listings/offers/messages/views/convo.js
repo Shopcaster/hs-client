@@ -1,7 +1,7 @@
 //depends: core/views/view.js,
-//         messages/views/main.js,
-//         messages/views/form.js,
-//         messages/views/message.js
+//         listings/offers/messages/views/main.js,
+//         listings/offers/messages/views/form.js,
+//         listings/offers/messages/views/message.js
 
 hs.messages.views.Conversation = hs.views.View.mixin(hs.views.mixins.Dialog).extend({
   template: 'conversation',

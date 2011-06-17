@@ -43,6 +43,5 @@ hs.regController('listings', hs.Controller.extend({
     hs.page.finish();
     hs.page = new hs.listings.views.Thanks();
     hs.page.render();
-    hs.log('mainhtml: '+$('#main').html());
   }
 }));

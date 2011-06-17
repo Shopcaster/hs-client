@@ -1,4 +1,4 @@
-//depends: messages/views/main.js, auth/views.js
+//depends: listings/offers/messages/views/main.js, auth/views.js
 
 hs.messages.views.Form = hs.views.Form.extend({
   template: 'messageForm',

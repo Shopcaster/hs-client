@@ -2,8 +2,8 @@
 //         core/views/forms/form.js,
 //         listings/views/main.js,
 //         listings/models.js,
-//         offers/views/list.js,
-//         inquiries/views/list.js,
+//         listings/offers/views/list.js,
+//         listings/inquiries/views/list.js,
 //         auth/views.js
 
 

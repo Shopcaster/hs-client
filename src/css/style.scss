@@ -167,7 +167,7 @@ header{
 #body{
     padding:10px 0 0;
 
-    .section-left, .section-right{
+    .section-left, .section-right, .flatpage{
         margin:10px 0;
         position:relative;
         padding:10px;
@@ -182,6 +182,8 @@ header{
         width:340px;
         float:right;
     }
+    .flatpage{
+    }
 
     .listing{
         position:relative;
@@ -189,7 +191,7 @@ header{
         .status{
             display:none;
             position:absolute;
-            top:50px;left:50%;
+            top:150px;left:50%;
             width:300px;
             margin-left:-160px;
             padding:10px;
@@ -198,7 +200,8 @@ header{
             text-align:center;
             color:$red;
             font-size:40px;
-            font-weight:bold;
+            font-family: Impact;
+            font-weight:normal;
 
             border:4px solid $red;
             background-color:rgba($black, 0.7);

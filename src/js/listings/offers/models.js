@@ -1,4 +1,4 @@
-//depends: offers/main.js,
+//depends: listings/offers/main.js,
 //         core/models/model.js,
 //         core/models/fields.js
 

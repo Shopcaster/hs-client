@@ -89,8 +89,8 @@
 }
 
 @mixin tilt($deg: 30){
-    -webkit-transform: skewY(#{$deg}deg);
-    -moz-transform: skewY(#{$deg}deg);
+    -webkit-transform: rotate(#{$deg}deg);
+    -moz-transform: rotate(#{$deg}deg);
 }
 
 @mixin sans(){
