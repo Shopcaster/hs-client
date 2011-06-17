@@ -53,26 +53,25 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   controlsChange: function(){
 
-    if (this.owned && this.$('.withdraw').length == 0)
+    if (this.locked && this.listingOwned && this.$('.cancel').length == 0)
+      this.$('.actions').append('<a href="javascript:;" '
+          +'class="cancel dontOpen">Cancel</a> ');
+    else if (!this.locked || !this.listingOwned)
+      this.$('.cancel').remove();
+
+    if (!this.locked && this.owned && this.$('.withdraw').length == 0)
       this.$('.actions').append('<a href="javascript:;" '
           +'class="withdraw dontOpen">Withdraw</a> ');
-    else if (!this.owned)
+    else if (this.locked || !this.owned)
       this.$('.withdraw').remove();
 
-    if (this.listingOwned && this.$('.accept').length == 0)
+    if (!this.locked && this.listingOwned && this.$('.accept').length == 0)
       this.$('.actions').append('<a href="javascript:;" '
           +'class="accept dontOpen">Accept</a> ');
-    else if (!this.listingOwned)
+    else if (this.locked || !this.listingOwned)
       this.$('.accept').remove();
 
     this.initConvo();
-  },
-  accepted: function(){
-    this.$('.withdraw').remove();
-    this.$('.accept').remove();
-    if (this.listingOwned && this.$('.cancel').length == 0)
-      this.$('.actions').append('<a href="javascript:;" '
-          +'class="cancel dontOpen">Cancel</a> ');
   },
   initConvo: function(){
     this.canMessage = (this.owned || this.listingOwned) && this.rendered;
@@ -124,7 +123,7 @@ hs.offers.views.Offer = hs.views.View.extend({
     e.stopPropagation();
     if (this.locked) return;
     this.model.accept();
-    this.accepted();
+    this.controlsChange();
   },
   withdraw: function(e){
     e.preventDefault();
@@ -143,8 +142,7 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   lock: function(){
     this.locked = true;
-    this.$('.withdraw').remove();
-    this.$('.accept').remove();
+    this.controlsChange();
   },
   unlock: function(){
     this.locked = false;
