@@ -140,9 +140,13 @@ hs.offers.views.Offer = hs.views.View.extend({
     $('#offer-'+this.model._id).remove();
     this.trigger('removed');
   },
-  accepted: function(){
-    this.isAccepted = true;
+  accepted: function(isAccepted){
+    this.isAccepted = (isAccepted !== false);
     this.controlsChange();
+    if (this.isAccepted)
+      this.el.addClass('accepted');
+    else
+      this.el.removeClass('accepted');
   },
   lock: function(){
     this.locked = true;
@@ -150,7 +154,7 @@ hs.offers.views.Offer = hs.views.View.extend({
   },
   unlock: function(){
     this.locked = false;
-    this.isAccepted = false;
+    this.accepted(false);
     this.controlsChange();
   }
 });

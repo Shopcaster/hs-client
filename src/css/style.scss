@@ -456,6 +456,10 @@ header{
                         }
                     }
 
+                    &.accepted{
+                        background-color:#d2ffe7;
+                    }
+
                 }
                 .offer.hasMessages:hover{
                     background-color:$grey + #111 !important;

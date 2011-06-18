@@ -79,6 +79,7 @@ hs.auth = {
       this._isAuthenticated = true;
       this.trigger('change:isAuthenticated', this._isAuthenticated);
       if (clbk) clbk.call(context);
+      mpq.push(['identify', data.userid]);
     }else if (clbk){
       clbk.call(context, new Error('auth error'));
     }else{

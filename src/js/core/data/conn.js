@@ -11,7 +11,6 @@ hs.con = {
       this.socket.on('connect', this._connected);
       this.socket.on('message', this._recieved);
       this.socket.on('disconnect', this._disconnected);
-      hs.log('connecting');
       this.socket.connect();
     }, this);
 
