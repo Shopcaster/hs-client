@@ -100,10 +100,11 @@ hs.auth.views.AuthForm = hs.views.Form.extend({
       if (valid){
         if (hs.auth.isAuthenticated()){
           sub.call(this);
-        }if (this.$('[name=password]:visible').length)
+        }else if (this.$('[name=password]:visible').length){
           this.login(sub, this);
-        else
+        }else{
           this.signup(sub, this);
+        }
       }
     }, this);
   },
