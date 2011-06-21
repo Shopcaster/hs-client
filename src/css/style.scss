@@ -309,6 +309,7 @@ header{
         #listing-inquiries{
             padding:0;
             width:580px;
+            //float:right;
 
 
             h2{
@@ -405,6 +406,35 @@ header{
                         right:10px;
                         top:12px;
                     }
+                }
+            }
+        }
+        #listing-messages{
+            //float:left;
+
+            .messageForm{
+                margin-bottom:5px;
+
+                @include dark-button($blue - #444, '.submit');
+
+                input{
+                    width:325px;
+                    margin-bottom:5px;
+                }
+                input[type=submit]{
+                    width:70px;
+                    margin-top:1px;
+                    float:right;
+                }
+            }
+
+            .message{
+                min-height:30px;
+                padding:10px;
+                border-bottom:1px solid $grey;
+
+                .messageBody{
+                    margin-left:35px;
                 }
             }
         }
@@ -511,31 +541,6 @@ header{
             @include rounded-top-right(0px);
         }
 */
-        .messageForm{
-            margin-bottom:5px;
-
-            @include dark-button($blue - #444, '.submit');
-
-            input{
-                width:325px;
-                margin-bottom:5px;
-            }
-            input[type=submit]{
-                width:70px;
-                margin-top:1px;
-                float:right;
-            }
-        }
-
-        .message{
-            min-height:30px;
-            padding:10px;
-            border-bottom:1px solid $grey;
-
-            .messageBody{
-                margin-left:35px;
-            }
-        }
     }
     #new_listing{
         width:100%;

@@ -17,10 +17,14 @@ hs.messages.views.Form = hs.auth.views.AuthForm.extend({
     clbk(true);
   },
   submit: function(){
-    new hs.messages.Message().save({
-      convo: this.convo,
-      message: this.get('message')
-    });
-    this.clear();
+    if (this.convo._id){
+      new hs.messages.Message().save({
+        convo: this.convo,
+        message: this.get('message')
+      });
+      this.clear();
+    }else{
+      this.convo.save(null, {success: this.submit, context:this});
+    }
   }
 });

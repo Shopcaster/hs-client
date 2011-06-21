@@ -8,7 +8,7 @@ hs.models = hs.models || new Object();
 
 hs.models.Model = Backbone.Model.extend({
   key: null,
-  loaded: false,
+
   fields: {
     '_id': new hs.models.fields.StringField(),
     'creator': function(){
@@ -18,9 +18,12 @@ hs.models.Model = Backbone.Model.extend({
     'modified': new hs.models.fields.DateField(),
     'deleted': new hs.models.fields.BooleanField()
   },
+
   url: function(){return this.key},
+
   initialize: function(attrs, opts){
     _.bindAll(this);
+    this.loaded = false;
 
     if (this._id){
       var success = (opts && opts.success) ? opts.success : undefined;
@@ -42,6 +45,7 @@ hs.models.Model = Backbone.Model.extend({
       }
     }, this));
   },
+
   set: function(fields, options){
     if (_.isUndefined(options) || options.raw !== true){
 
@@ -60,6 +64,7 @@ hs.models.Model = Backbone.Model.extend({
 
     return Backbone.Model.prototype.set.apply(this, arguments)
   },
+
   get: function(fieldname){
     if (_.isUndefined(this.fields[fieldname]))
       throw(new Error(fieldname+' is not a '+this.key+' field'));
@@ -74,6 +79,7 @@ hs.models.Model = Backbone.Model.extend({
 
     return value;
   },
+
   withField: function(field, clbk, context){
     // use withRel is field is a relationship and it needs to span
     if (/\./.test('field'))
@@ -89,6 +95,7 @@ hs.models.Model = Backbone.Model.extend({
         clbk.call(context, this.get(field));
       }, this);
   },
+
   withRel: function(rel, clbk, context){
     var rels = rel.split('.').reverse();
     var parent = this;

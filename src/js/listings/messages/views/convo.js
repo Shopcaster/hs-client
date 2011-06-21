@@ -19,17 +19,16 @@ hs.messages.views.Conversation = hs.views.View.extend({
 
   render: function(){
 
-    if (_.isUndefined(this.model)
-        && !_.isUndefined(this.listing)
-        && hs.auth.isAuthenticated()){
-      this.listing.getConvoForUser(function(convo){
-        this.model = convo;
-        this.render();
-      }, this);
-      return;
-    }else if (_.isUndefined(this.model)
-              && !_.isUndefined(this.listing)){
+    if (_.isUndefined(this.model)){
       this.model = new hs.messages.Conversation();
+      if (!_.isUndefined(this.listing)
+          && hs.auth.isAuthenticated()){
+        this.getModel();
+      }else if (!_.isUndefined(this.listing)){
+        hs.auth.bind('change:isAuthenticated', function(isAuth){
+          if (isAuth) this.getModel();
+        }, this);
+      }
     }
 
     hs.views.View.prototype.render.apply(this, arguments);
@@ -40,6 +39,16 @@ hs.messages.views.Conversation = hs.views.View.extend({
     });
     this.form.render();
     this.renderMessages();
+  },
+
+  getModel: function(){
+    this.listing.getConvoForUser(function(convo){
+      hs.log('getConvoForUser', convo)
+      if (convo){
+        this.model = convo;
+        this.form.convo = this.model;
+      }
+    }, this);
   },
 
   renderMessages: function(){

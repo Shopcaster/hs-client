@@ -52,20 +52,24 @@ hs.listings.models.Listing = hs.models.Model.extend({
       clbk = user;
       user = hs.users.User.get();
     }
+    this.withField('convos', function(){
+      var retConvo;
+      var convos = this.get('convos');
 
-    var retConvo = null;
-    var convos = this.get('convos');
+      if (convos.length == 0)
+        return clbk.call(context);
 
-    var done = _.after(convos.length, function(){
-      clbk.call(context, retConvo);
-    });
-    convos.each(function(convo){
-      convo.withField('creator', function(creator){
-        if (user._id == creator._id)
-          retConvo = convo;
-        done();
+      var done = _.after(convos.length, function(){
+        clbk.call(context, retConvo);
       });
-    });
+      convos.each(function(convo){
+        convo.withField('creator', function(creator){
+          if (user._id == creator._id)
+            retConvo = convo;
+          done();
+        });
+      });
+    }, this);
   },
 
   sync: function(method, model, success, error){
