@@ -21,7 +21,8 @@ hs.messages.views.ConvoList = hs.views.View.extend({
       if (_.isUndefined(this.convoViews[convo._id])){
         this.convoViews[convo._id] = new hs.messages.views.LIConvo({
           appendTo: $('#convoList'),
-          model: convo
+          model: convo,
+          listing: this.model
         });
       }
 

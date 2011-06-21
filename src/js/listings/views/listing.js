@@ -26,7 +26,7 @@ hs.listings.views.Listing = hs.views.Page.extend({
     hs.views.Page.prototype.render.apply(this, arguments);
 
     this.inquiries = new hs.inquiries.views.Inquiries({
-      el: $('#listing-inquiries'),
+      appendTo: $('#listing-inquiries'),
       model: this.model
     });
     this.inquiries.render();
@@ -48,7 +48,7 @@ hs.listings.views.Listing = hs.views.Page.extend({
       if (this.convo) this.convo.remove();
 
       this.convoList = new hs.messages.views.ConvoList({
-        el: $('#listing-messages'),
+        appendTo: $('#listing-messages'),
         model: this.model
       });
       this.convoList.render();
@@ -58,8 +58,8 @@ hs.listings.views.Listing = hs.views.Page.extend({
       if (this.convoList) this.convoList.remove();
 
       this.convo = new hs.messages.views.Conversation({
-        el: $('#listing-messages'),
-        model: this.model
+        appendTo: $('#listing-messages'),
+        listing: this.model
       });
       this.convo.render();
     }
