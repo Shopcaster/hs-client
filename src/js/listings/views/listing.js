@@ -42,7 +42,7 @@ hs.listings.views.Listing = hs.views.Page.extend({
     this.creator = this.model.get('creator');
     if (this.creator
         && hs.auth.isAuthenticated()
-        && this.creator._id == hs.auth.getUser()._id
+        && this.creator._id == hs.users.User.get()._id
         && _.isUndefined(this.convoList)){
 
       if (this.convo) this.convo.remove();

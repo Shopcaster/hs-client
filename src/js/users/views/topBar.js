@@ -32,7 +32,7 @@ hs.users.views.TopBar = hs.views.View.extend({
     $('#top-bar a.logout').show();
     $('#top-bar a.settings').show();
 
-    this.user = hs.auth.getUser();
+    this.user = hs.users.User.get();
     this.user.bind('change:name', this.renderLoggedIn, this);
 
     var name = this.user.get('name');

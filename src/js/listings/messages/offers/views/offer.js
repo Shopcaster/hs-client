@@ -38,7 +38,7 @@ hs.offers.views.Offer = hs.views.View.extend({
     this.listingOwned = false;
     this.owned = false;
     if (hs.auth.isAuthenticated()){
-      var userId = hs.auth.getUser()._id;
+      var userId = hs.users.User.get()._id;
       if (this.creator._id == userId){
         this.owned = true;
       }

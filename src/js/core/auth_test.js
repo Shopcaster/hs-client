@@ -66,7 +66,7 @@ test("User", function(){
       start();
       throw(err);
     }
-    var user = hs.auth.getUser();
+    var user = hs.users.User.get();
 
     ok(!_.isUndefined(user), 'user exists');
 
