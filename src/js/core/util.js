@@ -7,20 +7,15 @@ hs.loadScript = function(location){
 }
 
 _.mixin({
-  BindAllTo: function(obj, context, methods){
-    if (!_.isObject(obj)) throw(new Error('obj must be an object'));
-    _.each(obj, function(val, key){
-      if (_.isFunction(val) && (_.isUndefined(methods) || _.indexOf(methods, key) >= 0))
-        _.bind(obj[key], context);
-    });
-    return obj;
-  },
+
   isFloat: function(n){
     return n===+n && !_.isInteger(n);
   },
+
   isInteger: function(n){
     return n===+n && n===Math.floor(n);
   },
+
   since: function(date, since){
     if (!_.isDate(date))
       date = new Date(date);
@@ -63,5 +58,42 @@ _.mixin({
     }else{
         hs.error('_.since only accepts dates from the past', date);
     };
+  },
+
+  toRad: function(n) {
+    if (!_.isNumber(n)) throw(new Error('toRad only takes numbers'));
+    return n * Math.PI / 180;
+  },
+
+  toDeg: function(n) {
+    if (!_.isNumber(n)) throw(new Error('toDeg only takes numbers'));
+    return n * 180 / Math.PI;
+  },
+
+  diffLocation: function(p1, p2){
+    //see: http://www.movable-type.co.uk/scripts/latlong.html
+
+    // distance:
+    var R = 6371; // km
+    var d = Math.acos(Math.sin(p1.latitude)*Math.sin(p2.latitude) +
+                      Math.cos(p1.latitude)*Math.cos(p2.latitude) *
+                      Math.cos(p2.longitude-p1.longitude)) * R;
+
+    // bearing
+    var dLon = _.toRad(p2.longitude-p1.longitude);
+    var y = Math.sin(dLon) * Math.cos(p2.latitude);
+    var x = Math.cos(p1.latitude)*Math.sin(p2.latitude) -
+            Math.sin(p1.latitude)*Math.cos(p2.latitude)*Math.cos(dLon);
+    var brng = _.toDeg(Math.atan2(y, x));
+
+    // switch (bring){
+    //   case:
+    // }
+
+    return {
+      bearing: brng,
+      distance: d
+    };
   }
-})
+
+});

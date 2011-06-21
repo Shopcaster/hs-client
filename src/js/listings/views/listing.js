@@ -1,6 +1,7 @@
 //depends:
 // core/views/page.js,
 // core/views/authForm.js,
+// users/views/user.js,
 // listings/models.js,
 // listings/views/main.js,
 // listings/messages/views/convoList.js,
@@ -9,6 +10,7 @@
 
 hs.listings.views.Listing = hs.views.Page.extend({
   template: 'listingPage',
+
   modelEvents: {
     'change:creator': 'updateCreator',
     'change:photo': 'updatePhoto',
@@ -22,6 +24,7 @@ hs.listings.views.Listing = hs.views.Page.extend({
     'change:accepted': 'updateAccepted',
     'change:sold': 'updateSold'
   },
+
   render: function(){
     hs.views.Page.prototype.render.apply(this, arguments);
 
@@ -37,9 +40,22 @@ hs.listings.views.Listing = hs.views.Page.extend({
           +'Snap it up before it\'s too late.'
         +'" data-count="horizontal" data-via="hipsellapp">Tweet</a>'
         +'<script src="http://platform.twitter.com/widgets.js"></script>');
+
+    if (Modernizr.geolocation)
+      navigator.geolocation.getCurrentPosition(_.bind(this.updateLocation, this));
   },
+
   updateCreator: function(){
     this.creator = this.model.get('creator');
+
+    if (this.creator && _.isUndefined(this.creatorView)){
+      this.creatorView = new hs.users.views.User({
+        el: this.$('#listing-creator'),
+        model: this.creator
+      });
+      this.creatorView.render();
+    }
+
     if (this.creator
         && hs.auth.isAuthenticated()
         && this.creator._id == hs.users.User.get()._id
@@ -64,6 +80,7 @@ hs.listings.views.Listing = hs.views.Page.extend({
       this.convo.render();
     }
   },
+
   updatePhoto: function(){
     if (this.model.get('photo')){
       this.$('#listing-image img')
@@ -75,11 +92,13 @@ hs.listings.views.Listing = hs.views.Page.extend({
           .attr('src', 'http://lorempixum.com/560/418/technics/');
     }
   },
+
   updateDesc: function(){
     if (this.model.get('description')){
       this.$('#listing-description').text(this.model.get('description'));
     }
   },
+
   updateCreated: function(){
     if (this.model.get('created')){
       var since = _.since(this.model.get('created'));
@@ -87,6 +106,7 @@ hs.listings.views.Listing = hs.views.Page.extend({
       this.$('.date .listing-obi-value').text(since.num);
     }
   },
+
   updateLoc: function(){
     if (this.model.get('latitude') && this.model.get('longitude')){
       var lat = this.model.get('latitude'),
@@ -98,11 +118,22 @@ hs.listings.views.Listing = hs.views.Page.extend({
           +'ll='+lat+','+lng+'&z=16')
     }
   },
+
+  updateLocation: function(position){
+    this.locDiff = _.diffLocation(position.coords, {
+      longitude: this.model.get('longitude'),
+      latitude: this.model.get('latitude')
+    });
+    this.$('#listing-locDiff').text(
+        Math.round(this.locDiff.distance*100)/100+'km '+this.locDiff.bearing);
+  },
+
   updatePrice: function(){
     if (this.model.get('price')){
       this.$('.asking .listing-obi-value').text('$'+this.model.get('price'));
     }
   },
+
   updateBestOffer: function(){
     this.model.bestOffer(function(best){
       if (best){
@@ -117,11 +148,13 @@ hs.listings.views.Listing = hs.views.Page.extend({
 
     }, this);
   },
+
   updateSold: function(){
     if (this.model.get('sold')){
       hs.log('!!SOLD!!');
     }
   },
+
   updateAccepted: function(){
     var accepted = this.model.get('accepted');
     if (accepted){

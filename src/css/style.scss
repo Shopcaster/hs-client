@@ -225,6 +225,10 @@ header{
                 border:1px solid $grey;
             }
 
+            #listing-creator{
+                margin:10px 0;
+            }
+
             #listing-offerbar{
                 $bg-color:#d5d5d5;
 
@@ -289,21 +293,6 @@ header{
                 margin:0 0 10px;
                 font-size:18px;
                 font-weight:normal;
-            }
-
-            .meta{
-                position:relative;
-                margin-left:35px;
-                img{
-                    position:absolute;
-                    top:0;left:-35px;
-                }
-                .name {
-                    font-weight:bold;
-                }
-                .created {
-                    font-size:10px;
-                }
             }
         }
         #listing-inquiries{
@@ -584,6 +573,24 @@ header{
         background-color:$white;
         @include box-shadow(0 2px 4px $black + #222);
         @include rounded(0px);
+    }
+
+
+    .user{
+        position:relative;
+        margin-left:35px;
+        min-height:30px;
+
+        img{
+            position:absolute;
+            top:0;left:-35px;
+        }
+        .name {
+            font-weight:bold;
+        }
+        .created {
+            font-size:10px;
+        }
     }
 }
 
