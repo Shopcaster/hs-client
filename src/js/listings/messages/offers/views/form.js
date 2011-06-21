@@ -1,4 +1,7 @@
-//depends: listings/offers/views/main.js, core/views/mixins/dialog.js, auth/views.js
+//depends:
+// core/views/authForm.js,
+// core/views/mixins/dialog.js,
+// listings/messages/offers/views/main.js
 
 hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
   template: 'offerForm',

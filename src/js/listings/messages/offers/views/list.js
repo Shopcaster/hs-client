@@ -1,7 +1,7 @@
 //depends: core/views/view.js,
-//         listings/offers/views/main.js,
-//         listings/offers/views/form.js,
-//         listings/offers/views/offer.js
+//         listings/messages/offers/views/main.js,
+//         listings/messages/offers/views/form.js,
+//         listings/messages/offers/views/offer.js
 
 hs.offers.views.Offers = hs.views.View.extend({
   template: 'offers',

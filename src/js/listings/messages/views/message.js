@@ -1,4 +1,5 @@
-//depends: listings/offers/messages/views/main.js, core/views/view.js
+//depends: core/views/view.js,
+//         listings/messages/views/main.js
 
 hs.messages.views.Message = hs.views.View.extend({
   template: 'message',

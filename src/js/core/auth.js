@@ -1,4 +1,6 @@
-//depends: main.js, core/data/conn.js
+//depends:
+// main.js,
+// core/data/conn.js
 
 hs.auth = {
   init: function(){

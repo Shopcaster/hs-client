@@ -1,4 +1,3 @@
-//depends: auth/main.js
 
 module("Auth");
 

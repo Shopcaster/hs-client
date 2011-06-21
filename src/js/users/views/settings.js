@@ -1,13 +1,16 @@
-//depends: main.js, core/views/forms/form.js, auth/main.js, core/views/mixins/dialog.js
+//depends:
+// users/views/main.js,
+// core/views/forms/form.js,
+// core/views/mixins/dialog.js
 
-hs.auth.Settings = hs.views.View.mixin(hs.views.mixins.Dialog).extend({
+hs.users.views.Settings = hs.views.View.mixin(hs.views.mixins.Dialog).extend({
   appendTo: $('#top-bar .width'),
   template: 'settings',
   focusSelector: '#top-bar .settings',
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
-    this.nameForm = new hs.auth.NameForm();
-    this.passwordForm = new hs.auth.PasswordForm();
+    this.nameForm = new hs.users.views.NameForm();
+    this.passwordForm = new hs.users.views.PasswordForm();
   },
   focus: function(){
     hs.views.mixins.Dialog.focus.apply(this, arguments);
@@ -16,7 +19,7 @@ hs.auth.Settings = hs.views.View.mixin(hs.views.mixins.Dialog).extend({
   }
 });
 
-hs.auth.NameForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
+hs.users.views.NameForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
   appendTo: $('#top-bar .width'),
   template: 'nameForm',
   focusSelector: '#top-bar .name',
@@ -27,7 +30,7 @@ hs.auth.NameForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
   }],
   render: function(){
     hs.views.Form.prototype.render.apply(this, arguments);
-    this.user = this.user || hs.auth.getUser();
+    this.user = this.user || hs.users.User.get();
     if (this.user.get('name'))
       this.set('name', this.user.get('name'));
   },
@@ -38,7 +41,7 @@ hs.auth.NameForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
   }
 });
 
-hs.auth.PasswordForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
+hs.users.views.PasswordForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
   appendTo: $('#top-bar .width'),
   template: 'passwordForm',
   focusSelector: '#top-bar .password',
@@ -53,10 +56,10 @@ hs.auth.PasswordForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
   }],
   render: function(){
     hs.views.Form.prototype.render.apply(this, arguments);
-    this.user = hs.auth.getUser();
+    this.user = hs.users.User.get();
   },
   submit: function(){
-    hs.auth.changePassword(this.get('oldPassword'), this.get('newPassword'), _.bind(function(worked){
+    hs.auth.changePassword(this.get('oldPassword'), this.get('newPassword'), function(worked){
       if (worked){
         hs.auth.setPassword(this.get('newPassword'));
         this.blur();
@@ -64,6 +67,6 @@ hs.auth.PasswordForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
       }else{
         this.showInvalid('oldPassword');
       }
-    }, this));
+    }, this);
   }
 });

@@ -1,10 +1,5 @@
 //depends: core/views/main.js,
-//         core/views/forms/form.js,
-//         listings/views/main.js,
-//         listings/models.js,
-//         listings/offers/views/list.js,
-//         listings/inquiries/views/list.js,
-//         auth/views.js
+//         listings/views/main.js
 
 
 hs.listings.views.Thanks = hs.views.Page.extend({

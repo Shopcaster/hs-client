@@ -1,4 +1,7 @@
-//depends: main.js, core/data/sync.js, core/models/fields.js
+//depends:
+// main.js,
+// core/data/sync.js,
+// core/models/fields.js
 
 
 hs.models = hs.models || new Object();
@@ -9,7 +12,7 @@ hs.models.Model = Backbone.Model.extend({
   fields: {
     '_id': new hs.models.fields.StringField(),
     'creator': function(){
-      return new hs.models.fields.ModelField(hs.auth.models.User);
+      return new hs.models.fields.ModelField(hs.users.User);
     },
     'created': new hs.models.fields.DateField(),
     'modified': new hs.models.fields.DateField(),

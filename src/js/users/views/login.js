@@ -1,6 +1,9 @@
-//depends: main.js, core/views/forms/form.js, auth/main.js
+//depends:
+// users/views/main.js,
+// core/views/forms/form.js,
+// core/views/mixins/dialog.js
 
-hs.auth.LoginForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
+hs.users.views.LoginDialog = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
   appendTo: $('#top-bar .width'),
   template: 'loginForm',
   focusSelector: '#top-bar .login',

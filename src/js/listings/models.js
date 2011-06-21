@@ -1,7 +1,8 @@
-//depends: listings/main.js,
-//         core/models/model.js,
-//         core/models/fields.js,
-//         auth/models.js
+//depends:
+// listings/main.js,
+// core/models/model.js,
+// core/models/fields.js,
+// users/models.js
 
 hs.listings.models = new Object();
 
@@ -16,6 +17,9 @@ hs.listings.models.Listing = hs.models.Model.extend({
     price: new hs.models.fields.MoneyField(),
     offers: function(){
       return new hs.models.fields.CollectionField(hs.offers.OfferSet)
+    },
+    convos: function(){
+      return new hs.models.fields.CollectionField(hs.messages.ConvoSet)
     },
     inquiries: function(){
       return new hs.models.fields.CollectionField(hs.inquiries.InquirySet)
