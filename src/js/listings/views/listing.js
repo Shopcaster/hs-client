@@ -124,8 +124,9 @@ hs.listings.views.Listing = hs.views.Page.extend({
       longitude: this.model.get('longitude'),
       latitude: this.model.get('latitude')
     });
-    this.$('#listing-locDiff').text(
-        Math.round(this.locDiff.distance*100)/100+'km '+this.locDiff.bearing);
+    this.$('#listing-locDiff').text(''+
+        Math.round(this.locDiff.distance*100)/100+'km '+this.locDiff.bearing
+        +' from you.');
   },
 
   updatePrice: function(){
@@ -151,14 +152,14 @@ hs.listings.views.Listing = hs.views.Page.extend({
 
   updateSold: function(){
     if (this.model.get('sold')){
-      hs.log('!!SOLD!!');
+      this.$('.status').removeClass('accepted').addClass('sold').text('Sold');
     }
   },
 
   updateAccepted: function(){
     var accepted = this.model.get('accepted');
     if (accepted){
-      this.$('.status').text('Offer Accepted').show();
+      this.$('.status').removeClass('sold').addClass('accepted').text('Offer Accepted');
       this.accepted = true;
       this.offers.disable(accepted);
       this.inquiries.disable();
