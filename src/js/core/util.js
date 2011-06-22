@@ -86,12 +86,25 @@ _.mixin({
             Math.sin(p1.latitude)*Math.cos(p2.latitude)*Math.cos(dLon);
     var brng = _.toDeg(Math.atan2(y, x));
 
-    // switch (bring){
-    //   case:
-    // }
+    if (brng < 0)
+      brng = 90+Math.abs(brng);
+
+    var dirs = [
+      'North',
+      'North West',
+      'West',
+      'South West',
+      'South',
+      'South East',
+      'East',
+      'North East',
+      'North'
+    ];
+
+    var word = dirs[Math.round(brng/(360/dirs.length))];
 
     return {
-      bearing: brng,
+      bearing: word,
       distance: d
     };
   }
