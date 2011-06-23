@@ -120,13 +120,21 @@ hs.listings.views.Listing = hs.views.Page.extend({
   },
 
   updateLocation: function(position){
-    this.locDiff = _.diffLocation(position.coords, {
-      longitude: this.model.get('longitude'),
-      latitude: this.model.get('latitude')
-    });
-    this.$('#listing-locDiff').text(''+
-        Math.round(this.locDiff.distance*100)/100+'km '+this.locDiff.bearing
-        +' from you.');
+    var listingLoc = new LatLon(this.model.get('latitude'), this.model.get('longitude'));
+    var userLoc = new LatLon(position.coords.latitude, position.coords.longitude);
+
+    var dist = parseFloat(userLoc.distanceTo(listingLoc));
+    var brng = userLoc.bearingTo(listingLoc);
+
+    var direction = _.degreesToDirection(brng);
+
+    var distStr;
+    if (dist < 1)
+      distStr = Math.round(dist*1000)+' metres'
+    else
+      distStr = Math.round(dist*100)/100+' km'
+
+    this.$('#listing-locDiff').text(distStr+' '+direction+' of you.');
   },
 
   updatePrice: function(){

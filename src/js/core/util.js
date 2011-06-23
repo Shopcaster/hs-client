@@ -70,43 +70,22 @@ _.mixin({
     return n * 180 / Math.PI;
   },
 
-  diffLocation: function(p1, p2){
-    //see: http://www.movable-type.co.uk/scripts/latlong.html
-
-    // distance:
-    var R = 6371; // km
-    var d = Math.acos(Math.sin(p1.latitude)*Math.sin(p2.latitude) +
-                      Math.cos(p1.latitude)*Math.cos(p2.latitude) *
-                      Math.cos(p2.longitude-p1.longitude)) * R;
-
-    // bearing
-    var dLon = _.toRad(p2.longitude-p1.longitude);
-    var y = Math.sin(dLon) * Math.cos(p2.latitude);
-    var x = Math.cos(p1.latitude)*Math.sin(p2.latitude) -
-            Math.sin(p1.latitude)*Math.cos(p2.latitude)*Math.cos(dLon);
-    var brng = _.toDeg(Math.atan2(y, x));
-
-    if (brng < 0)
-      brng = 90+Math.abs(brng);
-
+  degreesToDirection: function(brng){
     var dirs = [
-      'North',
-      'North West',
-      'West',
-      'South West',
-      'South',
-      'South East',
-      'East',
-      'North East',
-      'North'
+      'north',
+      'north west',
+      'west',
+      'south west',
+      'south',
+      'south east',
+      'east',
+      'north east',
+      'north'
     ];
 
     var word = dirs[Math.round(brng/(360/dirs.length))];
 
-    return {
-      bearing: word,
-      distance: d
-    };
+    return word;
   }
 
 });
