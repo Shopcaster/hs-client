@@ -401,7 +401,6 @@ header{
             }
         }
         #listing-messages{
-            //float:left;
 
             .messageForm{
                 margin-bottom:5px;
@@ -428,79 +427,56 @@ header{
                     margin:-15px 0 0 35px;
                 }
             }
-        }
-/*        #listing-offers{
-            min-height:40px;
-            padding-bottom:0;
 
-            #offerFormWrap{
+            .liConvo{
                 position:relative;
-                z-index:4;
+                height:50px;
+                width:360px;
+                margin-left:-10px;
+                z-index:1;
 
-                input{
-                    width:325px;
-                }
+                background-color:$white;
 
-                #offerField{
+                .liConvoData{
                     position:absolute;
                     top:0;left:0;
-                }
-                #offerForm{
-                    top:-5px;left:-5px;
-                }
-            }
-            #offerList{
-                margin-top:40px;
-
-                .offer{
-                    position:relative;
-                    height:50px;
-                    width:360px;
-                    margin-left:-10px;
+                    height:30px;
+                    width:340px;
+                    border-top:1px solid $grey - #111;
+                    padding:10px;
                     z-index:1;
 
-                    background-color:$white;
-
-                    .offerData{
+                    .amount{
                         position:absolute;
-                        top:0;left:0;
-                        height:30px;
-                        width:340px;
-                        border-top:1px solid $grey - #111;
-                        padding:10px;
-                        z-index:1;
-
-                        .amount{
-                            position:absolute;
-                            right:10px;top:10px;
-                            font-size:26px;
-                            font-weight:bold;
-                            line-height:30px;
-                            vertical-align:middle;
-                        }
-                        .actions{
-                            margin-left:35px;
-                            font-size:12px;
-                        }
-                        .clicky{
-                            @include left-arrow-sprite();
-                            top:2px;left:2px;
-                        }
+                        right:10px;top:10px;
+                        font-size:26px;
+                        font-weight:bold;
+                        line-height:30px;
+                        vertical-align:middle;
                     }
-
-                    &.accepted{
-                        background-color:#d2ffe7;
+                    .actions{
+                        margin:-15px 0 0 35px;
+                        font-size:12px;
                     }
-
+                    .clicky{
+                        @include left-arrow-sprite();
+                        top:2px;left:2px;
+                    }
                 }
-                .offer.hasMessages:hover{
+
+                &.accepted{
+                    background-color:#d2ffe7;
+                }
+
+                &:hover{
                     background-color:$grey + #111 !important;
                     .clicky{display:block;}
                 }
-                .offer.selected{
+
+                &.selected{
                     z-index:2;
 
-                    .offerData{
+                    .liConvoData{
                         z-index:3;
                         background-color:$lightBlue;
                         border:1px solid $grey - #444;
@@ -512,26 +488,28 @@ header{
                     }
 
                 }
+
+
+                .conversation{
+                    position:absolute;
+                    width:390px; min-height:45px;
+                    left:-401px; top:0px;
+                    z-index:2;
+
+                    background-color:$lightBlue;
+                    border:1px solid $grey - #444;
+
+                    @include box-shadow(0 2px 4px $black + #333);
+                    @include dark-button($blue - #444, '.submit');
+                    @include rounded();
+                    @include rounded-top-right(0px);
+
+                    .messageForm input[type=text]{
+                        width:300px;
+                    }
+                }
             }
         }
-*/
-/*
-        .conversation{
-            position:absolute;
-            width:400px; min-height:45px;
-            left:-401px; top:0px;
-            padding:0px;
-            z-index:2;
-
-            background-color:$lightBlue;
-            border:1px solid $grey - #444;
-
-            @include box-shadow(0 2px 4px $black + #333);
-            @include dark-button($blue - #444, '.submit');
-            @include rounded();
-            @include rounded-top-right(0px);
-        }
-*/
     }
     #new_listing{
         width:100%;

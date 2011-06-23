@@ -28,10 +28,5 @@ hs.messages.views.Message = hs.views.View.extend({
   createdChange: function(){
     var since = _.since(this.model.get('created'));
     this.$('.created').text(since.num+' '+since.text);
-  },
-
-  remove: function(){
-    $('#message-'+this.model._id).remove();
-    this.trigger('removed');
   }
 });

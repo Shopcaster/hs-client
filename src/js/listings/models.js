@@ -52,6 +52,8 @@ hs.listings.models.Listing = hs.models.Model.extend({
       clbk = user;
       user = hs.users.User.get();
     }
+    if (!(user)) return clbk.call(context);
+
     this.withField('convos', function(){
       var retConvo;
       var convos = this.get('convos');

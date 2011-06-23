@@ -9,10 +9,12 @@ hs.messages.views.ConvoList = hs.views.View.extend({
     'add:convos': 'convosAdd',
     'remove:convos': 'convosRemove'
   },
+
   render: function(){
     hs.views.View.prototype.render.apply(this, arguments);
     this.renderConvos();
   },
+
   renderConvos: function(){
     this.convoViews = this.convoViews || {};
 
@@ -37,12 +39,15 @@ hs.messages.views.ConvoList = hs.views.View.extend({
 
     }, this);
   },
+
   convosChange: function(){
     this.renderConvos();
   },
+
   convosAdd: function(){
     this.renderConvos();
   },
+
   convosRemove: function(convos){
     _.each(convos, function(convo){
       if (!_.isUndefined(this.convoViews[convo._id])){
@@ -51,12 +56,14 @@ hs.messages.views.ConvoList = hs.views.View.extend({
       }
     }, this);
   },
+
   disable: function(){
     this.disabled = true;
     _.each(this.convoViews, function(view, id){
       view.lock();
     });
   },
+
   enable: function(){
     this.disabled = false;
     _.each(this.convoViews, function(view){

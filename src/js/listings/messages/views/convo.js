@@ -15,6 +15,7 @@ hs.messages.views.Conversation = hs.views.View.extend({
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
     if (this.options.listing) this.listing = this.options.listing;
+    if (this.options.user) this.user = this.options.user;
   },
 
   render: function(){
@@ -22,28 +23,37 @@ hs.messages.views.Conversation = hs.views.View.extend({
 
     if (_.isUndefined(this.model)){
       this.getModel();
-      if (!hs.auth.isAuthenticated()){
-        hs.auth.bind('change:isAuthenticated', function(isAuth){
-          if (isAuth) this.getModel();
-        }, this);
-      }
+      hs.auth.bind('change:isAuthenticated', function(isAuth){
+        this.getModel();
+      }, this);
+    }else{
+      this.setupForm();
     }
   },
 
   getModel: function(clbk, context){
     this.listing.getConvoForUser(function(convo){
       if (convo && (_.isUndefined(this.model) || convo._id != this.model._id)){
+        if (this.model)
+          this.unbindModelEvents();
         this.model = convo;
         this.bindModelEvents();
         this.unrenderMessages();
         this.renderMessages();
-      }else if (_.isNull(convo)){
+      }else if (_.isUndefined(convo)){
         this.model = new hs.messages.Conversation();
         this.model.set({listing: this.listing});
         this.bindModelEvents();
         this.unrenderMessages();
       }
 
+      this.setupForm();
+
+      if (clbk) clbk.call(context);
+    }, this);
+  },
+
+  setupForm: function(){
       if (this.form){
         this.form.convo = this.model;
       }else{
@@ -53,9 +63,6 @@ hs.messages.views.Conversation = hs.views.View.extend({
         });
         this.form.render();
       }
-
-      if (clbk) clbk.call(context);
-    }, this);
   },
 
   unrenderMessages: function(){
@@ -99,12 +106,12 @@ hs.messages.views.ConvoDialog = hs.messages.views.Conversation.mixin(hs.views.mi
     if ($(e.target).is('.dontOpen')) return;
     hs.views.mixins.Dialog.focus.apply(this, arguments);
     this.$('input.messageField').focus();
-    $('#convo-'+this.model._id).addClass('selected');
+    $('#liConvo-'+this.model._id).addClass('selected');
   },
 
   blur: function(){
     hs.views.mixins.Dialog.blur.apply(this, arguments);
-    $('#convo-'+this.model._id).removeClass('selected');
+    $('#liConvo-'+this.model._id).removeClass('selected');
   }
 
 });

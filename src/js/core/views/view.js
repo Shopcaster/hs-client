@@ -82,6 +82,12 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
       this._tmplContext = this.prepContext(this._tmplContext);
     var html = ich[this.template](this._tmplContext);
     return html;
+  },
+
+  remove: function(){
+    this.unbindModelEvents();
+    this.el.remove();
+    this.trigger('removed');
   }
 });
 

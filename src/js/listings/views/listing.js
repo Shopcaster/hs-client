@@ -28,6 +28,8 @@ hs.listings.views.Listing = hs.views.Page.extend({
   render: function(){
     hs.views.Page.prototype.render.apply(this, arguments);
 
+    hs.auth.bind('change:isAuthenticated', this.updateCreator, this);
+
     this.inquiries = new hs.inquiries.views.Inquiries({
       appendTo: $('#listing-inquiries'),
       model: this.model
@@ -59,9 +61,12 @@ hs.listings.views.Listing = hs.views.Page.extend({
     if (this.creator
         && hs.auth.isAuthenticated()
         && this.creator._id == hs.users.User.get()._id
-        && _.isUndefined(this.convoList)){
+        && !(this.convoList)){
 
-      if (this.convo) this.convo.remove();
+      if (this.convo){
+        this.convo.remove();
+        this.convo = null;
+      }
 
       this.convoList = new hs.messages.views.ConvoList({
         appendTo: $('#listing-messages'),
@@ -69,9 +74,12 @@ hs.listings.views.Listing = hs.views.Page.extend({
       });
       this.convoList.render();
 
-    }else if (this.creator && _.isUndefined(this.convo)){
+    }else if (!(this.convo)){
 
-      if (this.convoList) this.convoList.remove();
+      if (this.convoList){
+        this.convoList.remove();
+        this.convoList = null;
+      }
 
       this.convo = new hs.messages.views.Conversation({
         appendTo: $('#listing-messages'),
@@ -96,6 +104,7 @@ hs.listings.views.Listing = hs.views.Page.extend({
   updateDesc: function(){
     if (this.model.get('description')){
       this.$('#listing-description').text(this.model.get('description'));
+      $('title').text('Hipsell - '+this.model.get('description'));
     }
   },
 
