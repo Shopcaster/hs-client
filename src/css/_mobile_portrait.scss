@@ -22,4 +22,20 @@
     }
 
     footer{display:none;}
+
+    #loading {
+        display:none;
+
+        position:absolute;
+        top:80px;left:50%;
+        width:80px;margin-left:-50px;
+        height:40px;
+
+        text-align:center;
+        padding:10px;
+        color:$white;
+        background-color:transparentize($black, 0.2);
+        @include rounded();
+        z-index:2;
+    }
 }

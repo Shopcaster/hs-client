@@ -88,7 +88,7 @@
     box-shadow: $value;
 }
 
-@mixin tilt($deg: 30){
+@mixin rotate($deg: 30){
     -webkit-transform: rotate(#{$deg}deg);
     -moz-transform: rotate(#{$deg}deg);
 }
@@ -148,6 +148,26 @@
     -webkit-border-radius: $radius;
 }
 
+@mixin rounded-top($radius: 5px) {
+    @include rounded-top-right($radius);
+    @include rounded-top-left($radius);
+}
+
+@mixin rounded-bottom($radius: 5px) {
+    @include rounded-bottom-right($radius);
+    @include rounded-bottom-left($radius);
+}
+
+@mixin rounded-left($radius: 5px) {
+    @include rounded-top-left($radius);
+    @include rounded-bottom-left($radius);
+}
+
+@mixin rounded-right($radius: 5px) {
+    @include rounded-top-right($radius);
+    @include rounded-bottom-right($radius);
+}
+
 @mixin rounded-top-right($radius: 5px) {
     -webkit-border-top-right-radius: $radius;
     -moz-border-radius-topright: $radius;
@@ -160,11 +180,6 @@
     border-top-left-radius: $radius;
 }
 
-@mixin rounded-top($radius: 5px) {
-    @include rounded-top-right($radius);
-    @include rounded-top-left($radius);
-}
-
 @mixin rounded-bottom-right($radius: 5px) {
     -webkit-border-bottom-right-radius: $radius;
     -moz-border-radius-bottomright: $radius;
@@ -175,11 +190,6 @@
     -webkit-border-bottom-left-radius: $radius;
     -moz-border-radius-bottomleft: $radius;
     border-bottom-left-radius: $radius;
-}
-
-@mixin rounded-bottom($radius: 5px) {
-    @include rounded-bottom-right($radius);
-    @include rounded-bottom-left($radius);
 }
 
 

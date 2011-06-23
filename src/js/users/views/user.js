@@ -17,6 +17,5 @@ hs.users.views.User = hs.views.View.extend({
 
   updateAvatar: function(){
     this.$('.avatar').attr('src', this.model.getAvatarUrl(30));
-  },
+  }
 });
-

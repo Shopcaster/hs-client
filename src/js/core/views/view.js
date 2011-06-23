@@ -6,6 +6,7 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
   modelEvents: {},
   mixinEvents: {},
   rendered: false,
+
   initialize: function(opt){
     _.bindAll(this);
     _.each(this.mixinEvents, function(methods, event){
@@ -17,18 +18,31 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
       }, this);
     }, this);
 
-    // bind modelEvents
-    if (this.model)
-      _.each(this.modelEvents, _.bind(function(method, event){
-        this.model.bind(event, _.bind(this[method], this));
-      }, this));
+    this.bindModelEvents();
+
     this.trigger('initialized');
   },
+
+  bindModelEvents: function(){
+    if (this.model)
+      _.each(this.modelEvents, function(method, event){
+        this.model.bind(event, this[method], this);
+      }, this);
+  },
+
+  unbindModelEvents: function(){
+    if (this.model)
+      _.each(this.modelEvents, function(method, event){
+        this.model.unbind(event, this[method]);
+      }, this);
+  },
+
   _configure: function(){
     Backbone.View.prototype._configure.apply(this, arguments);
     if (this.options.appendTo) this.appendTo = this.options.appendTo;
     if (this.options.prependTo) this.prependTo = this.options.prependTo;
   },
+
   render: function(){
     // render template
     if (this.el) this.el = $(this.el);
@@ -58,6 +72,7 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
           this[method]();
       }, this));
   },
+
   renderTmpl: function(){
     if (typeof this.template == 'undefined')
       throw('must define dialog template');

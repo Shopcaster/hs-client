@@ -18,36 +18,49 @@ hs.messages.views.Conversation = hs.views.View.extend({
   },
 
   render: function(){
+    hs.views.View.prototype.render.apply(this, arguments);
 
     if (_.isUndefined(this.model)){
-      this.model = new hs.messages.Conversation();
-      if (!_.isUndefined(this.listing)
-          && hs.auth.isAuthenticated()){
-        this.getModel();
-      }else if (!_.isUndefined(this.listing)){
+      this.getModel();
+      if (!hs.auth.isAuthenticated()){
         hs.auth.bind('change:isAuthenticated', function(isAuth){
           if (isAuth) this.getModel();
         }, this);
       }
     }
-
-    hs.views.View.prototype.render.apply(this, arguments);
-
-    this.form = new hs.messages.views.Form({
-      appendTo: this.$('.messageForm'),
-      convo: this.model
-    });
-    this.form.render();
-    this.renderMessages();
   },
 
-  getModel: function(){
+  getModel: function(clbk, context){
     this.listing.getConvoForUser(function(convo){
-      hs.log('getConvoForUser', convo)
-      if (convo){
+      if (convo && (_.isUndefined(this.model) || convo._id != this.model._id)){
         this.model = convo;
-        this.form.convo = this.model;
+        this.bindModelEvents();
+        this.unrenderMessages();
+        this.renderMessages();
+      }else if (_.isNull(convo)){
+        this.model = new hs.messages.Conversation();
+        this.model.set({listing: this.listing});
+        this.bindModelEvents();
+        this.unrenderMessages();
       }
+
+      if (this.form){
+        this.form.convo = this.model;
+      }else{
+        this.form = new hs.messages.views.Form({
+          appendTo: this.$('.messageForm'),
+          convo: this.model
+        });
+        this.form.render();
+      }
+
+      if (clbk) clbk.call(context);
+    }, this);
+  },
+
+  unrenderMessages: function(){
+    _.each(this.messageViews, function(view){
+      view.remove();
     }, this);
   },
 
@@ -56,8 +69,10 @@ hs.messages.views.Conversation = hs.views.View.extend({
 
     this.messageViews = this.messageViews || {};
 
-    this.model.get('messages').each(function(message){
+    var messages = this.model.get('messages');
+    messages.sort();
 
+    messages.each(function(message){
       if (_.isUndefined(this.messageViews[message._id])){
         this.messageViews[message._id] = new hs.messages.views.Message({
           prependTo: this.$('.messageList'),
@@ -67,7 +82,6 @@ hs.messages.views.Conversation = hs.views.View.extend({
 
       if (!this.messageViews[message._id].rendered)
         this.messageViews[message._id].render();
-
     }, this);
   },
 

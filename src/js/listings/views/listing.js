@@ -134,7 +134,7 @@ hs.listings.views.Listing = hs.views.Page.extend({
     else
       distStr = Math.round(dist*100)/100+' km'
 
-    this.$('#listing-locDiff').text(distStr+' '+direction+' of you.');
+    this.$('#listing-locDiff').text('Roughly '+distStr+' '+direction+' of you.');
   },
 
   updatePrice: function(){
