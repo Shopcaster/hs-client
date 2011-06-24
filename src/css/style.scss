@@ -29,6 +29,12 @@ body{
     font-family: 'Cantarell', arial, sans-serif;
 }
 
+p{
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding-right: 10px;
+}
+
 .width{position:relative;}
 
 #top-bar{
@@ -565,6 +571,15 @@ header{
         @include box-shadow(0 2px 4px $black + #222);
         @include rounded(0px);
     }
+        #thanks p{
+            padding: 10px 0px 10px 10px;
+        }
+        #thanks input{
+            margin-top: 25px;
+            margin-bottom: -10px;
+            width: 95%;
+            padding: 10px 5px 10px 5px;
+        }
 }
 
 footer{
