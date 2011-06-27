@@ -1,8 +1,7 @@
 
 dep.require('hs.listings');
 dep.require('hs.models.Model');
-dep.require('hs.models.fields');
-dep.require('hs.auth.User');
+dep.require('hs.users.User');
 
 dep.provide('hs.listings.Listing');
 dep.provide('hs.listings.ListingSet');
