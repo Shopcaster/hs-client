@@ -10,20 +10,15 @@ hs.loadScript = function(location){
 }
 
 _.mixin({
-  BindAllTo: function(obj, context, methods){
-    if (!_.isObject(obj)) throw(new Error('obj must be an object'));
-    _.each(obj, function(val, key){
-      if (_.isFunction(val) && (_.isUndefined(methods) || _.indexOf(methods, key) >= 0))
-        _.bind(obj[key], context);
-    });
-    return obj;
-  },
+
   isFloat: function(n){
     return n===+n && !_.isInteger(n);
   },
+
   isInteger: function(n){
     return n===+n && n===Math.floor(n);
   },
+
   since: function(date, since){
     if (!_.isDate(date))
       date = new Date(date);
@@ -66,5 +61,34 @@ _.mixin({
     }else{
         hs.error('_.since only accepts dates from the past', date);
     };
+  },
+
+  toRad: function(n) {
+    if (!_.isNumber(n)) throw(new Error('toRad only takes numbers'));
+    return n * Math.PI / 180;
+  },
+
+  toDeg: function(n) {
+    if (!_.isNumber(n)) throw(new Error('toDeg only takes numbers'));
+    return n * 180 / Math.PI;
+  },
+
+  degreesToDirection: function(brng){
+    var dirs = [
+      'north',
+      'north west',
+      'west',
+      'south west',
+      'south',
+      'south east',
+      'east',
+      'north east',
+      'north'
+    ];
+
+    var word = dirs[Math.round(brng/(360/dirs.length))];
+
+    return word;
   }
-})
+
+});

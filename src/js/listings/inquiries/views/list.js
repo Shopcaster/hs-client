@@ -11,10 +11,10 @@ hs.inquiries.views.Inquiries = hs.views.View.extend({
   render: function(){
     this._tmplContext.inquiries = this.model.get('inquiries').toJSON();
     hs.views.View.prototype.render.apply(this, arguments);
-    this.questionForm = this.questionForm || new hs.inquiries.views.QuestionForm({
-      appendTo: this.$('#inquiryFormWrap'),
-      listing: this.model
-    });
+    // this.questionForm = this.questionForm || new hs.inquiries.views.QuestionForm({
+    //   appendTo: this.$('#inquiryFormWrap'),
+    //   listing: this.model
+    // });
     this.renderInquiries();
   },
   inquiryViews: new Object(),
