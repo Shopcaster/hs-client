@@ -1,5 +1,9 @@
-//depends: core/views/view.js,
-//         listings/messages/views/main.js
+
+dep.require('hs.views.View');
+dep.require('hs.messages.views');
+dep.require('hs.messages.Message');
+
+dep.provide('hs.messages.views.Message');
 
 hs.messages.views.Message = hs.views.View.extend({
   template: 'message',

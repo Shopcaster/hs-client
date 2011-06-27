@@ -1,6 +1,9 @@
-//depends: core/views/view.js,
-//         listings/messages/views/main.js,
-//         listings/messages/views/liConvo.js
+
+dep.require('hs.views.View');
+dep.require('hs.messages.views');
+dep.require('hs.messages.views.LIConvo');
+
+dep.provide('hs.messages.views.ConvoList');
 
 hs.messages.views.ConvoList = hs.views.View.extend({
   template: 'convoList',

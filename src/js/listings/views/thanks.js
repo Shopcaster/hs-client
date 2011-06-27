@@ -1,6 +1,9 @@
 //depends: core/views/main.js,
 //         listings/views/main.js
 
+dep.require('hs.views.Page');
+dep.require('hs.listings.views');
+dep.provide('hs.listings.views.Thanks');
 
 hs.listings.views.Thanks = hs.views.Page.extend({
   template: 'thanks',

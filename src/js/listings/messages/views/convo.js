@@ -1,8 +1,11 @@
-//depends:
-// core/views/view.js,
-// listings/messages/views/main.js,
-// listings/messages/views/form.js,
-// listings/messages/views/message.js
+
+dep.require('hs.views.View');
+dep.require('hs.messages.views');
+dep.require('hs.messages.views.Form');
+dep.require('hs.messages.views.Message');
+
+dep.provide('hs.messages.views.Conversation');
+dep.provide('hs.messages.views.ConvoDialog');
 
 hs.messages.views.Conversation = hs.views.View.extend({
   template: 'conversation',

@@ -1,6 +1,12 @@
-//depends: listings/messages/main.js,
-//         core/models/model.js,
-//         core/models/fields.js
+
+dep.require('hs.models.Model');
+dep.require('hs.models.ModelSet');
+dep.require('hs.messages');
+
+dep.provide('hs.messages.Conversation');
+dep.provide('hs.messages.ConversationSet');
+dep.provide('hs.messages.Message');
+dep.provide('hs.messages.MessageSet');
 
 hs.messages.Conversation = hs.models.Model.extend({
   key: 'convo',

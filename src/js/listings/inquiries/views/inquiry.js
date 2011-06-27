@@ -1,4 +1,8 @@
-//depends: listings/inquiries/views/main.js, core/views/view.js
+
+dep.require('hs.views.View');
+dep.require('hs.inqueries.views');
+
+dep.provide('hs.inquiries.views.Inquiry');
 
 hs.inquiries.views.Inquiry = hs.views.View.extend({
   template: 'inquiry',

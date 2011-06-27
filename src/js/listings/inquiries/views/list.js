@@ -3,6 +3,14 @@
 //         listings/inquiries/views/form.js,
 //         listings/inquiries/views/inquiry.js
 
+
+dep.require('hs.views.View');
+dep.require('hs.inqueries.views');
+dep.require('hs.inquiries.views.Inquiry');
+dep.require('hs.inquiries.views.QuestionForm');
+
+dep.provide('hs.inquiries.views.Inquiries');
+
 hs.inquiries.views.Inquiries = hs.views.View.extend({
   template: 'inquiries',
   modelEvents: {

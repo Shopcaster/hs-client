@@ -1,8 +1,8 @@
-//depends:
-// users/views/main.js,
-// users/views/settings.js,
-// users/views/login.js,
-// core/views/view.js
+
+dep.require('hs.users.views.Settings');
+dep.require('hs.users.views.LoginDialog');
+
+dep.provide('hs.users.views.TopBar');
 
 hs.users.views.TopBar = hs.views.View.extend({
   events: {

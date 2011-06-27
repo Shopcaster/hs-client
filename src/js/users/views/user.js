@@ -1,6 +1,8 @@
-//depends:
-// core/views/view.js,
-// users/views/main.js
+
+dep.require('hs.views.View');
+dep.require('hs.users.views');
+
+dep.provides('hs.users.views.User');
 
 hs.users.views.User = hs.views.View.extend({
   template: 'user',

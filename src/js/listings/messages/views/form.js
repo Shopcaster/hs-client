@@ -1,6 +1,9 @@
-//depends:
-// listings/messages/views/main.js,
-// core/views/authForm.js
+
+dep.require('hs.auth.views.AuthForm');
+dep.require('hs.messages.views');
+dep.require('hs.messages.Message');
+
+dep.provide('hs.messages.views.Form');
 
 hs.messages.views.Form = hs.auth.views.AuthForm.extend({
   template: 'messageForm',

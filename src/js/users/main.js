@@ -1,3 +1,5 @@
-//depends: main.js, core/auth.js
+
+dep.require('hs');
+dep.provide('hs.users');
 
 hs.users = {};

@@ -1,6 +1,8 @@
 
 hs.require('hs.auth');
+hs.require('hs.users');
 hs.require('hs.models.Model');
+
 hs.provide('hs.users.User');
 
 hs.users.User = hs.models.Model.extend({
