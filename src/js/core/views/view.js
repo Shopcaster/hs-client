@@ -1,5 +1,9 @@
 //depends:core/views/main.js, core/util.js
 
+dep.require('hs.views');
+dep.require('util');
+dep.provide('hs.views.View');
+
 hs.views.View = Backbone.View.extend(Backbone.Events).extend({
   _tmplContext: {},
   events: {},
@@ -69,26 +73,3 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
     return html;
   }
 });
-
-// hs.views.View.mixin = function(mixin) {
-//   mixin = _.clone(mixin);
-//   var view = this.extend({});
-//   var events = mixin.events;
-//   var mixinEvents = _.clone(this.prototype.mixinEvents);
-//   if (events){
-//     delete mixin.events;
-//     _.each(events, function(method, type){
-//       mixinEvents[type] = mixinEvents[type] || [];
-//       mixinEvents[type].push(method);
-//     }, this);
-//   }
-//   view.prototype = _.extend({}, mixin, view.prototype, {mixinEvents: mixinEvents});
-//   return view;
-// };
-
-// hs.views.View.extend = function(){
-//   var View = Backbone.Model.extend.apply(this, arguments);
-//   View.mixin = hs.views.View.mixin;
-//   View.extend = arguments.callee;
-//   return View;
-// };

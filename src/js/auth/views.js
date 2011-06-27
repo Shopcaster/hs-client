@@ -1,8 +1,12 @@
-//depends: core/views/view.js,
-//    auth/main.js,
-//    core/init.js,
-//    auth/login.js,
-//    auth/settings.js
+
+dep.require('hs.views.View');
+dep.require('hs.auth');
+dep.require('hs.auth.LoginForm');
+dep.require('hs.auth.Settings');
+
+dep.provide('hs.auth.views.Login');
+dep.provide('hs.auth.views.AuthForm');
+
 
 hs.auth = hs.auth || new Object();
 hs.auth.views = new Object();

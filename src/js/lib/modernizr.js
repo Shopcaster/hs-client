@@ -1,3 +1,4 @@
+dep.provide('modernizr');
 /*!
  * Modernizr v2.0
  * http://www.modernizr.com

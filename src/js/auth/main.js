@@ -1,4 +1,6 @@
-//depends: main.js, core/data/conn.js
+
+hs.require('hs.con');
+hs.provide('hs.auth');
 
 hs.auth = {
   init: function(){

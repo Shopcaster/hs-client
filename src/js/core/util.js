@@ -1,5 +1,8 @@
 //depends: main.js
 
+dep.require('hs');
+dep.provide('util');
+
 hs.loadScript = function(location){
   var script = document.createElement("script");
   script.src = location;

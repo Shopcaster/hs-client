@@ -1,4 +1,5 @@
-//depends: lib/crypto.js
+dep.require('crypto');
+dep.provide('sha256');
 /*!
  * Crypto-JS v2.2.0
  * http://code.google.com/p/crypto-js/

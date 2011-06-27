@@ -1,4 +1,6 @@
-//depends: main.js
+
+dep.require('hs');
+dep.provide('hs.loading');
 
 (function(){
   var loading = 0;

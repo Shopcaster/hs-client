@@ -1,4 +1,5 @@
-//depends: lib/jquery-1.5.1.js
+dep.require('jquery');
+dep.provide('jquery-color');
 /*
  * jQuery Color Animations
  * Copyright 2007 John Resig

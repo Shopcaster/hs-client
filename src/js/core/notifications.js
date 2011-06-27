@@ -1,4 +1,7 @@
-//depends: core/data/conn.js, core/init.js, core/views/view.js
+
+dep.require('hs.con');
+dep.require('hs.init');
+dep.require('hs.views.View');
 
 hs.nots = {
   init: function(){

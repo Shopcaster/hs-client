@@ -1,8 +1,12 @@
 //depends: auth/main.js, core/models/model.js
 
+hs.require('hs.auth');
+hs.require('hs.models.Model');
+hs.provide('hs.auth.models.User');
+
 hs.auth.models = new Object();
 
-hs.auth.models.User = hs.models.Model.extend({
+hs.auth.User = hs.models.Model.extend({
   key: 'user',
   fields: _.extend({
     name: '',
@@ -20,7 +24,7 @@ hs.auth.getUser = (function(){
   return function(){
     if (hs.auth.isAuthenticated()){
       if (_.isUndefined(user))
-        user = hs.auth.models.User.get(hs.auth.userId);
+        user = hs.auth.User.get(hs.auth.userId);
       return user;
     }else return null;
   }

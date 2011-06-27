@@ -1,4 +1,7 @@
-//depends: main.js, core/views/forms/form.js, auth/main.js
+
+hs.require('hs.views.Form');
+hs.require('hs.auth');
+hs.provide('hs.auth.LoginForm');
 
 hs.auth.LoginForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
   appendTo: $('#top-bar .width'),

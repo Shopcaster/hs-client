@@ -1,4 +1,9 @@
-//depends: main.js, core/data/sync.js, core/models/fields.js
+
+dep.require('sync');
+dep.require('hs.models.fields.Field');
+
+dep.provide('hs.models.Model');
+dep.provide('hs.models.ModelSet');
 
 
 hs.models = hs.models || new Object();

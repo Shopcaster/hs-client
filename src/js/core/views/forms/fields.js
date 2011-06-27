@@ -1,4 +1,6 @@
-//depends: core/views/view.js
+
+dep.require('hs.views.View');
+dep.provide('hs.views.fields');
 
 hs.views.fields = new Object();
 

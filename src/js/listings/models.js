@@ -1,11 +1,13 @@
-//depends: listings/main.js,
-//         core/models/model.js,
-//         core/models/fields.js,
-//         auth/models.js
 
-hs.listings.models = new Object();
+dep.require('hs.listings');
+dep.require('hs.models.Model');
+dep.require('hs.models.fields');
+dep.require('hs.auth.User');
 
-hs.listings.models.Listing = hs.models.Model.extend({
+dep.provide('hs.listings.Listing');
+dep.provide('hs.listings.ListingSet');
+
+hs.listings.Listing = hs.models.Model.extend({
   key: 'listing',
   fields: _.extend({
     sold: new hs.models.fields.BooleanField(),
@@ -63,6 +65,6 @@ hs.listings.models.Listing = hs.models.Model.extend({
   }
 });
 
-hs.listings.models.ListingSet = hs.models.ModelSet.extend({
-  model: hs.listings.models.Listing,
+hs.listings.ListingSet = hs.models.ModelSet.extend({
+  model: hs.listings.Listing,
 });

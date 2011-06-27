@@ -1,5 +1,10 @@
 //depends: core/views/main.js, core/views/forms/fields.js
 
+dep.require('hs.views.View');
+dep.require('hs.views.fields');
+
+dep.provide('hs.views.Form');
+
 hs.views.Form = hs.views.View.extend({
   events: _.extend({
     'submit': '_submit'

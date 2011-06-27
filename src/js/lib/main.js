@@ -1,13 +1,19 @@
-//depends: lib/backbone.js,
-//    lib/jquery-1.5.1.js,
-//    lib/jquery-ui-1.8.11.custom.min.js,
-//    lib/json2.js,
-//    lib/modernizr.js,
-//    lib/underscore.js,
-//    lib/ICanHaz.js,
-//    lib/localStorage.js,
-//    lib/base64.js,
-//    lib/sha256.js
+
+
+dep.require('ICanHaz');
+dep.require('backbone');
+dep.require('base64');
+dep.require('crypto');
+dep.require('jquery');
+dep.require('jquery-ui');
+dep.require('jquery-color');
+dep.require('json2');
+dep.require('localStorage');
+dep.require('modernizr');
+dep.require('sha256');
+dep.require('underscore');
+
+dep.provide('lib');
 
 /**
 * this file just depends on all the libs so that they can be depended on as 1.
