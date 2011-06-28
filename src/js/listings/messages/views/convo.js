@@ -1,6 +1,5 @@
 
 dep.require('hs.views.View');
-dep.require('hs.messages.views');
 dep.require('hs.messages.views.Form');
 dep.require('hs.messages.views.Message');
 

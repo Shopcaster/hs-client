@@ -13,10 +13,20 @@ hs.auth = {
         this.login();
     }, this);
   },
+
   _isAuthenticated: false,
   isAuthenticated: function(){
     return this._isAuthenticated;
   },
+
+  pending: false,
+  ready: function(clbk, context){
+    if (this.pending)
+      this.once('done', clbk, context);
+    else
+      clbk.call(context);
+  },
+
   setEmail: function(email){
     this.email = email;
     localStorage.setItem('email', this.email);
@@ -39,6 +49,7 @@ hs.auth = {
     localStorage.setItem('userId', this.userId);
     this.trigger('change:userId');
   },
+
   signup: function(email, clbk, context){
     if (_.isFunction(email)){
       clbk = email;
@@ -47,6 +58,7 @@ hs.auth = {
       this.setEmail(email);
     }
 
+    this.pending = true;
     hs.con.send('auth', {email: this.email},
         _.bind(this._handleResponse, this, clbk, context));
   },
@@ -64,6 +76,7 @@ hs.auth = {
     if (email) this.setEmail(email);
     if (pass) this.setPassword(pass);
 
+    this.pending = true;
     hs.con.send('auth', {email: this.email, password: this.pass},
         _.bind(this._handleResponse, this, clbk, context));
   },
@@ -73,6 +86,7 @@ hs.auth = {
       password: newPass
     }, clbk, context);
   },
+
   _handleResponse: function(clbk, context, data){
     if (data){
       this.setUserId(data.userid);
@@ -87,7 +101,10 @@ hs.auth = {
     }else{
       this.logout();
     }
+    this.trigger('done');
+    this.pending = false;
   },
+
   logout: function(clbk, context){
     this.pass = undefined;
     this.email = undefined;
@@ -103,6 +120,7 @@ hs.auth = {
     }else if (clbk)
       clbk.call(context);
   },
+
   hash: function(email, pass){
     return Crypto.SHA256(pass+email).toUpperCase();
   }

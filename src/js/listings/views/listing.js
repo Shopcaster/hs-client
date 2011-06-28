@@ -63,7 +63,7 @@
           model: this.model
         });
         return this.convoList.render();
-      } else if (!(this.convo != null)) {
+      } else if (!hs.auth.pending && !(this.convo != null)) {
         if (this.convoList != null) {
           this.convoList.remove();
           this.convoList = null;

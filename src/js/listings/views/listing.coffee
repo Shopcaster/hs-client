@@ -59,7 +59,10 @@ hs.listings.views.Listing = hs.views.Page.extend
 
       @creatorView.render()
 
-    if @creator? and hs.auth.isAuthenticated() and @creator._id == hs.users.User.get()._id and not @convoList?
+    if (@creator? and
+        hs.auth.isAuthenticated() and
+        @creator._id == hs.users.User.get()._id and
+        not @convoList?)
 
       if @convo?
         @convo.remove()
@@ -71,7 +74,7 @@ hs.listings.views.Listing = hs.views.Page.extend
 
       @convoList.render()
 
-    else if not @convo?
+    else if not hs.auth.pending and not @convo?
 
       if @convoList?
         @convoList.remove()

@@ -1,11 +1,13 @@
 
 dep.require('hs.con');
+dep.require('hs.auth');
 dep.provide('hs.pubsub');
 
 hs.pubsub = {
   subs: {},
   msgId: 0,
   init: true,
+
   pubRecieved: function(msg) {
     var key = msg.key;
     if (_.isUndefined(key))
@@ -16,18 +18,22 @@ hs.pubsub = {
       clbk(msg.diff);
     });
   },
+
   connected: function(){
     if (!this.init){
-      _.each(this.subs, function(handlers, key){
-        if (handlers.length) this._sub(key, function(fields, err){
-          if (fields) _.each(handlers, function(handler){
-            handler(fields);
+      hs.auth.ready(function(){
+        _.each(this.subs, function(handlers, key){
+          if (handlers.length) this._sub(key, function(fields, err){
+            if (fields) _.each(handlers, function(handler){
+              handler(fields);
+            }, this);
           }, this);
         }, this);
       }, this);
     }
     this.init = false;
   },
+
   sub: function(key, handler, clbk, context) {
     var send = _.isUndefined(this.subs[key]);
     if (send) this.subs[key] = new Array();
@@ -36,9 +42,11 @@ hs.pubsub = {
       if (send) return this._sub(key, clbk, context);
     }
   },
+
   _sub: function(key, clbk, context){
     return hs.con.send('sub', {key: key}, clbk, context);
   },
+
   unsub: function unsub(key, clbk) {
     if (typeof clbk == 'undefined'){
       delete this.subs[key];
@@ -53,6 +61,7 @@ hs.pubsub = {
     }
   }
 };
+
 _.extend(hs.pubsub, Backbone.Events);
 _.bindAll(hs.pubsub);
 
