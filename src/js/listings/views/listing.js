@@ -40,12 +40,20 @@ hs.listings.views.Listing = hs.views.Page.extend({
           +'Snap it up before it\'s too late.'
         +'" data-count="horizontal" data-via="hipsellapp">Tweet</a>'
         +'<script src="http://platform.twitter.com/widgets.js"></script>');
+
+    hs.setMeta('og:title', 'Listing at Hipsell');
+    hs.setMeta('og:type', 'product');
+    hs.setMeta('og:url', window.location.toString());
+    hs.setMeta('og:site_name', 'Hipsell');
+    hs.setMeta('fb:app_id', '110693249023137');
   },
   updatePhoto: function(){
     if (this.model.get('photo')){
-      this.$('#listing-image img')
-            .attr('src', 'http://' + conf.server.host + ':' + conf.server.port +
-                          '/static/' + this.model.get('photo'));
+      var url = 'http://' + conf.server.host + ':' + conf.server.port +
+                '/static/' + this.model.get('photo');
+
+      this.$('#listing-image img').attr('src', url);
+      hs.setMeta('og:image', url);
 
     }else{
       this.$('#listing-image img')
@@ -55,6 +63,7 @@ hs.listings.views.Listing = hs.views.Page.extend({
   updateDesc: function(){
     if (this.model.get('description')){
       this.$('#listing-description').text(this.model.get('description'));
+      hs.setMeta('og:description', this.model.get('description'));
     }
   },
   updateCreated: function(){
@@ -73,6 +82,9 @@ hs.listings.views.Listing = hs.views.Page.extend({
           +'&zoom=14&size=340x200&sensor=false');
       this.$('.mapLink').attr('href', 'http://maps.google.com/?'
           +'ll='+lat+','+lng+'&z=16')
+
+      hs.setMeta('og:latitude', this.model.get('latitude'));
+      hs.setMeta('og:longitude', this.model.get('longitude'));
     }
   },
   updatePrice: function(){
