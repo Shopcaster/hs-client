@@ -1,5 +1,10 @@
 //depends: main.js, core/util.js
 
+dep.require('hs');
+dep.require('util');
+
+dep.provide('hs.Object');
+
 // Backbone-like extendable base object
 ;(function(){
   var ctor = function(){};

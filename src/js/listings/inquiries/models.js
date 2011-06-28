@@ -1,15 +1,16 @@
-//depends: listings/inquiries/main.js,
-//         core/models/model.js,
-//         core/models/fields.js
+
+dep.require('hs.inquiries');
+dep.require('hs.models.Model');
+dep.require('hs.models.fields.Field');
+
+dep.provide('hs.inquiries.Inquiry');
+dep.provide('hs.inquiries.InquirySet');
 
 hs.inquiries.Inquiry = hs.models.Model.extend({
   key: 'inquiry',
   fields: _.extend({
     question: null,
     answer: null,
-    creator: function(){
-      return new hs.models.fields.ModelField(hs.auth.models.User);
-    },
     listing: function(){
       return new hs.models.fields.ModelField(hs.listings.models.Listing);
     }

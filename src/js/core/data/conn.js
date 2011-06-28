@@ -1,5 +1,8 @@
-//depends: main.js, core/util.js, core/loading.js
 
+dep.require('util');
+dep.require('hs.loading');
+
+dep.provide('hs.con');
 
 hs.con = {
   log: false,

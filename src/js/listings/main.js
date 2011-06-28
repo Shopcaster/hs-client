@@ -1,4 +1,5 @@
-//depends: main.js
 
-hs.listings = hs.listings || new Object();
+dep.require('hs');
+dep.provide('hs.listings');
 
+hs.listings = hs.listings || {};

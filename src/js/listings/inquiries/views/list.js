@@ -1,7 +1,10 @@
-//depends: core/views/main.js,
-//         listings/inquiries/views/main.js,
-//         listings/inquiries/views/form.js,
-//         listings/inquiries/views/inquiry.js
+
+dep.require('hs.views.View');
+dep.require('hs.inquiries.views');
+dep.require('hs.inquiries.views.Inquiry');
+dep.require('hs.inquiries.views.QuestionForm');
+
+dep.provide('hs.inquiries.views.Inquiries');
 
 hs.inquiries.views.Inquiries = hs.views.View.extend({
   template: 'inquiries',
@@ -11,10 +14,10 @@ hs.inquiries.views.Inquiries = hs.views.View.extend({
   render: function(){
     this._tmplContext.inquiries = this.model.get('inquiries').toJSON();
     hs.views.View.prototype.render.apply(this, arguments);
-    this.questionForm = this.questionForm || new hs.inquiries.views.QuestionForm({
-      appendTo: this.$('#inquiryFormWrap'),
-      listing: this.model
-    });
+    // this.questionForm = this.questionForm || new hs.inquiries.views.QuestionForm({
+    //   appendTo: this.$('#inquiryFormWrap'),
+    //   listing: this.model
+    // });
     this.renderInquiries();
   },
   inquiryViews: new Object(),

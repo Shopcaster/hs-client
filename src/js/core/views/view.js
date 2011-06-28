@@ -1,11 +1,16 @@
 //depends:core/views/main.js, core/util.js
 
+dep.require('hs.views');
+dep.require('util');
+dep.provide('hs.views.View');
+
 hs.views.View = Backbone.View.extend(Backbone.Events).extend({
   _tmplContext: {},
   events: {},
   modelEvents: {},
   mixinEvents: {},
   rendered: false,
+
   initialize: function(opt){
     _.bindAll(this);
     _.each(this.mixinEvents, function(methods, event){
@@ -17,18 +22,31 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
       }, this);
     }, this);
 
-    // bind modelEvents
-    if (this.model)
-      _.each(this.modelEvents, _.bind(function(method, event){
-        this.model.bind(event, _.bind(this[method], this));
-      }, this));
+    this.bindModelEvents();
+
     this.trigger('initialized');
   },
+
+  bindModelEvents: function(){
+    if (this.model)
+      _.each(this.modelEvents, function(method, event){
+        this.model.bind(event, this[method], this);
+      }, this);
+  },
+
+  unbindModelEvents: function(){
+    if (this.model)
+      _.each(this.modelEvents, function(method, event){
+        this.model.unbind(event, this[method]);
+      }, this);
+  },
+
   _configure: function(){
     Backbone.View.prototype._configure.apply(this, arguments);
     if (this.options.appendTo) this.appendTo = this.options.appendTo;
     if (this.options.prependTo) this.prependTo = this.options.prependTo;
   },
+
   render: function(){
     // render template
     if (this.el) this.el = $(this.el);
@@ -58,6 +76,7 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
           this[method]();
       }, this));
   },
+
   renderTmpl: function(){
     if (typeof this.template == 'undefined')
       throw('must define dialog template');
@@ -67,28 +86,11 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
       this._tmplContext = this.prepContext(this._tmplContext);
     var html = ich[this.template](this._tmplContext);
     return html;
+  },
+
+  remove: function(){
+    this.unbindModelEvents();
+    this.el.remove();
+    this.trigger('removed');
   }
 });
-
-// hs.views.View.mixin = function(mixin) {
-//   mixin = _.clone(mixin);
-//   var view = this.extend({});
-//   var events = mixin.events;
-//   var mixinEvents = _.clone(this.prototype.mixinEvents);
-//   if (events){
-//     delete mixin.events;
-//     _.each(events, function(method, type){
-//       mixinEvents[type] = mixinEvents[type] || [];
-//       mixinEvents[type].push(method);
-//     }, this);
-//   }
-//   view.prototype = _.extend({}, mixin, view.prototype, {mixinEvents: mixinEvents});
-//   return view;
-// };
-
-// hs.views.View.extend = function(){
-//   var View = Backbone.Model.extend.apply(this, arguments);
-//   View.mixin = hs.views.View.mixin;
-//   View.extend = arguments.callee;
-//   return View;
-// };

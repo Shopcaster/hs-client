@@ -1,4 +1,6 @@
-//depends: main.js
+
+dep.require('hs');
+dep.provide('hs.init');
 
 (function(){
   var initStack = new Array(),

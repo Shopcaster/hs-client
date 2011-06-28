@@ -1,4 +1,7 @@
-//depends: core/data/conn.js, core/data/pubsub.js
+
+dep.require('hs.con');
+dep.require('hs.pubsub');
+dep.provide('sync');
 
 Backbone.sync = function(method, model, success, error){
 

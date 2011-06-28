@@ -1,4 +1,7 @@
-//depends: about/main.js, core/controller.js
+
+dep.require('hs.Controller');
+dep.require('hs.about.views.About');
+dep.require('hs.about.views.How');
 
 hs.regController('about', hs.Controller.extend({
   routes: {

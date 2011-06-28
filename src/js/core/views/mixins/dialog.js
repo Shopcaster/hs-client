@@ -1,4 +1,6 @@
-//depends: core/views/mixins/main.js
+
+dep.require('hs.views.mixins');
+dep.provide('hs.views.mixins.Dialog');
 
 hs.views.mixins.Dialog = {
   events: {

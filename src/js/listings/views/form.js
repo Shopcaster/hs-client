@@ -1,10 +1,10 @@
-//depends: core/views/main.js,
-//         core/views/forms/form.js,
-//         listings/views/main.js,
-//         listings/models.js,
-//         listings/offers/views/list.js,
-//         listings/inquiries/views/list.js,
-//         auth/views.js
+
+dep.require('hs.auth.views.AuthForm');
+dep.require('hs.listings.Listing');
+dep.require('hs.inquiries.views.Inquiries');
+dep.require('hs.listings.views');
+
+dep.provide('hs.listings.views.ListingForm');
 
 
 hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({

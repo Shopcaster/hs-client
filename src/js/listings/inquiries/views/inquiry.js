@@ -1,4 +1,8 @@
-//depends: listings/inquiries/views/main.js, core/views/view.js
+
+dep.require('hs.views.View');
+dep.require('hs.inquiries.views');
+
+dep.provide('hs.inquiries.views.Inquiry');
 
 hs.inquiries.views.Inquiry = hs.views.View.extend({
   template: 'inquiry',
@@ -31,7 +35,7 @@ hs.inquiries.views.Inquiry = hs.views.View.extend({
     this.listingOwned = false;
     this.owned = false;
     if (hs.auth.isAuthenticated()){
-      var userId = hs.auth.getUser()._id;
+      var userId = hs.users.User.get()._id;
       if (this.creator._id == userId){
         this.owned = true;
       }

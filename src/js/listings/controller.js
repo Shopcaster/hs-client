@@ -1,4 +1,9 @@
-//depends: core/controller.js, listings/models.js
+
+dep.require('hs.Controller');
+dep.require('hs.page');
+dep.require('hs.listings.Listing');
+dep.require('hs.listings.views.ListingForm');
+dep.require('hs.listings.views.Thanks');
 
 hs.regController('listings', hs.Controller.extend({
   routes: {
@@ -16,12 +21,12 @@ hs.regController('listings', hs.Controller.extend({
   },
   listing: function(id){
     hs.page.finish();
-    var listing = hs.listings.models.Listing.get(id);
+    var listing = hs.listings.Listing.get(id);
     hs.page = new hs.listings.views.Listing({model: listing});
     hs.page.render();
   },
   fake: function(){
-    var l = new hs.listings.models.Listing();
+    var l = new hs.listings.Listing();
     l.set({
       "description": "MacBook Pro for sale. Excellent condition and fully loaded. 8GB RAM 64GB SSD. Must see. ",
       "latitude": 43.651702,

@@ -1,4 +1,6 @@
-//depends: main.js, core/data/conn.js
+
+dep.require('hs.con');
+dep.provide('hs.pubsub');
 
 hs.pubsub = {
   subs: {},

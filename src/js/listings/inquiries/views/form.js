@@ -1,4 +1,11 @@
-//depends: listings/inquiries/views/main.js, core/views/mixins/dialog.js, auth/views.js
+
+dep.require('hs.views.mixins.Dialog');
+dep.require('hs.auth.views.AuthForm');
+dep.require('hs.inquiries.views');
+
+dep.provide('hs.inquiries.views.QuestionForm');
+dep.provide('hs.inquiries.views.AnswerForm');
+
 
 hs.inquiries.views.QuestionForm = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
   template: 'questionForm',

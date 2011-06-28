@@ -1,4 +1,8 @@
-//depends: lib/underscore.js, lib/jquery-1.5.1.js
+
+dep.require('underscore');
+dep.require('jquery');
+dep.provide('backbone');
+
 //     Backbone.js 0.3.3
 //     (c) 2010 Jeremy Ashkenas, DocumentCloud Inc.
 //     Backbone may be freely distributed under the MIT license.

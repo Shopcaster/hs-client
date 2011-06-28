@@ -1,5 +1,6 @@
-//depends: main.js, core/object.js
 
+dep.require('hs.Object');
+dep.provide('hs.models.fields.Field');
 
 hs.models = hs.models || new Object();
 hs.models.fields = new Object();
