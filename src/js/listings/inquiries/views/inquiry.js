@@ -1,6 +1,6 @@
 
 dep.require('hs.views.View');
-dep.require('hs.inqueries.views');
+dep.require('hs.inquiries.views');
 
 dep.provide('hs.inquiries.views.Inquiry');
 

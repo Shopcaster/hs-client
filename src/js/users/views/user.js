@@ -2,7 +2,7 @@
 dep.require('hs.views.View');
 dep.require('hs.users.views');
 
-dep.provides('hs.users.views.User');
+dep.provide('hs.users.views.User');
 
 hs.users.views.User = hs.views.View.extend({
   template: 'user',

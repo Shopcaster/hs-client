@@ -1,5 +1,5 @@
 
-dep.require('hs.inqueries');
+dep.require('hs.inquiries');
 dep.require('hs.models.Model');
 dep.require('hs.models.fields.Field');
 

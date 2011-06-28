@@ -1,7 +1,8 @@
 
-hs.require('hs.views.Form');
-hs.require('hs.auth');
-hs.provide('hs.users.views.LoginDialog');
+dep.require('hs.views.Form');
+dep.require('hs.auth');
+
+dep.provide('hs.users.views.LoginDialog');
 
 
 hs.users.views.LoginDialog = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({

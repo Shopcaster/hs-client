@@ -1,6 +1,6 @@
 
-hs.require('hs.con');
-hs.provide('hs.auth');
+dep.require('hs.con');
+dep.provide('hs.auth');
 
 hs.auth = {
   init: function(){

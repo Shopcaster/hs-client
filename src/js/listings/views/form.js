@@ -1,8 +1,7 @@
 
 dep.require('hs.auth.views.AuthForm');
 dep.require('hs.listings.Listing');
-dep.require('hs.offers.views.List');
-dep.require('hs.inquiries.views.List');
+dep.require('hs.inquiries.views.Inquiries');
 dep.require('hs.listings.views');
 
 dep.provide('hs.listings.views.ListingForm');

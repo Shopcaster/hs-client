@@ -4,6 +4,12 @@
 // core/init.js,
 // core/views/forms/form.js
 
+dep.require('hs.views.Form');
+dep.require('hs.auth');
+dep.require('hs.init');
+
+dep.provide('hs.auth.views.AuthForm');
+
 hs.auth.views = {};
 
 hs.auth.views.AuthForm = hs.views.Form.extend({

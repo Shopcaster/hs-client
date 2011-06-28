@@ -1,11 +1,6 @@
-//depends: core/views/main.js,
-//         listings/inquiries/views/main.js,
-//         listings/inquiries/views/form.js,
-//         listings/inquiries/views/inquiry.js
-
 
 dep.require('hs.views.View');
-dep.require('hs.inqueries.views');
+dep.require('hs.inquiries.views');
 dep.require('hs.inquiries.views.Inquiry');
 dep.require('hs.inquiries.views.QuestionForm');
 

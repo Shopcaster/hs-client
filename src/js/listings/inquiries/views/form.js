@@ -1,7 +1,7 @@
 
 dep.require('hs.views.mixins.Dialog');
 dep.require('hs.auth.views.AuthForm');
-dep.require('hs.inqueries.views');
+dep.require('hs.inquiries.views');
 
 dep.provide('hs.inquiries.views.QuestionForm');
 dep.provide('hs.inquiries.views.AnswerForm');

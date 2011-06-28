@@ -3,9 +3,9 @@ dep.require('hs.views.Form');
 dep.require('hs.auth');
 dep.require('hs.views.mixins.Dialog');
 
-dep.provide('hs.user.views.Settings');
-dep.provide('hs.user.views.NameForm');
-dep.provide('hs.user.views.PasswordForm');
+dep.provide('hs.users.views.Settings');
+dep.provide('hs.users.views.NameForm');
+dep.provide('hs.users.views.PasswordForm');
 
 
 hs.users.views.Settings = hs.views.View.mixin(hs.views.mixins.Dialog).extend({
