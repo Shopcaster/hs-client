@@ -7,7 +7,32 @@ hs.loadScript = function(location){
   var script = document.createElement("script");
   script.src = location;
   document.body.appendChild(script);
-}
+};
+
+(function() {
+  var meta = {};
+
+  hs.flushMeta = function() {
+    for (var i in meta) if (meta.hasOwnProperty(i)) {
+      document.head.removeChild(meta[i]);
+      delete meta[i];
+    }
+
+  };
+  hs.setMeta = function(prop, content) {
+    var m = meta[prop];
+
+    if (!m) {
+      var m = document.createElement('meta');
+      m.setAttribute('property', prop);
+
+      document.head.appendChild(m);
+      meta[prop] = m;
+    }
+
+    m.setAttribute('content', content);
+  };
+})();
 
 _.mixin({
 

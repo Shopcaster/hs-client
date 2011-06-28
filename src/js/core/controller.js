@@ -44,6 +44,9 @@ hs.Controller = Backbone.Controller.extend({});
     if (!canUseHistory) {
       Backbone.history.start();
       Backbone.history.bind('loadUrl', function(fragment){
+        //flush the custom meta
+        hs.flushMeta();
+        //track this load via mixpanel
         mpq.push(['track', 'page load', {hash: fragment}]);
       });
     //otherwise, we have to manually trigger backbone's stuff

@@ -49,6 +49,12 @@ hs.listings.views.Listing = hs.views.Page.extend
     if Modernizr.geolocation
       navigator.geolocation.getCurrentPosition _.bind(@updateLocation, this)
 
+    hs.setMeta 'og:title', 'Listing at Hipsell'
+    hs.setMeta 'og:type', 'product'
+    hs.setMeta 'og:url', window.location.toString()
+    hs.setMeta 'og:site_name', 'Hipsell'
+    hs.setMeta 'fb:app_id', '110693249023137'
+
   updateCreator: () ->
     @creator = @model.get 'creator'
 
@@ -88,13 +94,17 @@ hs.listings.views.Listing = hs.views.Page.extend
 
   updatePhoto: () ->
     if @model.get('photo')?
-      @$('#listing-image img').attr 'src',
-        "http://#{conf.server.host}:#{conf.server.port}/static/#{@model.get('photo')}"
+      url = "http://#{conf.server.host}:#{conf.server.port}/static/#{@model.get('photo')}"
+
+      @$('#listing-image img').attr 'src', url
+      hs.setMeta 'og:image', url
 
   updateDesc: () ->
     if @model.get('description')?
       @$('#listing-description').text(@model.get('description'))
       $('title').text('Hipsell - '+@model.get('description'))
+
+      hs.setMeta 'og:description', this.model.get('description')
 
   updateCreated: () ->
     if @model.get('created')?
@@ -113,6 +123,9 @@ hs.listings.views.Listing = hs.views.Page.extend
 
       @$('.mapLink').attr 'href',
         "http://maps.google.com/?ll=#{lat},#{lng}&z=16"
+
+      hs.setMeta 'og:latitude', lat
+      hs.setMeta 'og:longitude', lng
 
   updateLocation: (position) ->
     listingLoc = new LatLon @model.get('latitude'), @model.get('longitude')
