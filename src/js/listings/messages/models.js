@@ -2,6 +2,7 @@
 dep.require('hs.models.Model');
 dep.require('hs.models.ModelSet');
 dep.require('hs.messages');
+dep.require('hs.listings.Listing');
 
 dep.provide('hs.messages.Conversation');
 dep.provide('hs.messages.ConversationSet');
@@ -12,7 +13,7 @@ hs.messages.Conversation = hs.models.Model.extend({
   key: 'convo',
   fields: _.extend({
     listing: function(){
-      return new hs.models.fields.ModelField(hs.listings.models.Listing);
+      return new hs.models.fields.ModelField(hs.listings.Listing);
     },
     messages: function(){
       return new hs.models.fields.CollectionField(hs.messages.MessageSet);

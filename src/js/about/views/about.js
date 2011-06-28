@@ -1,7 +1,7 @@
 
 dep.require('hs.views.Page');
 dep.require('hs.about.views');
-dep.require('hs.about.views.About');
+dep.provide('hs.about.views.About');
 
 hs.about.views.About = hs.views.Page.extend({
   template: 'about'

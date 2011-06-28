@@ -1,5 +1,6 @@
 
 dep.require('lib');
+
 dep.provide('hs');
 
 var hs = new Object();

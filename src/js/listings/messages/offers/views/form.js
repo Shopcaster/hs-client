@@ -1,7 +1,9 @@
-//depends:
-// core/views/authForm.js,
-// core/views/mixins/dialog.js,
-// listings/messages/offers/views/main.js
+
+dep.require('hs.auth.views.AuthForm');
+dep.require('hs.views.mixins.Dialog');
+dep.require('hs.offers.views');
+
+dep.provide('hs.offers.views.Form');
 
 hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).extend({
   template: 'offerForm',

@@ -1,9 +1,9 @@
 
-hs.require('hs.Controller');
-hs.require('hs.page');
-hs.require('hs.listings.Listing');
-hs.require('hs.listings.views.ListingForm');
-hs.require('hs.listings.views.Thanks');
+dep.require('hs.Controller');
+dep.require('hs.page');
+dep.require('hs.listings.Listing');
+dep.require('hs.listings.views.ListingForm');
+dep.require('hs.listings.views.Thanks');
 
 hs.regController('listings', hs.Controller.extend({
   routes: {

@@ -1,4 +1,7 @@
-//depends: listings/messages/offers/views/main.js, core/views/view.js
+
+dep.require('hs.views.View');
+dep.require('hs.offers.views');
+dep.provide('hs.offers.views.Offer');
 
 hs.offers.views.Offer = hs.views.View.extend({
   template: 'offer',

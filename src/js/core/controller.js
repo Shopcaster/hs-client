@@ -1,5 +1,5 @@
 
-dep.requrie('hs.init');
+dep.require('hs.init');
 dep.provide('hs.Controller');
 
 hs.Controller = Backbone.Controller.extend({});

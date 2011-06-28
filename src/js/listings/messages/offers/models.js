@@ -1,13 +1,18 @@
-//depends: listings/messages/offers/main.js,
-//         core/models/model.js,
-//         core/models/fields.js
+
+dep.require('hs.offers');
+dep.require('hs.models.Model');
+dep.require('hs.listings.Listing');
+dep.require('hs.messages.MessageSet');
+
+dep.provide('hs.offers.Offer');
+dep.provide('hs.offers.OfferSet');
 
 hs.offers.Offer = hs.models.Model.extend({
   key: 'offer',
   fields: _.extend({
     amount: new hs.models.fields.MoneyField(),
     listing: function(){
-      return new hs.models.fields.ModelField(hs.listings.models.Listing);
+      return new hs.models.fields.ModelField(hs.listings.Listing);
     },
     messages: function(){
       return new hs.models.fields.CollectionField(hs.messages.MessageSet)
