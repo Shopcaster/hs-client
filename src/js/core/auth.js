@@ -6,8 +6,15 @@ hs.auth = {
   init: function(){
     this.pass = localStorage.getItem('pass');
     this.email = localStorage.getItem('email');
-    if (this.email && this.pass && hs.con.isConnected())
-      this.login();
+
+    if (this.email && this.pass){
+      this.penging = true;
+      hs.con.isConnected(function(){
+        this.pending = false;
+        this.login();
+      }, this);
+    }
+
     hs.con.bind('connected', function(){
       if (this.email && this.pass)
         this.login();

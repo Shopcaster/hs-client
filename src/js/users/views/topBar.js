@@ -37,8 +37,11 @@ hs.users.views.TopBar = hs.views.View.extend({
     $('#top-bar a.settings').show();
 
     this.user = hs.users.User.get();
-    this.user.bind('change:name', this.renderLoggedIn, this);
+    this.user.bind('change:name', this.nameChange, this);
+    this.nameChange();
+  },
 
+  nameChange: function(){
     var name = this.user.get('name');
     if (_.isUndefined(name)){
       $('#top-bar > .width > a.name').html(hs.auth.email
@@ -50,6 +53,9 @@ hs.users.views.TopBar = hs.views.View.extend({
   },
 
   renderLoggedOut: function(){
+    if (this.user)
+      this.user.unbind('change:name', this.nameChange);
+      this.user = null;
     $('#top-bar a.login').show();
     $('#top-bar a.logout').hide();
     $('#top-bar a.settings').hide();

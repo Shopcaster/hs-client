@@ -26,17 +26,18 @@ hs.listings.views.Listing = hs.views.Page.extend
     'change:accepted': 'updateAccepted'
     'change:sold': 'updateSold'
 
+
   render: () ->
     hs.views.Page::render.apply this, arguments
 
-    hs.auth.bind 'change:isAuthenticated', @updateCreator, this
+    hs.auth.bind 'change:isAuthenticated', this.updateCreator, this
 
-    @inquiries = new hs.inquiries.views.Inquiries
+    this.inquiries = new hs.inquiries.views.Inquiries
       appendTo: $('#listing-inquiries')
-      model: @model
-    @inquiries.render()
+      model: this.model
+    this.inquiries.render()
 
-    @$('.twitter').html '
+    this.$('.twitter').html '
       <a href="http://twitter.com/share"
          class="twitter-share-button"
          data-count="horizontal"
@@ -46,8 +47,14 @@ hs.listings.views.Listing = hs.views.Page.extend
       </a>
       <script src="http://platform.twitter.com/widgets.js"></script>'
 
+    this.$('.fb').html '
+      <iframe
+        src="http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/{{_id}}/&amp;send=true&amp;layout=button_count&amp;width=200&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=30" scrolling="no" frameborder="0"
+        style="border:none; overflow:hidden; width:200px; height:30px;" allowTransparency="true">
+      </iframe>'
+
     if Modernizr.geolocation
-      navigator.geolocation.getCurrentPosition _.bind(@updateLocation, this)
+      navigator.geolocation.getCurrentPosition _.bind(this.updateLocation, this)
 
     hs.setMeta 'og:title', 'Listing at Hipsell'
     hs.setMeta 'og:type', 'product'
@@ -55,80 +62,88 @@ hs.listings.views.Listing = hs.views.Page.extend
     hs.setMeta 'og:site_name', 'Hipsell'
     hs.setMeta 'fb:app_id', '110693249023137'
 
+
   updateCreator: () ->
-    @creator = @model.get 'creator'
+    this.creator = this.model.get 'creator'
 
-    if @creator? and not @creatorView?
-      @creatorView = new hs.users.views.User
-        el: @$('#listing-creator')
-        model: @creator
+    if this.creator? and not this.creatorView?
+      this.creatorView = new hs.users.views.User
+        el: this.$('#listing-creator')
+        model: this.creator
 
-      @creatorView.render()
+      this.creatorView.render()
 
-    if (@creator? and
-        hs.auth.isAuthenticated() and
-        @creator._id == hs.users.User.get()._id and
-        not @convoList?)
+    hs.auth.ready =>
+      if (this.creator? and
+          hs.auth.isAuthenticated() and
+          this.creator._id == hs.users.User.get()._id and
+          not this.convoList?)
 
-      if @convo?
-        @convo.remove()
-        @convo = null
+        if this.convo?
+          this.convo.remove()
+          this.convo = null
 
-      @convoList = new hs.messages.views.ConvoList
-        appendTo: $('#listing-messages')
-        model: @model
+        this.convoList = new hs.messages.views.ConvoList
+          appendTo: $('#listing-messages')
+          model: this.model
 
-      @convoList.render()
+        this.convoList.render()
 
-    else if not hs.auth.pending and not @convo?
+      else if not this.convo?
 
-      if @convoList?
-        @convoList.remove()
-        @convoList = null
+        if this.convoList?
+          this.convoList.remove()
+          this.convoList = null
 
-      @convo = new hs.messages.views.Conversation
-        appendTo: $('#listing-messages')
-        listing: @model
+        this.convo = new hs.messages.views.Conversation
+          appendTo: $('#listing-messages')
+          listing: this.model
 
-      @convo.render()
+        this.convo.render()
+
 
   updatePhoto: () ->
-    if @model.get('photo')?
-      url = "http://#{conf.server.host}:#{conf.server.port}/static/#{@model.get('photo')}"
+    if this.model.get('photo')?
+      url = "http://#{conf.server.host}:#{conf.server.port}/static/#{this.model.get('photo')}"
 
-      @$('#listing-image img').attr 'src', url
+      this.$('#listing-image img').attr 'src', url
       hs.setMeta 'og:image', url
 
+
   updateDesc: () ->
-    if @model.get('description')?
-      @$('#listing-description').text(@model.get('description'))
-      $('title').text('Hipsell - '+@model.get('description'))
+    if this.model.get('description')?
+      this.$('#listing-description').text(this.model.get('description'))
+      $('title').text('Hipsell - '+this.model.get('description'))
 
       hs.setMeta 'og:description', this.model.get('description')
 
+
   updateCreated: () ->
-    if @model.get('created')?
-      since = _.since @model.get('created')
-      @$('.date .listing-obi-title').text(since.text)
-      @$('.date .listing-obi-value').text(since.num)
+    if this.model.get('created')?
+      since = _.since this.model.get('created')
+      this.$('.date .listing-obi-title').text(since.text)
+      this.$('.date .listing-obi-value').text(since.num)
+
 
   updateLoc: () ->
-    if @model.get('latitude')? and @model.get('longitude')?
+    if this.model.get('latitude')? and this.model.get('longitude')?
 
-      lat = @model.get('latitude')
-      lng = @model.get('longitude')
+      lat = this.model.get('latitude')
+      lng = this.model.get('longitude')
 
-      @$('img.map').attr 'src',
+      this.$('img.map').attr 'src',
         "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=340x100&sensor=false"
 
-      @$('.mapLink').attr 'href',
+      this.$('.mapLink').attr 'href',
         "http://maps.google.com/?ll=#{lat},#{lng}&z=16"
 
       hs.setMeta 'og:latitude', lat
       hs.setMeta 'og:longitude', lng
 
+
   updateLocation: (position) ->
-    listingLoc = new LatLon @model.get('latitude'), @model.get('longitude')
+    hs.log 'gettings location, listing: ', this.model.get('latitude'), this.model.get('longitude'), ' user: ', position.coords.latitude, position.coords.longitude
+    listingLoc = new LatLon this.model.get('latitude'), this.model.get('longitude')
     userLoc = new LatLon position.coords.latitude, position.coords.longitude
 
     dist = parseFloat userLoc.distanceTo listingLoc
@@ -141,17 +156,18 @@ hs.listings.views.Listing = hs.views.Page.extend
     else
       distStr = Math.round(dist*100)/100+' km'
 
-    @$('#listing-locDiff').text "Roughly #{distStr} #{direction} of you."
+    this.$('#listing-locDiff').text "Roughly #{distStr} #{direction} of you."
 
 
   updatePrice: () ->
-    if @model.get('price')?
-      @$('.asking .listing-obi-value').text('$'+@model.get('price'))
+    if this.model.get('price')?
+      this.$('.asking .listing-obi-value').text('$'+this.model.get('price'))
+
 
   updateBestOffer: () ->
-    @model.bestOffer (best) =>
+    this.model.bestOffer (best) =>
       if best
-        node = @$('.best-offer .listing-obi-value')
+        node = this.$('.best-offer .listing-obi-value')
 
         node.text('$'+best.get('amount'))
 
@@ -159,18 +175,19 @@ hs.listings.views.Listing = hs.views.Page.extend
           node.animate {color: '#5E5E5E'}, 250
 
   updateSold: () ->
-    if @model.get('sold')
-      @$('.status').removeClass('accepted').addClass('sold').text('Sold')
+    if this.model.get('sold')
+      this.$('.status').removeClass('accepted').addClass('sold').text('Sold')
+
 
   updateAccepted: () ->
-    accepted = @model.get('accepted')
+    accepted = this.model.get('accepted')
     if accepted?
-      @$('.status').removeClass('sold').addClass('accepted').text('Offer Accepted')
-      @accepted = true
-      @offers.disable(accepted)
-      @inquiries.disable()
-    else if @accepted?
-      @$('.status').hide()
-      @accepted = false
-      @offers.enable()
-      @inquiries.enable()
+      this.$('.status').removeClass('sold').addClass('accepted').text('Offer Accepted')
+      this.accepted = true
+      this.offers.disable(accepted)
+      this.inquiries.disable()
+    else if this.accepted?
+      this.$('.status').hide()
+      this.accepted = false
+      this.offers.enable()
+      this.inquiries.enable()

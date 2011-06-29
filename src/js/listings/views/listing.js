@@ -40,6 +40,11 @@
           Tweet\
       </a>\
       <script src="http://platform.twitter.com/widgets.js"></script>');
+      this.$('.fb').html('\
+      <iframe\
+        src="http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/{{_id}}/&amp;send=true&amp;layout=button_count&amp;width=200&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=30" scrolling="no" frameborder="0"\
+        style="border:none; overflow:hidden; width:200px; height:30px;" allowTransparency="true">\
+      </iframe>');
       if (Modernizr.geolocation) {
         navigator.geolocation.getCurrentPosition(_.bind(this.updateLocation, this));
       }
@@ -58,27 +63,29 @@
         });
         this.creatorView.render();
       }
-      if ((this.creator != null) && hs.auth.isAuthenticated() && this.creator._id === hs.users.User.get()._id && !(this.convoList != null)) {
-        if (this.convo != null) {
-          this.convo.remove();
-          this.convo = null;
+      return hs.auth.ready(__bind(function() {
+        if ((this.creator != null) && hs.auth.isAuthenticated() && this.creator._id === hs.users.User.get()._id && !(this.convoList != null)) {
+          if (this.convo != null) {
+            this.convo.remove();
+            this.convo = null;
+          }
+          this.convoList = new hs.messages.views.ConvoList({
+            appendTo: $('#listing-messages'),
+            model: this.model
+          });
+          return this.convoList.render();
+        } else if (!(this.convo != null)) {
+          if (this.convoList != null) {
+            this.convoList.remove();
+            this.convoList = null;
+          }
+          this.convo = new hs.messages.views.Conversation({
+            appendTo: $('#listing-messages'),
+            listing: this.model
+          });
+          return this.convo.render();
         }
-        this.convoList = new hs.messages.views.ConvoList({
-          appendTo: $('#listing-messages'),
-          model: this.model
-        });
-        return this.convoList.render();
-      } else if (!hs.auth.pending && !(this.convo != null)) {
-        if (this.convoList != null) {
-          this.convoList.remove();
-          this.convoList = null;
-        }
-        this.convo = new hs.messages.views.Conversation({
-          appendTo: $('#listing-messages'),
-          listing: this.model
-        });
-        return this.convo.render();
-      }
+      }, this));
     },
     updatePhoto: function() {
       var url;
@@ -116,6 +123,7 @@
     },
     updateLocation: function(position) {
       var brng, direction, dist, distStr, listingLoc, userLoc;
+      hs.log('gettings location, listing: ', this.model.get('latitude'), this.model.get('longitude'), ' user: ', position.coords.latitude, position.coords.longitude);
       listingLoc = new LatLon(this.model.get('latitude'), this.model.get('longitude'));
       userLoc = new LatLon(position.coords.latitude, position.coords.longitude);
       dist = parseFloat(userLoc.distanceTo(listingLoc));
