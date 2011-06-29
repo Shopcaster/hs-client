@@ -44,7 +44,12 @@
     _sub: function(key, clbk, context) {
       return hs.con.send('sub', {
         key: key
-      }, clbk, context);
+      }, __bind(function(value) {
+        if (value === true) {
+          throw 'double subscription error';
+        }
+        return clbk.apply(context, arguments);
+      }, this));
     },
     unsub: function(key, clbk, context) {
       delete this.subs[key];

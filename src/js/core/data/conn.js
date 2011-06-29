@@ -4,8 +4,11 @@ dep.require('hs.loading');
 
 dep.provide('hs.con');
 
+window.i = 1;
+
 hs.con = {
   log: false,
+
   connect: function(){
     var ioReady = _.bind(function(){
       this.socket = new io.Socket(conf.server.host, {
@@ -31,6 +34,7 @@ hs.con = {
       ioReady();
     }
   },
+
   _isConnected: false,
   isConnected: function(clbk, context){
     if (!clbk) return this._isConnected;
@@ -40,14 +44,17 @@ hs.con = {
     else
       this.once('connected', clbk, context);
   },
+
   disconnect: function(clbk, context){
     if (clbk) this.once('disconnected', clbk, context);
     this.socket.disconnect();
   },
+
   reconnect: function(clbk, context){
     if (clbk) this.once('connected', clbk, context);
     this.disconnect(this.connect, this);
   },
+
   msgId: 1,
   send: function(key, data, clbk, context){
     var msgId = this.msgId++;
@@ -69,63 +76,16 @@ hs.con = {
     }, this));
     return msgId;
   },
+
   _connected: function(){
     hs.log('connected to server');
     this._isConnected = true;
     this.trigger('connected');
 
-    // The below code handles auto-away/offline presence stuff
-
-    //keeps track of whether the mouse moved in the last check interval
-    var moved = false;
-    //the disconnect timeout
-    var dcTo;
-    //handles moved events when the user is online
-    var moveOnline = function() { moved = true; };
-    //handles moved events when the user is offline
-    var moveOffline = function() {
-      //reconnect
-      hs.log('user is no longer away');
-      $(document.body).unbind('mousemove', moveOffline);
-      hs.con.connect();
-    };
-
-    //this interval runs every second and handles the real movement
-    //logic.  we do this in the relatively long (1s) timeout rather
-    //than the mousemove handler to avoid destroying performance
-    var mouseTo = setInterval(function() {
-
-      //if there was movement, do stuff
-      if (moved) {
-        //cancel the existing disconnect timeout if there is one
-        if (dcTo) clearTimeout(dcTo);
-
-        //set the dc timeout to handle the disconnect logic
-        dcTo = setTimeout(function() {
-
-          hs.log('user is away');
-          //stop listening on the old mousemove event
-          $(document.body).unbind('mousemove', moveOnline);
-          //and listen on the new one
-          $(document.body).bind('mousemove', moveOffline);
-
-          //ensure that mouseTo won't trigger while the user is offline
-          moved = false;
-
-        // CHANGE AWAY TIMING HERE
-        }, 30 * 1000); //30 seconds
-
-        //clear the moved state
-        moved = false;
-      }
-
-      //if there wasn't movement, we have absolutely nothing to do
-    }, 1000);
-
-    //bootstrap the whole process
-    $(document.body).bind('mousemove', moveOnline);
-
+    //bootstrap the prsence process
+    $(document.body).bind('mousemove', hs.con.moveOnline);
   },
+
   _recieved: function(msg){
     if (this.log) hs.log('recd:', msg);
 
@@ -136,12 +96,62 @@ hs.con = {
     this.trigger('recieved:'+data.id, key, data);
     this.trigger(key, data);
   },
+
   _disconnected: function(){
     hs.log('disconnected from server');
     hs.resetLoading();
     this._isConnected = false;
     this.trigger('disconnected');
-  }
+
+    $(document.body).unbind('mousemove', hs.con.moveOnline);
+    $(document.body).unbind('mousemove', hs.con.moveOffline);
+    $(document.body).one('mousemove', hs.con.moveOffline);
+  },
+
+  //keeps track of whether the mouse moved in the last check interval
+  moved: true,
+  //the disconnect timeout
+  dcTo: null,
+
+  //handles moved events when the user is online
+  moveOnline: function() { hs.con.moved = true; },
+
+  //handles moved events when the user is offline
+  moveOffline: function() {
+    //reconnect
+    hs.log('user is no longer away');
+    hs.con.connect();
+  },
+
+  //this interval runs every second and handles the real movement
+  //logic.  we do this in the relatively long (1s) timeout rather
+  //than the mousemove handler to avoid destroying performance
+  mouseTo: setInterval(function() {
+
+    //if there was movement, do stuff
+    if (hs.con.moved) {
+      //cancel the existing disconnect timeout if there is one
+      if (hs.con.dcTo) clearTimeout(hs.con.dcTo);
+
+      //set the dc timeout to handle the disconnect logic
+      hs.con.dcTo = setTimeout(function() {
+
+        hs.log('user is away');
+        hs.con.disconnect();
+
+        //ensure that mouseTo won't trigger while the user is offline
+        hs.con.moved = false;
+
+      // CHANGE AWAY TIMING HERE
+      }, 30 * 1000); //30 seconds
+
+      //clear the moved state
+      hs.con.moved = false;
+    }
+
+    //if there wasn't movement, we have absolutely nothing to do
+  }, 1000)
+
 }
 _.bindAll(hs.con);
 _.extend(hs.con, Backbone.Events);

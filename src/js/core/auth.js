@@ -106,9 +106,9 @@ hs.auth = {
   },
 
   logout: function(clbk, context){
-    this.pass = undefined;
-    this.email = undefined;
-    this.userId = undefined;
+    this.pass = null;
+    this.email = null;
+    this.userId = null;
     localStorage.clear();
     this.trigger('change:pass');
     this.trigger('change:email');

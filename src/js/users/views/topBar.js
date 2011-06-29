@@ -8,6 +8,7 @@ hs.users.views.TopBar = hs.views.View.extend({
   events: {
     'click .logout': 'logout'
   },
+
   initialize: function(){
     hs.views.View.prototype.initialize.apply(this, arguments);
 
@@ -17,16 +18,19 @@ hs.users.views.TopBar = hs.views.View.extend({
     this.settings = new hs.users.views.Settings();
     this.loginDialog = new hs.users.views.LoginDialog();
   },
+
   logout: function(e){
     e.preventDefault();
     hs.auth.logout();
   },
+
   authChange: function(){
     if (hs.auth.isAuthenticated())
       this.renderLoggedIn();
     else
       this.renderLoggedOut();
   },
+
   renderLoggedIn: function(){
     $('#top-bar a.login').hide();
     $('#top-bar a.logout').show();
@@ -43,8 +47,8 @@ hs.users.views.TopBar = hs.views.View.extend({
     }else{
       $('#top-bar > .width > a.name').text(name).show();
     }
-
   },
+
   renderLoggedOut: function(){
     $('#top-bar a.login').show();
     $('#top-bar a.logout').hide();

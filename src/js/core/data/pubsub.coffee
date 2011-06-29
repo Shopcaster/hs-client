@@ -37,7 +37,10 @@ hs.pubsub =
 
 
   _sub: (key, clbk, context) ->
-    hs.con.send 'sub', {key: key}, clbk, context
+    hs.con.send 'sub', {key: key}, (value) =>
+      if value is true
+        throw 'double subscription error'
+      clbk.apply context, arguments
 
 
   unsub: (key, clbk, context) ->
