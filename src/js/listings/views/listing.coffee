@@ -30,7 +30,7 @@ hs.listings.views.Listing = hs.views.Page.extend
   render: () ->
     hs.views.Page::render.apply this, arguments
 
-    hs.auth.bind 'change:isAuthenticated', this.updateCreator, this
+    hs.auth.bind 'change:isAuthenticated', this.updateAuth, this
 
     this.inquiries = new hs.inquiries.views.Inquiries
       appendTo: $('#listing-inquiries')
@@ -63,10 +63,20 @@ hs.listings.views.Listing = hs.views.Page.extend
     hs.setMeta 'fb:app_id', '110693249023137'
 
 
+  updateAuth: (isAuthd) ->
+#    if isAuthd != this.isAuthd
+#      this.isAuthd = isAuthd
+
+#      if this.isAuthd
+#        isOwner = this.creator._id == hs.users.User.get()._id
+
+      this.updateCreator()
+
   updateCreator: () ->
     this.creator = this.model.get 'creator'
+    if not this.creator? then return
 
-    if this.creator? and not this.creatorView?
+    if not this.creatorView?
       this.creatorView = new hs.users.views.User
         el: this.$('#listing-creator')
         model: this.creator
@@ -74,10 +84,17 @@ hs.listings.views.Listing = hs.views.Page.extend
       this.creatorView.render()
 
     hs.auth.ready =>
-      if (this.creator? and
-          hs.auth.isAuthenticated() and
-          this.creator._id == hs.users.User.get()._id and
-          not this.convoList?)
+      this.isAuthd = hs.auth.isAuthenticated()
+
+      if this.isAuthd
+        this.isOwner = this.creator._id == hs.users.User.get()._id
+
+      hs.log ' |athd', this.isAuthd,
+             ' |own', this.isOwner,
+             ' |no list', not this.convoList?,
+             ' |no conv', not this.convo?
+
+      if this.isAuthd and this.isOwner and not this.convoList?
 
         if this.convo?
           this.convo.remove()
@@ -89,7 +106,7 @@ hs.listings.views.Listing = hs.views.Page.extend
 
         this.convoList.render()
 
-      else if not this.convo?
+      else if not this.isOwner and not this.convo?
 
         if this.convoList?
           this.convoList.remove()
@@ -180,6 +197,7 @@ hs.listings.views.Listing = hs.views.Page.extend
 
         node.animate {color: '#828200'}, 250, () ->
           node.animate {color: '#5E5E5E'}, 250
+
 
   updateSold: () ->
     if this.model.get('sold')

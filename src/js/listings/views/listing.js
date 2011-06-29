@@ -25,7 +25,7 @@
     },
     render: function() {
       hs.views.Page.prototype.render.apply(this, arguments);
-      hs.auth.bind('change:isAuthenticated', this.updateCreator, this);
+      hs.auth.bind('change:isAuthenticated', this.updateAuth, this);
       this.inquiries = new hs.inquiries.views.Inquiries({
         appendTo: $('#listing-inquiries'),
         model: this.model
@@ -54,9 +54,15 @@
       hs.setMeta('og:site_name', 'Hipsell');
       return hs.setMeta('fb:app_id', '110693249023137');
     },
+    updateAuth: function(isAuthd) {
+      return this.updateCreator();
+    },
     updateCreator: function() {
       this.creator = this.model.get('creator');
-      if ((this.creator != null) && !(this.creatorView != null)) {
+      if (!(this.creator != null)) {
+        return;
+      }
+      if (!(this.creatorView != null)) {
         this.creatorView = new hs.users.views.User({
           el: this.$('#listing-creator'),
           model: this.creator
@@ -64,7 +70,12 @@
         this.creatorView.render();
       }
       return hs.auth.ready(__bind(function() {
-        if ((this.creator != null) && hs.auth.isAuthenticated() && this.creator._id === hs.users.User.get()._id && !(this.convoList != null)) {
+        this.isAuthd = hs.auth.isAuthenticated();
+        if (this.isAuthd) {
+          this.isOwner = this.creator._id === hs.users.User.get()._id;
+        }
+        hs.log(' |athd', this.isAuthd, ' |own', this.isOwner, ' |no list', !(this.convoList != null), ' |no conv', !(this.convo != null));
+        if (this.isAuthd && this.isOwner && !(this.convoList != null)) {
           if (this.convo != null) {
             this.convo.remove();
             this.convo = null;
@@ -74,7 +85,7 @@
             model: this.model
           });
           return this.convoList.render();
-        } else if (!(this.convo != null)) {
+        } else if (!this.isOwner && !(this.convo != null)) {
           if (this.convoList != null) {
             this.convoList.remove();
             this.convoList = null;

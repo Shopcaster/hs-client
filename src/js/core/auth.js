@@ -8,9 +8,8 @@ hs.auth = {
     this.email = localStorage.getItem('email');
 
     if (this.email && this.pass){
-      this.penging = true;
+      this.pending = true;
       hs.con.isConnected(function(){
-        this.pending = false;
         this.login();
       }, this);
     }
@@ -50,8 +49,6 @@ hs.auth = {
     this.trigger('change:pass');
   },
   setUserId: function(userId){
-    // fakeout for now
-    if (_.isUndefined(userId)) userId = 1;
     this.userId = userId;
     localStorage.setItem('userId', this.userId);
     this.trigger('change:userId');
@@ -97,33 +94,47 @@ hs.auth = {
   _handleResponse: function(clbk, context, data){
     if (data){
       this.setUserId(data.userid);
+
       if (data.password)
         this.setPassword(data.password, false);
-      this._isAuthenticated = true;
-      this.trigger('change:isAuthenticated', this._isAuthenticated);
+
+      if (this._isAuthenticated !== true){
+        this._isAuthenticated = true;
+        this.trigger('change:isAuthenticated', this._isAuthenticated);
+      }
+
       if (clbk) clbk.call(context);
       mpq.push(['identify', data.userid]);
+
     }else if (clbk){
       clbk.call(context, new Error('auth error'));
+
     }else{
       this.logout();
     }
+
     this.trigger('done');
     this.pending = false;
   },
 
   logout: function(clbk, context){
+
     this.pass = null;
     this.email = null;
     this.userId = null;
+
     localStorage.clear();
+
     this.trigger('change:pass');
     this.trigger('change:email');
     this.trigger('change:userId');
+
     if (this.isAuthenticated()){
-      hs.con.reconnect(clbk, context);
+      hs.con.reconnect(context, arguments);
+
       this._isAuthenticated = false;
       this.trigger('change:isAuthenticated', this._isAuthenticated);
+
     }else if (clbk)
       clbk.call(context);
   },

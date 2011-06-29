@@ -4,8 +4,6 @@ dep.require('hs.loading');
 
 dep.provide('hs.con');
 
-window.i = 1;
-
 hs.con = {
   log: false,
 
