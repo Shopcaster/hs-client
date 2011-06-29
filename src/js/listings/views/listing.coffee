@@ -140,23 +140,30 @@ hs.listings.views.Listing = hs.views.Page.extend
       hs.setMeta 'og:latitude', lat
       hs.setMeta 'og:longitude', lng
 
+      if this.lat? and this.lng?
+        this.updateLocation()
+
 
   updateLocation: (position) ->
-    hs.log 'gettings location, listing: ', this.model.get('latitude'), this.model.get('longitude'), ' user: ', position.coords.latitude, position.coords.longitude
-    listingLoc = new LatLon this.model.get('latitude'), this.model.get('longitude')
-    userLoc = new LatLon position.coords.latitude, position.coords.longitude
+    if this.model.get('latitude')? and this.model.get('longitude')?
 
-    dist = parseFloat userLoc.distanceTo listingLoc
-    brng = userLoc.bearingTo listingLoc
+      this.lat ?= position.coords.latitude
+      this.lng ?= position.coords.longitude
 
-    direction = _.degreesToDirection brng
+      listingLoc = new LatLon this.model.get('latitude'), this.model.get('longitude')
+      userLoc = new LatLon this.lat, this.lng
 
-    if dist < 1
-      distStr = Math.round(dist*1000)+' metres'
-    else
-      distStr = Math.round(dist*100)/100+' km'
+      dist = parseFloat userLoc.distanceTo listingLoc
+      brng = userLoc.bearingTo listingLoc
 
-    this.$('#listing-locDiff').text "Roughly #{distStr} #{direction} of you."
+      direction = _.degreesToDirection brng
+
+      if dist < 1
+        distStr = Math.round(dist*1000)+' metres'
+      else
+        distStr = Math.round(dist*100)/100+' km'
+
+      this.$('#listing-locDiff').text "Roughly #{distStr} #{direction} of you."
 
 
   updatePrice: () ->

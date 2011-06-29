@@ -118,23 +118,37 @@
         this.$('img.map').attr('src', "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=340x100&sensor=false");
         this.$('.mapLink').attr('href', "http://maps.google.com/?ll=" + lat + "," + lng + "&z=16");
         hs.setMeta('og:latitude', lat);
-        return hs.setMeta('og:longitude', lng);
+        hs.setMeta('og:longitude', lng);
+        if ((this.lat != null) && (this.lng != null)) {
+          return this.updateLocation();
+        }
       }
     },
     updateLocation: function(position) {
-      var brng, direction, dist, distStr, listingLoc, userLoc;
-      hs.log('gettings location, listing: ', this.model.get('latitude'), this.model.get('longitude'), ' user: ', position.coords.latitude, position.coords.longitude);
-      listingLoc = new LatLon(this.model.get('latitude'), this.model.get('longitude'));
-      userLoc = new LatLon(position.coords.latitude, position.coords.longitude);
-      dist = parseFloat(userLoc.distanceTo(listingLoc));
-      brng = userLoc.bearingTo(listingLoc);
-      direction = _.degreesToDirection(brng);
-      if (dist < 1) {
-        distStr = Math.round(dist * 1000) + ' metres';
-      } else {
-        distStr = Math.round(dist * 100) / 100 + ' km';
+      var brng, direction, dist, distStr, listingLoc, userLoc, _ref, _ref2;
+      if ((this.model.get('latitude') != null) && (this.model.get('longitude') != null)) {
+                if ((_ref = this.lat) != null) {
+          _ref;
+        } else {
+          this.lat = position.coords.latitude;
+        };
+                if ((_ref2 = this.lng) != null) {
+          _ref2;
+        } else {
+          this.lng = position.coords.longitude;
+        };
+        listingLoc = new LatLon(this.model.get('latitude'), this.model.get('longitude'));
+        userLoc = new LatLon(this.lat, this.lng);
+        dist = parseFloat(userLoc.distanceTo(listingLoc));
+        brng = userLoc.bearingTo(listingLoc);
+        direction = _.degreesToDirection(brng);
+        if (dist < 1) {
+          distStr = Math.round(dist * 1000) + ' metres';
+        } else {
+          distStr = Math.round(dist * 100) / 100 + ' km';
+        }
+        return this.$('#listing-locDiff').text("Roughly " + distStr + " " + direction + " of you.");
       }
-      return this.$('#listing-locDiff').text("Roughly " + distStr + " " + direction + " of you.");
     },
     updatePrice: function() {
       if (this.model.get('price') != null) {
