@@ -1,69 +1,60 @@
-
-dep.require('hs.con');
-dep.require('hs.auth');
-dep.provide('hs.pubsub');
-
-hs.pubsub = {
-  subs: {},
-  msgId: 0,
-  init: true,
-
-  pubRecieved: function(msg) {
-    var key = msg.key;
-    if (_.isUndefined(key))
-      return hs.error('pub with no key:', msg);
-    if (_.isUndefined(this.subs[key]))
-      return this.unsub(key);
-    _.each(this.subs[key], function(clbk){
-      clbk(msg.diff);
-    });
-  },
-
-  connected: function(){
-    if (!this.init){
-      hs.auth.ready(function(){
-        _.each(this.subs, function(handlers, key){
-          if (handlers.length) this._sub(key, function(fields, err){
-            if (fields) _.each(handlers, function(handler){
-              handler(fields);
-            }, this);
-          }, this);
-        }, this);
-      }, this);
-    }
-    this.init = false;
-  },
-
-  sub: function(key, handler, clbk, context) {
-    var send = _.isUndefined(this.subs[key]);
-    if (send) this.subs[key] = new Array();
-    if (_.indexOf(this.subs[key], handler) == -1){
-      this.subs[key].push(handler);
-      if (send) return this._sub(key, clbk, context);
-    }
-  },
-
-  _sub: function(key, clbk, context){
-    return hs.con.send('sub', {key: key}, clbk, context);
-  },
-
-  unsub: function unsub(key, clbk) {
-    if (typeof clbk == 'undefined'){
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  dep.require('hs.con');
+  dep.require('hs.auth');
+  dep.provide('hs.pubsub');
+  hs.pubsub = {
+    subs: {},
+    msgId: 0,
+    init: true,
+    pubRecieved: function(msg) {
+      if (_.isUndefined(msg.key)) {
+        return hs.error('pub with no key:', msg);
+      }
+      if (_.isUndefined(this.subs[msg.key])) {
+        return this.unsub(msg.key);
+      }
+      return this.subs[msg.key](msg.diff);
+    },
+    connected: function() {
+      if (this.init) {
+        this.init = false;
+        return;
+      }
+      return hs.auth.ready(__bind(function() {
+        var handler, key, _ref, _results;
+        _ref = this.subs;
+        _results = [];
+        for (key in _ref) {
+          handler = _ref[key];
+          _results.push(this._sub(key, __bind(function(fields, err) {
+            return handler(fields);
+          }, this)));
+        }
+        return _results;
+      }, this));
+    },
+    sub: function(key, handler, clbk, context) {
+      if (this.subs[key] != null) {
+        throw 'This subscription is already taken';
+      }
+      this.subs[key] = handler;
+      return this._sub(key, clbk, context);
+    },
+    _sub: function(key, clbk, context) {
+      return hs.con.send('sub', {
+        key: key
+      }, clbk, context);
+    },
+    unsub: function(key, clbk, context) {
       delete this.subs[key];
-      return hs.con.send('unsub', {key: key});
-    }else{
-      if (_.isUndefined(this.subs[key])) return;
-      var i = _.indexOf(this.subs[key], clbk);
-      if (i > -1)
-        this.subs[key].splice(i, 1);
-      if (this.subs[key].length == 0)
-        unsub(key);
+      return hs.con.send('unsub', {
+        key: key
+      }, clbk, context);
     }
-  }
-};
-
-_.extend(hs.pubsub, Backbone.Events);
-_.bindAll(hs.pubsub);
-
-hs.con.bind('pub', hs.pubsub.pubRecieved);
-hs.con.bind('connected', hs.pubsub.connected);
+  };
+  _.extend(hs.pubsub, Backbone.Events);
+  _.bindAll(hs.pubsub);
+  hs.con.bind('pub', hs.pubsub.pubRecieved);
+  hs.con.bind('connected', hs.pubsub.connected);
+}).call(this);
