@@ -19,13 +19,13 @@
       'change:latitude': 'updateLoc',
       'change:longitude': 'updateLoc',
       'change:price': 'updatePrice',
-      'change:offers': 'updateBestOffer',
+      'change:offers': 'updateOffers',
       'change:accepted': 'updateAccepted',
       'change:sold': 'updateSold'
     },
     render: function() {
       hs.views.Page.prototype.render.apply(this, arguments);
-      hs.auth.bind('change:isAuthenticated', this.updateAuth, this);
+      hs.auth.bind('change:isAuthenticated', this.updateCreator, this);
       this.inquiries = new hs.inquiries.views.Inquiries({
         appendTo: $('#listing-inquiries'),
         model: this.model
@@ -54,8 +54,15 @@
       hs.setMeta('og:site_name', 'Hipsell');
       return hs.setMeta('fb:app_id', '110693249023137');
     },
-    updateAuth: function(isAuthd) {
-      return this.updateCreator();
+    updateAuth: function(clbk) {
+      return hs.auth.ready(__bind(function() {
+        var _ref;
+        this.isAuthd = hs.auth.isAuthenticated();
+        if (this.isAuthd) {
+          this.isOwner = ((_ref = this.creator) != null ? _ref._id : void 0) === hs.users.User.get()._id;
+        }
+        return clbk();
+      }, this));
     },
     updateCreator: function() {
       this.creator = this.model.get('creator');
@@ -69,11 +76,7 @@
         });
         this.creatorView.render();
       }
-      return hs.auth.ready(__bind(function() {
-        this.isAuthd = hs.auth.isAuthenticated();
-        if (this.isAuthd) {
-          this.isOwner = this.creator._id === hs.users.User.get()._id;
-        }
+      return this.updateAuth(__bind(function() {
         hs.log(' |athd', this.isAuthd, ' |own', this.isOwner, ' |no list', !(this.convoList != null), ' |no conv', !(this.convo != null));
         if (this.isAuthd && this.isOwner && !(this.convoList != null)) {
           if (this.convo != null) {
@@ -84,7 +87,7 @@
             appendTo: $('#listing-messages'),
             model: this.model
           });
-          return this.convoList.render();
+          this.convoList.render();
         } else if (!this.isOwner && !(this.convo != null)) {
           if (this.convoList != null) {
             this.convoList.remove();
@@ -94,7 +97,14 @@
             appendTo: $('#listing-messages'),
             listing: this.model
           });
-          return this.convo.render();
+          this.convo.render();
+        }
+        if (!this.isOwner && !(this.offerForm != null)) {
+          return this.offerForm = new hs.offers.views.Form({
+            appendTo: this.$('.offerFormWrapper').show(),
+            listing: this.model,
+            focusSelector: '#listing-offerButton'
+          });
         }
       }, this));
     },
@@ -166,8 +176,8 @@
         return this.$('.asking .listing-obi-value').text('$' + this.model.get('price'));
       }
     },
-    updateBestOffer: function() {
-      return this.model.bestOffer(__bind(function(best) {
+    updateOffers: function() {
+      this.model.bestOffer(__bind(function(best) {
         var node;
         if (best) {
           node = this.$('.best-offer .listing-obi-value');
@@ -179,6 +189,25 @@
               color: '#5E5E5E'
             }, 250);
           });
+        }
+      }, this));
+      return this.updateAuth(__bind(function() {
+        var myOffer, node;
+        if (!this.isOwner && this.isAuthd) {
+          myOffer = this.model.get('offers').find(__bind(function(offer) {
+            return offer.get('creator')._id === hs.users.User.get()._id;
+          }, this));
+          if (myOffer != null) {
+            node = this.$('.my-offer .listing-obi-value');
+            node.text('$' + myOffer.get('amount'));
+            return node.animate({
+              color: '#828200'
+            }, 250, function() {
+              return node.animate({
+                color: '#5E5E5E'
+              }, 250);
+            });
+          }
         }
       }, this));
     },

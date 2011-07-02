@@ -12,8 +12,14 @@ hs.users.User = hs.models.Model.extend({
     avatar: ''
   }, hs.models.Model.prototype.fields),
   getAvatarUrl: function(size){
-    size = size || 60
-    return 'http://www.gravatar.com/avatar/'+this.get('avatar')+'?d=mm&s='+size;
+    size = size || 60;
+    var avy = this.get('avatar');
+    var tail = '?d=mm&s='+size;
+
+    if (/^http:\/\/(www\.)?gravitar\.com/.test(avy))
+      return avy+tail;
+    else
+      return 'http://www.gravatar.com/avatar/'+avy+tail;
   }
 });
 

@@ -2,6 +2,7 @@
 dep.require('hs.inquiries');
 dep.require('hs.models.Model');
 dep.require('hs.models.fields.Field');
+dep.require('hs.listings.Listing');
 
 dep.provide('hs.inquiries.Inquiry');
 dep.provide('hs.inquiries.InquirySet');
@@ -12,7 +13,7 @@ hs.inquiries.Inquiry = hs.models.Model.extend({
     question: null,
     answer: null,
     listing: function(){
-      return new hs.models.fields.ModelField(hs.listings.models.Listing);
+      return new hs.models.fields.ModelField(hs.listings.Listing);
     }
   }, hs.models.Model.prototype.fields)
 });

@@ -13,10 +13,10 @@ hs.offers.Offer = hs.models.Model.extend({
     amount: new hs.models.fields.MoneyField(),
     listing: function(){
       return new hs.models.fields.ModelField(hs.listings.Listing);
-    },
-    messages: function(){
-      return new hs.models.fields.CollectionField(hs.messages.MessageSet)
     }
+    // messages: function(){
+    //   return new hs.models.fields.CollectionField(hs.messages.MessageSet)
+    // }
   }, hs.models.Model.prototype.fields),
   accept: function(clbk, context){
     this.withField('listing', function(listing){

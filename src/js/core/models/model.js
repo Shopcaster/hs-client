@@ -90,6 +90,9 @@ hs.models.Model = Backbone.Model.extend({
       else
         throw(new Error('Model.with can only span ModelField relationships'));
 
+    // if (this.fields[field] instanceof hs.models.fields.CollectionField){
+
+    // }else
     if (this.get(field))
       clbk.call(context, this.get(field))
     else

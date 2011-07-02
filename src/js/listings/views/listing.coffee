@@ -22,7 +22,7 @@ hs.listings.views.Listing = hs.views.Page.extend
     'change:latitude': 'updateLoc'
     'change:longitude': 'updateLoc'
     'change:price': 'updatePrice'
-    'change:offers': 'updateBestOffer'
+    'change:offers': 'updateOffers'
     'change:accepted': 'updateAccepted'
     'change:sold': 'updateSold'
 
@@ -30,7 +30,7 @@ hs.listings.views.Listing = hs.views.Page.extend
   render: () ->
     hs.views.Page::render.apply this, arguments
 
-    hs.auth.bind 'change:isAuthenticated', this.updateAuth, this
+    hs.auth.bind 'change:isAuthenticated', this.updateCreator, this
 
     this.inquiries = new hs.inquiries.views.Inquiries
       appendTo: $('#listing-inquiries')
@@ -63,14 +63,15 @@ hs.listings.views.Listing = hs.views.Page.extend
     hs.setMeta 'fb:app_id', '110693249023137'
 
 
-  updateAuth: (isAuthd) ->
-#    if isAuthd != this.isAuthd
-#      this.isAuthd = isAuthd
+  updateAuth: (clbk) ->
+    hs.auth.ready =>
+      this.isAuthd = hs.auth.isAuthenticated()
 
-#      if this.isAuthd
-#        isOwner = this.creator._id == hs.users.User.get()._id
+      if this.isAuthd
+        this.isOwner = this.creator?._id == hs.users.User.get()._id
 
-      this.updateCreator()
+      clbk()
+
 
   updateCreator: () ->
     this.creator = this.model.get 'creator'
@@ -83,40 +84,42 @@ hs.listings.views.Listing = hs.views.Page.extend
 
       this.creatorView.render()
 
-    hs.auth.ready =>
-      this.isAuthd = hs.auth.isAuthenticated()
+    this.updateAuth =>
+        hs.log ' |athd', this.isAuthd,
+               ' |own', this.isOwner,
+               ' |no list', not this.convoList?,
+               ' |no conv', not this.convo?
 
-      if this.isAuthd
-        this.isOwner = this.creator._id == hs.users.User.get()._id
+        if this.isAuthd and this.isOwner and not this.convoList?
 
-      hs.log ' |athd', this.isAuthd,
-             ' |own', this.isOwner,
-             ' |no list', not this.convoList?,
-             ' |no conv', not this.convo?
+          if this.convo?
+            this.convo.remove()
+            this.convo = null
 
-      if this.isAuthd and this.isOwner and not this.convoList?
+          this.convoList = new hs.messages.views.ConvoList
+            appendTo: $('#listing-messages')
+            model: this.model
 
-        if this.convo?
-          this.convo.remove()
-          this.convo = null
+          this.convoList.render()
 
-        this.convoList = new hs.messages.views.ConvoList
-          appendTo: $('#listing-messages')
-          model: this.model
+        else if not this.isOwner and not this.convo?
 
-        this.convoList.render()
+          if this.convoList?
+            this.convoList.remove()
+            this.convoList = null
 
-      else if not this.isOwner and not this.convo?
+          this.convo = new hs.messages.views.Conversation
+            appendTo: $('#listing-messages')
+            listing: this.model
 
-        if this.convoList?
-          this.convoList.remove()
-          this.convoList = null
+          this.convo.render()
 
-        this.convo = new hs.messages.views.Conversation
-          appendTo: $('#listing-messages')
-          listing: this.model
+        if not this.isOwner and not this.offerForm?
 
-        this.convo.render()
+          this.offerForm = new hs.offers.views.Form
+            appendTo: this.$('.offerFormWrapper').show()
+            listing: this.model
+            focusSelector: '#listing-offerButton'
 
 
   updatePhoto: () ->
@@ -188,7 +191,7 @@ hs.listings.views.Listing = hs.views.Page.extend
       this.$('.asking .listing-obi-value').text('$'+this.model.get('price'))
 
 
-  updateBestOffer: () ->
+  updateOffers: () ->
     this.model.bestOffer (best) =>
       if best
         node = this.$('.best-offer .listing-obi-value')
@@ -197,6 +200,19 @@ hs.listings.views.Listing = hs.views.Page.extend
 
         node.animate {color: '#828200'}, 250, () ->
           node.animate {color: '#5E5E5E'}, 250
+
+    this.updateAuth =>
+      if not this.isOwner and this.isAuthd
+        myOffer = this.model.get('offers').find (offer) =>
+          offer.get('creator')._id == hs.users.User.get()._id
+
+        if myOffer?
+          node = this.$('.my-offer .listing-obi-value')
+
+          node.text('$'+myOffer.get('amount'))
+
+          node.animate {color: '#828200'}, 250, () ->
+            node.animate {color: '#5E5E5E'}, 250
 
 
   updateSold: () ->
