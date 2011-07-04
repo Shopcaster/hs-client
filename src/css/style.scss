@@ -6,9 +6,11 @@ $black: #0A0A0A;
 $red: #D31920;
 $green: #009345;
 $blue: #1b75bb;
+$blue2: #3F74B2;
 $lightBlue: #EAF1F6;
 $yellow: #fffaaf;
 $orange: #ff5c46;
+$gorange: #EF4136;
 
 $layout_width: 960px;
 
@@ -36,36 +38,33 @@ p{
     padding-right: 10px;
 }
 
-.width{position:relative;}
+.width{
+    position:relative;
+    width: $layout_width;
+}
 
 #top-bar{
     text-align:right;
     font-size:12px;
-    color:$grey - #222;
+    color:$grey;
 
     padding:5px;
-    font-weight:bold;
-    background-color:$black;
+    background-color:$black + #333;
 
     .login, .logout{
         color:$white;
         margin-right:0px;
     }
-    .login, & > .width > .name{
-        padding:0 6px 4px;
-        border:1px solid $black;
-        border-bottom:0;
-    }
+    
     .logout, & > .width > .name{display:none;}
 
     & > .width > a {
-        color:$grey - #222;
+        color:$grey;
         margin-right:10px;
     }
 
     .open{
         background-color:$grey;
-        border-color:$grey - #555;
         @include rounded-top();
         color:$black;
         z-index:3;
@@ -125,19 +124,23 @@ p{
 }
 
 header{
+    $headerBack: $blue2;
+
     height:50px;
     background-color:$black + #222;
-    /*@include gradient($black + #383838, $black);*/
-    background-image:url(../img/ab_grad.png);
-    border-top:1px solid $black + #555;
+    @include gradient($headerBack + #111, $headerBack - #111);
+    /*background-image:url(../img/ab_grad.png);*/
+    border-top:1px solid $headerBack - #222;
+    /*border-bottom:3px solid #939598;*/
+    /*@include box-shadow(0 1px 0px $black + #666);*/
     border-bottom:1px solid $black + #333;
-    @include box-shadow(0 1px 0px $black);
+    @include box-shadow(0 2px 3px $black + #666);
 
     #logo{
         position:absolute;
-        top:9px;left:5px;
-        width:170px;
-        height:33px;
+        top:7px;left:5px;
+        width:176px;
+        height:39px;
         background-image:url(../img/ab_logo.png);
         @include background-size();
         background-repeat:no-repeat;
@@ -155,7 +158,7 @@ header{
 
             a{
                 margin:12px 5px 0;
-            }
+            } 
             @include dark-button();
         }
         li.active{@include dark-button($red - #555)}
@@ -171,416 +174,49 @@ header{
     }
 }
 
+
+$section_width: ($layout_width - 10)/2;
+
 #body{
     padding:10px 0 0;
 
     .section-left, .section-right, .flatpage{
         margin:10px 0;
         position:relative;
-        padding:10px;
-        background-color:$white;
-        @include box-shadow(0 4px 8px $black + #333);
+
+        width: $section_width;
     }
     .section-left{
-        width:560px;
         float:left;
     }
     .section-right{
-        width:340px;
         float:right;
     }
 
-    .listing{
-        position:relative;
-
-        #listing-image{
-            height:418px;
-            img{
-                border:1px solid $grey;
-                height:418px;
-                width:560px;
-            }
-        }
-        #listing-sidebar{
-            height:418px;
-            position:relative;
-
-            .map{
-                width:340px;
-                height:100px;
-                border:1px solid $grey;
-            }
-
-            #listing-locDiff{
-                margin-top:-3px;
-                font-size:12px;
-                color:$black + #666;
-                text-align:center;
-            }
-
-            #listing-creator{
-                margin:10px 0;
-            }
-
-            #listing-offerbar{
-                $bg-color:#d5d5d5;
-
-                margin:10px 0;
-                padding:0;
-
-                @include box-shadow(0 1px 2px $black);
-                border:1px solid $bg-color - #181818;
-                @include gradient($bg-color + #080808, $bg-color - #181818);
-                @include rounded();
-
-                font-weight:bold;
-                color:$bg-color - #777;
-                text-shadow: $bg-color + #444 0 1px 2px;
-
-                .listing-obi{
-                    border-right:1px solid $bg-color - #222;
-                    padding:5px 10px;
-
-                    width:92px;
-                    height:100%;
-                    float:left;
-
-                    .listing-obi-title{
-                        font-weight:bold;
-                        font-size:12px;
-                    }
-
-                    .listing-obi-value{
-                        font-size:26px;
-                        font-weight:bold;
-                    }
-                }
-                .listing-obi.asking{
-                    color:$green - #333;
-                }
-                .listing-obi.best-offer{
-                }
-                .listing-obi.date{
-                    border-right:none;
-                }
-            }
-
-            #listing-status{
-                margin:0 0 10px;
-                .status{
-                    font-weight:bold;
-                    color:$green;
-
-                    &.accepted{
-                        color:$orange;
-                    }
-                    &.sold{
-                        color:$red;
-                    }
-                }
-            }
-
-            #listing-social{
-                height:30px;width:340px;
-                position:absolute;
-                bottom:10px;left:10px;
-
-                .fb{
-                    height:30px;
-                    width:200px;
-                    float:left;
-                }
-                .twitter{
-                    float:right;
-                }
-            }
-        }
-        #listing-inquiries, #listing-messages{
-
-            h2{
-                margin:0 0 10px;
-                font-size:18px;
-                font-weight:normal;
-            }
-        }
-        #listing-inquiries{
-            padding:0;
-            width:360px;
-
-            h2{
-                padding:10px 10px 0;
-            }
-/*
-            #inquiryFormWrap{
-                position:relative;
-                padding:10px;
-
-                input{
-                    width:545px;
-                }
-                #questionForm{
-                    top:5px;left:5px;
-                    width:560px;
-                    z-index:3;
-                }
-            }*/
-
-            .inquiry{
-                z-index:1;
-                position:relative;
-                min-height:30px;
-
-                @include dark-button($blue - #444);
-
-                .inquiryData{
-                    padding:10px;
-                    border-top:1px solid $grey - #111;
-                }
-
-                .question{
-                    margin-left:35px;
-                }
-
-                .answer{
-                    margin:5px 0 0 35px;
-                    font-weight:bold;
-                }
-                .ansButton{
-                    position:absolute;
-                    top:10px;right:10px;
-                    display:none;
-                }
-            }
-
-            .inquiry.canAnswer:hover{
-                background-color:$grey + #111;
-                .clicky{
-                    display:block;
-                    bottom:2px;right:2px;
-                    @include down-arrow-sprite();
-                }
-            }
-
-            .inquiry.selected{
-                z-index:2;
-
-                .inquiryData{
-                    z-index:1;
-                    background-color:$lightBlue !important;
-                    border-left:1px solid $grey - #444;
-                    border-right:1px solid $grey - #444;
-
-                    @include box-shadow(0 2px 4px $black + #333);
-                    /*@include rounded-bottom();*/
-
-                    .clicky{display:none !important;}
-                    .ansButton{display:none !important;}
-                }
-
-                .answerForm{
-                    z-index:2;
-                    padding:10px;
-                    position:absolute;
-                    bottom:-50px;left:0;
-                    height:30px;width:558px;
-
-                    background-color:$lightBlue !important;
-                    border:1px solid $grey - #444;
-                    border-top:none;
-                    @include box-shadow(0 2px 4px $black + #333);
-
-                    @include dark-button($blue - #444, '.submit');
-
-                    input[type=text]{
-                        width:465px;
-                    }
-                    .submit{
-                        width:70px;
-                        padding: 3px 15px 5px !important;
-                        position:absolute;
-                        right:10px;
-                        top:12px;
-                    }
-                }
-            }
-        }
-        #listing-messages{
-            position:relative;
-
-            .messageForm{
-                margin-bottom:5px;
-
-                @include dark-button($blue - #444, '.submit');
-
-                input{
-                    width:325px;
-                    margin-bottom:5px;
-                }
-                input[type=submit]{
-                    width:70px;
-                    margin-top:1px;
-                    float:right;
-                }
-            }
-
-            .message{
-                min-height:30px;
-                padding:10px 0;
-                border-bottom:1px dotted $grey;
-
-                .messageBody{
-                    margin:-15px 0 0 35px;
-                }
-            }
-
-            .liConvo{
-                height:50px;
-                width:580px;
-                margin-left:-10px;
-                z-index:1;
-
-                background-color:$white;
-
-                .liConvoData{
-                    height:30px;
-                    width:560px;
-                    border-top:1px solid $grey - #111;
-                    padding:10px;
-                    z-index:1;
-
-                    .amount{
-                        position:absolute;
-                        right:10px;top:10px;
-                        font-size:26px;
-                        font-weight:bold;
-                        line-height:30px;
-                        vertical-align:middle;
-                    }
-                    .actions{
-                        margin:-15px 0 0 35px;
-                        font-size:12px;
-                    }
-                    .clicky{
-                        @include left-arrow-sprite();
-                        top:2px;left:2px;
-                    }
-                }
-
-                &.accepted{
-                    background-color:#d2ffe7;
-                }
-
-                &:hover{
-                    background-color:$grey + #111 !important;
-                    .clicky{display:block;}
-                }
-
-                &.selected{
-                    z-index:2;
-
-                    .liConvoData{
-                        z-index:3;
-                        background-color:$lightBlue;
-                        /*
-                        border:1px solid $grey - #444;
-                        border-left:none;
-                        border-bottom:none;
-                        @include box-shadow(2px 1px 2px $black + #333);
-                        */
-                        .clicky{display:none !important;}
-                    }
-
-                }
-
-
-                .conversation{
-                    position:absolute;
-                    width:520px; min-height:45px;
-                    left:45px; top:40px;
-                    z-index:3;
-
-                    background-color:$lightBlue;
-                    border:1px solid $grey - #444;
-
-                    @include box-shadow(0 2px 4px $black + #333);
-                    @include dark-button($blue - #444, '.submit');
-                    @include rounded();
-                    @include rounded-top-right(0px);
-
-                    .messageForm input[type=text]{
-                        width:300px;
-                    }
-                }
-            }
-        }
-    }
-    #new_listing{
-        width:100%;
-
-        li, ul {margin:0;padding:0;list-style:none;}
-        input[type=text], input[type=email], input[type=password], textarea, .image_capture{
-            width:93%;
-            padding:2%;
-            margin:2%;
-            display:block;
-            font-size:16px;
-            @include sans();
-
-            border:none;
-            background-color:$white;
-            @include box-shadow(0 2px 4px $black + #222);
-            @include rounded(0px);
-        }
-        .image_capture{
-            img{
-                max-height:40px;
-                width:auto;
-                margin:0 0 -7px;
-                padding:0;
-            }
-            .take, .selectFile{
-                float:right;
-            }
-        }
-        .form_item:after {@include clearfix();}
-    }
-    #thanks{
-        width:93%;
-        padding:2%;
-        margin:2%;
-        display:block;
-        font-size:16px;
-        @include sans();
-
-        border:none;
-        background-color:$white;
-        @include box-shadow(0 2px 4px $black + #222);
-        @include rounded(0px);
-    }
-
-        #thanks p{
-            padding: 10px 0px 10px 10px;
-        }
-        #thanks input{
-            margin-top: 25px;
-            margin-bottom: -10px;
-            width: 95%;
-            padding: 10px 5px 10px 5px;
-        }
-
-
-
     .user{
         position:relative;
-        margin-left:35px;
-        min-height:30px;
+        margin-left:80px;
+        min-height:80px;
 
         img{
             position:absolute;
-            top:0;left:-35px;
+            top:0;left:-80px;
+            z-index:1;
         }
+        .presence{
+            position:absolute;
+            top:0;left:-80px;
+            z-index:2;
+            height:10px;width:10px;
+
+            &.offline{background-color:$grey;}
+            &.online{background-color:$green;}
+            &.away{background-color:$yellow;}
+        }
+
         .name {
             font-weight:bold;
+            font-size:26px;
         }
         .created {
             font-size:10px;
@@ -731,7 +367,9 @@ footer{
                          inset 0 1px 1px $grey - #333));
 }
 
-@import "mobile_tablet";
-@import "mobile_landscape";
-@import "mobile_portrait";
-@import "mobile_retna";
+@import "listing.scss";
+
+@import "mobile/tablet.scss";
+@import "mobile/landscape.scss";
+@import "mobile/portrait.scss";
+@import "mobile/retna.scss";

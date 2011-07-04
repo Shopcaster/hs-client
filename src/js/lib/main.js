@@ -4,7 +4,6 @@ dep.require('backbone');
 dep.require('base64');
 dep.require('crypto');
 dep.require('jquery');
-dep.require('jquery-ui');
 dep.require('jquery-color');
 dep.require('json2');
 dep.require('localStorage');

@@ -35,7 +35,6 @@ hs.listings.Listing = hs.models.Model.extend({
     var topAmount = 0, topOffer = null;
     var offers = this.get('offers');
     var done = _.after(offers.length, function(){
-      // hs.log('returning');
       clbk.call(context, topOffer);
     });
     offers.each(function(offer){

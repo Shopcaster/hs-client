@@ -90,6 +90,9 @@ hs.models.Model = Backbone.Model.extend({
       else
         throw(new Error('Model.with can only span ModelField relationships'));
 
+    // if (this.fields[field] instanceof hs.models.fields.CollectionField){
+
+    // }else
     if (this.get(field))
       clbk.call(context, this.get(field))
     else
@@ -123,13 +126,13 @@ hs.models.Model.extend = function(){
   var Model = Backbone.Model.extend.apply(this, arguments);
 
   Model.instances = {};
-  Model.get = function(_id, opts){
+  Model.get = function(_id){
     if (_.isUndefined(_id)) throw(new Error('cannot get a model without an _id'));
 
     if (Model.instances.hasOwnProperty(_id))
       return Model.instances[_id];
 
-    var instance = new Model(opts);
+    var instance = new Model();
     instance.set({_id: _id}, {raw: true});
     Model.instances[_id] = instance;
     return instance;

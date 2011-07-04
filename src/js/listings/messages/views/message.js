@@ -23,6 +23,11 @@ hs.messages.views.Message = hs.views.View.extend({
       });
       this.creatorView.render();
     }
+
+    this.model.withRel('listing.creator', function(listingCreator){
+      if (listingCreator._id == this.creator._id )
+        return;
+    }, this);
   },
 
   messageChange: function(){

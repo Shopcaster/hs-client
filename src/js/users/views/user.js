@@ -9,7 +9,8 @@ hs.users.views.User = hs.views.View.extend({
 
   modelEvents: {
     'change:name': 'updateName',
-    'change:avatar': 'updateAvatar'
+    'change:avatar': 'updateAvatar',
+    'change:presence': 'updatePresence'
   },
 
   updateName: function(){
@@ -18,6 +19,18 @@ hs.users.views.User = hs.views.View.extend({
   },
 
   updateAvatar: function(){
-    this.$('.avatar').attr('src', this.model.getAvatarUrl(30));
+    this.$('.avatar').attr('src', this.model.getAvatarUrl(75));
+  },
+
+  updatePresence: function(){
+    var node = this.$('.presence').removeClass('away online offline');
+    switch (this.model.get('presence')){
+      case 0:
+        node.addClass('offline');
+      case 1:
+        node.addClass('online');
+      case 2:
+        node.addClass('away'); 
+    }
   }
 });

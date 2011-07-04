@@ -22,7 +22,7 @@ hs.listings.views.Listing = hs.views.Page.extend
     'change:latitude': 'updateLoc'
     'change:longitude': 'updateLoc'
     'change:price': 'updatePrice'
-    'change:offers': 'updateBestOffer'
+    'change:offers': 'updateOffers'
     'change:accepted': 'updateAccepted'
     'change:sold': 'updateSold'
 
@@ -30,7 +30,7 @@ hs.listings.views.Listing = hs.views.Page.extend
   render: () ->
     hs.views.Page::render.apply this, arguments
 
-    hs.auth.bind 'change:isAuthenticated', this.updateAuth, this
+    hs.auth.bind 'change:isAuthenticated', this.updateCreator, this
 
     this.inquiries = new hs.inquiries.views.Inquiries
       appendTo: $('#listing-inquiries')
@@ -40,18 +40,18 @@ hs.listings.views.Listing = hs.views.Page.extend
     this.$('.twitter').html '
       <a href="http://twitter.com/share"
          class="twitter-share-button"
-         data-count="horizontal"
+         data-count="vertical"
          data-via="hipsellapp"
          data-text="Check out this awesome item for sale on Hipsell. Snap it up before it\'s too late.">
           Tweet
       </a>
       <script src="http://platform.twitter.com/widgets.js"></script>'
 
-    this.$('.fb').html '
+    this.$('.fb').html "
       <iframe
-        src="http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/{{_id}}/&amp;send=true&amp;layout=button_count&amp;width=200&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=30" scrolling="no" frameborder="0"
-        style="border:none; overflow:hidden; width:200px; height:30px;" allowTransparency="true">
-      </iframe>'
+        src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/#{this.model._id}/&amp;send=false&amp;layout=box_count&amp;width=60&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=70\" scrolling=\"no\" frameborder=\"0\"
+        style=\"border:none; overflow:hidden; width:60px; height:70px;\" allowTransparency=\"true\">
+      </iframe>"
 
     if Modernizr.geolocation
       navigator.geolocation.getCurrentPosition _.bind(this.updateLocation, this)
@@ -63,14 +63,15 @@ hs.listings.views.Listing = hs.views.Page.extend
     hs.setMeta 'fb:app_id', '110693249023137'
 
 
-  updateAuth: (isAuthd) ->
-#    if isAuthd != this.isAuthd
-#      this.isAuthd = isAuthd
+  updateAuth: (clbk) ->
+    hs.auth.ready =>
+      this.isAuthd = hs.auth.isAuthenticated()
 
-#      if this.isAuthd
-#        isOwner = this.creator._id == hs.users.User.get()._id
+      if this.isAuthd
+        this.isOwner = this.creator?._id == hs.users.User.get()._id
 
-      this.updateCreator()
+      clbk()
+
 
   updateCreator: () ->
     this.creator = this.model.get 'creator'
@@ -83,40 +84,42 @@ hs.listings.views.Listing = hs.views.Page.extend
 
       this.creatorView.render()
 
-    hs.auth.ready =>
-      this.isAuthd = hs.auth.isAuthenticated()
+    this.updateAuth =>
+        hs.log ' |athd', this.isAuthd,
+               ' |own', this.isOwner,
+               ' |no list', not this.convoList?,
+               ' |no conv', not this.convo?
 
-      if this.isAuthd
-        this.isOwner = this.creator._id == hs.users.User.get()._id
+        if this.isAuthd and this.isOwner and not this.convoList?
 
-      hs.log ' |athd', this.isAuthd,
-             ' |own', this.isOwner,
-             ' |no list', not this.convoList?,
-             ' |no conv', not this.convo?
+          if this.convo?
+            this.convo.remove()
+            this.convo = null
 
-      if this.isAuthd and this.isOwner and not this.convoList?
+          this.convoList = new hs.messages.views.ConvoList
+            appendTo: $('#listing-messages')
+            model: this.model
 
-        if this.convo?
-          this.convo.remove()
-          this.convo = null
+          this.convoList.render()
 
-        this.convoList = new hs.messages.views.ConvoList
-          appendTo: $('#listing-messages')
-          model: this.model
+        else if not this.isOwner and not this.convo?
 
-        this.convoList.render()
+          if this.convoList?
+            this.convoList.remove()
+            this.convoList = null
 
-      else if not this.isOwner and not this.convo?
+          this.convo = new hs.messages.views.Conversation
+            appendTo: $('#listing-messages')
+            listing: this.model
 
-        if this.convoList?
-          this.convoList.remove()
-          this.convoList = null
+          this.convo.render()
 
-        this.convo = new hs.messages.views.Conversation
-          appendTo: $('#listing-messages')
-          listing: this.model
+        if not this.isOwner and not this.offerForm?
 
-        this.convo.render()
+          this.offerForm = new hs.offers.views.Form
+            appendTo: this.$('.offerFormWrapper').show()
+            listing: this.model
+            focusSelector: '.offerButton'
 
 
   updatePhoto: () ->
@@ -138,8 +141,7 @@ hs.listings.views.Listing = hs.views.Page.extend
   updateCreated: () ->
     if this.model.get('created')?
       since = _.since this.model.get('created')
-      this.$('.date .listing-obi-title').text(since.text)
-      this.$('.date .listing-obi-value').text(since.num)
+      this.$('.created').text("#{since.num} #{since.text}");
 
 
   updateLoc: () ->
@@ -149,7 +151,7 @@ hs.listings.views.Listing = hs.views.Page.extend
       lng = this.model.get('longitude')
 
       this.$('img.map').attr 'src',
-        "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=340x100&sensor=false"
+        "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=390x150&sensor=false"
 
       this.$('.mapLink').attr 'href',
         "http://maps.google.com/?ll=#{lat},#{lng}&z=16"
@@ -185,18 +187,33 @@ hs.listings.views.Listing = hs.views.Page.extend
 
   updatePrice: () ->
     if this.model.get('price')?
-      this.$('.asking .listing-obi-value').text('$'+this.model.get('price'))
+      this.$('.asking.value').text('$'+this.model.get('price'))
 
 
-  updateBestOffer: () ->
+  updateOffers: () ->
     this.model.bestOffer (best) =>
       if best
-        node = this.$('.best-offer .listing-obi-value')
+        node = this.$('.best-offer.value')
 
         node.text('$'+best.get('amount'))
 
         node.animate {color: '#828200'}, 250, () ->
-          node.animate {color: '#5E5E5E'}, 250
+          node.animate {color: '#4E4E4E'}, 250
+
+        this.$('.best-offer.details').text(this.model.get('offers').length+' others');
+
+    this.updateAuth =>
+      if not this.isOwner and this.isAuthd
+        myOffer = this.model.get('offers').find (offer) =>
+          offer.get('creator')._id == hs.users.User.get()._id
+
+        if myOffer?
+          node = this.$('.my-offer.value')
+
+          node.text('$'+myOffer.get('amount'))
+
+          node.animate {color: '#828200'}, 250, () ->
+            node.animate {color: '#4E4E4E'}, 250
 
 
   updateSold: () ->

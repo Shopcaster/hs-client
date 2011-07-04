@@ -1,42 +1,72 @@
 
 <div class="listing clearfix">
-    <div id="listing-image" class="section-left"><img /></div>
+    <div id="listing-left" class="section-left">
+        <div id="listing-image"><img /></div>
+        <div id="listing-image-next">
+            <img src="http://placekitten.com/100/100">
+            <img src="http://placekitten.com/100/100">
+            <img src="http://placekitten.com/100/100">
+            <img src="http://placekitten.com/100/100">
+        </div>
 
-    <div id="listing-sidebar" class="section-right">
-        <a href="#" class="mapLink" target="_blank"><img class="map" /></a>
-        <div id="listing-locDiff"></div>
+        <div id="listing-messages">
+        </div>
+
+    </div>
+
+
+    <div id="listing-details" class="section-right">
 
         <div id="listing-creator"></div>
 
-        <div id="listing-offerbar" class="clearfix">
-            <div class="listing-obi asking">
-                <div class="listing-obi-title">Asking Price</div>
-                <div class="listing-obi-value"></div>
-            </div>
-            <div class="listing-obi best-offer">
-                <div class="listing-obi-title">Best Offer</div>
-                <div class="listing-obi-value">0</div>
-            </div>
-            <div class="listing-obi date">
-                <div class="listing-obi-title">Minutes Ago</div>
-                <div class="listing-obi-value"></div>
-            </div>
-        </div>
         <div id="listing-status">
-            Listing Status: <span class="status">Available</span>
+            <span class="status">Available</span>
         </div>
+
         <div id="listing-description"></div>
-        <div id="listing-social">
-            <div class="fb"></div>
-            <div class="twitter"></div>
+        <div class="created"></div>
+
+        <div class="bottom">
+
+            <div id="listing-locDiff"></div>
+
+            <a href="#" class="mapLink" target="_blank">
+                <img class="map" /></a>
+
+            <div id="listing-social">
+                <div class="fb"></div>
+                <div class="twitter"></div>
+            </div>
+
         </div>
+
+    </div>
+    
+
+    <div id="listing-offerbar" class="clearfix">
+        <div class="left">
+            <div class="title">Asking Price</div>
+            <div class="value asking">$0</div>
+            <div class="details asking"></div>
+        </div>
+        <div class="middle">
+            <div class="title">Best Offer</div>
+            <div class="value best-offer">$0</div>
+            <div class="details best-offer"></div>
+        </div>
+        <div class="right">
+            <div class="title">My Offer</div>
+            <div class="value my-offer">$0</div>
+            <div class="details my-offer"></div>
+        </div>
+    </div>
+
+    <div class="offerFormWrapper">
+        <div class="button offerButton">Make an Offer</div>
     </div>
 
     <div id="listing-inquiries" class="section-right">
         <h2>Question and Answer</h2>
     </div>
 
-    <div id="listing-messages" class="section-left">
-        <h2>Messages</h2>
-    </div>
 </div>

@@ -1,0 +1,438 @@
+
+
+.listing{
+    position:relative;
+
+    #listing-left{
+
+        width:$section_width - 20;
+        padding:10px;
+
+/*        background-color:$white;
+        @include box-shadow(0 1px 3px $black + #666);*/
+
+        #listing-image{
+            height:455px;
+            width:455px;
+            margin-bottom:20px;
+            img{
+                /*can be removed later*/
+                height:455px;
+                width:455px;
+                
+                border:1px solid $grey;
+            }
+        }
+        #listing-image-next{
+            img{
+                margin-right: ($section_width - 428px)/4;
+                border:1px solid $grey;
+            }
+            img:last-child{
+                margin-right:0;
+            }
+        }
+    }
+
+    #listing-details{
+        
+        width:$section_width - 20;
+        padding:10px;
+
+        position:relative;
+        height:455px;
+
+        text-shadow: 0 1px 1px #fff;
+/*        background-color:rgba($black, 0.1);
+        @include box-shadow(inset 0 1px 3px $black + #666);*/
+
+        #listing-creator{
+        	margin-bottom:15px;
+        }
+
+        #listing-status{
+	        float:left;
+        	padding:1px 5px 1px;
+        	margin: 2px 3px 0 0;
+        	font-size:14px;
+
+        	text-shadow:none;
+        	color:$white;
+        	background-color:$green;
+        	@include rounded(3px);
+        	@include box-shadow(0 1px 1px $white);
+        }
+
+        #listing-description{
+        	font-size:18px;
+        }
+        .created{
+            font-size:12px;
+            margin-bottom:15px;
+        }
+
+        .bottom{
+        	position:absolute;
+        	bottom:10px;
+        	width: $section_width - 20px;
+        	height:170px;
+
+            #listing-locDiff{
+                font-size:12px;
+            }
+
+	        .mapLink{
+	        	display:block;
+	        	position:absolute;
+	        	bottom:0;
+	        	left:0;
+
+	        	height:150px;
+	        	width:390px;
+	        }
+
+	        #listing-social{
+	        	position:absolute;
+	        	bottom:0;
+	        	right:0;
+
+	        	width: 55px;
+	        	height: 150px;
+
+	        	.twitter{
+	        		position:absolute;
+	        		bottom:0;left:0;
+	        		height:62px;width:55px;
+	        	}
+	        	.fb{
+	        		position:absolute;
+	        		top:0px;left:0;
+	        		width:55px;
+	        	}
+	        }
+	    }
+
+    }
+
+	#listing-offerbar{
+		@extend .section-right;
+        margin-top:0 !important;
+
+        & > div{
+            float:left;
+            width:($section_width/3) - 26px;
+            height:80px;
+            padding:10px;
+
+            text-shadow: 0 1px 1px #fff;
+            background-color:rgba($black, 0.1);
+            @include box-shadow(inset 0 1px 3px $black + #666);
+
+            &.right{
+                float:right;
+            }
+            &.left{
+                 margin-right:10px;
+                .title, .value{
+                    color:$red;
+                }
+            }
+
+            .title{
+                font-size:18px;
+                font-weight:bold;
+            }
+            .value{
+                margin:5px 0;
+                font-size:28px;
+                font-weight:bold;
+            }
+            .details{
+                font-size:16px;
+            }
+        }
+	}
+    .offerFormWrapper{
+        @extend .section-right;
+        clear:right;
+
+        @include light-button($blue2);
+
+        .offerButton{
+            font-size:18px;
+            padding: 8px 0 7px;
+            color:$white;
+            text-shadow:0 -1px 1px $black + #111;
+
+            &:hover{
+                color:$white - #111;
+                text-shadow:0 -1px 1px $black;
+            }
+        }
+    }
+
+    #listing-inquiries{
+        clear:both;
+        padding-top:100px;
+    }
+
+/*
+    #listing-inquiries, #listing-messages{
+
+        h2{
+            margin:0 0 10px;
+            font-size:18px;
+            font-weight:normal;
+        }
+    }
+
+
+
+    #listing-inquiries{
+        padding:0;
+        width:360px;
+
+        h2{
+            padding:10px 10px 0;
+        }
+
+        .inquiry{
+            z-index:1;
+            position:relative;
+            min-height:30px;
+
+            @include dark-button($blue - #444);
+
+            .inquiryData{
+                padding:10px;
+                border-top:1px solid $grey - #111;
+            }
+
+            .question{
+                margin-left:35px;
+            }
+
+            .answer{
+                margin:5px 0 0 35px;
+                font-weight:bold;
+            }
+            .ansButton{
+                position:absolute;
+                top:10px;right:10px;
+                display:none;
+            }
+        }
+
+        .inquiry.canAnswer:hover{
+            background-color:$grey + #111;
+            .clicky{
+                display:block;
+                bottom:2px;right:2px;
+                @include down-arrow-sprite();
+            }
+        }
+
+        .inquiry.selected{
+            z-index:2;
+
+            .inquiryData{
+                z-index:1;
+                background-color:$lightBlue !important;
+                border-left:1px solid $grey - #444;
+                border-right:1px solid $grey - #444;
+
+                @include box-shadow(0 2px 4px $black + #333);
+
+                .clicky{display:none !important;}
+                .ansButton{display:none !important;}
+            }
+
+            .answerForm{
+                z-index:2;
+                padding:10px;
+                position:absolute;
+                bottom:-50px;left:0;
+                height:30px;width:558px;
+
+                background-color:$lightBlue !important;
+                border:1px solid $grey - #444;
+                border-top:none;
+                @include box-shadow(0 2px 4px $black + #333);
+
+                @include dark-button($blue - #444, '.submit');
+
+                input[type=text]{
+                    width:465px;
+                }
+                .submit{
+                    width:70px;
+                    padding: 3px 15px 5px !important;
+                    position:absolute;
+                    right:10px;
+                    top:12px;
+                }
+            }
+        }
+    }
+    #listing-messages{
+        position:relative;
+
+        .messageForm{
+            margin-bottom:5px;
+
+            @include dark-button($blue - #444, '.submit');
+
+            input{
+                width:325px;
+                margin-bottom:5px;
+            }
+            input[type=submit]{
+                width:70px;
+                margin-top:1px;
+                float:right;
+            }
+        }
+
+        .message{
+            min-height:30px;
+            padding:10px 0;
+            border-bottom:1px dotted $grey;
+
+            .messageBody{
+                margin:-15px 0 0 35px;
+            }
+        }
+
+        .liConvo{
+            height:50px;
+            width:580px;
+            margin-left:-10px;
+            z-index:1;
+
+            background-color:$white;
+
+            .liConvoData{
+                height:30px;
+                width:560px;
+                border-top:1px solid $grey - #111;
+                padding:10px;
+                z-index:1;
+
+                .amount{
+                    position:absolute;
+                    right:10px;top:10px;
+                    font-size:26px;
+                    font-weight:bold;
+                    line-height:30px;
+                    vertical-align:middle;
+                }
+                .actions{
+                    margin:-15px 0 0 35px;
+                    font-size:12px;
+                }
+                .clicky{
+                    @include left-arrow-sprite();
+                    top:2px;left:2px;
+                }
+            }
+
+            &.accepted{
+                background-color:#d2ffe7;
+            }
+
+            &:hover{
+                background-color:$grey + #111 !important;
+            }
+
+            &.selected{
+                z-index:2;
+
+                .liConvoData{
+                    z-index:3;
+                    background-color:$lightBlue;
+                    .clicky{display:none !important;}
+                }
+
+            }
+
+
+            .conversation{
+                position:absolute;
+                width:520px; min-height:45px;
+                left:45px; top:40px;
+                z-index:3;
+
+                background-color:$lightBlue;
+                border:1px solid $grey - #444;
+
+                @include box-shadow(0 2px 4px $black + #333);
+                @include dark-button($blue - #444, '.submit');
+                @include rounded();
+                @include rounded-top-right(0px);
+
+                .messageForm input[type=text]{
+                    width:300px;
+                }
+	}
+
+            }
+        }
+    }*/
+}
+
+#new_listing{
+    width:100%;
+
+    li, ul {margin:0;padding:0;list-style:none;}
+    input[type=text], input[type=email], input[type=password], textarea, .image_capture{
+        width:93%;
+        padding:2%;
+        margin:2%;
+        display:block;
+        font-size:16px;
+        @include sans();
+
+        border:none;
+        background-color:$white;
+        @include box-shadow(0 2px 4px $black + #222);
+        @include rounded(0px);
+    }
+    .image_capture{
+        img{
+            max-height:40px;
+            width:auto;
+            margin:0 0 -7px;
+            padding:0;
+        }
+        .take, .selectFile{
+            float:right;
+        }
+    }
+    .form_item:after {@include clearfix();}
+}
+
+#thanks{
+    width:93%;
+    padding:2%;
+    margin:2%;
+    display:block;
+    font-size:16px;
+    @include sans();
+
+    border:none;
+    background-color:$white;
+    @include box-shadow(0 2px 4px $black + #222);
+    @include rounded(0px);
+
+    p{
+        padding: 10px 0px 10px 10px;
+    }
+    input{
+        margin-top: 25px;
+        margin-bottom: -10px;
+        width: 95%;
+        padding: 10px 5px 10px 5px;
+    }
+}
+
+

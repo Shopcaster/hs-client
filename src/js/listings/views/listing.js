@@ -19,13 +19,13 @@
       'change:latitude': 'updateLoc',
       'change:longitude': 'updateLoc',
       'change:price': 'updatePrice',
-      'change:offers': 'updateBestOffer',
+      'change:offers': 'updateOffers',
       'change:accepted': 'updateAccepted',
       'change:sold': 'updateSold'
     },
     render: function() {
       hs.views.Page.prototype.render.apply(this, arguments);
-      hs.auth.bind('change:isAuthenticated', this.updateAuth, this);
+      hs.auth.bind('change:isAuthenticated', this.updateCreator, this);
       this.inquiries = new hs.inquiries.views.Inquiries({
         appendTo: $('#listing-inquiries'),
         model: this.model
@@ -34,17 +34,13 @@
       this.$('.twitter').html('\
       <a href="http://twitter.com/share"\
          class="twitter-share-button"\
-         data-count="horizontal"\
+         data-count="vertical"\
          data-via="hipsellapp"\
          data-text="Check out this awesome item for sale on Hipsell. Snap it up before it\'s too late.">\
           Tweet\
       </a>\
       <script src="http://platform.twitter.com/widgets.js"></script>');
-      this.$('.fb').html('\
-      <iframe\
-        src="http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/{{_id}}/&amp;send=true&amp;layout=button_count&amp;width=200&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=30" scrolling="no" frameborder="0"\
-        style="border:none; overflow:hidden; width:200px; height:30px;" allowTransparency="true">\
-      </iframe>');
+      this.$('.fb').html("      <iframe        src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/" + this.model._id + "/&amp;send=false&amp;layout=box_count&amp;width=60&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=70\" scrolling=\"no\" frameborder=\"0\"        style=\"border:none; overflow:hidden; width:60px; height:70px;\" allowTransparency=\"true\">      </iframe>");
       if (Modernizr.geolocation) {
         navigator.geolocation.getCurrentPosition(_.bind(this.updateLocation, this));
       }
@@ -54,8 +50,15 @@
       hs.setMeta('og:site_name', 'Hipsell');
       return hs.setMeta('fb:app_id', '110693249023137');
     },
-    updateAuth: function(isAuthd) {
-      return this.updateCreator();
+    updateAuth: function(clbk) {
+      return hs.auth.ready(__bind(function() {
+        var _ref;
+        this.isAuthd = hs.auth.isAuthenticated();
+        if (this.isAuthd) {
+          this.isOwner = ((_ref = this.creator) != null ? _ref._id : void 0) === hs.users.User.get()._id;
+        }
+        return clbk();
+      }, this));
     },
     updateCreator: function() {
       this.creator = this.model.get('creator');
@@ -69,11 +72,7 @@
         });
         this.creatorView.render();
       }
-      return hs.auth.ready(__bind(function() {
-        this.isAuthd = hs.auth.isAuthenticated();
-        if (this.isAuthd) {
-          this.isOwner = this.creator._id === hs.users.User.get()._id;
-        }
+      return this.updateAuth(__bind(function() {
         hs.log(' |athd', this.isAuthd, ' |own', this.isOwner, ' |no list', !(this.convoList != null), ' |no conv', !(this.convo != null));
         if (this.isAuthd && this.isOwner && !(this.convoList != null)) {
           if (this.convo != null) {
@@ -84,7 +83,7 @@
             appendTo: $('#listing-messages'),
             model: this.model
           });
-          return this.convoList.render();
+          this.convoList.render();
         } else if (!this.isOwner && !(this.convo != null)) {
           if (this.convoList != null) {
             this.convoList.remove();
@@ -94,7 +93,14 @@
             appendTo: $('#listing-messages'),
             listing: this.model
           });
-          return this.convo.render();
+          this.convo.render();
+        }
+        if (!this.isOwner && !(this.offerForm != null)) {
+          return this.offerForm = new hs.offers.views.Form({
+            appendTo: this.$('.offerFormWrapper').show(),
+            listing: this.model,
+            focusSelector: '.offerButton'
+          });
         }
       }, this));
     },
@@ -117,8 +123,7 @@
       var since;
       if (this.model.get('created') != null) {
         since = _.since(this.model.get('created'));
-        this.$('.date .listing-obi-title').text(since.text);
-        return this.$('.date .listing-obi-value').text(since.num);
+        return this.$('.created').text("" + since.num + " " + since.text);
       }
     },
     updateLoc: function() {
@@ -126,7 +131,7 @@
       if ((this.model.get('latitude') != null) && (this.model.get('longitude') != null)) {
         lat = this.model.get('latitude');
         lng = this.model.get('longitude');
-        this.$('img.map').attr('src', "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=340x100&sensor=false");
+        this.$('img.map').attr('src', "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=390x150&sensor=false");
         this.$('.mapLink').attr('href', "http://maps.google.com/?ll=" + lat + "," + lng + "&z=16");
         hs.setMeta('og:latitude', lat);
         hs.setMeta('og:longitude', lng);
@@ -163,22 +168,42 @@
     },
     updatePrice: function() {
       if (this.model.get('price') != null) {
-        return this.$('.asking .listing-obi-value').text('$' + this.model.get('price'));
+        return this.$('.asking.value').text('$' + this.model.get('price'));
       }
     },
-    updateBestOffer: function() {
-      return this.model.bestOffer(__bind(function(best) {
+    updateOffers: function() {
+      this.model.bestOffer(__bind(function(best) {
         var node;
         if (best) {
-          node = this.$('.best-offer .listing-obi-value');
+          node = this.$('.best-offer.value');
           node.text('$' + best.get('amount'));
-          return node.animate({
+          node.animate({
             color: '#828200'
           }, 250, function() {
             return node.animate({
-              color: '#5E5E5E'
+              color: '#4E4E4E'
             }, 250);
           });
+          return this.$('.best-offer.details').text(this.model.get('offers').length + ' others');
+        }
+      }, this));
+      return this.updateAuth(__bind(function() {
+        var myOffer, node;
+        if (!this.isOwner && this.isAuthd) {
+          myOffer = this.model.get('offers').find(__bind(function(offer) {
+            return offer.get('creator')._id === hs.users.User.get()._id;
+          }, this));
+          if (myOffer != null) {
+            node = this.$('.my-offer.value');
+            node.text('$' + myOffer.get('amount'));
+            return node.animate({
+              color: '#828200'
+            }, 250, function() {
+              return node.animate({
+                color: '#4E4E4E'
+              }, 250);
+            });
+          }
         }
       }, this));
     },
