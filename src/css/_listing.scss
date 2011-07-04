@@ -3,12 +3,48 @@
 .listing{
     position:relative;
 
+    #listing-left{
+
+        width:$section_width - 20;
+        padding:10px;
+
+/*        background-color:$white;
+        @include box-shadow(0 1px 3px $black + #666);*/
+
+        #listing-image{
+            height:455px;
+            width:455px;
+            margin-bottom:20px;
+            img{
+                /*can be removed later*/
+                height:455px;
+                width:455px;
+                
+                border:1px solid $grey;
+            }
+        }
+        #listing-image-next{
+            img{
+                margin-right: ($section_width - 428px)/4;
+                border:1px solid $grey;
+            }
+            img:last-child{
+                margin-right:0;
+            }
+        }
+    }
 
     #listing-details{
         
+        width:$section_width - 20;
+        padding:10px;
+
         position:relative;
-        height:470px;
-        text-shadow: 0 2px 2px #fff;
+        height:455px;
+
+        text-shadow: 0 1px 1px #fff;
+/*        background-color:rgba($black, 0.1);
+        @include box-shadow(inset 0 1px 3px $black + #666);*/
 
         #listing-creator{
         	margin-bottom:15px;
@@ -24,19 +60,26 @@
         	color:$white;
         	background-color:$green;
         	@include rounded(3px);
-        	@include box-shadow(0 2px 1px $white);
+        	@include box-shadow(0 1px 1px $white);
         }
 
         #listing-description{
         	font-size:18px;
-        	margin-bottom:15px;
+        }
+        .created{
+            font-size:12px;
+            margin-bottom:15px;
         }
 
         .bottom{
         	position:absolute;
-        	bottom:0;
-        	width: 100%;
-        	height:120px;
+        	bottom:10px;
+        	width: $section_width - 20px;
+        	height:170px;
+
+            #listing-locDiff{
+                font-size:12px;
+            }
 
 	        .mapLink{
 	        	display:block;
@@ -44,8 +87,8 @@
 	        	bottom:0;
 	        	left:0;
 
-	        	height:100px;
-	        	width:340px;
+	        	height:150px;
+	        	width:390px;
 	        }
 
 	        #listing-social{
@@ -53,38 +96,87 @@
 	        	bottom:0;
 	        	right:0;
 
-	        	width: $section_width - 345px;
-	        	height: 100px;
+	        	width: 55px;
+	        	height: 150px;
+
+	        	.twitter{
+	        		position:absolute;
+	        		bottom:0;left:0;
+	        		height:62px;width:55px;
+	        	}
+	        	.fb{
+	        		position:absolute;
+	        		top:0px;left:0;
+	        		width:55px;
+	        	}
 	        }
 	    }
 
     }
 
+	#listing-offerbar{
+		@extend .section-right;
+        margin-top:0 !important;
 
-    #listing-left{
+        & > div{
+            float:left;
+            width:($section_width/3) - 26px;
+            height:80px;
+            padding:10px;
 
-    	width:$section_width - 10;
-    	padding:5px;
+            text-shadow: 0 1px 1px #fff;
+            background-color:rgba($black, 0.1);
+            @include box-shadow(inset 0 1px 3px $black + #666);
 
-    	background-color:$white;
-    	@include box-shadow(0 2px 2px $grey);
+            &.right{
+                float:right;
+            }
+            &.left{
+                 margin-right:10px;
+                .title, .value{
+                    color:$red;
+                }
+            }
 
-	    #listing-image{
-	    	height:455px;
-	    	width:455px;
-	    	margin-bottom:15px;
-	        img{
-	        	/*can be removed later*/
-	        	height:460px;
-	    		width:460px;
-	            
-	            border:1px solid $grey;
-	        }
-	    }
-
+            .title{
+                font-size:18px;
+                font-weight:bold;
+            }
+            .value{
+                margin:5px 0;
+                font-size:28px;
+                font-weight:bold;
+            }
+            .details{
+                font-size:16px;
+            }
+        }
 	}
+    .offerFormWrapper{
+        @extend .section-right;
+        clear:right;
 
+        @include light-button($blue2);
 
+        .offerButton{
+            font-size:18px;
+            padding: 8px 0 7px;
+            color:$white;
+            text-shadow:0 -1px 1px $black + #111;
+
+            &:hover{
+                color:$white - #111;
+                text-shadow:0 -1px 1px $black;
+            }
+        }
+    }
+
+    #listing-inquiries{
+        clear:both;
+        padding-top:100px;
+    }
+
+/*
     #listing-inquiries, #listing-messages{
 
         h2{
@@ -103,20 +195,6 @@
         h2{
             padding:10px 10px 0;
         }
-/*
-        #inquiryFormWrap{
-            position:relative;
-            padding:10px;
-
-            input{
-                width:545px;
-            }
-            #questionForm{
-                top:5px;left:5px;
-                width:560px;
-                z-index:3;
-            }
-        }*/
 
         .inquiry{
             z-index:1;
@@ -164,7 +242,6 @@
                 border-right:1px solid $grey - #444;
 
                 @include box-shadow(0 2px 4px $black + #333);
-                /*@include rounded-bottom();*/
 
                 .clicky{display:none !important;}
                 .ansButton{display:none !important;}
@@ -265,7 +342,6 @@
 
             &:hover{
                 background-color:$grey + #111 !important;
-                /*.clicky{display:block;}*/
             }
 
             &.selected{
@@ -274,12 +350,6 @@
                 .liConvoData{
                     z-index:3;
                     background-color:$lightBlue;
-                    /*
-                    border:1px solid $grey - #444;
-                    border-left:none;
-                    border-bottom:none;
-                    @include box-shadow(2px 1px 2px $black + #333);
-                    */
                     .clicky{display:none !important;}
                 }
 
@@ -303,9 +373,11 @@
                 .messageForm input[type=text]{
                     width:300px;
                 }
+	}
+
             }
         }
-    }
+    }*/
 }
 
 #new_listing{

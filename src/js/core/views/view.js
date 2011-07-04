@@ -2,6 +2,7 @@
 
 dep.require('hs.views');
 dep.require('util');
+
 dep.provide('hs.views.View');
 
 hs.views.View = Backbone.View.extend(Backbone.Events).extend({

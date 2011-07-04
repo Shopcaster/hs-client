@@ -2,9 +2,14 @@
 <div class="listing clearfix">
     <div id="listing-left" class="section-left">
         <div id="listing-image"><img /></div>
+        <div id="listing-image-next">
+            <img src="http://placekitten.com/100/100">
+            <img src="http://placekitten.com/100/100">
+            <img src="http://placekitten.com/100/100">
+            <img src="http://placekitten.com/100/100">
+        </div>
 
         <div id="listing-messages">
-            <h2>Messages</h2>
         </div>
 
     </div>
@@ -19,6 +24,7 @@
         </div>
 
         <div id="listing-description"></div>
+        <div class="created"></div>
 
         <div class="bottom">
 
@@ -37,23 +43,27 @@
     </div>
     
 
-        <div id="listing-offerbar" class="clearfix">
-            <div class="listing-obi asking">
-                <div class="listing-obi-title">Asking Price</div>
-                <div class="listing-obi-value"></div>
-            </div>
-            <div class="listing-obi best-offer">
-                <div class="listing-obi-title">Best Offer</div>
-                <div class="listing-obi-value">$0</div>
-            </div>
-            <div class="listing-obi my-offer">
-                <div class="listing-obi-title">My Offer</div>
-                <div class="listing-obi-value">$0</div>
-            </div>
+    <div id="listing-offerbar" class="clearfix">
+        <div class="left">
+            <div class="title">Asking Price</div>
+            <div class="value asking">$0</div>
+            <div class="details asking"></div>
         </div>
-        <div class="offerFormWrapper">
-            <div class="fakeInput" id="listing-offerButton"></div>
+        <div class="middle">
+            <div class="title">Best Offer</div>
+            <div class="value best-offer">$0</div>
+            <div class="details best-offer"></div>
         </div>
+        <div class="right">
+            <div class="title">My Offer</div>
+            <div class="value my-offer">$0</div>
+            <div class="details my-offer"></div>
+        </div>
+    </div>
+
+    <div class="offerFormWrapper">
+        <div class="button offerButton">Make an Offer</div>
+    </div>
 
     <div id="listing-inquiries" class="section-right">
         <h2>Question and Answer</h2>
