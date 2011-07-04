@@ -1,0 +1,28 @@
+<h1>Social Integration</h1>
+<p>You can link Facebook, Twitter, and LinkedIn accounts to your Hipsell account.  Links to these will show up on your profile.</p>
+
+<h3>Accounts You've Linked</h3>
+<p>
+{{#fb}}
+  <a href="{{& fb}}" target="_blank">Facebook</a>
+{{/fb}}
+{{#twitter}}
+  <a href="{{& twitter}}" target="_blank">Twitter</a>
+{{/twitter}}
+{{#linkedin}}
+  <a href="{{& linkedin}}" target="_blank">LinkedIn</a>
+{{/linkedin}}
+</p>
+
+<h3>Link an Account</h3>
+<p>
+{{^fb}}
+  <a href="{{& server}}/fb/connect?">Facebook</a>
+{{/fb}}
+{{^twitter}}
+  <a href="{{& server}}/twitter/connect?" target="_blank">Twitter</a>
+{{/twitter}}
+{{^linkedin}}
+  <a href="{{& server}}/linkedin/connect?" target="_blank">LinkedIn</a>
+{{/linkedin}}
+</p>

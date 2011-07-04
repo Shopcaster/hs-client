@@ -1,5 +1,4 @@
 
-dep.require('hs.users.views.Settings');
 dep.require('hs.users.views.LoginDialog');
 
 dep.provide('hs.users.views.TopBar');
@@ -15,7 +14,6 @@ hs.users.views.TopBar = hs.views.View.extend({
     hs.auth.bind('change:isAuthenticated', this.authChange, this);
     this.authChange(hs.auth.isAuthenticated());
 
-    this.settings = new hs.users.views.Settings();
     this.loginDialog = new hs.users.views.LoginDialog();
   },
 
@@ -34,7 +32,6 @@ hs.users.views.TopBar = hs.views.View.extend({
   renderLoggedIn: function(){
     $('#top-bar a.login').hide();
     $('#top-bar a.logout').show();
-    $('#top-bar a.settings').show();
 
     this.user = hs.users.User.get();
     this.user.bind('change:name', this.nameChange, this);
@@ -58,7 +55,6 @@ hs.users.views.TopBar = hs.views.View.extend({
       this.user = null;
     $('#top-bar a.login').show();
     $('#top-bar a.logout').hide();
-    $('#top-bar a.settings').hide();
     $('#top-bar > .width > a.name').hide().text('');
   }
 });

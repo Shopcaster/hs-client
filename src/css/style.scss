@@ -587,6 +587,44 @@ header{
         }
     }
 
+    #settings {
+
+    }
+        #settings #nav {
+            width: 300px;
+            display: inline-block;
+            margin: -10px;
+            text-align: center;
+            border-right: 2px solid #DDD;
+            position: absolute;
+            padding-bottom: -30px;
+            height: 100%;
+            background-color: #DDD;
+        }
+            #settings #nav a {
+                display: block;
+                background-color: transparent;
+                padding: 10px;
+                width: 282px;
+                font-size: 14pt;
+                font-weight: bold;
+            }
+            #settings #nav a:first-child {
+                margin-top: 10px;
+            }
+            #settings #nav a:hover {
+                background-color: $grey;
+                text-decoration: none;
+            }
+            #settings #nav a.selected {
+                background-color: $white;
+            }
+        #settings #setting {
+            width: 400px;
+            display: inline-block;
+            margin-left: 315px;
+        }
+
 }
 
 footer{

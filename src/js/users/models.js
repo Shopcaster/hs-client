@@ -9,7 +9,10 @@ hs.users.User = hs.models.Model.extend({
   key: 'user',
   fields: _.extend({
     name: '',
-    avatar: ''
+    avatar: '',
+    fb: '',
+    twitter: '',
+    linkedin: ''
   }, hs.models.Model.prototype.fields),
   getAvatarUrl: function(size){
     size = size || 60
