@@ -92,6 +92,7 @@ hs.con = {
         data = JSON.parse(parsed.join(':'));
     this.trigger('recieved', key, data);
     this.trigger('recieved:'+data.id, key, data);
+    this.trigger('recieved:'+key, data);
     this.trigger(key, data);
   },
 

@@ -34,13 +34,13 @@
       this.$('.twitter').html('\
       <a href="http://twitter.com/share"\
          class="twitter-share-button"\
-         data-count="vertical"\
+         data-count="horizontal"\
          data-via="hipsellapp"\
          data-text="Check out this awesome item for sale on Hipsell. Snap it up before it\'s too late.">\
           Tweet\
       </a>\
       <script src="http://platform.twitter.com/widgets.js"></script>');
-      this.$('.fb').html("      <iframe        src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/" + this.model._id + "/&amp;send=false&amp;layout=box_count&amp;width=60&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=70\" scrolling=\"no\" frameborder=\"0\"        style=\"border:none; overflow:hidden; width:60px; height:70px;\" allowTransparency=\"true\">      </iframe>");
+      this.$('.fb').html("      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/" + this.model._id + "/&amp;href&amp;send=false&amp;layout=button_count&amp;width=75&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=30\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:75px; height:30px;\" allowTransparency=\"true\"></iframe>");
       if (Modernizr.geolocation) {
         navigator.geolocation.getCurrentPosition(_.bind(this.updateLocation, this));
       }
@@ -131,7 +131,7 @@
       if ((this.model.get('latitude') != null) && (this.model.get('longitude') != null)) {
         lat = this.model.get('latitude');
         lng = this.model.get('longitude');
-        this.$('img.map').attr('src', "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=390x150&sensor=false");
+        this.$('img.map').attr('src', "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=452x150&sensor=false");
         this.$('.mapLink').attr('href', "http://maps.google.com/?ll=" + lat + "," + lng + "&z=16");
         hs.setMeta('og:latitude', lat);
         hs.setMeta('og:longitude', lng);
