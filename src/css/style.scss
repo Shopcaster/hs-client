@@ -133,14 +133,14 @@ header{
     border-top:1px solid $headerBack - #222;
     /*border-bottom:3px solid #939598;*/
     /*@include box-shadow(0 1px 0px $black + #666);*/
-    border-bottom:1px solid $black + #333;
-    @include box-shadow(0 2px 3px $black + #666);
+    border-bottom:1px solid $blue - #444;
+    @include box-shadow(0 1px 2px $black + #666);
 
     #logo{
         position:absolute;
         top:7px;left:5px;
-        width:176px;
-        height:39px;
+        width:174px;
+        height:37px;
         background-image:url(../img/ab_logo.png);
         @include background-size();
         background-repeat:no-repeat;
@@ -175,7 +175,7 @@ header{
 }
 
 
-$section_width: ($layout_width - 10)/2;
+$section_width: ($layout_width - 15)/2;
 
 #body{
     padding:10px 0 0;
@@ -188,9 +188,11 @@ $section_width: ($layout_width - 10)/2;
     }
     .section-left{
         float:left;
+        clear:left;
     }
     .section-right{
         float:right;
+        clear:right;
     }
 
     .user{

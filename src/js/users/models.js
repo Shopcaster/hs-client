@@ -17,13 +17,17 @@ hs.users.User = hs.models.Model.extend({
   initialize: function(){
     hs.models.Model.prototype.initialize.apply(this, arguments);
 
-    this.once('change:_id', function(){
+    if (this._id){
       hs.con.send('sub-presence', {user: this._id});
-      hs.con.bind('recieved:presence', this.setPresence, this);
-    }, this);
+    }else
+      this.once('change:_id', function(){
+        hs.con.send('sub-presence', {user: this._id});
+      }, this);
+
+    hs.con.bind('recieved:presence', this.setPresence, this);
   },
 
-  setPresence: function(key, data){
+  setPresence: function(data){
     if (data.user == this._id)
       this.set({presence: data.state});
   },

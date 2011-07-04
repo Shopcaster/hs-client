@@ -27,10 +27,13 @@ hs.users.views.User = hs.views.View.extend({
     switch (this.model.get('presence')){
       case 0:
         node.addClass('offline');
+      break;
       case 1:
         node.addClass('online');
+      break;
       case 2:
         node.addClass('away'); 
+      break;
     }
   }
 });
