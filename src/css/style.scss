@@ -192,6 +192,12 @@ $section_width: ($layout_width - 10)/2;
     .section-right{
         float:right;
     }
+    .flatpage{
+        padding: 10px;
+        @include box-shadow(0 4px 8px $black + #333);
+        background-color: $white;
+        width: $layout_width;
+    }
 
     .user{
         position:relative;
@@ -244,8 +250,6 @@ $section_width: ($layout_width - 10)/2;
                 width: 282px;
                 font-size: 14pt;
                 font-weight: bold;
-            }
-            #settings #nav a:first-child {
                 margin-top: 10px;
             }
             #settings #nav a:hover {
@@ -365,6 +369,14 @@ footer{
     background-color: $grey - #111;
     @include box-shadow((inset 0 -1px 1px $grey + #222,
                          inset 0 1px 1px $grey - #333));
+}
+
+.error{
+    color: $red;
+}
+
+.success{
+    color: $green;
 }
 
 @import "listing.scss";
