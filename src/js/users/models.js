@@ -11,7 +11,10 @@ hs.users.User = hs.models.Model.extend({
   fields: _.extend({
     name: new hs.models.fields.StringField(),
     avatar: new hs.models.fields.StringField(),
-    presence: new hs.models.fields.IntegerField()
+    presence: new hs.models.fields.IntegerField(),
+    fb: new hs.models.fields.IntegerField(),
+    twitter: new hs.models.fields.IntegerField(),
+    linkedin: new hs.models.fields.IntegerField()
   }, hs.models.Model.prototype.fields),
 
   initialize: function(){

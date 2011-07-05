@@ -3,26 +3,8 @@ dep.require('hs.views.Form');
 dep.require('hs.auth');
 dep.require('hs.views.mixins.Dialog');
 
-dep.provide('hs.users.views.Settings');
 dep.provide('hs.users.views.NameForm');
 dep.provide('hs.users.views.PasswordForm');
-
-
-hs.users.views.Settings = hs.views.View.mixin(hs.views.mixins.Dialog).extend({
-  appendTo: $('#top-bar .width'),
-  template: 'settings',
-  focusSelector: '#top-bar .settings',
-  initialize: function(){
-    hs.views.View.prototype.initialize.apply(this, arguments);
-    this.nameForm = new hs.users.views.NameForm();
-    this.passwordForm = new hs.users.views.PasswordForm();
-  },
-  focus: function(){
-    hs.views.mixins.Dialog.focus.apply(this, arguments);
-    this.nameForm.dialogSetMousedown();
-    this.passwordForm.dialogSetMousedown();
-  }
-});
 
 hs.users.views.NameForm = hs.views.Form.mixin(hs.views.mixins.Dialog).extend({
   appendTo: $('#top-bar .width'),

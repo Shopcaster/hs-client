@@ -1,5 +1,4 @@
 
-dep.require('hs.users.views.Settings');
 dep.require('hs.users.views.LoginDialog');
 
 dep.provide('hs.users.views.TopBar');
@@ -15,7 +14,6 @@ hs.users.views.TopBar = hs.views.View.extend({
     hs.auth.bind('change:isAuthenticated', this.authChange, this);
     this.authChange(hs.auth.isAuthenticated());
 
-    this.settings = new hs.users.views.Settings();
     this.loginDialog = new hs.users.views.LoginDialog();
   },
 
