@@ -40,7 +40,7 @@
           Tweet\
       </a>\
       <script src="http://platform.twitter.com/widgets.js"></script>');
-      this.$('.fb').html("      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/" + this.model._id + "/&amp;href&amp;send=false&amp;layout=button_count&amp;width=75&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=30\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:75px; height:30px;\" allowTransparency=\"true\"></iframe>");
+      this.$('.fb').html("      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/" + this.model._id + "/&amp;href&amp;send=false&amp;layout=button_count&amp;width=150&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=30\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:150px; height:30px;\" allowTransparency=\"true\"></iframe>");
       if (Modernizr.geolocation) {
         navigator.geolocation.getCurrentPosition(_.bind(this.updateLocation, this));
       }
@@ -56,6 +56,9 @@
         this.isAuthd = hs.auth.isAuthenticated();
         if (this.isAuthd) {
           this.isOwner = ((_ref = this.creator) != null ? _ref._id : void 0) === hs.users.User.get()._id;
+        }
+        if (this.isOwner) {
+          this.el.addClass('owner');
         }
         return clbk();
       }, this));
@@ -108,7 +111,7 @@
       var url;
       if (this.model.get('photo') != null) {
         url = "http://" + conf.server.host + ":" + conf.server.port + "/static/" + (this.model.get('photo'));
-        this.$('#listing-image img').attr('src', url);
+        this.$('#listing-image > img').attr('src', url);
         return hs.setMeta('og:image', url);
       }
     },
@@ -131,7 +134,7 @@
       if ((this.model.get('latitude') != null) && (this.model.get('longitude') != null)) {
         lat = this.model.get('latitude');
         lng = this.model.get('longitude');
-        this.$('img.map').attr('src', "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=452x150&sensor=false");
+        this.$('img.map').attr('src', "http://maps.google.com/maps/api/staticmap?center=" + lat + "," + lng + "&zoom=14&size=450x150&sensor=false");
         this.$('.mapLink').attr('href', "http://maps.google.com/?ll=" + lat + "," + lng + "&z=16");
         hs.setMeta('og:latitude', lat);
         hs.setMeta('og:longitude', lng);
@@ -181,10 +184,13 @@
             color: '#828200'
           }, 250, function() {
             return node.animate({
-              color: '#4E4E4E'
+              color: '#008234'
             }, 250);
           });
-          return this.$('.best-offer.details').text(this.model.get('offers').length + ' others');
+          return best.withRel('creator', __bind(function(bestCreator) {
+            hs.log('bestCreator', bestCreator.get('name'), bestCreator);
+            return this.$('.best-offer.details').text("by " + (bestCreator.get('name')));
+          }, this));
         }
       }, this));
       return this.updateAuth(__bind(function() {
@@ -196,15 +202,18 @@
           if (myOffer != null) {
             node = this.$('.my-offer.value');
             node.text('$' + myOffer.get('amount'));
-            return node.animate({
+            node.animate({
               color: '#828200'
             }, 250, function() {
               return node.animate({
-                color: '#4E4E4E'
+                color: '#2E63A1'
               }, 250);
             });
           }
+        } else {
+          this.$('.my-offer.value').text('$0');
         }
+        return this.$('.my-offer.details').text(this.model.get('offers').length + ' others');
       }, this));
     },
     updateSold: function() {

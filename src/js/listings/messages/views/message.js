@@ -17,14 +17,14 @@ hs.messages.views.Message = hs.views.View.extend({
     this.creator = this.model.get('creator');
 
     if (this.creator && _.isUndefined(this.creatorView)){
-      this.creatorView = new hs.users.views.User({
+      this.creatorView = new hs.users.views.InlineUser({
         prependTo: this.el,
         model: this.creator
       });
       this.creatorView.render();
     }
 
-    this.model.withRel('listing.creator', function(listingCreator){
+    this.model.withRel('convo.listing.creator', function(listingCreator){
       if (listingCreator._id == this.creator._id )
         return;
     }, this);

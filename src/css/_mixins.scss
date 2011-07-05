@@ -61,7 +61,7 @@
     input[type=button].active, input[type=submit].active, .button.active{
         border:1px solid $color - #444;
         @include box-shadow((inset 0 0px 2px $color - #444));
-        @include gradient($color - #181818, $color + #080808);
+        @include gradient($color - #080808, $color + #040404);
     }
 }
 

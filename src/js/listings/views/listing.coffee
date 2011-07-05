@@ -48,7 +48,7 @@ hs.listings.views.Listing = hs.views.Page.extend
       <script src="http://platform.twitter.com/widgets.js"></script>'
 
     this.$('.fb').html "
-      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/#{this.model._id}/&amp;href&amp;send=false&amp;layout=button_count&amp;width=75&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=30\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:75px; height:30px;\" allowTransparency=\"true\"></iframe>"
+      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/#{this.model._id}/&amp;href&amp;send=false&amp;layout=button_count&amp;width=150&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=30\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:150px; height:30px;\" allowTransparency=\"true\"></iframe>"
 
     if Modernizr.geolocation
       navigator.geolocation.getCurrentPosition _.bind(this.updateLocation, this)
@@ -66,6 +66,9 @@ hs.listings.views.Listing = hs.views.Page.extend
 
       if this.isAuthd
         this.isOwner = this.creator?._id == hs.users.User.get()._id
+
+      if this.isOwner
+        this.el.addClass 'owner'
 
       clbk()
 
@@ -123,7 +126,7 @@ hs.listings.views.Listing = hs.views.Page.extend
     if this.model.get('photo')?
       url = "http://#{conf.server.host}:#{conf.server.port}/static/#{this.model.get('photo')}"
 
-      this.$('#listing-image img').attr 'src', url
+      this.$('#listing-image > img').attr 'src', url
       hs.setMeta 'og:image', url
 
 
@@ -148,7 +151,7 @@ hs.listings.views.Listing = hs.views.Page.extend
       lng = this.model.get('longitude')
 
       this.$('img.map').attr 'src',
-        "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=452x150&sensor=false"
+        "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=450x150&sensor=false"
 
       this.$('.mapLink').attr 'href',
         "http://maps.google.com/?ll=#{lat},#{lng}&z=16"
@@ -195,9 +198,11 @@ hs.listings.views.Listing = hs.views.Page.extend
         node.text('$'+best.get('amount'))
 
         node.animate {color: '#828200'}, 250, () ->
-          node.animate {color: '#4E4E4E'}, 250
+          node.animate {color: '#008234'}, 250
 
-        this.$('.best-offer.details').text(this.model.get('offers').length+' others');
+        best.withRel 'creator', (bestCreator) =>
+          hs.log 'bestCreator', bestCreator.get('name'), bestCreator
+          this.$('.best-offer.details').text "by #{bestCreator.get('name')}"
 
     this.updateAuth =>
       if not this.isOwner and this.isAuthd
@@ -210,7 +215,12 @@ hs.listings.views.Listing = hs.views.Page.extend
           node.text('$'+myOffer.get('amount'))
 
           node.animate {color: '#828200'}, 250, () ->
-            node.animate {color: '#4E4E4E'}, 250
+            node.animate {color: '#2E63A1'}, 250
+
+      else
+        this.$('.my-offer.value').text '$0'
+
+      this.$('.my-offer.details').text this.model.get('offers').length+' others'
 
 
   updateSold: () ->

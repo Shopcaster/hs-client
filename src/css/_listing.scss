@@ -6,14 +6,14 @@
     #listing-image{
 
         width: $section_width - 20px !important;
-        height:450px;
+        height:570px;
         padding: 10px;
         margin-bottom:15px;
 
         background-color:$white;
         @include box-shadow(0 1px 3px $black + #666);
 
-        img{
+        & > img{
             /*can be removed later*/
             height:450px;
             width:450px;
@@ -25,38 +25,17 @@
     #listing-image-next{
 
         height: 100px;
-        padding: 10px;
-        margin-bottom:15px;
+        margin:10px 0 15px;
 
 /*        background-color:$white;
         @include box-shadow(0 1px 3px $black + #666);*/
 
         img{
-            margin-right: ($section_width - 440px)/4;
-            /*border:1px solid $grey;*/
-            @include box-shadow(0 1px 3px $black + #666);
+            margin-right: ($section_width - 430px)/4;
+            border:1px solid $grey;
         }
         img:last-child{
             margin-right:0;
-        }
-    }
-
-    #listing-messages{
-
-        @include light-button($blue2);
-
-        .messageButton{
-            font-size:18px;
-            padding: 8px 0 7px;
-            color:$white;
-            text-shadow:0 -1px 1px $black + #111;
-
-            margin-bottom:15px;
-
-            &:hover{
-                color:$white - #111;
-                text-shadow:0 -1px 1px $black;
-            }
         }
     }
 
@@ -64,18 +43,37 @@
         position:relative;
         
         width:$section_width - 20;
-        height:450px;
+        height:570px;
         padding:10px;
         margin-bottom:15px;
 
-        text-shadow: 0 1px 1px #fff;
+        /*text-shadow: 0 1px 1px #fff;*/
         background-color:$white;
         @include box-shadow(0 1px 3px $black + #666);
 /*        background-color:rgba($black, 0.1);
         @include box-shadow(inset 0 1px 3px $black + #666);*/
 
         #listing-creator{
-        	margin-bottom:15px;
+            padding-bottom:10px;
+            margin-bottom:15px;
+            border-bottom:1px solid $grey;
+        }
+
+        #listing-social{
+            height: 30px;
+
+            padding-bottom:10px;
+            margin-bottom:15px;
+            border-bottom:0px solid $grey;
+
+            .twitter{
+              float:right;
+            }
+            .fb{
+              float:left;
+              width:150px;
+              height:21px;
+            }
         }
 
         #listing-status{
@@ -103,91 +101,81 @@
         	position:absolute;
         	bottom:10px;
         	width: $section_width - 20px;
-        	height:200px;
+        	height:290px;
 
             #listing-locDiff{
                 font-size:12px;
+                height:20px;
             }
 
 	        .mapLink{
 	        	display:block;
 	        	position:absolute;
-	        	bottom:30px;
-	        	left:0;
-	        }
-
-	        #listing-social{
-	        	position:absolute;
-	        	bottom:0;
+	        	top:20px;
 	        	left:0;
 
-                width:100%;
-	        	height: 30px;
-
-	        	.twitter{
-                  position:absolute;
-                  right:0;
-                  bottom:0;
-	        	}
-	        	.fb{
-                  position:absolute;
-                  left:0;
-                  bottom:0;
-                  width:75px;
-                  height:21px;
-	        	}
+                img{
+                    border:1px solid $grey;
+                }
 	        }
+
+            #listing-offerbar{
+                display:block;
+                position:absolute;
+                bottom:0;left:0;
+
+                height:100px;
+
+                border:1px solid $grey - #222;
+                background-color:$grey;
+                @include gradient($grey, $grey - #111);
+                text-shadow: 0 1px 1px #fff;
+
+                & > div{
+                    float:left;
+                    width: (($section_width - 20px)/3) - 33px;
+                    height:80px;
+                    padding:10px;
+                    margin:0 5px;
+                    border-right:1px solid $grey - #222;
+
+                    &.left{
+                         margin-right:10px;
+                        .title, .value{
+                            color:$red - #111;
+                        }
+                    }
+                    &.middle{
+                        .title, .value{
+                            color:$green - #111;
+                        }
+                    }
+                    &.right{
+                        float:right;
+                        border-right:none;
+                        .title, .value{
+                            color:$blue2 - #111;
+                        }
+                    }
+
+                    .title{
+                        font-size:18px;
+                        font-weight:bold;
+                    }
+                    .value{
+                        margin:5px 0;
+                        font-size:28px;
+                        font-weight:bold;
+                    }
+                    .details{
+                        font-size:16px;
+                    }
+                }
+            }
 	    }
 
     }
 
-	#listing-offerbar{
-
-        height:120px;
-        margin-bottom:15px;
-
-/*        background-color:$white;
-        @include box-shadow(0 1px 3px $black + #666);*/
-
-        & > div{
-            float:left;
-            width:($section_width/3) - 35px;
-            height:83px;
-            padding:10px;
-            margin:10px 5px;
-
-/*            text-shadow: 0 1px 1px #fff;
-            background-color:$grey;*/
-            /*@include box-shadow(inset 0 1px 3px $black + #666);*/
-            text-shadow: 0 1px 1px #fff;
-            background-color:rgba($black, 0.1);
-            @include box-shadow(0 1px 3px $black + #666);
-            @include rounded();
-
-            &.right{
-                float:right;
-            }
-            &.left{
-                 margin-right:10px;
-                .title, .value{
-                    color:$red;
-                }
-            }
-
-            .title{
-                font-size:18px;
-                font-weight:bold;
-            }
-            .value{
-                margin:5px 0;
-                font-size:28px;
-                font-weight:bold;
-            }
-            .details{
-                font-size:16px;
-            }
-        }
-	}
     .offerFormWrapper{
 
         @include light-button($blue2);
@@ -202,214 +190,71 @@
                 color:$white - #111;
                 text-shadow:0 -1px 1px $black;
             }
-        }
-    }
-
-    #listing-inquiries{
-    }
-
-/*
-    #listing-inquiries, #listing-messages{
-
-        h2{
-            margin:0 0 10px;
-            font-size:18px;
-            font-weight:normal;
-        }
-    }
-
-
-
-    #listing-inquiries{
-        padding:0;
-        width:360px;
-
-        h2{
-            padding:10px 10px 0;
-        }
-
-        .inquiry{
-            z-index:1;
-            position:relative;
-            min-height:30px;
-
-            @include dark-button($blue - #444);
-
-            .inquiryData{
-                padding:10px;
-                border-top:1px solid $grey - #111;
-            }
-
-            .question{
-                margin-left:35px;
-            }
-
-            .answer{
-                margin:5px 0 0 35px;
-                font-weight:bold;
-            }
-            .ansButton{
-                position:absolute;
-                top:10px;right:10px;
+            .owner &{
                 display:none;
             }
         }
+    }
 
-        .inquiry.canAnswer:hover{
-            background-color:$grey + #111;
-            .clicky{
-                display:block;
-                bottom:2px;right:2px;
-                @include down-arrow-sprite();
-            }
+
+    #listing-messages{
+
+        .messageButton{
+
+            font-weight:bold;
+            text-align:center;
+
+            border:1px solid $blue2 - #333;
+            background-color:$blue2;
+            @include box-shadow((0 1px 2px $black));
+            @include gradient($blue2 + #080808, $blue2 - #080808);
+            @include rounded-top();
+
+            font-size:18px;
+            padding: 8px 0 7px;
+            color:$white;
+            text-shadow:0 -1px 1px $black + #111;
+
         }
+    }
+    .messageForm{
+        padding:10px 10px 30px;
 
-        .inquiry.selected{
-            z-index:2;
+        border:1px solid $grey - #222;
+        background-color:$grey;
+        @include gradient($grey, $grey - #111);
+        @include box-shadow((0 1px 2px $black));
+        @include dark-button($blue - #444, '.submit');
 
-            .inquiryData{
-                z-index:1;
-                background-color:$lightBlue !important;
-                border-left:1px solid $grey - #444;
-                border-right:1px solid $grey - #444;
+        input{
+            margin-bottom:5px;
+            width:$section_width - 40px;
+        }
+        .submit{
+            width:77px !important;
+            color:$white !important;
+            margin-bottom:0;
+            float:right;
+        }
+    }
 
-                @include box-shadow(0 2px 4px $black + #333);
+    .conversation{
 
-                .clicky{display:none !important;}
-                .ansButton{display:none !important;}
+        .message{
+
+            margin-top:10px;
+
+            .name{
+                font-size:14px !important;
             }
 
-            .answerForm{
-                z-index:2;
-                padding:10px;
-                position:absolute;
-                bottom:-50px;left:0;
-                height:30px;width:558px;
-
-                background-color:$lightBlue !important;
-                border:1px solid $grey - #444;
-                border-top:none;
-                @include box-shadow(0 2px 4px $black + #333);
-
-                @include dark-button($blue - #444, '.submit');
-
-                input[type=text]{
-                    width:465px;
-                }
-                .submit{
-                    width:70px;
-                    padding: 3px 15px 5px !important;
-                    position:absolute;
-                    right:10px;
-                    top:12px;
-                }
+            .messageBody{
+                margin-left:35px;
+                font-size:16px;
             }
         }
     }
-    #listing-messages{
-        position:relative;
 
-        .messageForm{
-            margin-bottom:5px;
-
-            @include dark-button($blue - #444, '.submit');
-
-            input{
-                width:325px;
-                margin-bottom:5px;
-            }
-            input[type=submit]{
-                width:70px;
-                margin-top:1px;
-                float:right;
-            }
-        }
-
-        .message{
-            min-height:30px;
-            padding:10px 0;
-            border-bottom:1px dotted $grey;
-
-            .messageBody{
-                margin:-15px 0 0 35px;
-            }
-        }
-
-        .liConvo{
-            height:50px;
-            width:580px;
-            margin-left:-10px;
-            z-index:1;
-
-            background-color:$white;
-
-            .liConvoData{
-                height:30px;
-                width:560px;
-                border-top:1px solid $grey - #111;
-                padding:10px;
-                z-index:1;
-
-                .amount{
-                    position:absolute;
-                    right:10px;top:10px;
-                    font-size:26px;
-                    font-weight:bold;
-                    line-height:30px;
-                    vertical-align:middle;
-                }
-                .actions{
-                    margin:-15px 0 0 35px;
-                    font-size:12px;
-                }
-                .clicky{
-                    @include left-arrow-sprite();
-                    top:2px;left:2px;
-                }
-            }
-
-            &.accepted{
-                background-color:#d2ffe7;
-            }
-
-            &:hover{
-                background-color:$grey + #111 !important;
-            }
-
-            &.selected{
-                z-index:2;
-
-                .liConvoData{
-                    z-index:3;
-                    background-color:$lightBlue;
-                    .clicky{display:none !important;}
-                }
-
-            }
-
-
-            .conversation{
-                position:absolute;
-                width:520px; min-height:45px;
-                left:45px; top:40px;
-                z-index:3;
-
-                background-color:$lightBlue;
-                border:1px solid $grey - #444;
-
-                @include box-shadow(0 2px 4px $black + #333);
-                @include dark-button($blue - #444, '.submit');
-                @include rounded();
-                @include rounded-top-right(0px);
-
-                .messageForm input[type=text]{
-                    width:300px;
-                }
-	}
-
-            }
-        }
-    }*/
 }
 
 #new_listing{

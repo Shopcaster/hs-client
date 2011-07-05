@@ -5,7 +5,7 @@ dep.require('hs.loading');
 dep.provide('hs.con');
 
 hs.con = {
-  log: true,
+  log: false,
 
   connect: function(){
     var ioReady = _.bind(function(){
