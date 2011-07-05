@@ -48,10 +48,9 @@ hs.settings.views.PasswordForm = hs.views.Form.extend({
     hs.auth.changePassword(this.get('oldPassword'), this.get('newPassword'), function(worked){
       if (worked) {
         hs.auth.setPassword(this.get('newPassword'));
-        this.blur();
         this.clear();
       } else {
-        this.showInvalid('oldPassword');
+        // TODO - invalid old password
       }
     }, this);
   }
