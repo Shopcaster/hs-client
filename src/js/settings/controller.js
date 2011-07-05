@@ -23,6 +23,12 @@ hs.regController('settings', hs.Controller.extend({
     }
   },
   loadView: function(view){
+    //if the user isn't logged in we can't do settings
+    if (!hs.users.User.get()) {
+      hs.page.finish();
+      return;
+    }
+
     this.bootstrap();
     new view({el: $('#settings #setting')}).render();
   },

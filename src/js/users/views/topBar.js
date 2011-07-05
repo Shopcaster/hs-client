@@ -32,6 +32,7 @@ hs.users.views.TopBar = hs.views.View.extend({
   renderLoggedIn: function(){
     $('#top-bar a.login').hide();
     $('#top-bar a.logout').show();
+    $('#top-bar a.settings').show();
 
     this.user = hs.users.User.get();
     this.user.bind('change:name', this.nameChange, this);
@@ -55,6 +56,7 @@ hs.users.views.TopBar = hs.views.View.extend({
       this.user = null;
     $('#top-bar a.login').show();
     $('#top-bar a.logout').hide();
+    $('#top-bar a.settings').hide();
     $('#top-bar > .width > a.name').hide().text('');
   }
 });
