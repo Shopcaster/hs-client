@@ -1,4 +1,5 @@
 
+dep.require('hs.views.Form');
 dep.require('hs.views.Page');
 dep.require('hs.settings.views');
 dep.provide('hs.settings.views.Password');
@@ -8,16 +9,17 @@ hs.settings.views.Password = hs.views.Page.extend({
   template: 'password',
   initialize: function(){
     hs.views.Page.prototype.initialize.apply(this, arguments);
-    this.form = new hs.settings.views.PasswordForm();
   },
   render: function(){
     hs.views.Page.prototype.render.apply(this, arguments);
+    this.form = new hs.settings.views.PasswordForm({
+      appendTo: $('#password-form')
+    });
     this.form.render();
   }
 });
 
-hs.settings.views.PasswordForm = hs.views.Page.extend({
-  appendTo: $('#password-form'),
+hs.settings.views.PasswordForm = hs.views.Form.extend({
   template: 'passwordForm',
   fields: [{
     'name': 'oldPassword',
