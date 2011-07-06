@@ -85,10 +85,6 @@ hs.listings.views.Listing = hs.views.Page.extend
       this.creatorView.render()
 
     this.updateAuth =>
-        hs.log ' |athd', this.isAuthd,
-               ' |own', this.isOwner,
-               ' |no list', not this.convoList?,
-               ' |no conv', not this.convo?
 
         if this.isAuthd and this.isOwner and not this.convoList?
 
@@ -201,21 +197,21 @@ hs.listings.views.Listing = hs.views.Page.extend
           node.animate {color: '#008234'}, 250
 
         best.withRel 'creator', (bestCreator) =>
-          hs.log 'bestCreator', bestCreator.get('name'), bestCreator
           this.$('.best-offer.details').text "by #{bestCreator.get('name')}"
 
     this.updateAuth =>
       if not this.isOwner and this.isAuthd
-        myOffer = this.model.get('offers').find (offer) =>
-          offer.get('creator')._id == hs.users.User.get()._id
+        this.model.withField 'offers', =>
+          myOffer = this.model.get('offers').find (offer) =>
+            offer.get('creator')._id == hs.users.User.get()._id
 
-        if myOffer?
-          node = this.$('.my-offer.value')
+          if myOffer?
+            node = this.$('.my-offer.value')
 
-          node.text('$'+myOffer.get('amount'))
+            node.text('$'+myOffer.get('amount'))
 
-          node.animate {color: '#828200'}, 250, () ->
-            node.animate {color: '#2E63A1'}, 250
+            node.animate {color: '#828200'}, 250, () ->
+              node.animate {color: '#2E63A1'}, 250
 
       else
         this.$('.my-offer.value').text '$0'

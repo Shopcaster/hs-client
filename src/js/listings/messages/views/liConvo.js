@@ -20,13 +20,16 @@ hs.messages.views.LIConvo = hs.views.View.extend({
   // }, hs.views.View.prototype.events),
 
   creatorChange: function(){
-    this.creator = this.model.get('creator');
+    this.model.withField('creator', function(creator){
 
-    this.creator.bind('change:avatar', this.avatarChange, this);
-    if (this.creator.get('avatar')) this.avatarChange();
+      this.$('.user').remove();
 
-    this.creator.bind('change:name', this.nameChange, this);
-    if (this.creator.get('name')) this.nameChange();
+      new hs.users.views.InlineUser({
+        prependTo: this.$('.liConvoData'),
+        model: creator
+      }).render();
+
+    }, this);
   },
 
   messagesChange: function(){
@@ -40,22 +43,18 @@ hs.messages.views.LIConvo = hs.views.View.extend({
       this.$('.messagesCount').text(messages+' Messages');
 
     this.messages = this.messages || new hs.messages.views.ConvoDialog({
-      model: this.model,
       focusSelector: '#liConvo-'+this.model._id,
-      appendTo: this.el
+      appendTo: this.el,
+      user: this.model.get('creator'),
+      listing: this.model.get('listing')
     });
 
+    var oldColor = this.el.css('backgroundColor');
     this.el.animate({backgroundColor: '#fffaaf'}, 250, function(){
-      $(this).animate({backgroundColor: '#F1F1F2'}, 250);
+      $(this).animate({backgroundColor: oldColor}, 250, function(){
+        $(this).attr('style', '');
+      });
     });
-  },
-
-  avatarChange: function(){
-    this.$('.avatar').attr('src', this.creator.getAvatarUrl(30));
-  },
-
-  nameChange: function(){
-    this.$('.name').text(this.creator.get('name'));
   },
 
   createdChange: function(){

@@ -23,15 +23,25 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
       }, this);
     }, this);
 
-    this.bindModelEvents();
-
     this.trigger('initialized');
   },
 
   bindModelEvents: function(){
-    if (this.model)
+    if (this.model && this.modelEvents)
       _.each(this.modelEvents, function(method, event){
-        this.model.bind(event, this[method], this);
+
+        parsed = /^(\w+):(\w+)$/.exec(event);
+        if (_.isNull(parsed)) throw(new Error('invalid modelEvent key '+key));
+
+        var eventType = parsed[1];
+        var field = parsed[2];
+
+        this.model.withField(field, function(){
+          if (eventType == 'change')
+            this[method].call(this);
+          
+          this.model.bind(event, this[method], this);
+        }, this);
       }, this);
   },
 
@@ -68,14 +78,8 @@ hs.views.View = Backbone.View.extend(Backbone.Events).extend({
       this.rendered = true;
     }
     this.trigger('rendered');
-    // call all "change"-type modelEvents
-    if (this.model)
-      _.each(this.modelEvents, _.bind(function(method, event){
-        event = /^(\w+):(\w+)$/.exec(event);
-        if (event && event[1] == 'change'
-            && !_.isUndefined(this.model.get(event[2])))
-          this[method]();
-      }, this));
+
+    this.bindModelEvents();
   },
 
   renderTmpl: function(){

@@ -95,14 +95,13 @@ hs.views.Form = hs.views.View.extend({
       validateFields.call(this);
   },
   showInvalid: function(name){
-    alert(name+' invalid');
-    // var node = this.$('[name="'+name+'"]'),
-    //     oldColor = node.css('backgroundColor');
-    // node.animate({backgroundColor: '#f00'}, 200, function(){
-    //   setTimeout(_.bind(function(){
-    //     $(this).animate({backgroundColor: oldColor});
-    //   }, this), 200);
-    // });
+    var node = this.$('[name="'+name+'"]'),
+        oldColor = node.css('backgroundColor');
+    node.animate({backgroundColor: '#f00'}, 200, function(){
+      setTimeout(_.bind(function(){
+        $(this).animate({backgroundColor: oldColor});
+      }, this), 200);
+    });
   },
   toJSON: function(){
     return _.reduce(_.values(this.fields), function(json, field){

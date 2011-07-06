@@ -192,6 +192,43 @@
 }
 
 
+
+
+@mixin angeled-top() {
+    @include angeled-top-right();
+    @include angeled-top-left();
+}
+
+@mixin angeled-top-right() {
+    -webkit-border-top-right-radius: 0;
+    -moz-border-radius-topright: 0;
+    border-top-right-radius: 0;
+}
+
+@mixin angeled-top-left() {
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topleft: 0;
+    border-top-left-radius: 0;
+}
+
+@mixin angeled-bottom() {
+    @include angeled-bottom-right();
+    @include angeled-bottom-left();
+}
+
+@mixin angeled-bottom-right() {
+    -webkit-border-bottom-right-radius: 0;
+    -moz-border-radius-bottomright: 0;
+    border-bottom-right-radius: 0;
+}
+
+@mixin angeled-bottom-left() {
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-radius-bottomleft: 0;
+    border-bottom-left-radius: 0;
+}
+
+
 /* Sprites! */
 @mixin sprite($top: 0px, $left: 0px, $height: 0px, $width: 0px) {
     background-image:url(../img/sprites.png);
