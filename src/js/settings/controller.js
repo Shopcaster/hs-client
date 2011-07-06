@@ -14,23 +14,22 @@ hs.regController('settings', hs.Controller.extend({
 
   loaded: false,
 
-  bootstrap: function(){
-    if (!this.loaded) {
+  renderView: function(){
+    if (!hs.auth.isAuthenticated()) {
+      hs.page.finish();
+    } else {
       hs.page.finish();
       hs.page = new hs.settings.views.Settings();
       hs.page.render();
-      this.loaded = true;
+      new this.view({el: $('#settings #setting')}).render();
     }
   },
-  loadView: function(view){
-    //if the user isn't logged in we can't do settings
-    if (!hs.users.User.get()) {
-      hs.page.finish();
-      return;
-    }
-
-    this.bootstrap();
-    new view({el: $('#settings #setting')}).render();
+  loadView: function(view, name){
+    this.view = view;
+    hs.auth.ready(function() {
+      this.renderView();
+      this.highlightLink(name);
+    }, this);
   },
   highlightLink: function(path) {
     path = '#!/settings/' + path;
@@ -38,21 +37,16 @@ hs.regController('settings', hs.Controller.extend({
     $('#settings #nav a[href="' + path + '"]').addClass('selected');
   },
 
-
   default: function(){
-    this.highlightLink('default');
-    this.loadView(hs.settings.views.Default);
+    this.loadView(hs.settings.views.Default, 'default');
   },
   password: function(){
-    this.highlightLink('password');
-    this.loadView(hs.settings.views.Password);
+    this.loadView(hs.settings.views.Password, 'password');
   },
   social: function(){
-    this.highlightLink('social');
-    this.loadView(hs.settings.views.Social);
+    this.loadView(hs.settings.views.Social, 'social');
   },
   name: function(){
-    this.highlightLink('name');
-    this.loadView(hs.settings.views.Name);
+    this.loadView(hs.settings.views.Name, 'name');
   }
 }));

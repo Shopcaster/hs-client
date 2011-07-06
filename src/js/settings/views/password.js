@@ -1,4 +1,5 @@
 
+dep.require('hs.auth');
 dep.require('hs.views.Form');
 dep.require('hs.views.Page');
 dep.require('hs.settings.views');
@@ -34,25 +35,29 @@ hs.settings.views.PasswordForm = hs.views.Form.extend({
     'type': 'password',
     'placeholder': 'New Password (again)'
   }],
-  validateNewPassword: function(val, callback) {
-    callback(val == this.get('newPassword2'));
-  },
-  validateNewPassword2: function(val, callback) {
-    callback(val == this.get('newPassword'));
-  },
+
   render: function(){
     hs.views.Form.prototype.render.apply(this, arguments);
     this.user = hs.users.User.get();
   },
   submit: function(){
+    // Validate the new passwords
+    if (this.get('newPassword') != this.get('newPassword2'))
+      return alert('Passwords don\'t match');
+
+    // Validate the old password
+    if (hs.auth.hash(hs.auth.email, this.get('oldPassword')) != hs.auth.pass)
+      return alert('Old password is incorrect');
+
+    var self = this;
     hs.auth.changePassword(this.get('oldPassword'), this.get('newPassword'), function(worked){
       if (worked) {
-        hs.auth.setPassword(this.get('newPassword'));
-        this.blur();
-        this.clear();
+        hs.auth.setPassword(self.get('newPassword'));
+        self.clear();
       } else {
-        this.showInvalid('oldPassword');
+        // TODO - invalid old password
+        console.log('Old password is incorrect');
       }
-    }, this);
+    });
   }
 });

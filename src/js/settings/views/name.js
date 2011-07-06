@@ -9,16 +9,18 @@ hs.settings.views.Name = hs.views.Page.extend({
   template: 'name',
   initialize: function(){
     hs.views.Page.prototype.initialize.apply(this, arguments);
-    this.form = new hs.settings.views.NameForm();
+    
   },
   render: function(){
     hs.views.Page.prototype.render.apply(this, arguments);
+    this.form = new hs.settings.views.NameForm({
+      appendTo: $('#name-form')
+    });
     this.form.render();
   }
 });
 
 hs.settings.views.NameForm = hs.views.Form.extend({
-  appendTo: $('#name-form'),
   template: 'nameForm',
   fields: [{
       'name': 'name',
@@ -34,6 +36,5 @@ hs.settings.views.NameForm = hs.views.Form.extend({
   submit: function(){
     this.user.set({name: this.get('name')});
     this.user.save();
-    this.blur();
   }
 });

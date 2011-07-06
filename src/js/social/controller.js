@@ -2,6 +2,7 @@
 dep.require('hs.Controller');
 dep.require('hs.social.views.ConnectFacebook');
 dep.require('hs.social.views.ConnectTwitter');
+dep.require('hs.social.views.ConnectLinkedIn');
 
 hs.regController('social', hs.Controller.extend({
   routes: {
@@ -22,7 +23,7 @@ hs.regController('social', hs.Controller.extend({
   },
   linkedin: function(){
     hs.page.finish();
-    //hs.page = new hs.social.views.ConnectLinkedIn();
+    hs.page = new hs.social.views.ConnectLinkedIn();
     hs.page.render();
   }
 }));
