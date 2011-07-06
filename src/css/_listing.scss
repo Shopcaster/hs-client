@@ -177,7 +177,6 @@
     }
 
     .offerFormWrapper{
-
         @include light-button($blue2);
 
         .offerButton{
@@ -194,65 +193,121 @@
                 display:none;
             }
         }
+        #offerForm{
+            
+            width: $section_width - 12px;
+
+            border:1px solid $grey - #222;
+            background-color:$grey;
+            @include gradient($grey, $grey - #111);
+            @include box-shadow((0 1px 2px $black));
+            @include dark-button($blue - #444, '.submit');
+            @include angeled-top();
+
+            input{
+                margin-bottom:5px;
+                width:$section_width - 125px;
+            }
+            .submit{
+                width:77px !important;
+                color:$white !important;
+                margin-bottom:0;
+                float:right;
+            }
+
+        }
+    }
+
+    .messageButton, .offerButton.open{
+        font-weight:bold;
+        text-align:center;
+
+        border:1px solid $blue2 - #333;
+        background-color:$blue2;
+        @include box-shadow((0 1px 2px $black));
+        @include gradient($blue2 + #080808, $blue2 - #080808);
+        @include rounded-top();
+        @include angeled-bottom();
+
+        font-size:18px;
+        padding: 8px 0 7px;
+        color:$white;
+        text-shadow:0 -1px 1px $black + #111;
     }
 
 
     #listing-messages{
+        position:relative;
 
-        .messageButton{
+        .messageForm{
 
-            font-weight:bold;
-            text-align:center;
+            input{
+                margin-bottom:5px;
+                width:$section_width - 125px;
+            }
+            .submit{
+                width:77px !important;
+                color:$white !important;
+                margin-bottom:0;
+                float:right;
+            }
+        }
 
-            border:1px solid $blue2 - #333;
-            background-color:$blue2;
+
+        .convoList, .conversation{
+
+            border:1px solid $grey - #222;
+            background-color:$grey;
             @include box-shadow((0 1px 2px $black));
-            @include gradient($blue2 + #080808, $blue2 - #080808);
-            @include rounded-top();
-
-            font-size:18px;
-            padding: 8px 0 7px;
-            color:$white;
-            text-shadow:0 -1px 1px $black + #111;
-
+            @include dark-button($blue - #444, '.submit');
         }
-    }
-    .messageForm{
-        padding:10px 10px 30px;
 
-        border:1px solid $grey - #222;
-        background-color:$grey;
-        @include gradient($grey, $grey - #111);
-        @include box-shadow((0 1px 2px $black));
-        @include dark-button($blue - #444, '.submit');
+        .convoList{
 
-        input{
-            margin-bottom:5px;
-            width:$section_width - 40px;
-        }
-        .submit{
-            width:77px !important;
-            color:$white !important;
-            margin-bottom:0;
-            float:right;
-        }
-    }
-
-    .conversation{
-
-        .message{
-
-            margin-top:10px;
-
-            .name{
+            .liConvo{
+                padding:5px 10px;
                 font-size:14px !important;
-            }
 
-            .messageBody{
-                margin-left:35px;
-                font-size:16px;
+                background-color:$grey;
+                &:hover{background-color:$grey - #111;}
+                &.open{background-color:$lightBlue;}
+
+                .actions{
+                    margin-left:40px;
+                }
+
+                .conversation{
+                    position:absolute;
+                    top:40px;left:50px;
+                    width:$section_width - 75px;
+                    z-index:2;
+
+                    input{
+                        width:$section_width - 185px;
+                    }
+                }
             }
         }
+
+        .conversation{
+
+            padding:10px 10px 10px;
+
+            .message{
+
+                margin-top:10px;
+
+                .name{
+                    font-size:14px !important;
+                }
+
+                .messageBody{
+                    margin-left:40px;
+                    font-size:16px;
+                }
+            }
+        }
+        
     }
 
 }

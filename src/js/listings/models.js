@@ -47,9 +47,11 @@ hs.listings.Listing = hs.models.Model.extend({
   },
 
   getConvoForUser: function(user, clbk, context){
-    if (!(user instanceof hs.users.User)){
+    if (!(user instanceof hs.users.User) && _.isFunction(user)){
       context = clbk;
       clbk = user;
+      user = hs.users.User.get();
+    }else if (_.isUndefined(user)){
       user = hs.users.User.get();
     }
     if (!(user)) return clbk.call(context);

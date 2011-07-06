@@ -8,9 +8,13 @@ dep.provide('hs.messages.views.ConvoDialog');
 
 hs.messages.views.Conversation = hs.views.View.extend({
   template: 'conversation',
+  
+  events: {
+    'click .message .pub': 'answer'
+  },
+
   modelEvents: {
-    'change:messages': 'renderMessages',
-    'add:messages': 'renderMessages',
+    'add:messages': 'addMessage',
     'remove:messages': 'removeMessages'
   },
 
@@ -18,53 +22,59 @@ hs.messages.views.Conversation = hs.views.View.extend({
     hs.views.View.prototype.initialize.apply(this, arguments);
     if (this.options.listing) this.listing = this.options.listing;
     if (this.options.user) this.user = this.options.user;
+
+    this.getModel();
+    hs.auth.bind('change:isAuthenticated', this.getModel, this);
   },
 
   render: function(){
     hs.views.View.prototype.render.apply(this, arguments);
 
-    if (_.isUndefined(this.model)){
-      this.getModel();
-      hs.auth.bind('change:isAuthenticated', function(isAuth){
-        this.getModel();
-      }, this);
-    }else{
+    if (!_.isUndefined(this.model)){
       this.setupForm();
+      this.renderMessages();
     }
   },
 
   getModel: function(clbk, context){
-    this.listing.getConvoForUser(function(convo){
+    this.listing.getConvoForUser(this.user, function(convo){
+      if (!_.isUndefined(this.model) && (_.isUndefined(convo) || convo._id != this.model._id)){
+
+        this.unbindModelEvents();
+
+        if (this.rendered)
+          this.unrenderMessages();
+      }
+
       if (convo && (_.isUndefined(this.model) || convo._id != this.model._id)){
-        if (this.model)
-          this.unbindModelEvents();
         this.model = convo;
         this.bindModelEvents();
-        this.unrenderMessages();
-        this.renderMessages();
+
       }else if (_.isUndefined(convo)){
         this.model = new hs.messages.Conversation();
         this.model.set({listing: this.listing});
         this.bindModelEvents();
-        this.unrenderMessages();
       }
 
-      this.setupForm();
+      if (this.rendered){
+        this.setupForm();
+        this.renderMessages();
+      }
 
-      if (clbk) clbk.call(context);
+      if (_.isFunction(clbk)) clbk.call(context);
     }, this);
   },
 
   setupForm: function(){
-      if (this.form){
-        this.form.convo = this.model;
-      }else{
-        this.form = new hs.messages.views.Form({
-          appendTo: this.$('.messageForm'),
-          convo: this.model
-        });
-        this.form.render();
-      }
+    if (this.form){
+      this.form.convo = this.model;
+    }else{
+      this.form = new hs.messages.views.Form({
+        appendTo: this.$('.messageForm'),
+        convo: this.model
+      });
+      this.form.render();
+    }
   },
 
   unrenderMessages: function(){
@@ -73,30 +83,47 @@ hs.messages.views.Conversation = hs.views.View.extend({
     }, this);
   },
 
+  addMessage: function(message){
+    if (!_.isUndefined(this.messageViews[message._id])) return;
+
+    this.messageViews[message._id] = new hs.messages.views.Message({
+      prependTo: this.$('.messageList'),
+      model: message
+    });
+    this.messageViews[message._id].render();
+  },
+
   renderMessages: function(){
     if (!this.rendered || _.isUndefined(this.model)) return;
+    hs.log('renderMessages');
 
-    this.messageViews = this.messageViews || {};
+    this.model.withField('messages', function(){
 
-    var messages = this.model.get('messages');
-    messages.sort();
+      this.messageViews = {};
+      this.$('.messageList').html('');
 
-    messages.each(function(message){
-      if (_.isUndefined(this.messageViews[message._id])){
+      var messages = this.model.get('messages');
+      messages.sort();
+
+      messages.each(function(message){
         this.messageViews[message._id] = new hs.messages.views.Message({
           prependTo: this.$('.messageList'),
           model: message
         });
-      }
-
-      if (!this.messageViews[message._id].rendered)
         this.messageViews[message._id].render();
+      }, this);
+
     }, this);
   },
 
   removeMessages: function(){
     hs.log('remove message doesn\'t work');
     //noop
+  },
+
+  answer: function(e){
+    var message = hs.messages.Message.get($(e.target).attr('data-message'));
+    this.form.answerPublicly(message);
   }
 
 });

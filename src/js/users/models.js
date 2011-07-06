@@ -32,7 +32,7 @@ hs.users.User = hs.models.Model.extend({
 
   setPresence: function(data){
     if (data.user == this._id)
-      this.set({presence: data.state});
+      this.set({presence: data.state}, {raw: true});
   },
 
   getAvatarUrl: function(size){

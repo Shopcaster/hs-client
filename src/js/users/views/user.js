@@ -11,7 +11,10 @@ hs.users.views.User = hs.views.View.extend({
   modelEvents: {
     'change:name': 'updateName',
     'change:avatar': 'updateAvatar',
-    'change:presence': 'updatePresence'
+    'change:presence': 'updatePresence',
+    'change:fb': 'updateFb',
+    'change:twitter': 'updateTwitter',
+    'change:linkedin': 'updateLinkedin'
   },
 
   updateName: function(){
@@ -39,11 +42,29 @@ hs.users.views.User = hs.views.View.extend({
         node.attr('title', 'Away');
       break;
     }
+  },
+
+  updateFb: function(){
+    this.$('.fb').attr('href', this.model.get('fb')).show();
+  },
+
+  updateTwitter: function(){
+    this.$('.twitter').attr('href', this.model.get('twitter')).show();
+  },
+
+  updateLinkedin: function(){
+    this.$('.linkedin').attr('href', this.model.get('linkedin')).show();
   }
 });
 
 hs.users.views.InlineUser = hs.users.views.User.extend({
   template: 'inlineUser',
+
+  modelEvents: {
+    'change:name': 'updateName',
+    'change:avatar': 'updateAvatar',
+    'change:presence': 'updatePresence'
+  },
 
   updateAvatar: function(){
     this.$('.avatar').attr('src', this.model.getAvatarUrl(30));

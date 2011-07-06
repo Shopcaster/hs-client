@@ -7,6 +7,7 @@ dep.provide('hs.messages.views.Message');
 
 hs.messages.views.Message = hs.views.View.extend({
   template: 'message',
+
   modelEvents: {
     'change:message': 'messageChange',
     'change:creator': 'creatorChange',
@@ -25,8 +26,14 @@ hs.messages.views.Message = hs.views.View.extend({
     }
 
     this.model.withRel('convo.listing.creator', function(listingCreator){
-      if (listingCreator._id == this.creator._id )
-        return;
+      hs.auth.ready(function(){
+        if (listingCreator._id == this.creator._id ) return;
+        if (!hs.users.User.get() || listingCreator._id != hs.users.User.get()._id) return;
+
+        this.$('.actions').html('<a href="javascript:;" data-message="'+
+            this.model._id+'" class="pub">Answer Publicly</a>');
+
+      }, this);
     }, this);
   },
 

@@ -76,7 +76,6 @@
         this.creatorView.render();
       }
       return this.updateAuth(__bind(function() {
-        hs.log(' |athd', this.isAuthd, ' |own', this.isOwner, ' |no list', !(this.convoList != null), ' |no conv', !(this.convo != null));
         if (this.isAuthd && this.isOwner && !(this.convoList != null)) {
           if (this.convo != null) {
             this.convo.remove();
@@ -188,28 +187,29 @@
             }, 250);
           });
           return best.withRel('creator', __bind(function(bestCreator) {
-            hs.log('bestCreator', bestCreator.get('name'), bestCreator);
             return this.$('.best-offer.details').text("by " + (bestCreator.get('name')));
           }, this));
         }
       }, this));
       return this.updateAuth(__bind(function() {
-        var myOffer, node;
         if (!this.isOwner && this.isAuthd) {
-          myOffer = this.model.get('offers').find(__bind(function(offer) {
-            return offer.get('creator')._id === hs.users.User.get()._id;
-          }, this));
-          if (myOffer != null) {
-            node = this.$('.my-offer.value');
-            node.text('$' + myOffer.get('amount'));
-            node.animate({
-              color: '#828200'
-            }, 250, function() {
+          this.model.withField('offers', __bind(function() {
+            var myOffer, node;
+            myOffer = this.model.get('offers').find(__bind(function(offer) {
+              return offer.get('creator')._id === hs.users.User.get()._id;
+            }, this));
+            if (myOffer != null) {
+              node = this.$('.my-offer.value');
+              node.text('$' + myOffer.get('amount'));
               return node.animate({
-                color: '#2E63A1'
-              }, 250);
-            });
-          }
+                color: '#828200'
+              }, 250, function() {
+                return node.animate({
+                  color: '#2E63A1'
+                }, 250);
+              });
+            }
+          }, this));
         } else {
           this.$('.my-offer.value').text('$0');
         }

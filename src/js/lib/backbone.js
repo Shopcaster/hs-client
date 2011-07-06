@@ -435,7 +435,6 @@ dep.provide('backbone');
       } else {
         this._add(models, options);
       }
-      this.trigger('add', models);
       return this;
     },
 
@@ -449,7 +448,7 @@ dep.provide('backbone');
       } else {
         this._remove(models, options);
       }
-      this.trigger('remove', models);
+      //this.trigger('remove', models);
       return this;
     },
 
@@ -556,7 +555,7 @@ dep.provide('backbone');
       if (!(model instanceof Backbone.Model)) {
         model = new this.model(model, {collection: this});
       }
-      var already = this.getByCid(model);
+      var already = this.get(model);
       if (already) throw new Error(["Can't add the same model to a set twice", already._id]);
       this._byId[model._id] = model;
       this._byCid[model.cid] = model;
@@ -566,6 +565,7 @@ dep.provide('backbone');
       model.bind('all', this._boundOnModelEvent);
       this.length++;
       if (!options.silent) model.trigger('add', model, this, options);
+      if (this.length != this.models.length) throw new Error('length mixup!');
       return model;
     },
 
@@ -582,6 +582,7 @@ dep.provide('backbone');
       this.length--;
       if (!options.silent)  model.trigger('remove', model, this, options);
       model.unbind('all', this._boundOnModelEvent);
+      if (this.length != this.models.length) throw new Error('length mixup!');
       return model;
     },
 

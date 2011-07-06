@@ -138,9 +138,9 @@ header{
 
     #logo{
         position:absolute;
-        top:7px;left:5px;
-        width:174px;
-        height:37px;
+        top:5px;left:5px;
+        width:176px;
+        height:40px;
         background-image:url(../img/ab_logo.png);
         @include background-size();
         background-repeat:no-repeat;
@@ -179,6 +179,7 @@ $section_width: ($layout_width - 15)/2;
 
 #body{
     padding:10px 0 0;
+    z-index:2;
 
     .section-left, .section-right, .flatpage{
         margin:10px 0;
@@ -232,15 +233,15 @@ $section_width: ($layout_width - 15)/2;
         }
 
         &.inline{
-            margin-left:35px;
+            margin-left:40px;
             min-height:30px;
             display:inline;
 
             img{
-                left:-35px;
+                left:-40px;
             }
             .presence{
-                left:-35px;
+                left:-40px;
                 height:5px;width:5px;
                 @include rounded-bottom-right(5px);
             }
@@ -295,6 +296,7 @@ footer{
     font-size:12px;
     color:$black + #555;
     margin-bottom:100px;
+    z-index:1;
 
     a{
         color:$black + #555;

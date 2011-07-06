@@ -109,6 +109,7 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     this.foreignField = foreignField;
     this.options = options;
   },
+  
   modelInit: function(model, fieldname){
     hs.models.fields.Field.prototype.modelInit.apply(this, arguments);
 
@@ -133,6 +134,7 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
         _.bind(model.trigger, model, 'remove:'+fieldname));
 
   },
+
   set: function(value, model, fieldname){
     if (_.isNull(value) && this.options.nullable)
       return value;
@@ -145,14 +147,17 @@ hs.models.fields.CollectionField = hs.models.fields.Field.extend({
     value = _.uniq(value);
     return value;
   },
+
   get: function(value, model, fieldname){
-    if (_.isNull(value)) return;
+    if (_.isNull(value)) return null;
     model.sets[fieldname].addNew(value);
     return model.sets[fieldname];
   },
+
   getDefault: function(model, fieldname){
     return model.sets[fieldname];
   },
+
   sub: function(model, fieldname){
     if (_.isUndefined(model._id))
       throw(new Error('cannot subscribe to relationship without _id'));

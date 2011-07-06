@@ -30,11 +30,19 @@ hs.models.Model = Backbone.Model.extend({
     if (this._id){
       var success = (opts && opts.success) ? opts.success : undefined;
       var error = (opts && opts.error) ? opts.error : undefined;
-      this.fetch({success: success, error: error});
+      this.fetch({success: function(){
+        this.loaded = true;
+        this.trigger('loaded');
+        if (success) success();
+      }, error: error, context: this});
     }else{
       this.once('change:_id', function(){
         this.constructor.register(this);
-        this.fetch();
+        this.fetch({success: function(){
+          this.loaded = true;
+          this.trigger('loaded');
+          if (success) success();
+        }, context: this});
       }, this);
     }
 
@@ -84,11 +92,11 @@ hs.models.Model = Backbone.Model.extend({
 
   withField: function(field, clbk, context){
     // use withRel is field is a relationship and it needs to span
-    if (/\./.test('field'))
-      if (this.fields[field] instanceof hs.models.fields.ModelField)
-        return this.withRel(field, clbk, context);
-      else
-        throw(new Error('Model.with can only span ModelField relationships'));
+    if (/\./.test('field') || this.fields[field] instanceof hs.models.fields.ModelField)
+      return this.withRel(field, clbk, context);
+
+    else if (this.fields[field] instanceof hs.models.fields.CollectionField)
+      return this.withSet(field, clbk, context);
 
     if (this.get(field))
       clbk.call(context, this.get(field))
@@ -96,6 +104,23 @@ hs.models.Model = Backbone.Model.extend({
       this.once('change:'+field, function(){
         clbk.call(context, this.get(field));
       }, this);
+  },
+
+  withSet: function(field, clbk, context){
+    if (!this.loaded)
+      return this.once('loaded', _.bind(this.withSet, this, field, clbk, context))
+    
+    var col = _.clone(this.get(field).toArray());
+    var parent = this;
+    (function next(){
+      var model = col.pop();
+
+      if (_.isUndefined(model))
+        return clbk.call(context, parent.get(field))
+
+      if (model.loaded) next();
+      else model.once('loaded', next);
+    })();
   },
 
   withRel: function(rel, clbk, context){
@@ -163,27 +188,28 @@ hs.models.ModelSet = Backbone.Collection.extend({
       return this.model.get(id);
     }, this);
   },
-  diffIds: function(ids){
-    var rem = this.reduce(function(rem, model){
-      if (!_.include(ids, model._id))
-        rem.push(model);
-      return rem;
-    }, [], this);
-    if (rem.length)
-      this.remove(rem);
 
-    var add = _.select(ids, function(id){
-      return !this.include(this.model.get(id));
+  diffIds: function(ids){
+    this.each(function(model){
+      if (!_.include(ids, model._id))
+        this._remove(model);
     }, this);
-    if (add)
-      this.addIds(add);
+
+    _.each(ids, function(id){
+      var model = this.model.get(id);
+      if (!this.include(model))
+        this._add(model)
+    }, this);
   },
+
   addIds: function(ids){
     this.add(this.cast(ids));
   },
+
   removeIds: function(ids){
     this.remove(this.cast(ids));
   },
+
   addNew: function(ids){
     var newIds = _.select(ids, function(id){
       return _.isUndefined(this.get(id));
