@@ -310,6 +310,19 @@
         
     }
 
+    #listing-inquiries{
+        padding:10px;
+        width: $section_width - 20px;
+        margin-top:10px;
+
+        background-color:$white;
+        @include box-shadow(0 1px 3px $black + #666);
+
+        h2{
+            margin-top:0;
+        }
+    }
+
 }
 
 #new_listing{

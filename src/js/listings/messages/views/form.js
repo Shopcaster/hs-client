@@ -31,6 +31,8 @@ hs.messages.views.Form = hs.auth.views.AuthForm.extend({
   answerPublicly: function(message){
     this.set('question', message.get('message'));
     this.$('#question').show();
+    this.pub = true;
+    this.pubMessage = message;
   },
 
   submit: function(){
@@ -39,7 +41,20 @@ hs.messages.views.Form = hs.auth.views.AuthForm.extend({
         convo: this.convo,
         message: this.get('message')
       });
+
+      if (this.pub){
+        new hs.inquiries.Inquiry().save({
+          listing: this.convo.get('listing'),
+          question: this.get('question'),
+          answer: this.get('message')
+          //creator: this.pubMessage.get('creator')
+        });
+        this.pub = false;
+        this.$('#question').hide();
+      }
+
       this.clear();
+
     }else{
       this.convo.save(null, {success: this.submit, context:this});
     }

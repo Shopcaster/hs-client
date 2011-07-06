@@ -63,15 +63,6 @@ p{
         margin-right:10px;
     }
 
-    .open{
-        background-color:$grey;
-        @include rounded-top();
-        color:$black;
-        z-index:3;
-        color:$grey - #777;
-        text-shadow: $grey + #444 0 1px 2px;
-    }
-
     .settings{
         position:relative;
         padding-right:15px;
@@ -207,7 +198,7 @@ $section_width: ($layout_width - 15)/2;
         margin-left:80px;
         min-height:80px;
 
-        img{
+        .avatar{
             position:absolute;
             top:0;left:-80px;
             z-index:1;
@@ -228,6 +219,11 @@ $section_width: ($layout_width - 15)/2;
             font-weight:bold;
             font-size:26px;
         }
+
+        .social a{
+            display:none;
+        }
+
         .created {
             font-size:10px;
         }

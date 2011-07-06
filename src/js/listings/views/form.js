@@ -30,7 +30,7 @@ hs.listings.views.ListingForm = hs.auth.views.AuthForm.extend({
     }
   ].concat(hs.auth.views.AuthForm.prototype.fields),
   initialize: function(){
-    this.model = new hs.listings.models.Listing();
+    this.model = new hs.listings.Listing();
     hs.auth.views.AuthForm.prototype.initialize.apply(this, arguments);
     $('#newListing').parent().addClass('active');
     this.newBind = _.bind(this._submit, this);
