@@ -30,9 +30,16 @@ hs.settings.views.Social = hs.views.Page.extend({
   },
 
   render: function(){
-    hs.views.Page.prototype.render.apply(this, arguments);
-
     var user = hs.users.User.get();
+
+    //bounce the call until the user is loaded
+    var self = this;
+    var args = Array.prototype.slice.call(arguments);
+    if (!user.loaded) setTimeout(function() {
+      self.render.call(self, args);
+    }, 100);
+
+    hs.views.Page.prototype.render.apply(this, arguments);
 
     var fb = user.get('fb');
     var twitter = user.get('twitter');
@@ -51,10 +58,10 @@ hs.settings.views.Social = hs.views.Page.extend({
       this.$('#unlinked').append($(this._buildu('twitter', 'Twitter')));
     }
     // Handle Linkedin
-    if (linkedin) {
-      this.$('#linked').append($(this._buildl(linkedin, 'linkedin', 'LinkedIn')));
-    } else {
-      this.$('#unlinked').append($(this._buildu('linkedin', 'LinkedIn')));
-    }
+    //if (linkedin) {
+    //  this.$('#linked').append($(this._buildl(linkedin, 'linkedin', 'LinkedIn')));
+    //} else {
+    //  this.$('#unlinked').append($(this._buildu('linkedin', 'LinkedIn')));
+    //}
   }
 });
