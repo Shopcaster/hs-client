@@ -34,7 +34,7 @@ hs.messages.views.Message = hs.views.View.extend({
             this.model._id+'" class="pub">Answer Publicly</a>');
 
       }, this);
-    }, this);
+      }, this);
   },
 
   messageChange: function(){

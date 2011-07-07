@@ -194,35 +194,35 @@
 
 
 
-@mixin angeled-top() {
-    @include angeled-top-right();
-    @include angeled-top-left();
+@mixin angled-top() {
+    @include angled-top-right();
+    @include angled-top-left();
 }
 
-@mixin angeled-top-right() {
+@mixin angled-top-right() {
     -webkit-border-top-right-radius: 0;
     -moz-border-radius-topright: 0;
     border-top-right-radius: 0;
 }
 
-@mixin angeled-top-left() {
+@mixin angled-top-left() {
     -webkit-border-top-left-radius: 0;
     -moz-border-radius-topleft: 0;
     border-top-left-radius: 0;
 }
 
-@mixin angeled-bottom() {
-    @include angeled-bottom-right();
-    @include angeled-bottom-left();
+@mixin angled-bottom() {
+    @include angled-bottom-right();
+    @include angled-bottom-left();
 }
 
-@mixin angeled-bottom-right() {
+@mixin angled-bottom-right() {
     -webkit-border-bottom-right-radius: 0;
     -moz-border-radius-bottomright: 0;
     border-bottom-right-radius: 0;
 }
 
-@mixin angeled-bottom-left() {
+@mixin angled-bottom-left() {
     -webkit-border-bottom-left-radius: 0;
     -moz-border-radius-bottomleft: 0;
     border-bottom-left-radius: 0;

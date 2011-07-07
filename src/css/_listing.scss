@@ -6,7 +6,7 @@
     #listing-image{
 
         width: $section_width - 20px !important;
-        height:570px;
+        height:450px;
         padding: 10px;
         margin-bottom:15px;
 
@@ -15,8 +15,8 @@
 
         & > img{
             /*can be removed later*/
-            height:450px;
-            width:450px;
+            height:448px;
+            width:448px;
             
             border:1px solid $grey;
         }
@@ -43,7 +43,7 @@
         position:relative;
         
         width:$section_width - 20;
-        height:570px;
+        height:450px;
         padding:10px;
         margin-bottom:15px;
 
@@ -62,25 +62,27 @@
         #listing-social{
             height: 30px;
 
-            padding-bottom:10px;
-            margin-bottom:15px;
+            padding-bottom:0px;
+            margin-bottom:0px;
             border-bottom:0px solid $grey;
 
+            .twitter, .fb, .goog{
+                float:left;
+            }
             .twitter{
-              float:right;
+                margin-right:15px;
+            }
+            .goog{
             }
             .fb{
-              float:left;
-              width:150px;
-              height:21px;
             }
         }
 
         #listing-status{
 	        float:left;
-        	padding:1px 5px 1px;
-        	margin: 2px 3px 0 0;
-        	font-size:14px;
+        	padding:0px 5px 1px;
+        	margin: 0px 3px 0 0;
+        	font-size:13px;
 
         	text-shadow:none;
         	color:$white;
@@ -90,7 +92,7 @@
         }
 
         #listing-description{
-        	font-size:18px;
+        	font-size:16px;
         }
         .created{
             font-size:12px;
@@ -101,7 +103,7 @@
         	position:absolute;
         	bottom:10px;
         	width: $section_width - 20px;
-        	height:290px;
+        	height:240px;
 
             #listing-locDiff{
                 font-size:12px;
@@ -111,7 +113,7 @@
 	        .mapLink{
 	        	display:block;
 	        	position:absolute;
-	        	top:20px;
+	        	top:50px;
 	        	left:0;
 
                 img{
@@ -124,17 +126,17 @@
                 position:absolute;
                 bottom:0;left:0;
 
-                height:100px;
+                height:75px;
 
                 border:1px solid $grey - #222;
                 background-color:$grey;
-                @include gradient($grey, $grey - #111);
+                @include gradient($grey + #040404, $grey - #181818);
                 text-shadow: 0 1px 1px #fff;
 
                 & > div{
                     float:left;
                     width: (($section_width - 20px)/3) - 33px;
-                    height:80px;
+                    height:55px;
                     padding:10px;
                     margin:0 5px;
                     border-right:1px solid $grey - #222;
@@ -176,8 +178,10 @@
 
     }
 
+    $buttonColor: $blue2;
+
     .offerFormWrapper{
-        @include light-button($blue2);
+        @include light-button($buttonColor);
 
         .offerButton{
             font-size:18px;
@@ -202,7 +206,7 @@
             @include gradient($grey, $grey - #111);
             @include box-shadow((0 1px 2px $black));
             @include dark-button($blue - #444, '.submit');
-            @include angeled-top();
+            @include angled-top();
 
             input{
                 margin-bottom:5px;
@@ -218,16 +222,21 @@
         }
     }
 
-    .messageButton, .offerButton.open{
-        font-weight:bold;
-        text-align:center;
+    .messageButton, .offerButton{
+        text-align:left !important;
+        padding-left:10px !important;
+    }
 
-        border:1px solid $blue2 - #333;
-        background-color:$blue2;
+    .messageButton, .offerButton.open{
+
+        font-weight:bold;
+
+        border:1px solid $buttonColor - #333;
+        background-color:$buttonColor;
         @include box-shadow((0 1px 2px $black));
-        @include gradient($blue2 + #080808, $blue2 - #080808);
+        @include gradient($buttonColor + #080808, $buttonColor - #080808);
         @include rounded-top();
-        @include angeled-bottom();
+        @include angled-bottom();
 
         font-size:18px;
         padding: 8px 0 7px;
@@ -240,6 +249,7 @@
         position:relative;
 
         .messageForm{
+            padding:0 10px;
 
             input{
                 margin-bottom:5px;
@@ -256,10 +266,16 @@
 
         .convoList, .conversation{
 
+            @include dark-button($blue - #444, '.submit');
+
+            background-color:$lightBlue;
+            @include box-shadow(0 1px 3px $black + #666);
+
+/*            
             border:1px solid $grey - #222;
             background-color:$grey;
             @include box-shadow((0 1px 2px $black));
-            @include dark-button($blue - #444, '.submit');
+*/
         }
 
         .convoList{
@@ -276,14 +292,27 @@
                     margin-left:40px;
                 }
 
+                .offer{
+                    float:right;
+
+                    font-size: 18px;
+                    font-weight:bold;
+                }
+
                 .conversation{
                     position:absolute;
                     top:40px;left:50px;
-                    width:$section_width - 75px;
+                    width:$section_width - 95px;
                     z-index:2;
+                    border:none;
+                    margin-bottom:10px;
+
+                    background-color:$lightBlue;
+                    @include box-shadow(0 1px 3px $black + #666);
+                    @include angled-top();
 
                     input{
-                        width:$section_width - 185px;
+                        width:$section_width - 210px;
                     }
                 }
             }
@@ -291,11 +320,13 @@
 
         .conversation{
 
-            padding:10px 10px 10px;
+            padding:10px 0;
 
             .message{
 
+                padding:10px 10px 0;
                 margin-top:10px;
+                border-top:1px solid $grey;
 
                 .name{
                     font-size:14px !important;
@@ -311,15 +342,28 @@
     }
 
     #listing-inquiries{
-        padding:10px;
-        width: $section_width - 20px;
+        width: $section_width;
         margin-top:10px;
+        padding-bottom:10px;
 
-        background-color:$white;
+        background-color:$lightBlue;
         @include box-shadow(0 1px 3px $black + #666);
 
         h2{
-            margin-top:0;
+            margin:0;
+            font-size:16px;
+            padding:10px 10px 0;
+        }
+
+        .inquiry{
+
+            border-top:1px solid $grey;
+            margin-top:10px;
+            padding:10px 10px 0;
+
+            .question{
+                font-weight:bold;
+            }
         }
     }
 

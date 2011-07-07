@@ -14,11 +14,6 @@ hs.messages.views.LIConvo = hs.views.View.extend({
     'change:messages': 'messagesChange'
   },
 
-  // events: _.extend({
-  //   'click .accept': 'accept',
-  //   'click .cancel': 'cancel'
-  // }, hs.views.View.prototype.events),
-
   creatorChange: function(){
     this.model.withField('creator', function(creator){
 
@@ -28,6 +23,18 @@ hs.messages.views.LIConvo = hs.views.View.extend({
         prependTo: this.$('.liConvoData'),
         model: creator
       }).render();
+
+      this.$('.offer').text('$0');
+      this.model.withField('listing', function(listing){
+        listing.withField('offers', function(offers){
+          offers.each(function(offer){
+            offer.withField('creator', function(offerCreator){
+              if (creator._id == offerCreator._id)
+                this.$('.offer').text('$'+offer.get('amount'));
+            }, this);
+          }, this);
+        }, this);
+      }, this);
 
     }, this);
   },

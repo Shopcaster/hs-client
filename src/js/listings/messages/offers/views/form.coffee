@@ -48,15 +48,17 @@ hs.offers.views.Form = hs.auth.views.AuthForm.mixin(hs.views.mixins.Dialog).exte
   submit: ->
     if (this.disabled) then return
 
-    this.model = this.listing.get('offers').find (offer) =>
+    oldOffer = this.listing.get('offers').find (offer) =>
       offer.get('creator')._id == hs.users.User.get()?._id
 
-    if not this.model?
-      this.model = new hs.offers.Offer()
-      this.model.set
-        listing: this.listing
+    if oldOffer
+      oldOffer.destroy 
+        success: => this.submit()
+      return;
 
+    this.model = new hs.offers.Offer()
     this.model.set
+      listing: this.listing
       amount: parseFloat(this.get('amount').replace('$', ''))
 
     this.model.save()
