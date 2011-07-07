@@ -1,16 +1,19 @@
 
-class DOM
+class Dom
 
-  toString: ->
-    'Base Template'
+  updateAuth: (prev, cur) -> return
+
+hs.Dom = Dom
 
 
-
-class Mine extends DOM
+class MyDom extends hs.Dom
 
   template: ->
     h1 -> 'Hello Templates'
     span class: 'name'
 
-  creator: (creator) ->
+  setCreator: (creator) ->
     this.$('.name').text creator.name
+
+
+
