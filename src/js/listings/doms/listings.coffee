@@ -1,7 +1,6 @@
 
 dep.require 'hs.Dom'
-dep.require 'hs.listings.doms'
-dep.provide 'hs.listings.doms.Listing'
+dep.require 'hs.Template'
 
 
 class hs.t.Listing extends hs.Template
@@ -13,7 +12,7 @@ class hs.t.Listing extends hs.Template
         div id: 'listing-image', -> img()
         div id: 'listing-messsages', ->
           div class: 'message-button', -> 'Ask A Question'
-      
+
       div class: 'section-right', ->
         div id: 'listing-details', ->
           div id: 'listing-creator'
@@ -25,12 +24,12 @@ class hs.t.Listing extends hs.Template
               div class: 'twitter'
               div class: 'goog'
               div class: 'fb'
-            
+
             div id: 'listing-local-diff'
-            
+
             a href: 'javascript:;', class: 'map-link', target: '_blank', ->
               img class: 'map'
-            
+
             div id: 'listing-offerbar', class: 'clearfix', ->
 
               div class: 'left', ->
@@ -48,17 +47,22 @@ class hs.t.Listing extends hs.Template
 
         div class: 'offer-form-wrapper', ->
           div class: 'button offer-button', -> 'Make and Offer'
-        
+
         div id: 'listing-inquiries', -> h2 -> 'Frequently Asked Questions'
 
 
-  subTmpl:
-    user: [hs.t.User, '#listing-creator']
-    inquiries: [hs.t.Inquiries, '#listing-inquiries']
+  subTemplates:
+    user:
+      class: hs.t.User
+      appendTo: '#listing-creator'
+
+    inquiries:
+      class: hs.t.Inquiries
+      appendTo: '#listing-inquiries'
 
 
   postRender: ->
-    this.inquiriesTmpl listing: this.model
+    this.inquiriesTmpl model: this.model
 
     this.$('.twitter').html '
       <a href="http://twitter.com/share"
@@ -88,7 +92,7 @@ class hs.t.Listing extends hs.Template
 
 
   setCreator: () ->
-    this.userTmpl creator: this.model.creator
+    this.userTmpl model: this.model.creator
 
 
   setPhoto: () ->
