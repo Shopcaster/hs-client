@@ -40,10 +40,7 @@ hs.users.User = hs.models.Model.extend({
     var avy = this.get('avatar');
     var tail = '?d=mm&s='+size;
 
-    if (/^http:\/\/(www\.)?gravitar\.com/.test(avy))
-      return avy+tail;
-    else
-      return 'http://www.gravatar.com/avatar/'+avy+tail;
+    return avy+tail;
   }
 });
 
