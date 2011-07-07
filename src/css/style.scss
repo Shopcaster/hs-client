@@ -187,10 +187,12 @@ $section_width: ($layout_width - 15)/2;
         clear:right;
     }
     .flatpage{
+        width:700px;
+        margin:10px auto;
+
         padding: 10px;
         @include box-shadow(0 1px 3px $black + #666);
         background-color: $white;
-        width: $layout_width;
     }
 
     .user{
@@ -255,40 +257,62 @@ $section_width: ($layout_width - 15)/2;
 
     #settings {
 
-    }
-        #settings #nav {
-            width: 300px;
+        #nav {
             display: inline-block;
-            margin: -10px;
-            text-align: center;
-            border-right: 2px solid #DDD;
             position: absolute;
-            padding-bottom: -30px;
+            width: 200px;
             height: 100%;
+
+            margin: -10px;
+            padding-bottom: -30px;
+            
+            border-right: 2px solid #DDD;
             background-color: #DDD;
-        }
-            #settings #nav a {
+            text-align: left;
+
+            a {
                 display: block;
-                background-color: transparent;
+                width: 182px;
                 padding: 10px;
-                width: 282px;
-                font-size: 14pt;
+                margin-bottom: 10px;
+                
+                background-color: transparent;
+                font-size: 16px;
                 font-weight: bold;
-                margin-top: 10px;
+                
+                &:hover {
+                    background-color: $grey;
+                    text-decoration: none;
+                }
+                &.selected {
+                    background-color: $white;
+                }
             }
-            #settings #nav a:hover {
-                background-color: $grey;
-                text-decoration: none;
-            }
-            #settings #nav a.selected {
-                background-color: $white;
-            }
-        #settings #setting {
-            width: 400px;
-            display: inline-block;
-            margin-left: 315px;
-            min-height: 300px;
         }
+
+        #setting {
+            display: inline-block;
+            width: 500px;
+            margin-left: 205px;
+            min-height: 250px;
+
+            h1{
+                font-size:18px;
+            }
+
+            form{
+                width:300px;
+
+                input{
+                    display:block;
+                    width:100%;
+                }
+                input[type=submit]{
+                }
+            }
+        }
+
+    }
 
 }
 

@@ -84,7 +84,7 @@ hs.messages.views.Conversation = hs.views.View.extend({
   },
 
   addMessage: function(message){
-    if (!_.isUndefined(this.messageViews[message._id])) return;
+    if (message && !_.isUndefined(this.messageViews[message._id])) return;
 
     this.messageViews[message._id] = new hs.messages.views.Message({
       prependTo: this.$('.messageList'),
