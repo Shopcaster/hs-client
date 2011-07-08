@@ -14,7 +14,7 @@ hs.loadScript = function(location){
 
   hs.flushMeta = function() {
     for (var i in meta) if (meta.hasOwnProperty(i)) {
-      document.head.removeChild(meta[i]);
+      document.getElementsByTagName('head')[0].removeChild(meta[i]);
       delete meta[i];
     }
 
@@ -26,7 +26,7 @@ hs.loadScript = function(location){
       var m = document.createElement('meta');
       m.setAttribute('property', prop);
 
-      document.head.appendChild(m);
+      document.getElementsByTagName('head')[0].appendChild(m);
       meta[prop] = m;
     }
 

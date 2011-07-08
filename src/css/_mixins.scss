@@ -98,7 +98,7 @@
 
 @mixin gradient($from, $to){
     background: $to; /* for non-css3 browsers */
-    filter: progid:DXImageTransform.Microsoft.gradient(
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(
         startColorstr='$from', endColorstr='$to'); /* for IE */
     background:-webkit-gradient(linear, left top, left bottom,
         from($from), to($to)); /* for webkit browsers */
