@@ -1,16 +1,8 @@
 
-class View
+dep.require 'hs'
 
+dep.provide 'hs.View'
 
-hs.View = View
+class hs.View
 
-
-class MyView extends hs.View
-
-  dom: MyDom
-
-  events:
-    'click .button': 'handler'
-
-  hander: ->
-    this.dom.$('.button').text 'clicked'
+  constructor: (@template, args, @options) ->

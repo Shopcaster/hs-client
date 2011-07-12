@@ -1,9 +1,15 @@
 
-dep.require 'hs.Dom'
 dep.require 'hs.Template'
+dep.require 'zz'
+dep.require 'hs.t.User'
+dep.require 'hs.t.Inquiries'
+
+dep.provide 'hs.t.Listing'
 
 
 class hs.t.Listing extends hs.Template
+
+  appendTo: '#main'
 
   template: ->
     div class: 'listing clearfix', ->
@@ -16,7 +22,7 @@ class hs.t.Listing extends hs.Template
       div class: 'section-right', ->
         div id: 'listing-details', ->
           div id: 'listing-creator'
-          div id: 'listing-status', -> span class: 'status'
+          span class: 'status', => 'Available'
           div id: 'listing-description'
           div id: 'created'
           div class: 'bottom', ->
@@ -25,7 +31,7 @@ class hs.t.Listing extends hs.Template
               div class: 'goog'
               div class: 'fb'
 
-            div id: 'listing-local-diff'
+            div id: 'listing-loc-diff'
 
             a href: 'javascript:;', class: 'map-link', target: '_blank', ->
               img class: 'map'
@@ -62,7 +68,8 @@ class hs.t.Listing extends hs.Template
 
 
   postRender: ->
-    this.inquiriesTmpl model: this.model
+    this.model.related.inquiries (inquiries) =>
+      this.inquiriesTmpl inquiries
 
     this.$('.twitter').html '
       <a href="http://twitter.com/share"
@@ -81,29 +88,27 @@ class hs.t.Listing extends hs.Template
       <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
       <g:plusone size="medium" count="true"></g:plusone>'
 
-    if Modernizr.geolocation
-      navigator.geolocation.getCurrentPosition _.bind(this.updateLocation, this)
-
-    hs.setMeta 'og:title', 'Listing at Hipsell'
-    hs.setMeta 'og:type', 'product'
-    hs.setMeta 'og:url', window.location.toString()
-    hs.setMeta 'og:site_name', 'Hipsell'
-    hs.setMeta 'fb:app_id', '110693249023137'
+    this.meta property: 'og:title', content: 'Listing at Hipsell'
+    this.meta property: 'og:type', content: 'product'
+    this.meta property: 'og:url', content: window.location.toString()
+    this.meta property: 'og:site_name', content: 'Hipsell'
+    this.meta property: 'fb:app_id', content: '110693249023137'
 
 
   setCreator: () ->
-    this.userTmpl model: this.model.creator
+    zz.data.user this.model, 'creator', (creator) =>
+      this.userTmpl creator
 
 
   setPhoto: () ->
-    url = "http://#{conf.server.host}:#{conf.server.port}/static/#{this.model.get('photo')}"
+    url = "http://#{conf.server.host}:#{conf.server.port}/static/#{this.model.photo}"
     this.$('#listing-image > img').attr 'src', url
 
 
-  setDesc: () ->
+  setDescription: () ->
     this.$('#listing-description').text this.model.description
     $('title').text "Hipsell - #{this.model.description}"
-    hs.setMeta 'og:description', this.model.description
+    this.meta property: 'og:description', content: this.model.description
 
 
   setCreated: () ->
@@ -111,51 +116,11 @@ class hs.t.Listing extends hs.Template
     this.$('.created').text "#{since.num} #{since.text}"
 
 
-  updateLoc: () ->
-
-    lat = this.model.latitude
-    lng = this.model.longitude
-
-    this.$('img.map').attr 'src',
-      "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=450x100&sensor=false"
-
-    this.$('.mapLink').attr 'href',
-      "http://maps.google.com/?ll=#{lat},#{lng}&z=16"
-
-    hs.setMeta 'og:latitude', lat
-    hs.setMeta 'og:longitude', lng
-
-    if this.userLat? and this.userLng?
-      this.updateLocation()
-
-
-  updateLocation: (position) ->
-    if this.model.latitude? and this.model.longitude?
-
-      this.lat ?= position.coords.latitude
-      this.lng ?= position.coords.longitude
-
-      listingLoc = new LatLon this.model.get('latitude'), this.model.get('longitude')
-      userLoc = new LatLon this.lat, this.lng
-
-      dist = parseFloat userLoc.distanceTo listingLoc
-      brng = userLoc.bearingTo listingLoc
-
-      direction = _.degreesToDirection brng
-
-      if dist < 1
-        distStr = Math.round(dist*1000)+' metres'
-      else
-        distStr = Math.round(dist*100)/100+' km'
-
-      this.$('#listing-locDiff').text "Roughly #{distStr} #{direction} of you."
-
-
-  updatePrice: () ->
+  setPrice: () ->
     this.$('.asking.value').text "$#{this.model.price}"
 
 
-  updateOffers: () ->
+  setOffers: () ->
     this.model.bestOffer (best) => if best?
       node = this.$('.best-offer.value')
 
@@ -172,3 +137,48 @@ class hs.t.Listing extends hs.Template
 
       node.animate {color: '#828200'}, 250, () ->
         node.animate {color: '#008234'}, 250
+
+
+  setLongitude: -> this.setLocation.apply this, arguments
+  setLatitude: -> this.setLocation.apply this, arguments
+  setLocation: () ->
+    lat = this.model.latitude
+    lng = this.model.longitude
+
+    this.$('img.map').attr 'src',
+      "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=450x100&sensor=false"
+
+    this.$('.mapLink').attr 'href',
+      "http://maps.google.com/?ll=#{lat},#{lng}&z=16"
+
+    this.meta property: 'og:latitude', content: lat
+    this.meta property: 'og:longitude', content: lng
+
+    if Modernizr.geolocation
+      navigator.geolocation.getCurrentPosition =>
+        this.updateLocation.apply(this, arguments)
+
+
+  updateLocation: (position) ->
+    this.lat ?= position.coords.latitude
+    this.lng ?= position.coords.longitude
+
+    listingLoc = new LatLon this.model.latitude, this.model.longitude
+    userLoc = new LatLon this.lat, this.lng
+
+    dist = parseFloat userLoc.distanceTo listingLoc
+    brng = userLoc.bearingTo listingLoc
+
+    direction = _.degreesToDirection brng
+
+    if dist < 1
+      distStr = Math.round(dist*1000)+' metres'
+    else
+      distStr = Math.round(dist*100)/100+' km'
+
+    this.$('#listing-loc-diff').text "Roughly #{distStr} #{direction} of you."
+
+
+
+hs.t.Listing.getModel = (options, clbk) ->
+  zz.data.listing options.parsedUrl[0], clbk
