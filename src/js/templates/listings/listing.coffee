@@ -3,6 +3,8 @@ dep.require 'hs.Template'
 dep.require 'zz'
 dep.require 'hs.t.User'
 dep.require 'hs.t.Inquiries'
+dep.require 'hs.t.Convo'
+dep.require 'hs.t.ConvoList'
 
 dep.provide 'hs.t.Listing'
 
@@ -66,6 +68,14 @@ class hs.t.Listing extends hs.Template
       class: hs.t.Inquiries
       appendTo: '#listing-inquiries'
 
+    convo:
+      class: hs.t.Convo
+      appendTo: '#listing-messages'
+
+    convoList:
+      class: hs.t.ConvoList
+      appendTo: '#listing-messages'
+
 
   postRender: ->
     this.model.related.inquiries (inquiries) =>
@@ -93,6 +103,17 @@ class hs.t.Listing extends hs.Template
     this.meta property: 'og:url', content: window.location.toString()
     this.meta property: 'og:site_name', content: 'Hipsell'
     this.meta property: 'fb:app_id', content: '110693249023137'
+
+
+  setAuth: (prev, cur) ->
+    this.convoTmpl.remove()
+    this.convoListTmpl.remove()
+
+    if this.model.creator == cur._id
+      this.model.related.convos this.convoListTmpl
+
+    else
+      this.model.myConvo this.convoTmpl
 
 
   setCreator: () ->

@@ -42,7 +42,7 @@ load = (url) ->
   goTo url
 
 
-window.onpopstate = (event) ->
+window.onpopstate = ->
   #$ -> zz.init -> goTo document.location.pathname
   $ -> goTo document.location.pathname
 

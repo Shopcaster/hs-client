@@ -9,16 +9,35 @@ hs.t = {}
 class hs.Template
 
   constructor: (@model, @options = {}) ->
+    this._moveOptions()
+    this._setupTemplates()
+    this._init()
 
+
+  _moveOptions: ->
     if this.options.prependTo? then this.prependTo = this.options.prependTo
     if this.options.appendTo? then this.appendTo = this.options.appendTo
     if this.options.nthChild? then this.nthChild = this.options.nthChild
+
+
+  _init: ->
+    if this.init?
+      this.init => this.render() unless this.options.unRendered
+    else
+      this.render() unless this.options.unRendered
+
+
+  _setupTemplates: ->
+    if this.templates?
+      throw new Error '_setupTemplates should only be called once'
 
     this.templates = []
     for name, classOpts of this.subTemplates
       do (name, classOpts) =>
 
-        this["#{name}Tmpl"] = (model, instOpts) =>
+        method = "#{name}Tmpl"
+
+        this[method] = (model, instOpts) =>
           opts = _.extend {}, classOpts, instOpts
           tmpl = new classOpts.class model, opts
 
@@ -28,9 +47,19 @@ class hs.Template
           else
             this.templates.splice opts.nthChild, 1, tmpl
 
-    this.init?()
+        this[method].remove = () =>
+          for tmpl, i in this.templates
+            if tmpl.constructor.name == name
+              tmpl.remove()
+              this.templates.splice i, 1
 
-    this.render() unless this.options.unRendered
+
+  removeTmpl: (index) ->
+    if not this.templates[index]?
+      throw new Error 'Invalid sub-template index'
+
+    this.templates[index].remove()
+    this.templates.splice index, 1
 
 
   _renderTemplate: ->
@@ -91,20 +120,12 @@ class hs.Template
     this._meta.push meta
 
 
+  _removeMeta: -> meta.remove() for meta in this._meta
+
+
   authChange: (prev, cur) ->
     this.setAuth?()
     tmpl.authChange prev, cur for tmpl in this.templates
-
-
-  removeTmpl: (index) ->
-    if not this.templates[index]?
-      throw new Error 'Invalid sub-template index'
-
-    this.templates[index].remove()
-    this.templates.splice index, 1
-
-
-  _removeMeta: -> meta.remove() for meta in this._meta
 
 
   remove: ->

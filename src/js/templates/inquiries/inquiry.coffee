@@ -1,8 +1,8 @@
 
 dep.require 'hs.Template'
-dep.provide 'hs.t.Listing'
+dep.provide 'hs.t.Inquiry'
 
-class hs.t.Listing extends hs.Template
+class hs.t.Inquiry extends hs.Template
 
   template: ->
     div class: 'inquiry', id: "inquiry-#{this.model._id}", ->
