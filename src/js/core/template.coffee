@@ -62,8 +62,9 @@ class hs.Template
     this.templates.splice index, 1
 
 
+  templateContext: {}
   _renderTemplate: ->
-    html = CoffeeKup.render(this.template)
+    html = CoffeeKup.render(this.template, context: this.templateContext)
     this.el = $(html)
     this.$ = (selector) => $ selector, this.el
 

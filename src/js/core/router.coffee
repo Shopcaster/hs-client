@@ -43,8 +43,7 @@ load = (url) ->
 
 
 window.onpopstate = ->
-  #$ -> zz.init -> goTo document.location.pathname
-  $ -> goTo document.location.pathname
+  $ -> zz.init -> goTo document.location.pathname
 
 
 zz.auth.on? 'change', ->
