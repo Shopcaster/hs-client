@@ -8,6 +8,10 @@ hs.t = {}
 
 class hs.Template
 
+  templateContext: {}
+  injected: false
+  _meta: []
+
   constructor: (@model, @options = {}) ->
     this._moveOptions()
     this._setupTemplates()
@@ -18,6 +22,15 @@ class hs.Template
     if this.options.prependTo? then this.prependTo = this.options.prependTo
     if this.options.appendTo? then this.appendTo = this.options.appendTo
     if this.options.nthChild? then this.nthChild = this.options.nthChild
+
+    if this.options.id?
+      this.id = this.options.id
+
+    else if not this.id?
+      this.id = this.constructor.name
+
+      if this.model?._id?
+        this.id += "-#{this.model._id}"
 
 
   _init: ->
@@ -62,24 +75,35 @@ class hs.Template
     this.templates.splice index, 1
 
 
-  templateContext: {}
   _renderTemplate: ->
-    html = CoffeeKup.render(this.template, context: this.templateContext)
-    this.el = $(html)
+    this.el = $ "##{this.id}"
+
+    if this.el.length == 0
+      html = CoffeeKup.render(this.template, context: this.templateContext)
+      this.el = $(html)
+      this.el.attr 'id', this.id
+
+    else
+      this.injected = true
+
     this.$ = (selector) => $ selector, this.el
 
 
   _insertTemplate: ->
-    if this.appendTo?
+    return if this.injected
 
+    if this.appendTo?
       if not this.nthChild?
         $(this.appendTo).append this.el
 
       else
         $("#{this.appendTo}:nth-child(#{this.nthChild})").after this.el
 
+      this.injected = true
+
     else if this.prependTo?
       $(this.prependTo).prepend this.el
+      this.injected = true
 
 
   _listenOnModel: ->
@@ -111,7 +135,6 @@ class hs.Template
     this.postRender?()
 
 
-  _meta: []
   meta: (props) ->
     meta = $ '<meta>'
 

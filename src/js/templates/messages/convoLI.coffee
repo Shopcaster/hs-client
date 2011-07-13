@@ -5,7 +5,7 @@ dep.provide 'hs.t.ConvoLI'
 class hs.t.ConvoLI extends hs.Template
 
   template: ->
-    div class: 'convo-li', id: "convo-li-#{this.model._id}", ->
+    div class: 'convo-li', ->
       div class: 'offer'
       div class: 'actions'
       div class: 'clicky'

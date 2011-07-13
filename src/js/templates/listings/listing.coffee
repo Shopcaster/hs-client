@@ -5,6 +5,7 @@ dep.require 'hs.t.User'
 dep.require 'hs.t.Inquiries'
 dep.require 'hs.t.Convo'
 dep.require 'hs.t.ConvoList'
+dep.require 'hs.t.OfferForm'
 
 dep.provide 'hs.t.Listing'
 
@@ -76,6 +77,10 @@ class hs.t.Listing extends hs.Template
       class: hs.t.ConvoList
       appendTo: '#listing-messages'
 
+    offerForm:
+      class: hs.t.OfferForm
+      appendTo: '.offer-form-wrapper'
+
 
   postRender: ->
     this.model.related.inquiries (inquiries) =>
@@ -108,12 +113,16 @@ class hs.t.Listing extends hs.Template
   setAuth: (prev, cur) ->
     this.convoTmpl.remove()
     this.convoListTmpl.remove()
+    this.offerFormTmpl.remove()
 
     if this.model.creator == cur._id
       this.model.related.convos this.convoListTmpl
 
     else
       this.model.myConvo this.convoTmpl
+
+      this.model.myOffer (offer) =>
+        this.offerFormTmpl offer, listing: this.model
 
 
   setCreator: () ->

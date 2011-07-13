@@ -5,7 +5,7 @@ dep.provide 'hs.t.Inquiry'
 class hs.t.Inquiry extends hs.Template
 
   template: ->
-    div class: 'inquiry', id: "inquiry-#{this.model._id}", ->
+    div class: 'inquiry', ->
       span class: 'created'
       div class: 'question'
       div class: 'answer'

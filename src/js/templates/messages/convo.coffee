@@ -7,7 +7,7 @@ dep.provide 'hs.t.Convo'
 class hs.t.Convo extends hs.Template
 
   template: ->
-    div class: 'convo', id: "convo-#{this.model._id}", ->
+    div class: 'convo', ->
       div class: 'message-form'
       div class: 'message-list'
 

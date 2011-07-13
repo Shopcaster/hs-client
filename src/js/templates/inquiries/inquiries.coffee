@@ -6,13 +6,13 @@ dep.provide 'hs.t.Inquiries'
 
 class hs.t.Inquiries extends hs.Template
 
-  template: -> div id: 'inquiry-list'
+  template: -> div class: 'inquiry-list'
 
 
   subTemplates:
     inquiry:
       class: hs.t.Inquiry
-      appendTo: '#inquiry-list'
+      appendTo: '.inquiry-list'
 
 
   addModel: (id, index) ->

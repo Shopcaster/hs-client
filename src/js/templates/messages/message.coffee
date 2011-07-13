@@ -7,7 +7,7 @@ dep.provide 'hs.t.Message'
 class hs.t.Message extends hs.Template
 
   template: ->
-    div class: 'message', id: "message-#{this.model._id}", ->
+    div class: 'message', ->
       div class: 'creator'
       div class: 'message-body'
       div class: 'actions'
