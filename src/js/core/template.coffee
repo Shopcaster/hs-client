@@ -2,20 +2,28 @@
 dep.require 'hs'
 dep.require 'CoffeeKup'
 dep.require 'zz.models'
+dep.require 'hs.EventEmitter'
+
 dep.provide 'hs.Template'
 
 hs.t = {}
 
-class hs.Template
+class hs.Template extends hs.EventEmitter
 
-  templateContext: {}
+  templateLocals: {}
   injected: false
   _meta: []
+  initListeners: []
+  modInit: ->
 
   constructor: (@model, @options = {}) ->
+    this.modInit()
+
+    this.emit('preConstructor')
     this._moveOptions()
     this._setupTemplates()
     this._init()
+    this.emit('postConstructor')
 
 
   _moveOptions: ->
@@ -35,9 +43,9 @@ class hs.Template
 
   _init: ->
     if this.init?
-      this.init => this.render() unless this.options.unRendered
+      this.init => this.render()
     else
-      this.render() unless this.options.unRendered
+      this.render()
 
 
   _setupTemplates: ->
@@ -60,11 +68,15 @@ class hs.Template
           else
             this.templates.splice opts.nthChild, 1, tmpl
 
+          this.emit 'subTemplateAdd', tmpl, opts.nthChild
+
         this[method].remove = () =>
           for tmpl, i in this.templates
             if tmpl.constructor.name == name
               tmpl.remove()
               this.templates.splice i, 1
+
+              this.emit 'subTemplateRemove', i
 
 
   removeTmpl: (index) ->
@@ -74,12 +86,18 @@ class hs.Template
     this.templates[index].remove()
     this.templates.splice index, 1
 
+    this.emit 'subTemplateRemove', index
+
 
   _renderTemplate: ->
     this.el = $ "##{this.id}"
 
     if this.el.length == 0
-      html = CoffeeKup.render(this.template, context: this.templateContext)
+      html = CoffeeKup.render this.template,
+        context: this
+        locals: this.templateLocals
+        cache: off
+
       this.el = $(html)
       this.el.attr 'id', this.id
 
@@ -126,6 +144,7 @@ class hs.Template
 
 
   render: ->
+    this.emit('preRender')
     this.preRender?()
 
     this._renderTemplate()
@@ -133,6 +152,7 @@ class hs.Template
     this._listenOnModel()
 
     this.postRender?()
+    this.emit('postRender')
 
 
   meta: (props) ->
@@ -149,10 +169,12 @@ class hs.Template
 
   authChange: (prev, cur) ->
     this.setAuth?()
+    this.emit 'setAuth', prev, cur
     tmpl.authChange prev, cur for tmpl in this.templates
 
 
   remove: ->
+    this.emit('preRemove')
     this.preRemove?()
 
     sub.remove() for sub in this.templates
@@ -164,11 +186,17 @@ class hs.Template
     this.model?.freeze()
 
     this.postRemove?()
+    this.emit('postRemove')
 
 
 hs.Template.get = (options, clbk) ->
+  user = zz.auth.curUser()
   if this.getModel?
     this.getModel options, (model) =>
-      clbk new this(model, options)
+      template = new this(model, options)
+      template.authChange null, user
+      clbk template
   else
-    clbk new this(null, options)
+    template = new this(null, options)
+    template.authChange null, user
+    clbk template

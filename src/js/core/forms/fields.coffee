@@ -12,27 +12,37 @@ reg = (fields..., handlers)->
 
 class hs.FormFieldTemplate extends hs.Template
 
+  constructor: (@model, @options) ->
+    this.templateLocals = this.options
+    this.id = this.constructor.name+this.options.name
+    hs.Template.apply(this, arguments)
+
+
+
 class hs.FormFieldView extends hs.View
 
-  get: () -> this.template.$ '.'+this.template.options.name
+  get: () -> this.template.el.val()
 
-  set: (value) -> this.get().val value
+  set: (value) -> this.template.el.val value
+
+  valid: () ->
+    value = this.get()
+    return value? or this.options.nullable
+
 
 
 reg 'text', 'password', 'email', {
   t: class InputT extends hs.FormFieldTemplate
 
     template: ->
-      input
-        id: this.options.name
-        name: this.options.name
-        type: this.options.type
-        class: this.options.class
-        placeholder: this.options.placeholder
-        , (attr) ->
-          if this.options.hide then attr.style = 'display:none'
+      attrs = name: name, type: type
+      attrs.class = clas if clas?
+      attrs.placeholder = placeholder if placeholder?
+      attrs.style = 'display:none' if hide? and hide
 
-  v: hs.FormFieldView
+      input attrs
+
+  v: class InputV extends hs.FormFieldView
 }
 
 
@@ -42,12 +52,11 @@ reg 'textarea', {
 
     template: ->
       textarea
-        id: this.options.name
-        name: this.options.name
-        class: this.options.class
-        placeholder: this.options.placeholder
-        , (attr) ->
-          if this.options.hide then attr.style = 'display:none'
+        id: name
+        name: name
+        class: clas or ''
+        placeholder: placeholder or ''
+        style: 'display:none' if hide
 
   v: hs.FormFieldView
 }

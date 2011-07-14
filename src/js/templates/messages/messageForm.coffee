@@ -1,14 +1,15 @@
 
-dep.require 'hs.FormTemplate'
-dep.require 'hs.authFormFields'
+dep.require 'hs.Template'
+dep.require 'hs.mods.t.form'
+dep.require 'hs.mods.t.authForm'
 
 dep.provide 'hs.t.MessageForm'
 
-class hs.t.MessageForm extends hs.FormTemplate
+class hs.t.MessageForm extends hs.Template
 
   template: ->
     form ->
-      fields()
+      span class: 'formFields'
       input type: 'submit', class: 'submit'
 
 
@@ -21,4 +22,8 @@ class hs.t.MessageForm extends hs.FormTemplate
     'name': 'message'
     'type': 'text'
     'placeholder': 'Message'
-  }].concat hs.authFormFields
+  }]
+
+
+hs.mods.t.form hs.t.MessageForm
+hs.mods.t.authForm hs.t.MessageForm

@@ -26,7 +26,7 @@ class hs.t.TopBar extends hs.Template
       this.$('.settings').show();
 
       this.$('.name').html(cur.name || "
-          #{localStorage['zz.auth.email']}
+          #{cur.email}
           <span id='set-name'>(<span class='red'>
             set public name!
           </span>)</span>

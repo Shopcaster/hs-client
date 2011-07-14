@@ -27,8 +27,9 @@ goTo = (url) ->
       Template.get kwargs, (template) ->
         current.t = template
 
-        if (View = hs.v[Template.constructor.name])?
-          current.v = new View template, kwargs
+        View = hs.v[Template.name] ||  hs.View
+
+        current.v = new View template, kwargs
 
       break
 
@@ -46,11 +47,22 @@ window.onpopstate = ->
   $ -> zz.init -> goTo document.location.pathname
 
 
-zz.auth.on? 'change', ->
+zz.auth.on 'change', ->
+  console.log 'auth change'
   newUser = zz.auth.curUser()
-  current.t.authChange user, newUser
-  tmpl.authChange user, newUser for tmpl in hs.globalTemplates
+  current.t?.authChange user, newUser
+
+  for tmpl in hs.globalTemplates
+    tmpl.authChange user, newUser
+
   user = newUser
 
 
-$ -> hs.globalTemplates[i] = new Tmpl() for Tmpl, i in hs.globalTemplates
+$ ->
+  hs.globalViews = []
+
+  for Tmpl, i in hs.globalTemplates
+    hs.globalTemplates[i] = new Tmpl()
+
+    View = hs.v[Tmpl.name] or hs.View
+    hs.globalViews[i] = new View(hs.globalTemplates[i])

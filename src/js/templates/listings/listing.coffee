@@ -115,7 +115,7 @@ class hs.t.Listing extends hs.Template
     this.convoListTmpl.remove()
     this.offerFormTmpl.remove()
 
-    if this.model.creator == cur._id
+    if cur? and this.model.creator == cur._id
       this.model.related.convos this.convoListTmpl
 
     else

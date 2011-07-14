@@ -12,7 +12,7 @@ zz.models.Listing.prototype.bestOffer = (clbk) ->
 zz.models.Listing.prototype.offerForUser = (user, clbk) ->
   return clbk null if not user?
 
-  this.model.related.offers (offers) =>
+  this.related.offers (offers) =>
     for offer in offers
       if offer.creator == user._id
         return clbk offer
@@ -25,7 +25,7 @@ zz.models.Listing.prototype.myOffer = (clbk) ->
 zz.models.Listing.prototype.convoForUser = (user, clbk) ->
   return clbk null if not user?
 
-  this.model.related.convos (convos) =>
+  this.related.convos (convos) =>
     for convo in convos
       if convo.creator == user._id
         return clbk convo
