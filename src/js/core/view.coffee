@@ -9,7 +9,7 @@ dep.provide 'hs.View'
 class hs.View extends hs.EventEmitter
 
   initListeners: []
-  views: []
+  views: {}
   modInit: ->
 
   constructor: (@template, @options) ->
@@ -44,20 +44,24 @@ class hs.View extends hs.EventEmitter
 
 
   _subViewsStart: ->
-    this._subViewAdd tmpl for tmpl in this.template.templates
+    for name, tmpls of this.template.templates
+      for tmpl in tmpls
+        this._subViewAdd name, tmpl
 
 
-  _subViewAdd: (tmpl, i) ->
-    View = hs.v[tmpl.constructor.name] or hs.View
+  _subViewAdd: (className, tmpl, i) ->
+    View = hs.v[className] or hs.View
 
     view = new View tmpl, tmpl.options
 
+    this.views[className] ||= []
+
     if not i?
-      this.views.push view
+      this.views[className].push view
 
     else
-      this.views.splice i, 1, view
+      this.views[className].splice i, 0, view
 
 
-  _subViewRemove: (i) -> this.views.splice i, 1
+  _subViewRemove: (className, i) -> this.views[className].splice i, 1
 

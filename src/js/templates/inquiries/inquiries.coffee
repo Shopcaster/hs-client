@@ -15,9 +15,8 @@ class hs.t.Inquiries extends hs.Template
       appendTo: '.inquiry-list'
 
 
-  addModel: (id, index) ->
-    zz.data.inquiry id, (inquiry) =>
-      this.inquiryTmpl inquiry, {nthChild: index}
+  addModel: (inquiry, index) ->
+    this.inquiryTmpl inquiry, {nthChild: index}
 
 
   removeModel: (id, index) ->

@@ -32,6 +32,7 @@ hs.t.mods.form = (Template) ->
       field = new Field null, fieldOpts
 
       this.fields[fieldOpts.name] = field
-      this.templates.push field
+      this.templates[fieldOpts.name] ||= []
+      this.templates[fieldOpts.name].push field
 
     this.emit 'postFormRender'

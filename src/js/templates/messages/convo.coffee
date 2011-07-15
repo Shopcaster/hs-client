@@ -16,7 +16,7 @@ class hs.t.Convo extends hs.Template
   subTemplates:
     message:
       class: hs.t.Message
-      appendTo: '.message-list'
+      prependTo: '.message-list'
     messageForm:
       class: hs.t.MessageForm
       appendTo: '.message-form'
@@ -26,9 +26,9 @@ class hs.t.Convo extends hs.Template
     this.messageFormTmpl null, convo: this.options.convo, listing: this.options.listing
 
 
-  addModel: (id, index) ->
-    zz.data.message id, (msg) =>
-      this.messageTmpl msg, {nthChild: index}
+  addModel: (msg, index) ->
+    index = undefined if index == -1
+    this.messageTmpl msg, {nthChild: index}
 
 
   removeModel: (id, index) ->

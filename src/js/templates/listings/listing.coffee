@@ -75,7 +75,6 @@ class hs.t.Listing extends hs.Template
 
   postRender: ->
     this.model.relatedInquiries this.inquiriesTmpl
-    this.model.relatedOffers this.offersTmpl
 
     this.$('.twitter').html '
       <a href="http://twitter.com/share"
@@ -105,6 +104,9 @@ class hs.t.Listing extends hs.Template
     this.convoTmpl.remove()
     this.convoListTmpl.remove()
     this.offerFormTmpl.remove()
+    this.offersTmpl.remove()
+
+    this.model.relatedOffers this.offersTmpl
 
     if cur? and this.model.creator == cur._id
       this.model.relatedConvos this.convoListTmpl
@@ -112,8 +114,11 @@ class hs.t.Listing extends hs.Template
 
     else
       this.model.myConvo (convo) =>
-        convo.relatedMessages (messages) =>
-          this.convoTmpl messages, convo: convo, listing: this.model
+        if convo?
+          convo.relatedMessages (messages) =>
+            this.convoTmpl messages, convo: convo, listing: this.model
+        else
+          this.convoTmpl null, listing: this.model
 
       this.$('.offer-button').show()
       this.model.myOffer (offer) =>

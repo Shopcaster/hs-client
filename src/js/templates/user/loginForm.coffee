@@ -8,6 +8,7 @@ dep.provide 'hs.t.LoginForm'
 class hs.t.LoginForm extends hs.Template
 
   appendTo: '#top-bar > .width'
+  id: 'login-form'
 
   fields: [{
       'name': 'email',

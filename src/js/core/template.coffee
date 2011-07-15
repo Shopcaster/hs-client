@@ -55,41 +55,42 @@ class hs.Template extends hs.EventEmitter
     if this.templates?
       throw new Error '_setupTemplates should only be called once'
 
-    this.templates = []
+    this.templates = {}
     for name, classOpts of this.subTemplates then do (name, classOpts) =>
 
       method = "#{name}Tmpl"
+      className = classOpts.class.name
 
       this[method] = (model, instOpts) =>
         opts = _.extend {parent: this}, classOpts, instOpts
 
         tmpl = new classOpts.class model, opts
 
+        this.templates[className] ||= []
         if not opts.nthChild?
-          this.templates.push tmpl
-
+          this.templates[className].push tmpl
         else
-          this.templates.splice opts.nthChild, 1, tmpl
+          this.templates[className].splice opts.nthChild, 0, tmpl
 
-        this.emit 'subTemplateAdd', tmpl, opts.nthChild
+        this.emit 'subTemplateAdd', className, tmpl, opts.nthChild
 
       this[method].remove = () =>
-        for tmpl, i in this.templates
-          if tmpl.constructor.name == name
-            tmpl.remove()
-            this.templates.splice i, 1
+        return if not this.templates[className]?
 
-            this.emit 'subTemplateRemove', i
+        tmpl.remove() for tmpl, i in this.templates[className]
+
+        this.templates[className] = []
+        this.emit 'subTemplateRemove', className, i
 
 
-  removeTmpl: (index) ->
-    if not this.templates[index]?
+  removeTmpl: (className, index) ->
+    if not this.templates[className]?[index]?
       throw new Error 'Invalid sub-template index'
 
-    this.templates[index].remove()
-    this.templates.splice index, 1
+    this.templates[className][index].remove()
+    this.templates[className].splice index, 1
 
-    this.emit 'subTemplateRemove', index
+    this.emit 'subTemplateRemove', className, index
 
 
   _renderTemplate: ->
@@ -138,7 +139,7 @@ class hs.Template extends hs.EventEmitter
         if this.removeModel?
           this.model.on 'remove', => this.removeModel.apply this, arguments
 
-        this.addModel m._id for m in this.model
+        this.addModel m for m in this.model
 
       else
 
@@ -177,14 +178,19 @@ class hs.Template extends hs.EventEmitter
   authChange: (prev, cur) ->
     this.setAuth?(prev, cur)
     this.emit 'setAuth', prev, cur
-    tmpl.authChange prev, cur for tmpl in this.templates
+    for name, templates of this.templates
+      for tmpl in templates
+        tmpl.authChange prev, cur
 
 
   remove: ->
     this.emit('preRemove')
     this.preRemove?()
 
-    sub.remove() for sub in this.templates
+    console.log 'removing', this.constructor.name, 'freezing all subs'
+    for name, templates of this.templates
+      for tmpl in templates
+        tmpl.remove()
 
     this.el?.remove()
     this.el = null

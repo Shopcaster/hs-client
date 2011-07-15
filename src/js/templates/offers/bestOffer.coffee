@@ -29,7 +29,7 @@ class hs.t.Offers extends hs.Template
   _update: (node, amount) ->
     animate = node.text() != ''
 
-    node.text "$#{this.model.amount}"
+    node.text "$#{amount}"
 
     if animate
       oldColor = node.css 'color'
@@ -41,27 +41,28 @@ class hs.t.Offers extends hs.Template
     offers = _.toArray this.offers
     offers.sort (o1, o2) -> o2.amount - o1.amount
 
-    this._update this.$('best-offer'), offers[0].amount
+    this._update this.$('.value.best-offer'), offers[0].amount
 
 
   setMyOffer: (offer) ->
-    this._update this.$('my-offer'), offer.amount
+    console.log 'myOffer:', offer
+    this._update this.$('.value.my-offer'), offer.amount
 
 
-  addModel: (id, index) ->
-    zz.data.offer id, (offer) =>
-      offer.heat()
+  addModel: (offer, index) ->
+    offer.heat()
 
-      if this.auth.curUser()? and offer.creator == this.auth.curUser()._id
-        offer.on 'amount', => this.setMyOffer offer
+    if offer.creator == zz.auth.curUser()?._id
+      offer.on 'amount', => this.setMyOffer offer
+      this.setMyOffer offer
 
-      if index?
-        this.offers.splice index, 0, offer
+    if index?
+      this.offers.splice index, 0, offer
 
-      else
-        this.offers.push offer
+    else
+      this.offers.push offer
 
-      this.setBestOffer()
+    this.setBestOffer()
 
 
   removeModel: (id, index) ->

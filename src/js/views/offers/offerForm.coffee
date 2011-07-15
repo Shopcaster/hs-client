@@ -11,14 +11,19 @@ class hs.v.OfferForm extends hs.View
 
   focusSelector: '.offer-button'
 
+  amount: ->
+    parseFloat this.get('amount')
+
+
   submit: ->
     if this.template.model?
-      zz.update.offer this.template.model, amount: this.get('amount'), ->
+      zz.update.offer this.template.model, amount: this.amount(), =>
         this.clear()
+        this.blur()
 
     else
       zz.create.offer
-        amount: parseInt this.get 'amount'
+        amount: this.amount()
         listing: this.options.listing._id
         =>
           this.clear()

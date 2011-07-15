@@ -11,7 +11,6 @@ hs.v.mods.form = (View) ->
 
 
   _.extend View.prototype.events,
-    'submit form': '_submit'
     'submit': '_submit'
 
 
@@ -57,12 +56,11 @@ hs.v.mods.form = (View) ->
       else
         next()
 
-    return clbk true
-
 
   View.prototype._submit = (e) ->
     e.preventDefault()
-    this._validate (valid) => this.submit?.apply(this, arguments) if valid
+    this._validate (valid) =>
+      this.submit?.apply(this, arguments) if valid
 
 
   View.prototype.get = (fieldname) ->

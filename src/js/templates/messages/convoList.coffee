@@ -16,9 +16,8 @@ class hs.t.ConvoList extends hs.Template
       appendTo: '.convo-list'
 
 
-  addModel: (id, index) ->
-    zz.data.convo id, (convo) =>
-      this.convoLITmpl convo, {nthChild: index}
+  addModel: (convo, index) ->
+    this.convoLITmpl convo, {nthChild: index}
 
 
   removeModel: (id, index) ->

@@ -43,7 +43,7 @@ hs.v.mods.dialog = (View) ->
 
 
   View.prototype.blur = ->
-    this.template.el.hide().removeClass('open')
+    this.template.el?.hide().removeClass('open')
     $(this.focusSelector).removeClass('open')
     this._dialogSetMousedown()
 
