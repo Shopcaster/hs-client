@@ -265,7 +265,7 @@
         }
 
 
-        .convo-list, .conversation{
+        .convo-list, .convo{
 
             @include dark-button($blue - #444, '.submit');
 
@@ -300,7 +300,7 @@
                     font-weight:bold;
                 }
 
-                .conversation{
+                .convo{
                     position:absolute;
                     top:40px;left:50px;
                     width:$section_width - 95px;
@@ -319,7 +319,7 @@
             }
         }
 
-        .conversation{
+        .convo{
 
             padding:10px 0;
 

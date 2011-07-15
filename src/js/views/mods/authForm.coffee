@@ -1,9 +1,9 @@
 
 dep.require 'hs'
 
-dep.provide 'hs.mods.v.authForm'
+dep.provide 'hs.v.mods.authForm'
 
-hs.mods.v.authForm = (View) ->
+hs.v.mods.authForm = (View) ->
 
 
   oldInit = View.prototype.modInit

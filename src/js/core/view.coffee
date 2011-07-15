@@ -5,7 +5,6 @@ dep.require 'hs.EventEmitter'
 
 dep.provide 'hs.View'
 
-hs.v = {}
 
 class hs.View extends hs.EventEmitter
 
@@ -24,7 +23,7 @@ class hs.View extends hs.EventEmitter
   _registerDomEvents: ->
     return if not this.events?
 
-    for pattern, methodName of this.events
+    for pattern, methodName of this.events then do (pattern, methodName) =>
       pattern = pattern.split(' ')
       event = pattern.shift()
       selector = pattern.join(' ')

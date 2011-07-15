@@ -1,10 +1,10 @@
 
 dep.require 'hs'
 
-dep.provide 'hs.mods.v.form'
+dep.provide 'hs.v.mods.form'
 
 
-hs.mods.v.form = (View) ->
+hs.v.mods.form = (View) ->
 
   View.prototype.events ||= []
   View.prototype.fields = {}
@@ -32,7 +32,7 @@ hs.mods.v.form = (View) ->
   View.prototype._validate = (clbk) ->
     fields = _.keys this.fields
 
-    (next = =>
+    do next = =>
       name = fields.pop()
 
       return clbk true if not name?
@@ -56,7 +56,6 @@ hs.mods.v.form = (View) ->
 
       else
         next()
-    )()
 
     return clbk true
 
@@ -74,12 +73,13 @@ hs.mods.v.form = (View) ->
     this.fields[fieldname].set(value)
 
 
+  View.prototype.clear = () -> field.set('') for name, field of this.fields
+
+
   View.prototype.showInvalid = (name) ->
-    node = this.$ '[name="'+name+'"]'
+    node = this.template.$ '[name="'+name+'"]'
     oldColor = node.css 'backgroundColor'
 
-    node.animate backgroundColor: '#f00', 200, =>
-      setTimeout =>
-        node.animate backgroundColor: oldColor
-      , 200
+    node.animate backgroundColor: '#c33', 200, =>
+      node.one 'focus', => node.css backgroundColor: oldColor
 

@@ -1,5 +1,6 @@
 
 dep.require 'hs.Template'
+dep.require 'hs.t.LoginForm'
 
 dep.provide 'hs.t.TopBar'
 
@@ -10,13 +11,23 @@ class hs.t.TopBar extends hs.Template
   appendTo: '#top-bar > .width'
 
   template: ->
-    a href: '/about', -> 'About'
-    a href: '/how-it-works', -> 'How It Works'
-    a href: 'https://getsatisfaction.com/hipsell', target: '_blank', -> 'Feedback'
-    a href: '/settings/name', class: 'name'
-    a href: '/settings', class: 'settings', -> 'Settings'
-    a href: 'javascript:;', class: 'logout', -> 'Logout'
-    a href: 'javascript:;', class: 'login', -> 'Login'
+    span ->
+      a href: '/about', -> 'About'
+      a href: '/how-it-works', -> 'How It Works'
+      a href: 'https://getsatisfaction.com/hipsell', target: '_blank', -> 'Feedback'
+      a href: '/settings/name', class: 'name'
+      a href: '/settings', class: 'settings', -> 'Settings'
+      a href: 'javascript:;', class: 'logout', -> 'Logout'
+      a href: 'javascript:;', class: 'login', -> 'Login'
+
+
+  subTemplates:
+    loginForm:
+      class: hs.t.LoginForm
+
+
+  postRender: ->
+    this.loginFormTmpl()
 
 
   setAuth: (prev, cur) ->

@@ -1,7 +1,7 @@
 
 dep.require 'hs.Template'
-dep.require 'hs.mods.t.form'
-dep.require 'hs.mods.t.authForm'
+dep.require 'hs.t.mods.form'
+dep.require 'hs.t.mods.authForm'
 
 dep.provide 'hs.t.OfferForm'
 
@@ -21,5 +21,5 @@ class hs.t.OfferForm extends hs.Template
   }]
 
 
-hs.mods.t.form hs.t.OfferForm
-hs.mods.t.authForm hs.t.OfferForm
+hs.t.mods.form hs.t.OfferForm
+hs.t.mods.authForm hs.t.OfferForm

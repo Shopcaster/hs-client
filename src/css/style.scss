@@ -63,14 +63,17 @@ p{
         margin-right:10px;
     }
 
-    #loginForm{
+    #LoginForm{
         right:0px;top:17px;
         width:160px;
+        z-index:3;
+
         @include rounded-bottom();
         @include rounded-top-left();
 
         input{
             float:right;
+            margin-bottom:5px;
             width:148px;
         }
         input.submit{

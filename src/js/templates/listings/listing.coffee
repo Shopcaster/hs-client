@@ -19,7 +19,7 @@ class hs.t.Listing extends hs.Template
 
       div class: 'section-left', ->
         div id: 'listing-image', -> img()
-        div id: 'listing-messsages', ->
+        div id: 'listing-messages', ->
           div class: 'message-button', -> 'Ask A Question'
 
       div class: 'section-right', ->
@@ -83,7 +83,7 @@ class hs.t.Listing extends hs.Template
 
 
   postRender: ->
-    this.model.related.inquiries (inquiries) =>
+    this.model.relatedInquiries (inquiries) =>
       this.inquiriesTmpl inquiries
 
     this.$('.twitter').html '
@@ -116,11 +116,14 @@ class hs.t.Listing extends hs.Template
     this.offerFormTmpl.remove()
 
     if cur? and this.model.creator == cur._id
-      this.model.related.convos this.convoListTmpl
+      this.model.relatedConvos this.convoListTmpl
+      this.$('.offer-button').hide()
 
     else
-      this.model.myConvo this.convoTmpl
+      this.model.myConvo (convo) =>
+        this.convoTmpl convo, listing: this.model
 
+      this.$('.offer-button').show()
       this.model.myOffer (offer) =>
         this.offerFormTmpl offer, listing: this.model
 
@@ -131,7 +134,7 @@ class hs.t.Listing extends hs.Template
 
 
   setPhoto: () ->
-    url = "http://#{conf.server.host}:#{conf.server.port}/static/#{this.model.photo}"
+    url = "http://#{conf.zz.server.host}:#{conf.zz.server.port}/static/#{this.model.photo}"
     this.$('#listing-image > img').attr 'src', url
 
 

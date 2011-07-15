@@ -6,7 +6,6 @@ dep.require 'hs.EventEmitter'
 
 dep.provide 'hs.Template'
 
-hs.t = {}
 
 class hs.Template extends hs.EventEmitter
 
@@ -30,6 +29,7 @@ class hs.Template extends hs.EventEmitter
     if this.options.prependTo? then this.prependTo = this.options.prependTo
     if this.options.appendTo? then this.appendTo = this.options.appendTo
     if this.options.nthChild? then this.nthChild = this.options.nthChild
+    if this.options.parent? then this.parent = this.options.parent
 
     if this.options.id?
       this.id = this.options.id
@@ -53,30 +53,30 @@ class hs.Template extends hs.EventEmitter
       throw new Error '_setupTemplates should only be called once'
 
     this.templates = []
-    for name, classOpts of this.subTemplates
-      do (name, classOpts) =>
+    for name, classOpts of this.subTemplates then do (name, classOpts) =>
 
-        method = "#{name}Tmpl"
+      method = "#{name}Tmpl"
 
-        this[method] = (model, instOpts) =>
-          opts = _.extend {}, classOpts, instOpts
-          tmpl = new classOpts.class model, opts
+      this[method] = (model, instOpts) =>
+        opts = _.extend {parent: this}, classOpts, instOpts
 
-          if not opts.nthChild?
-            this.templates.push tmpl
+        tmpl = new classOpts.class model, opts
 
-          else
-            this.templates.splice opts.nthChild, 1, tmpl
+        if not opts.nthChild?
+          this.templates.push tmpl
 
-          this.emit 'subTemplateAdd', tmpl, opts.nthChild
+        else
+          this.templates.splice opts.nthChild, 1, tmpl
 
-        this[method].remove = () =>
-          for tmpl, i in this.templates
-            if tmpl.constructor.name == name
-              tmpl.remove()
-              this.templates.splice i, 1
+        this.emit 'subTemplateAdd', tmpl, opts.nthChild
 
-              this.emit 'subTemplateRemove', i
+      this[method].remove = () =>
+        for tmpl, i in this.templates
+          if tmpl.constructor.name == name
+            tmpl.remove()
+            this.templates.splice i, 1
+
+            this.emit 'subTemplateRemove', i
 
 
   removeTmpl: (index) ->
@@ -168,7 +168,7 @@ class hs.Template extends hs.EventEmitter
 
 
   authChange: (prev, cur) ->
-    this.setAuth?()
+    this.setAuth?(prev, cur)
     this.emit 'setAuth', prev, cur
     tmpl.authChange prev, cur for tmpl in this.templates
 

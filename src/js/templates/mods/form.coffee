@@ -1,10 +1,10 @@
 
 dep.require 'hs.Template'
 
-dep.provide 'hs.mods.t.form'
+dep.provide 'hs.t.mods.form'
 
 
-hs.mods.t.form = (Template) ->
+hs.t.mods.form = (Template) ->
 
   Template.prototype.fields ||= []
 
@@ -12,7 +12,13 @@ hs.mods.t.form = (Template) ->
   oldInit = Template.prototype.modInit
   Template.prototype.modInit = ->
     oldInit.call(this)
+
     this.on 'postRender', => this._renderFields()
+
+    this.templateLocals.fields = (attrs, clbk) ->
+      attrs ||= {}
+      attrs.class = 'formFields'
+      ck_tag 'span', [attrs, clbk]
 
 
   Template.prototype._renderFields = () ->

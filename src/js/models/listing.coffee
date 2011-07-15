@@ -4,7 +4,7 @@ dep.provide 'zz.models.Listing'
 
 
 zz.models.Listing.prototype.bestOffer = (clbk) ->
-  this.model.related.offers (offers) =>
+  this.model.relatedOffers (offers) =>
     offers.sort (o1, o2) -> o2.amount - o1.amount
     clbk offers[0]
 
@@ -12,7 +12,7 @@ zz.models.Listing.prototype.bestOffer = (clbk) ->
 zz.models.Listing.prototype.offerForUser = (user, clbk) ->
   return clbk null if not user?
 
-  this.related.offers (offers) =>
+  this.relatedOffers (offers) =>
     for offer in offers
       if offer.creator == user._id
         return clbk offer
@@ -25,7 +25,9 @@ zz.models.Listing.prototype.myOffer = (clbk) ->
 zz.models.Listing.prototype.convoForUser = (user, clbk) ->
   return clbk null if not user?
 
-  this.related.convos (convos) =>
+  console.log 'getting relatedConvos'
+  this.relatedConvos (convos) =>
+    console.log 'relatedConvos', convos
     for convo in convos
       if convo.creator == user._id
         return clbk convo

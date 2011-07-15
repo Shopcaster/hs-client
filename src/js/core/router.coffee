@@ -58,11 +58,13 @@ zz.auth.on 'change', ->
   user = newUser
 
 
-$ ->
+$ -> zz.init ->
   hs.globalViews = []
+  user = zz.auth.curUser()
 
   for Tmpl, i in hs.globalTemplates
     hs.globalTemplates[i] = new Tmpl()
+    hs.globalTemplates[i].authChange null, user
 
     View = hs.v[Tmpl.name] or hs.View
     hs.globalViews[i] = new View(hs.globalTemplates[i])

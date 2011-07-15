@@ -1,9 +1,10 @@
 
 dep.require 'hs.View'
 
-dep.provide 'hs.mods.v.dialog'
+dep.provide 'hs.v.mods.dialog'
 
-hs.mods.v.dialog = (View) ->
+
+hs.v.mods.dialog = (View) ->
 
   stop = (e) -> e.stopPropagation()
 

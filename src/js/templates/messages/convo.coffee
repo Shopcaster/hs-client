@@ -22,7 +22,7 @@ class hs.t.Convo extends hs.Template
 
 
   postRender: ->
-    this.messageFormTmpl()
+    this.messageFormTmpl null, convo: this.model, listing: this.options.listing
 
 
   addModel: (id, index) ->

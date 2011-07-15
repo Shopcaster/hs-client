@@ -1,9 +1,9 @@
 
 dep.require 'hs'
 
-dep.provide 'hs.mods.t.authForm'
+dep.provide 'hs.t.mods.authForm'
 
-hs.mods.t.authForm = (Template) ->
+hs.t.mods.authForm = (Template) ->
 
   Template.prototype.fields ||= []
   Template.prototype.fields = Template.prototype.fields.concat [{
@@ -17,7 +17,6 @@ hs.mods.t.authForm = (Template) ->
       placeholder: 'Password'
       hide: true
   }]
-  console.log 'authForm fields added', Template.name, Template.prototype.fields
 
 
   oldInit = Template.prototype.modInit

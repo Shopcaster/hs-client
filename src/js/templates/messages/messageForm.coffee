@@ -1,7 +1,7 @@
 
 dep.require 'hs.Template'
-dep.require 'hs.mods.t.form'
-dep.require 'hs.mods.t.authForm'
+dep.require 'hs.t.mods.form'
+dep.require 'hs.t.mods.authForm'
 
 dep.provide 'hs.t.MessageForm'
 
@@ -25,5 +25,5 @@ class hs.t.MessageForm extends hs.Template
   }]
 
 
-hs.mods.t.form hs.t.MessageForm
-hs.mods.t.authForm hs.t.MessageForm
+hs.t.mods.form hs.t.MessageForm
+hs.t.mods.authForm hs.t.MessageForm

@@ -1,8 +1,8 @@
 
 dep.require 'hs.View'
-dep.require 'hs.mods.v.form'
-dep.require 'hs.mods.v.authForm'
-dep.require 'hs.mods.v.dialog'
+dep.require 'hs.v.mods.form'
+dep.require 'hs.v.mods.authForm'
+dep.require 'hs.v.mods.dialog'
 
 dep.provide 'hs.v.OfferForm'
 
@@ -18,10 +18,13 @@ class hs.v.OfferForm extends hs.View
 
     else
       zz.create.offer
-        amount: this.get 'amount'
+        amount: parseInt this.get 'amount'
         listing: this.options.listing._id
+        =>
+          this.clear()
+          this.blur()
 
 
-hs.mods.v.form hs.v.OfferForm
-hs.mods.v.authForm hs.v.OfferForm
-hs.mods.v.dialog hs.v.OfferForm
+hs.v.mods.form hs.v.OfferForm
+hs.v.mods.authForm hs.v.OfferForm
+hs.v.mods.dialog hs.v.OfferForm
