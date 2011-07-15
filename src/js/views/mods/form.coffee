@@ -6,7 +6,7 @@ dep.provide 'hs.v.mods.form'
 
 hs.v.mods.form = (View) ->
 
-  View.prototype.events ||= []
+  View.prototype.events ||= {}
   View.prototype.fields = {}
 
 

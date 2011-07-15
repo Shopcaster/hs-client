@@ -97,10 +97,14 @@ class hs.Template extends hs.EventEmitter
     this.el = $ "##{this.id}"
 
     if this.el.length == 0
-      html = CoffeeKup.render this.template,
-        context: this
-        locals: this.templateLocals
-        cache: off
+      if typeof this.template == 'string'
+        html = this.template
+
+      else
+        html = CoffeeKup.render this.template,
+          context: this
+          locals: this.templateLocals
+          cache: off
 
       this.el = $(html)
       this.el.attr 'id', this.id
