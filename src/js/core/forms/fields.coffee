@@ -1,5 +1,6 @@
 
 dep.require 'hs.Template'
+dep.require 'hs.View'
 
 dep.provide 'hs.formFields'
 

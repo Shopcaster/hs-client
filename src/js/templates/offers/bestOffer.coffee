@@ -15,7 +15,14 @@ class hs.t.BestOffer extends hs.Template
     offers = _.toArray this.offers
     offers.sort (o1, o2) -> o2.amount - o1.amount
 
-    this.el.text offers[0].amount
+    animate = this.el.text() != ''
+
+    this.el.text "$#{offers[0].amount}"
+
+    if animate
+      oldColor = this.el.css 'color'
+      this.el.animate {color: '#828200'}, 250, () =>
+        this.el.animate {color: oldColor}, 250
 
 
   addModel: (id, index) ->

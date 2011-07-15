@@ -6,6 +6,7 @@ dep.require 'hs.t.Inquiries'
 dep.require 'hs.t.Convo'
 dep.require 'hs.t.ConvoList'
 dep.require 'hs.t.OfferForm'
+dep.require 'hs.t.BestOffer'
 
 dep.provide 'hs.t.Listing'
 
@@ -81,6 +82,14 @@ class hs.t.Listing extends hs.Template
       class: hs.t.OfferForm
       appendTo: '.offer-form-wrapper'
 
+    bestOffer:
+      class: hs.t.BestOffer
+      appendTo: '.best-offer'
+
+    myOffer:
+      class: hs.t.MyOffer
+      appendTo: '.my-offer'
+
 
   postRender: ->
     this.model.relatedInquiries (inquiries) =>
@@ -154,22 +163,8 @@ class hs.t.Listing extends hs.Template
 
 
   setOffers: () ->
-    this.model.bestOffer (best) => if best?
-      node = this.$('.best-offer.value')
-
-      node.text "$#{best.amount}"
-
-      node.animate {color: '#828200'}, 250, () ->
-        node.animate {color: '#008234'}, 250
-
-
-    this.model.myOffer (offer) => if offer?
-      node = this.$('.my-offer.value')
-
-      node.text "$#{offer.amount}"
-
-      node.animate {color: '#828200'}, 250, () ->
-        node.animate {color: '#008234'}, 250
+    this.model.relatedOffers this.bestOfferTmpl
+    this.model.myOffer this.myOfferTmpl
 
 
   setLongitude: -> this.setLocation.apply this, arguments
