@@ -1,6 +1,7 @@
 
 dep.require 'hs.Template'
 dep.require 'hs.t.MessageForm'
+dep.require 'hs.t.Message'
 
 dep.provide 'hs.t.Convo'
 
@@ -22,7 +23,7 @@ class hs.t.Convo extends hs.Template
 
 
   postRender: ->
-    this.messageFormTmpl null, convo: this.model, listing: this.options.listing
+    this.messageFormTmpl null, convo: this.options.convo, listing: this.options.listing
 
 
   addModel: (id, index) ->

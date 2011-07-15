@@ -10,7 +10,7 @@ class hs.t.MyOffer extends hs.Template
   setAmount: ->
     animate = this.el.text() != ''
 
-    this.el.text "$#{offers[0].amount}"
+    this.el.text "$#{this.model.amount}"
 
     if animate
       oldColor = this.el.css 'color'

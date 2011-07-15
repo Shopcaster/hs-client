@@ -1,5 +1,6 @@
 
 dep.require 'hs.t.User'
+
 dep.provide 'hs.t.InlineUser'
 
 
@@ -12,4 +13,4 @@ class hs.t.InlineUser extends hs.t.User
       span class: 'name', -> 'Anonymous'
 
   setAvatar: ->
-    this.$('avatar').arrt 'src', this.model.getAvatarUrl(30)
+    this.$('.avatar').attr 'src', this.model.getAvatarUrl(30)

@@ -1,5 +1,6 @@
 
 dep.require 'hs.Template'
+dep.require 'hs.t.InlineUser'
 dep.require 'zz'
 
 dep.provide 'hs.t.Message'
@@ -19,8 +20,8 @@ class hs.t.Message extends hs.Template
 
 
   setCreator: ->
-    zz.data.creator this.model.creator, (creator) =>
-      this.userTmpl creator, prependTo: "message-#{this.model._id}"
+    zz.data.user this.model.creator, (creator) =>
+      this.userTmpl creator, appendTo: "##{this.id} .creator"
 
 
   setMessage: ->

@@ -23,6 +23,7 @@ class hs.v.OfferForm extends hs.View
         =>
           this.clear()
           this.blur()
+          this.template.parent.setMyOffer()
 
 
 hs.v.mods.form hs.v.OfferForm

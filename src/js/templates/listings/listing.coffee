@@ -6,7 +6,7 @@ dep.require 'hs.t.Inquiries'
 dep.require 'hs.t.Convo'
 dep.require 'hs.t.ConvoList'
 dep.require 'hs.t.OfferForm'
-dep.require 'hs.t.BestOffer'
+dep.require 'hs.t.Offers'
 
 dep.provide 'hs.t.Listing'
 
@@ -40,23 +40,9 @@ class hs.t.Listing extends hs.Template
             a href: 'javascript:;', class: 'map-link', target: '_blank', ->
               img class: 'map'
 
-            div id: 'listing-offerbar', class: 'clearfix', ->
-
-              div class: 'left', ->
-                div class: 'title', -> 'Asking Price'
-                div class: 'value asking', -> '$0'
-                div class: 'details asking'
-              div class: 'middle', ->
-                div class: 'title', -> 'Best Offer'
-                div class: 'value best-offer', -> '$0'
-                div class: 'details best-offer'
-              div class: 'right', ->
-                div class: 'title', -> 'My Offer'
-                div class: 'value my-offer', -> '$0'
-                div class: 'details my-offer'
 
         div class: 'offer-form-wrapper', ->
-          div class: 'button offer-button', -> 'Make and Offer'
+          div class: 'button offer-button', -> 'Make an Offer'
 
         div id: 'listing-inquiries', -> h2 -> 'Frequently Asked Questions'
 
@@ -82,18 +68,14 @@ class hs.t.Listing extends hs.Template
       class: hs.t.OfferForm
       appendTo: '.offer-form-wrapper'
 
-    bestOffer:
-      class: hs.t.BestOffer
-      appendTo: '.best-offer'
-
-    myOffer:
-      class: hs.t.MyOffer
-      appendTo: '.my-offer'
+    offers:
+      class: hs.t.Offers
+      appendTo: '.listing .bottom'
 
 
   postRender: ->
-    this.model.relatedInquiries (inquiries) =>
-      this.inquiriesTmpl inquiries
+    this.model.relatedInquiries this.inquiriesTmpl
+    this.model.relatedOffers this.offersTmpl
 
     this.$('.twitter').html '
       <a href="http://twitter.com/share"
@@ -130,11 +112,18 @@ class hs.t.Listing extends hs.Template
 
     else
       this.model.myConvo (convo) =>
-        this.convoTmpl convo, listing: this.model
+        convo.relatedMessages (messages) =>
+          this.convoTmpl messages, convo: convo, listing: this.model
 
       this.$('.offer-button').show()
       this.model.myOffer (offer) =>
         this.offerFormTmpl offer, listing: this.model
+#        this.myOfferTmpl offer if offer?
+
+
+  setMyOffer: ->
+    this.myOfferTmpl.remove()
+    this.model.myOffer (offer) => this.myOfferTmpl offer if offer?
 
 
   setCreator: () ->
@@ -160,11 +149,6 @@ class hs.t.Listing extends hs.Template
 
   setPrice: () ->
     this.$('.asking.value').text "$#{this.model.price}"
-
-
-  setOffers: () ->
-    this.model.relatedOffers this.bestOfferTmpl
-    this.model.myOffer this.myOfferTmpl
 
 
   setLongitude: -> this.setLocation.apply this, arguments

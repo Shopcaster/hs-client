@@ -36,9 +36,12 @@ class hs.Template extends hs.EventEmitter
 
     else if not this.id?
       this.id = this.constructor.name
+      this.id = this.parent.id + '--' + this.id if this.parent?
 
       if this.model?._id?
         this.id += "-#{this.model._id}"
+
+      this.id = this.id.toLowerCase().replace '/', ''
 
 
   _init: ->
@@ -128,13 +131,17 @@ class hs.Template extends hs.EventEmitter
     if this.model?
       this.model.heat()
 
-      if _.isArray this.model #model list
+      if this.model instanceof Array #model list
+
         if this.addModel?
           this.model.on 'add', => this.addModel.apply this, arguments
         if this.removeModel?
           this.model.on 'remove', => this.removeModel.apply this, arguments
 
+        this.addModel m._id for m in this.model
+
       else
+
         for own field of this.model
           method = 'set'+ field.charAt(0).toUpperCase() + field.slice(1)
 
