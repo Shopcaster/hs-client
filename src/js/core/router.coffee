@@ -34,7 +34,9 @@ goTo = (url) ->
       break
 
 
-$('a').live 'click', (e) -> load $(e.target).attr('href')
+$('a').live 'click', (e) ->
+  e.preventDefault();
+  load $(e.target).attr('href')
 load = (url) ->
   if not Modernizr.history
     return document.location = url

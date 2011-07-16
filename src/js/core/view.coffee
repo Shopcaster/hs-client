@@ -65,3 +65,6 @@ class hs.View extends hs.EventEmitter
 
   _subViewRemove: (className, i) -> this.views[className].splice i, 1
 
+
+  remove: ->
+

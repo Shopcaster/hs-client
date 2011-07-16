@@ -28,7 +28,7 @@ class hs.t.TopBar extends hs.Template
 
   postRender: ->
     this.loginFormTmpl()
-    this.setName = _.bind this.setName this
+    this.setName = _.bind this.setName, this
 
 
   setAuth: (prev, cur) ->
@@ -47,7 +47,7 @@ class hs.t.TopBar extends hs.Template
         ").show()
 
     else
-      prev.removeListener 'name', this.setName
+      prev.removeListener 'name', this.setName if prev?
 
       this.$('.login').show()
       this.$('.logout').hide()
@@ -56,5 +56,7 @@ class hs.t.TopBar extends hs.Template
 
 
   setName: ->
-    this.$('.name').text zz.auth.curUser().name
+    user = zz.auth.curUser()
+    if user?
+      this.$('.name').text user.name
 

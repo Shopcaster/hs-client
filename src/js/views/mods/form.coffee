@@ -31,7 +31,7 @@ hs.v.mods.form = (View) ->
   View.prototype._validate = (clbk) ->
     fields = _.keys this.fields
 
-    do next = =>
+    next = =>
       name = fields.pop()
 
       return clbk true if not name?
@@ -55,6 +55,11 @@ hs.v.mods.form = (View) ->
 
       else
         next()
+
+    if this.validate?
+      this.validate next
+    else
+      next()
 
 
   View.prototype._submit = (e) ->
