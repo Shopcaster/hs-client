@@ -44,9 +44,24 @@ class hs.t.Offers extends hs.Template
     this._update this.$('.value.best-offer'), offers[0].amount
 
 
-  setMyOffer: (offer) ->
-    this._update this.$('.value.my-offer'), offer.amount
+  setMyOffer: ->
+    this._update this.$('.value.my-offer'), this.myOffer.amount
     this.setBestOffer()
+
+
+  setAuth: (prev, cur) ->
+    if this.myOffer?
+      this.myOffer.removeAllListener 'amount'
+      this.myOffer = null
+
+    if cur?
+      for id, offer of this.offers
+        if offer.creator == cur._id
+          this.myOffer = offer
+          this.myOffer.on 'amount', => this.setMyOffer
+          this.setMyOffer
+          break
+
 
 
   addModel: (offer, index) ->
@@ -54,10 +69,13 @@ class hs.t.Offers extends hs.Template
     this.offers[offer._id] = offer
 
     if offer.creator == zz.auth.curUser()?._id
-      offer.on 'amount', => this.setMyOffer offer
-      this.setMyOffer offer
+      this.myOffer = offer
+      this.myOffer.on 'amount', => this.setMyOffer
+      this.setMyOffer()
     else
       this.setBestOffer()
+
+    offer.on 'amount', => this.setBestOffer()
 
 
   removeModel: (offer, index) ->

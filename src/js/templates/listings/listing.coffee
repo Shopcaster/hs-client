@@ -75,6 +75,9 @@ class hs.t.Listing extends hs.Template
 
   postRender: ->
     this.model.relatedInquiries this.inquiriesTmpl
+    this.model.relatedOffers (offers) =>
+      console.log 'listing', this.model.hot, this.model._id, 'relatedOffers', offers
+      this.offersTmpl offers
 
     this.$('.twitter').html '
       <a href="http://twitter.com/share"
@@ -102,16 +105,12 @@ class hs.t.Listing extends hs.Template
 
   setAuth: (prev, cur) ->
     this.offerFormTmpl.remove()
-    this.offersTmpl.remove()
     this.newConvo()
-
-    this.model.relatedOffers this.offersTmpl
 
     if not cur? or this.model.creator != cur._id
       this.$('.offer-button').show()
 
-      this.model.myOffer (offer) =>
-        this.offerFormTmpl offer, listing: this.model
+      this.offerFormTmpl null, listing: this.model
 
     else
       this.$('.offer-button').hide()
