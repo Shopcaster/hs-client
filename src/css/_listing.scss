@@ -281,14 +281,23 @@
 
         .convo-list{
 
+            h2{
+                margin:0;
+                font-size:16px;
+                padding:10px;
+            }
+
             .convo-li{
-                min-height:35px;
-                padding:5px 10px;
+                min-height:45px;
+
+                border-top:1px solid $grey;
+                padding:10px 10px 0;
+
                 font-size:14px !important;
 
-                background-color:$grey;
-                &:hover{background-color:$grey - #111;}
-                &.open{background-color:$lightBlue;}
+                background-color:$lightBlue;
+                &:hover{background-color:$lightBlue - #111;}
+                &.open{background-color:$white;}
 
                 .actions{
                     margin-left:40px;
@@ -297,7 +306,7 @@
                 .offer{
                     float:right;
 
-                    font-size: 18px;
+                    font-size: 24px;
                     font-weight:bold;
                 }
 
@@ -309,7 +318,7 @@
                     border:none;
                     margin-bottom:10px;
 
-                    background-color:$lightBlue;
+                    background-color:$white;
                     @include box-shadow(0 1px 3px $black + #666);
                     @include angled-top();
 
@@ -325,6 +334,8 @@
             padding:10px 0;
 
             .message{
+
+                min-height:30px;
 
                 padding:10px 10px 0;
                 margin-top:10px;

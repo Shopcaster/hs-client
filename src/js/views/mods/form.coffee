@@ -68,7 +68,19 @@ hs.v.mods.form = (View) ->
       this.submit?.apply(this, arguments) if valid
 
 
+  View.prototype._cache = {}
+  View.prototype.cache = ->
+    for node in this.template.$('[name]')
+      node = $(node)
+      this._cache[node.attr('name')] = node.val()
+
+
+  View.prototype.unCache = -> this._cache = {}
+
+
   View.prototype.get = (fieldname) ->
+    if this._cache?[fieldname]?
+      return this._cache[fieldname]
     this.fields[fieldname].get()
 
 

@@ -10,7 +10,6 @@ class hs.t.ConvoLI extends hs.Template
   template: ->
     div class: 'convo-li', ->
       div class: 'offer', -> '$0'
-      div class: 'actions'
       div class: 'clicky'
 
 

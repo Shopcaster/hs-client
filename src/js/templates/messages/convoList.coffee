@@ -7,7 +7,7 @@ dep.provide 'hs.t.ConvoList'
 class hs.t.ConvoList extends hs.Template
 
   template: ->
-    div class: 'convo-list'
+    div class: 'convo-list', -> h2 'Buyer Messages'
 
 
   subTemplates:

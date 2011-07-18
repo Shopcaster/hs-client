@@ -16,7 +16,7 @@ class hs.t.TopBar extends hs.Template
       a href: '/how-it-works', -> 'How It Works'
       a href: 'https://getsatisfaction.com/hipsell', target: '_blank', -> 'Feedback'
       a href: '/settings/name', class: 'name'
-      a href: '/settings', class: 'settings', -> 'Settings'
+      a href: '/settings/name', class: 'settings', -> 'Settings'
       a href: 'javascript:;', class: 'logout', -> 'Logout'
       a href: 'javascript:;', class: 'login', -> 'Login'
 

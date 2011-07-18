@@ -124,12 +124,15 @@ class hs.t.Listing extends hs.Template
     user = zz.auth.curUser()
 
     if user? and this.model.creator == user._id
+      this.$('.message-button').hide()
+
       console.log 'subTemplate convoList'
       this.model.relatedConvos =>
         console.log 'with relatedConvos'
         this.convoListTmpl.apply(this, arguments)
 
     else
+      this.$('.message-button').show()
       this.model.myConvo (convo) =>
         if convo?
           convo.relatedMessages (messages) =>

@@ -13,28 +13,32 @@ hs.v.mods.authForm = (View) ->
 
   View.prototype.validateEmail = (clbk) ->
     return clbk true if zz.auth.curUser()?
-    clbk this.template.get('email')?
+    clbk this.get('email')?
 
 
   View.prototype.validatePassword = (clbk) ->
     return clbk true if zz.auth.curUser()?
-    clbk this.template.$('[name=password]:visible').length == 0 or this.template.get('password')?
+    clbk this.template.$('[name=password]:visible').length == 0 or this.get('password')?
 
 
   old_submit = View.prototype._submit
   View.prototype._submit = (e) ->
     e?.preventDefault()
 
-    if not zz.auth.curUser()?
-      zz.auth this.get('email'), this.get('password'), =>
-        this._authHandler.apply(this, arguments)
+    this._validate (valid) =>
+      if valid
+        if not zz.auth.curUser()?
+          this.cache()
+          zz.auth this.get('email'), this.get('password'), =>
+            this._authHandler.apply(this, arguments)
 
-    else
-      old_submit.apply(this, arguments)
+        else
+          this.submit?()
 
 
   View.prototype._authHandler = ->
-    return old_submit.apply this, arguments if zz.auth.curUser()?
+    if zz.auth.curUser()?
+      return this.submit? => this.unCache()
 
     if this.template.$('[name=password]:visible').length
       this.showInvalid 'password'

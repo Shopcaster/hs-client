@@ -40,7 +40,8 @@ class hs.v.MessageForm extends hs.View
         zz.data.convo convoId, (convo) =>
           this.options.convo = convo
           this.submit =>
-            this.template.parent.newConvo()
+            this.template.parent.newConvo?()
+            clbk?()
 
 
 
