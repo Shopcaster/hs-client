@@ -35,8 +35,11 @@ goTo = (url) ->
 
 
 $('a').live 'click', (e) ->
-  e.preventDefault();
-  load $(e.target).attr('href')
+  # Only handle relative links
+  if $(this).attr('href').substr(0, 4) != 'http'
+    e.preventDefault();
+    load $(e.target).attr('href')
+
 load = (url) ->
   if not Modernizr.history
     return document.location = url
