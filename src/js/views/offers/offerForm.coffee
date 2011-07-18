@@ -17,11 +17,13 @@ class hs.v.OfferForm extends hs.View
 
   submit: ->
     if this.template.model?
+      console.log 'updating offer'
       zz.update.offer this.template.model, amount: this.amount(), =>
         this.clear()
         this.blur()
 
     else
+      console.log 'creating offer'
       zz.create.offer
         amount: this.amount()
         listing: this.options.listing._id

@@ -24,7 +24,6 @@ class hs.t.Convo extends hs.Template
 
 
   postRender: ->
-    console.log 'messageFormTmpl', this.id
     this.messageFormTmpl null,
       convo: this.options.convo
       listing: this.options.listing

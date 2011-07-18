@@ -144,12 +144,12 @@
                     &.left{
                          margin-right:10px;
                         .title, .value{
-                            color:$red - #111;
+                            color:$green - #111;
                         }
                     }
                     &.middle{
                         .title, .value{
-                            color:$green - #111;
+                            color:$red - #111;
                         }
                     }
                     &.right{
@@ -178,10 +178,8 @@
 
     }
 
-    $buttonColor: $blue2;
-
     .offer-form-wrapper{
-        @include light-button($buttonColor);
+        @include light-button($green);
 
         .offer-button{
             font-size:18px;
@@ -228,14 +226,16 @@
         padding-left:10px !important;
     }
 
+    $messageHeaderColor: $blue2;
+
     .message-button, .offer-button.open{
 
         font-weight:bold;
 
-        border:1px solid $buttonColor - #333;
-        background-color:$buttonColor;
+        border:1px solid $messageHeaderColor - #333;
+        background-color:$messageHeaderColor;
         @include box-shadow((0 1px 2px $black));
-        @include gradient($buttonColor + #080808, $buttonColor - #080808);
+        @include gradient($messageHeaderColor + #080808, $messageHeaderColor - #080808);
         @include rounded-top();
         @include angled-bottom();
 

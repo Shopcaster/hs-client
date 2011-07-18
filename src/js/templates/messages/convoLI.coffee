@@ -9,7 +9,7 @@ class hs.t.ConvoLI extends hs.Template
 
   template: ->
     div class: 'convo-li', ->
-      div class: 'offer'
+      div class: 'offer', -> '$0'
       div class: 'actions'
       div class: 'clicky'
 
@@ -23,8 +23,8 @@ class hs.t.ConvoLI extends hs.Template
 
   postRender: ->
     zz.data.listing this.model.listing, (listing) =>
-      this.model.relatedConvos (convos) =>
-        this.convoTmpl convos
+      this.model.relatedMessages (messages) =>
+        this.convoTmpl messages,
           convo: this.model
           listing: listing
           focusSelector: "##{this.id}"

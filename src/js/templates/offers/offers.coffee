@@ -5,7 +5,7 @@ dep.provide 'hs.t.Offers'
 
 class hs.t.Offers extends hs.Template
 
-  offers: []
+  offers: {}
   id: 'listing-offerbar'
 
 
@@ -38,38 +38,35 @@ class hs.t.Offers extends hs.Template
 
 
   setBestOffer: ->
-    offers = _.toArray this.offers
+    offers = _.values this.offers
     offers.sort (o1, o2) -> o2.amount - o1.amount
 
     this._update this.$('.value.best-offer'), offers[0].amount
 
 
   setMyOffer: (offer) ->
-    console.log 'myOffer:', offer
     this._update this.$('.value.my-offer'), offer.amount
+    this.setBestOffer()
 
 
   addModel: (offer, index) ->
     offer.heat()
+    this.offers[offer._id] = offer
 
     if offer.creator == zz.auth.curUser()?._id
       offer.on 'amount', => this.setMyOffer offer
       this.setMyOffer offer
-
-    if index?
-      this.offers.splice index, 0, offer
-
     else
-      this.offers.push offer
-
-    this.setBestOffer()
+      this.setBestOffer()
 
 
-  removeModel: (id, index) ->
-    offer = this.offers.splice index, 1
+  removeModel: (offer, index) ->
     offer.freeze()
+    delete this.offers[offer._id]
 
     this.setBestOffer()
 
 
-  preRemove: -> offer.freeze() if offer.hot for offer in this.offers
+  preRemove: ->
+    for id, offer of this.offers
+      offer.freeze() if offer.hot

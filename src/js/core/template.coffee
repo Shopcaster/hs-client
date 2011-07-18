@@ -135,7 +135,8 @@ class hs.Template extends hs.EventEmitter
   _listenOnModel: ->
     if this.model?
       if this.options.heat != false
-        console.log this.constructor.name, 'heating', this.model.constructor.name, this.model._id
+        if this.model instanceof zz.models.ConvoList
+          console.log 'heating ConvoList for', this.constructor.name
         this.model.heat()
 
       if this.model instanceof Array #model list
@@ -145,7 +146,7 @@ class hs.Template extends hs.EventEmitter
         if this.removeModel?
           this.model.on 'remove', => this.removeModel.apply this, arguments
 
-        this.addModel m for m in this.model
+        this.addModel m, -1 for m in this.model
 
       else
 
@@ -203,8 +204,10 @@ class hs.Template extends hs.EventEmitter
     this._removeMeta()
 
     if this.options.heat != false
-      console.log this.constructor.name, 'freezing', this.model?._id
-      this.model?.freeze()
+      if this.model?
+        if this.model instanceof zz.models.ConvoList
+          console.log 'freezing ConvoList for', this.constructor.name
+        this.model.freeze()
 
     this.postRemove?()
     this.emit('postRemove')

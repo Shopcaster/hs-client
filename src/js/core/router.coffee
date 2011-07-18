@@ -59,7 +59,6 @@ $ -> zz.init -> goTo document.location.pathname
 
 
 zz.auth.on 'change', ->
-  console.log 'auth change'
   newUser = zz.auth.curUser()
   current.t?.authChange user, newUser
 

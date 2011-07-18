@@ -17,6 +17,7 @@ class hs.t.ConvoList extends hs.Template
 
 
   addModel: (convo, index) ->
+    index = undefined if index == -1
     this.convoLITmpl convo, {nthChild: index}
 
 

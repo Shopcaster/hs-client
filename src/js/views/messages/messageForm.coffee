@@ -9,6 +9,12 @@ dep.provide 'hs.v.MessageForm'
 
 class hs.v.MessageForm extends hs.View
 
+
+  answerPublicly: (question) ->
+    this.options.question = question
+    this.template.$('[name=question]').val(question).show()
+
+
   submit: (clbk) ->
     if this.options.convo?
       zz.create.message
@@ -26,16 +32,15 @@ class hs.v.MessageForm extends hs.View
             question: this.get 'question'
             answer: this.get 'message'
             =>
-              this.$('#question').hide()
+              this.template.$('#question').hide().val('')
               this.options.question = null
 
     else
-      console.log 'MessageForm creating cono'
       zz.create.convo listing: this.options.listing, (convoId) =>
         zz.data.convo convoId, (convo) =>
           this.options.convo = convo
           this.submit =>
-            this.parent.template.newConvo()
+            this.template.parent.newConvo()
 
 
 

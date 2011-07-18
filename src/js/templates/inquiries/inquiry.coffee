@@ -1,5 +1,7 @@
 
 dep.require 'hs.Template'
+dep.require 'hs.t.InlineUser'
+
 dep.provide 'hs.t.Inquiry'
 
 class hs.t.Inquiry extends hs.Template
@@ -17,9 +19,9 @@ class hs.t.Inquiry extends hs.Template
       class: hs.t.InlineUser
 
 
-  setCreator: ->
-    zz.data.creator this.model.creator, (creator) =>
-      this.userTmpl creator, prependTo: "inquiry-#{this.model._id}"
+#  setCreator: ->
+#    zz.data.user this.model.creator, (creator) =>
+#      this.userTmpl creator, prependTo: '#'+this.id
 
 
   setQuestion: ->

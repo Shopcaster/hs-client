@@ -15,9 +15,15 @@ class hs.View extends hs.EventEmitter
   constructor: (@template, @options) ->
     this.modInit()
 
+    this._moveOptions()
     this._registerDomEvents()
     this._registerTmplEvents()
     this._subViewsStart()
+
+
+  _moveOptions: ->
+    if this.options?
+      if this.options.parent? then this.parent = this.options.parent
 
 
   _registerDomEvents: ->
@@ -34,7 +40,6 @@ class hs.View extends hs.EventEmitter
       else
         node = this.template.el
 
-      console.log 'binding', this.template.id, event, methodName
       node.bind event, =>
         this[methodName].apply(this, arguments)
 
@@ -53,7 +58,9 @@ class hs.View extends hs.EventEmitter
   _subViewAdd: (className, tmpl, i) ->
     View = hs.v[className] or hs.View
 
-    view = new View tmpl, tmpl.options
+    options = _.extend {}, tmpl.options, {parent: this}
+
+    view = new View tmpl, options
 
     this.views[className] ||= []
 

@@ -18,11 +18,18 @@ hs.v.mods.dialog = (View) ->
     if not this.focusSelector?
       throw new Error 'Cannot create dialog with no focusSelector.'
 
+    if not this.template.el
+      throw new Error 'cannot creator a dialog without a template element'
+
     this._dialogSetMousedown()
     this.blur = _.bind this.blur, this
 
     this.template.el.addClass('dialog')
     this._dialogSetBlur()
+
+    this.template.on 'preRemove', =>
+      $('body').unbind('click', this.blur)
+      $(this.focusSelector).unbind('click mousedown')
 
 
   View.prototype._dialogSetMousedown = ->

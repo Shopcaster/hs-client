@@ -103,28 +103,31 @@ class hs.t.Listing extends hs.Template
   setAuth: (prev, cur) ->
     this.offerFormTmpl.remove()
     this.offersTmpl.remove()
+    this.newConvo()
 
     this.model.relatedOffers this.offersTmpl
 
     if not cur? or this.model.creator != cur._id
-
       this.$('.offer-button').show()
+
       this.model.myOffer (offer) =>
         this.offerFormTmpl offer, listing: this.model
-#        this.myOfferTmpl offer if offer?
 
     else
       this.$('.offer-button').hide()
 
 
-  newconvo: ->
+  newConvo: ->
     this.convoTmpl.remove()
     this.convoListTmpl.remove()
 
     user = zz.auth.curUser()
 
     if user? and this.model.creator == user._id
-      this.model.relatedConvos this.convoListTmpl
+      console.log 'subTemplate convoList'
+      this.model.relatedConvos =>
+        console.log 'with relatedConvos'
+        this.convoListTmpl.apply(this, arguments)
 
     else
       this.model.myConvo (convo) =>
@@ -133,12 +136,6 @@ class hs.t.Listing extends hs.Template
             this.convoTmpl messages, convo: convo, listing: this.model
         else
           this.convoTmpl null, listing: this.model
-
-
-
-  setMyOffer: ->
-    this.myOfferTmpl.remove()
-    this.model.myOffer (offer) => this.myOfferTmpl offer if offer?
 
 
   setCreator: () ->
