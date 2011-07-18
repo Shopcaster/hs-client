@@ -72,4 +72,4 @@ class hs.t.Offers extends hs.Template
     this.setBestOffer()
 
 
-  preRemove: -> offer.freeze() for offer in this.offers
+  preRemove: -> offer.freeze() if offer.hot for offer in this.offers

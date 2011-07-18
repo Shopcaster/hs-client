@@ -10,7 +10,7 @@ class hs.t.MessageForm extends hs.Template
   template: ->
     form ->
       span class: 'formFields'
-      input type: 'submit', class: 'submit'
+      input type: 'submit', class: 'submit', value: 'Submit'
 
 
   fields: [{
@@ -23,6 +23,7 @@ class hs.t.MessageForm extends hs.Template
     'type': 'text'
     'placeholder': 'Message'
   }]
+
 
 
 hs.t.mods.form hs.t.MessageForm

@@ -33,6 +33,7 @@ hs.t.mods.authForm = (Template) ->
 
     if not user?
       this.$('input[name=email]').show()
+
     else
       this.$('input[name=email]').hide()
       this.$('input[name=password]').hide()

@@ -28,6 +28,7 @@ hs.t.mods.form = (Template) ->
       return if not Field?
 
       fieldOpts.appendTo = "##{this.el.attr('id')} .formFields"
+      fieldOpts.id = "#{this.id}_#{fieldOpts.name}Field"
 
       field = new Field null, fieldOpts
 

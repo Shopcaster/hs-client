@@ -4,6 +4,7 @@ dep.require 'hs.t.MessageForm'
 dep.require 'hs.t.Message'
 
 dep.provide 'hs.t.Convo'
+dep.provide 'hs.t.ConvoDialog'
 
 class hs.t.Convo extends hs.Template
 
@@ -23,7 +24,10 @@ class hs.t.Convo extends hs.Template
 
 
   postRender: ->
-    this.messageFormTmpl null, convo: this.options.convo, listing: this.options.listing
+    console.log 'messageFormTmpl', this.id
+    this.messageFormTmpl null,
+      convo: this.options.convo
+      listing: this.options.listing
 
 
   addModel: (msg, index) ->
@@ -33,3 +37,8 @@ class hs.t.Convo extends hs.Template
 
   removeModel: (id, index) ->
     this.removeTmpl index
+
+
+  newconvo: -> this.parent.newConvo?()
+
+class hs.t.ConvoDialog extends hs.t.Convo

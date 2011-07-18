@@ -34,6 +34,7 @@ class hs.View extends hs.EventEmitter
       else
         node = this.template.el
 
+      console.log 'binding', this.template.id, event, methodName
       node.bind event, =>
         this[methodName].apply(this, arguments)
 

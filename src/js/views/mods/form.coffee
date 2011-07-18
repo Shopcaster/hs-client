@@ -63,7 +63,7 @@ hs.v.mods.form = (View) ->
 
 
   View.prototype._submit = (e) ->
-    e.preventDefault()
+    e?.preventDefault()
     this._validate (valid) =>
       this.submit?.apply(this, arguments) if valid
 

@@ -101,16 +101,30 @@ class hs.t.Listing extends hs.Template
 
 
   setAuth: (prev, cur) ->
-    this.convoTmpl.remove()
-    this.convoListTmpl.remove()
     this.offerFormTmpl.remove()
     this.offersTmpl.remove()
 
     this.model.relatedOffers this.offersTmpl
 
-    if cur? and this.model.creator == cur._id
-      this.model.relatedConvos this.convoListTmpl
+    if not cur? or this.model.creator != cur._id
+
+      this.$('.offer-button').show()
+      this.model.myOffer (offer) =>
+        this.offerFormTmpl offer, listing: this.model
+#        this.myOfferTmpl offer if offer?
+
+    else
       this.$('.offer-button').hide()
+
+
+  newconvo: ->
+    this.convoTmpl.remove()
+    this.convoListTmpl.remove()
+
+    user = zz.auth.curUser()
+
+    if user? and this.model.creator == user._id
+      this.model.relatedConvos this.convoListTmpl
 
     else
       this.model.myConvo (convo) =>
@@ -120,10 +134,6 @@ class hs.t.Listing extends hs.Template
         else
           this.convoTmpl null, listing: this.model
 
-      this.$('.offer-button').show()
-      this.model.myOffer (offer) =>
-        this.offerFormTmpl offer, listing: this.model
-#        this.myOfferTmpl offer if offer?
 
 
   setMyOffer: ->

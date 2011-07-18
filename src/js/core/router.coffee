@@ -45,8 +45,17 @@ load = (url) ->
   goTo url
 
 
+
+popped = `('state' in window.history)`
+initialURL = location.href
 window.onpopstate = ->
-  $ -> zz.init -> goTo document.location.pathname
+  initialPop = !popped and location.href == initialURL
+  popped = true
+  return if initialPop
+
+  goTo document.location.pathname
+
+$ -> zz.init -> goTo document.location.pathname
 
 
 zz.auth.on 'change', ->

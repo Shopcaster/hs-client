@@ -22,17 +22,12 @@ hs.v.mods.authForm = (View) ->
 
 
   old_submit = View.prototype._submit
-  View.prototype._submit = ->
+  View.prototype._submit = (e) ->
+    e?.preventDefault()
 
     if not zz.auth.curUser()?
-
-      if not this.template.$('[name=password]:visible').length
-        zz.auth this.template.get('email'), =>
-          this._authHandler.apply(this, arguments)
-
-      else
-        zz.auth this.template.get('email'), this.template.get('password'), =>
-          this._authHandler.apply(this, arguments)
+      zz.auth this.get('email'), this.get('password'), =>
+        this._authHandler.apply(this, arguments)
 
     else
       old_submit.apply(this, arguments)

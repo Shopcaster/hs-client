@@ -36,7 +36,7 @@ class hs.Template extends hs.EventEmitter
 
     else if not this.id?
       this.id = this.constructor.name
-      this.id = this.parent.id + '--' + this.id if this.parent?
+      this.id = this.parent.id + '_' + this.id if this.parent?
 
       if this.model?._id?
         this.id += "-#{this.model._id}"
@@ -134,7 +134,9 @@ class hs.Template extends hs.EventEmitter
 
   _listenOnModel: ->
     if this.model?
-      this.model.heat()
+      if this.options.heat != false
+        console.log this.constructor.name, 'heating', this.model.constructor.name, this.model._id
+        this.model.heat()
 
       if this.model instanceof Array #model list
 
@@ -191,7 +193,6 @@ class hs.Template extends hs.EventEmitter
     this.emit('preRemove')
     this.preRemove?()
 
-    console.log 'removing', this.constructor.name, 'freezing all subs'
     for name, templates of this.templates
       for tmpl in templates
         tmpl.remove()
@@ -200,7 +201,10 @@ class hs.Template extends hs.EventEmitter
     this.el = null
     this.$ = null
     this._removeMeta()
-    this.model?.freeze()
+
+    if this.options.heat != false
+      console.log this.constructor.name, 'freezing', this.model?._id
+      this.model?.freeze()
 
     this.postRemove?()
     this.emit('postRemove')

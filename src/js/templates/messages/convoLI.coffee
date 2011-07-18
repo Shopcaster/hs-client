@@ -1,5 +1,8 @@
 
 dep.require 'hs.Template'
+dep.require 'hs.t.InlineUser'
+dep.require 'hs.t.ConvoDialog'
+
 dep.provide 'hs.t.ConvoLI'
 
 class hs.t.ConvoLI extends hs.Template
@@ -14,12 +17,24 @@ class hs.t.ConvoLI extends hs.Template
   subTemplates:
     user:
       class: hs.t.InlineUser
+    convo:
+      class: hs.t.ConvoDialog
+
+
+  postRender: ->
+    zz.data.listing this.model.listing, (listing) =>
+      this.model.relatedConvos (convos) =>
+        this.convoTmpl convos
+          convo: this.model
+          listing: listing
+          focusSelector: "##{this.id}"
+          appendTo: "##{this.id}"
 
 
   setCreator: ->
-    zz.data.creator this.model.creator, (creator) =>
-      this.userTmpl creator, prependTo: "convo-li-#{this.model._id}"
+    zz.data.user this.model.creator, (creator) =>
+      this.userTmpl creator, prependTo: '#'+this.id
 
       zz.data.listing this.model.listing, (listing) =>
         listing.offerForUser creator, (offer) =>
-          this.$('.offer').text "$#{offer.amount}"
+          this.$('.offer').text "$#{offer.amount}" if offer?

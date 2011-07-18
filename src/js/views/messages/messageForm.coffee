@@ -9,14 +9,14 @@ dep.provide 'hs.v.MessageForm'
 
 class hs.v.MessageForm extends hs.View
 
-  focusSelector: '.message-button'
-
-  submit: ->
+  submit: (clbk) ->
     if this.options.convo?
       zz.create.message
         message: this.get('message')
         convo: this.options.convo._id
-        => this.clear()
+        =>
+          this.clear()
+          clbk?()
 
       if this.options.question?
         zz.data.listing this.options.convo.listing, (listing) =>
@@ -30,10 +30,12 @@ class hs.v.MessageForm extends hs.View
               this.options.question = null
 
     else
+      console.log 'MessageForm creating cono'
       zz.create.convo listing: this.options.listing, (convoId) =>
         zz.data.convo convoId, (convo) =>
           this.options.convo = convo
-          this.submit()
+          this.submit =>
+            this.parent.template.newConvo()
 
 
 
