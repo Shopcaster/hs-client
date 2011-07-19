@@ -20,8 +20,8 @@ class hs.t.Listing extends hs.Template
 
       div class: 'section-left', ->
         div id: 'listing-image', -> img()
-        div id: 'listing-messages', ->
-          div class: 'message-button', -> 'Ask A Question'
+        div id: 'listing-messages', class: 'list-box', ->
+          h2 -> 'Ask A Question'
 
       div class: 'section-right', ->
         div id: 'listing-details', ->
@@ -40,11 +40,12 @@ class hs.t.Listing extends hs.Template
             a href: 'javascript:;', class: 'map-link', target: '_blank', ->
               img class: 'map'
 
+            div class: 'offer-form-wrapper', ->
+              div class: 'button offer-button', -> 'Make an Offer'
 
-        div class: 'offer-form-wrapper', ->
-          div class: 'button offer-button', -> 'Make an Offer'
 
-        div id: 'listing-inquiries', -> h2 -> 'Frequently Asked Questions'
+        div id: 'listing-inquiries', class: 'list-box', ->
+          h2 -> 'Frequently Asked Questions'
 
 
   subTemplates:
@@ -82,7 +83,7 @@ class hs.t.Listing extends hs.Template
     this.$('.twitter').html '
       <a href="http://twitter.com/share"
          class="twitter-share-button"
-         data-count="horizontal"
+         data-count="none"
          data-via="hipsellapp"
          data-text="Check out this awesome item for sale on Hipsell. Snap it up before it\'s too late.">
           Tweet
@@ -90,11 +91,11 @@ class hs.t.Listing extends hs.Template
       <script src="http://platform.twitter.com/widgets.js"></script>'
 
     this.$('.fb').html "
-      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/#{this.model._id}/&amp;href&amp;send=false&amp;layout=standard&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;width=200&amp;height=30\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:200px; height:30px;\" allowTransparency=\"true\"></iframe>"
+      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/#{this.model._id}/&amp;href&amp;send=false&amp;layout=standard&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;width=55&amp;height=30\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:55px; height:30px;\" allowTransparency=\"true\"></iframe>"
 
     this.$('.goog').html '
       <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-      <g:plusone size="medium" count="true"></g:plusone>'
+      <g:plusone size="medium" count="false"></g:plusone>'
 
     this.meta property: 'og:title', content: 'Listing at Hipsell'
     this.meta property: 'og:type', content: 'product'
@@ -109,11 +110,13 @@ class hs.t.Listing extends hs.Template
 
     if not cur? or this.model.creator != cur._id
       this.$('.offer-button').show()
+      this.$('.bottom').css 'height': 260
 
       this.offerFormTmpl null, listing: this.model
 
     else
       this.$('.offer-button').hide()
+      this.$('.bottom').css 'height': 210
 
 
   newConvo: ->
@@ -123,15 +126,13 @@ class hs.t.Listing extends hs.Template
     user = zz.auth.curUser()
 
     if user? and this.model.creator == user._id
-      this.$('.message-button').hide()
+      this.$('#listing-messages h2').text 'Buyer Messages'
 
-      console.log 'subTemplate convoList'
       this.model.relatedConvos =>
-        console.log 'with relatedConvos'
         this.convoListTmpl.apply(this, arguments)
 
     else
-      this.$('.message-button').show()
+      this.$('#listing-messages h2').text 'Ask A Question'
       this.model.myConvo (convo) =>
         if convo?
           convo.relatedMessages (messages) =>
@@ -172,7 +173,7 @@ class hs.t.Listing extends hs.Template
     lng = this.model.longitude
 
     this.$('img.map').attr 'src',
-      "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=450x100&sensor=false"
+      "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=380x100&sensor=false"
 
     this.$('.mapLink').attr 'href',
       "http://maps.google.com/?ll=#{lat},#{lng}&z=16"
