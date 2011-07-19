@@ -8,7 +8,7 @@ dep.provide 'hs.t.Message'
 class hs.t.Message extends hs.Template
 
   template: ->
-    div class: 'message', ->
+    div class: 'message li', ->
       div class: 'creator'
       div class: 'message-body'
       div class: 'actions'

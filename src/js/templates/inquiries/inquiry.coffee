@@ -7,7 +7,7 @@ dep.provide 'hs.t.Inquiry'
 class hs.t.Inquiry extends hs.Template
 
   template: ->
-    div class: 'inquiry', ->
+    div class: 'inquiry li', ->
       span class: 'created'
       div class: 'question'
       div class: 'answer'
@@ -33,5 +33,5 @@ class hs.t.Inquiry extends hs.Template
 
 
   setCreated: ->
-    since = _.since this.model.created
-    this.$('.created').text "#{since.num} #{since.text}"
+    #since = _.since this.model.created
+    #this.$('.created').text "#{since.num} #{since.text}"
