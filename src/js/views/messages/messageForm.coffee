@@ -16,32 +16,34 @@ class hs.v.MessageForm extends hs.View
 
 
   submit: (clbk) ->
-    if this.options.convo?
-      zz.create.message
-        message: this.get('message')
-        convo: this.options.convo._id
-        =>
-          this.clear()
-          clbk?()
+    this.options.listing.myConvo (convo) =>
+      if convo?
+        console.log 'adding message to convo', convo
+        zz.create.message
+          message: this.get('message')
+          convo: convo._id
+          =>
+            this.clear()
+            clbk?()
 
-      if this.options.question?
-        zz.data.listing this.options.convo.listing, (listing) =>
+        if this.options.question?
 
           zz.create.inquiry
-            listing: listing
+            listing: this.options.listing
             question: this.get 'question'
             answer: this.get 'message'
             =>
               this.template.$('#question').hide().val('')
               this.options.question = null
 
-    else
-      zz.create.convo listing: this.options.listing, (convoId) =>
-        zz.data.convo convoId, (convo) =>
-          this.options.convo = convo
-          this.submit =>
-            this.template.parent.newConvo?()
-            clbk?()
+      else
+        console.log 'creating new convo'
+        zz.create.convo listing: this.options.listing, (convoId) =>
+          zz.data.convo convoId, (convo) =>
+            this.options.convo = convo
+            this.submit =>
+              this.template.parent.newConvo?()
+              clbk?()
 
 
 

@@ -13,7 +13,6 @@ zz.models.Listing.prototype.offerForUser = (user, clbk) ->
   return clbk null if not user?
 
   this.relatedOffers (offers) =>
-    console.log 'offerForUser', this.hot, this._id, 'relatedOffers',  offers
     for offer in offers
       if offer.creator == user._id
         return clbk offer

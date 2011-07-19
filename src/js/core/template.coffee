@@ -199,8 +199,6 @@ class hs.Template extends hs.EventEmitter
         tmpl.remove()
 
     this.el?.remove()
-    this.el = null
-    this.$ = null
     this._removeMeta()
 
     if this.options.heat != false

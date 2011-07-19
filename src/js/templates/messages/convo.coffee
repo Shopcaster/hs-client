@@ -25,12 +25,12 @@ class hs.t.Convo extends hs.Template
 
   postRender: ->
     this.messageFormTmpl null,
-      convo: this.options.convo
       listing: this.options.listing
       appendTo: "##{this.id} .message-form"
 
 
   addModel: (msg, index) ->
+    console.log 'addModel', index
     index = undefined if index == -1
     this.messageTmpl msg,
       nthChild: index
@@ -38,7 +38,8 @@ class hs.t.Convo extends hs.Template
 
 
   removeModel: (id, index) ->
-    this.removeTmpl index
+    console.log 'removeModel', index
+    this.removeTmpl 'Message', index
 
 
   newConvo: -> this.parent.newConvo?()
