@@ -36,7 +36,7 @@ class hs.t.SocialSetting extends hs.Template
     ret = s.protocol + '://' + s.host + ':' + s.port + s.path
     ret += t + '/connect'
     ret += '?email=' + enc(user.email) +
-           '&password=' + enc(user.pass) +
+           '&password=' + enc(user.password) +
            '&return=' + enc(loc + '#!/social/connect/' + t)
 
     ret = '<a href="' + ret + '"><img src="/img/' + t +

@@ -18,6 +18,10 @@ class hs.v.PasswordSetting extends hs.View
   submit: ->
     zz.auth.changePassword this.get('oldPassword'), this.get('newPassword'), =>
       this.clear()
+      this.template.$('.confirm').fadeIn 200, =>
+        setTimeout =>
+          this.template.$('.confirm').fadeOut 200
+        , 1000
 
 
 
