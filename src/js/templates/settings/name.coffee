@@ -7,6 +7,7 @@ dep.provide 'hs.t.NameSetting'
 
 class hs.t.NameSetting extends hs.Template
 
+  authRequired: true
   appendTo: '#main'
 
   template: hs.settingsNav '''

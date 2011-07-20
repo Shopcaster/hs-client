@@ -24,6 +24,8 @@ goTo = (url) ->
         pathname: url
         parsedUrl: parsed.slice(1)
 
+      break if Template.prototype.authRequired and not zz.auth.curUser()?
+
       Template.get kwargs, (template) ->
         current.t = template
 
@@ -37,7 +39,8 @@ goTo = (url) ->
 $('a').live 'click', (e) ->
   location = $(e.target).attr('href')
 
-  return if location.test /^http:\/\//
+  return if /^http:\/\//.test location
+  return if /^javascript:;$/.test location
 
   e.preventDefault();
   load location

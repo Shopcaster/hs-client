@@ -16,11 +16,11 @@ class hs.Template extends hs.EventEmitter
   modInit: ->
 
   constructor: (@model, @options = {}) ->
-    this.modInit()
 
     this.emit('preConstructor')
     this._moveOptions()
     this._setupTemplates()
+    this.modInit()
     this._init()
     this.emit('postConstructor')
 
@@ -30,6 +30,7 @@ class hs.Template extends hs.EventEmitter
     if this.options.appendTo? then this.appendTo = this.options.appendTo
     if this.options.nthChild? then this.nthChild = this.options.nthChild
     if this.options.parent? then this.parent = this.options.parent
+    if this.options.authRequired? then this.authRequired = this.options.authRequired
 
     if this.options.id?
       this.id = this.options.id
