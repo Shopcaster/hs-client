@@ -124,7 +124,7 @@ class hs.Template extends hs.EventEmitter
         $(this.appendTo).append this.el
 
       else
-        $("#{this.appendTo}:nth-child(#{this.nthChild})").after this.el
+        $($(this.appendTo).children()[this.nthChild]).before this.el
 
       this.injected = true
 
@@ -136,16 +136,27 @@ class hs.Template extends hs.EventEmitter
   _listenOnModel: ->
     if this.model?
       if this.options.heat != false
-        if this.model instanceof zz.models.ConvoList
-          console.log 'heating ConvoList for', this.constructor.name
+
+        if this.model instanceof Array
+          console.log this.model._type, 'listeners: ', this.model._listeners
+
         this.model.heat()
 
       if this.model instanceof Array #model list
 
+        if this.sort?
+          this.model.sort this.sort
+
         if this.addModel?
+          console.log this.model._type, 'add', this.model
           this.model.on 'add', => this.addModel.apply this, arguments
+
         if this.removeModel?
           this.model.on 'remove', => this.removeModel.apply this, arguments
+
+
+        if this.model instanceof Array
+          console.log this.model._type, 'post listeners: ', this.model._listeners
 
         this.addModel m, -1 for m in this.model
 
@@ -204,8 +215,8 @@ class hs.Template extends hs.EventEmitter
 
     if this.options.heat != false
       if this.model?
-        if this.model instanceof zz.models.ConvoList
-          console.log 'freezing ConvoList for', this.constructor.name
+        if this.model instanceof Array
+          console.log this.model._type, 'freeze'
         this.model.freeze()
 
     this.postRemove?()

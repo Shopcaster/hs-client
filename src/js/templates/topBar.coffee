@@ -57,6 +57,5 @@ class hs.t.TopBar extends hs.Template
 
   setName: ->
     user = zz.auth.curUser()
-    if user?
-      this.$('.name').text user.name
+    this.$('.name').text user.name if user?
 
