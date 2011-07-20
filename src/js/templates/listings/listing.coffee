@@ -133,10 +133,8 @@ class hs.t.Listing extends hs.Template
     else
       this.$('#listing-messages h2').text 'Ask A Question'
       this.model.myConvo (convo) =>
-        console.log 'listing.newConvo mvConvo', convo
         if convo?
           convo.relatedMessages (messages) =>
-            console.log 'listing.newConvo relatedMessages', messages
             this.convoTmpl messages, convo: convo, listing: this.model
         else
           this.convoTmpl null, listing: this.model

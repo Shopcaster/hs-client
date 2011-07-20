@@ -7,6 +7,7 @@ dep.provide 'hs.t.PasswordSetting'
 
 class hs.t.PasswordSetting extends hs.Template
 
+  authRequired: true
   appendTo: '#main'
 
   template: hs.settingsNav '''

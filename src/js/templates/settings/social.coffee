@@ -7,6 +7,7 @@ dep.provide 'hs.t.SocialSetting'
 
 class hs.t.SocialSetting extends hs.Template
 
+  authRequired: true
   appendTo: '#main'
 
   template: hs.settingsNav '''
