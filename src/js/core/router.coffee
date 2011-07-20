@@ -39,7 +39,7 @@ goTo = (url) ->
 $('a').live 'click', (e) ->
   location = $(this).attr('href')
 
-  return if /^http:\/\//.test location
+  return if /^https?:\/\//.test location
   return if /^javascript:;$/.test location
 
   e.preventDefault();
