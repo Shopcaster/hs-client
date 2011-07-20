@@ -52,16 +52,22 @@ class hs.t.SocialSetting extends hs.Template
     return if not user?
 
     if user.fb
-      this.$('#linked').append($(this._buildl(fb, 'fb', 'Facebook')))
+      this.$('#linked').append($(this._buildl(user.fb, 'fb', 'Facebook')))
 
     else
       this.$('#unlinked').append($(this._buildu('fb', 'Facebook')));
 
 
     if user.twitter
-      this.$('#linked').append($(this._buildl(twitter, 'twitter', 'Twitter')))
+      this.$('#linked').append($(this._buildl(user.twitter, 'twitter', 'Twitter')))
 
     else
       this.$('#unlinked').append($(this._buildu('twitter', 'Twitter')))
 
+    ###
+    if user.linkedin
+      this.$('#linked').append($(this._buildl(user.linkedin, 'linkedin', 'Facebook')))
+    else
+      this.$('#unlinked').append($(this._buildu('linkedin', 'LinkedIn')))
+    ###
 

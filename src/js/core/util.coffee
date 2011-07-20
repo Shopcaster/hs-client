@@ -43,7 +43,8 @@ _.mixin
                   return {'text': 'just now', 'num': 0};
 
     else
-      throw new Error('_.since only accepts dates from the past', date)
+      #throw new Error('_.since only accepts dates from the past', date)
+      return {'text': 'the future', 'num': 0};
 
 
   toRad: (n) ->

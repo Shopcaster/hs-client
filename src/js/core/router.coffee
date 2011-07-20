@@ -37,7 +37,7 @@ goTo = (url) ->
 
 
 $('a').live 'click', (e) ->
-  location = $(e.target).attr('href')
+  location = $(this).attr('href')
 
   return if /^http:\/\//.test location
   return if /^javascript:;$/.test location
