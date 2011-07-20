@@ -34,7 +34,7 @@ class hs.t.HowItWorks extends hs.Template
 
       h4 'I found a bug/I need more help. What should I do?'
       p '''
-          Head to our <a href="https://getsatisfaction.com/hipsell">
+          Head to our <a target="_blank" href="https://getsatisfaction.com/hipsell">
           GetSatisfaction</a> page and we'll help you out.
         '''
 
