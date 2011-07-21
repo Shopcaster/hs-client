@@ -11,6 +11,5 @@ class hs.v.Message extends hs.View
 
 
   answerPublicly: ->
-    console.log 'Message answerPublicly', this
     this.parent.answerPublicly this.template.model.message
 

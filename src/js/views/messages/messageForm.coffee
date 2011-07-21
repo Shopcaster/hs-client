@@ -11,7 +11,6 @@ class hs.v.MessageForm extends hs.View
 
 
   answerPublicly: (question) ->
-    console.log 'MessageForm answerPublicly', this
     this.options.question = question
     this.template.$('[name=question]').val(question).show()
 

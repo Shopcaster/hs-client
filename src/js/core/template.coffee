@@ -136,10 +136,6 @@ class hs.Template extends hs.EventEmitter
   _listenOnModel: ->
     if this.model?
       if this.options.heat != false
-
-        if this.model instanceof Array
-          console.log this.model._type, 'listeners: ', this.model._listeners
-
         this.model.heat()
 
       if this.model instanceof Array #model list
@@ -148,15 +144,10 @@ class hs.Template extends hs.EventEmitter
           this.model.sort this.sort
 
         if this.addModel?
-          console.log this.model._type, 'add', this.model
           this.model.on 'add', => this.addModel.apply this, arguments
 
         if this.removeModel?
           this.model.on 'remove', => this.removeModel.apply this, arguments
-
-
-        if this.model instanceof Array
-          console.log this.model._type, 'post listeners: ', this.model._listeners
 
         this.addModel m, -1 for m in this.model
 
@@ -215,8 +206,6 @@ class hs.Template extends hs.EventEmitter
 
     if this.options.heat != false
       if this.model?
-        if this.model instanceof Array
-          console.log this.model._type, 'freeze'
         this.model.freeze()
 
     this.postRemove?()
