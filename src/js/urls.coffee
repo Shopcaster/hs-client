@@ -7,11 +7,13 @@ dep.require 'hs.t.About'
 dep.require 'hs.t.HowItWorks'
 dep.require 'hs.t.NameSetting'
 dep.require 'hs.t.SocialSetting'
+dep.require 'hs.t.SocialResponse'
 
 hs.urls =
-  '^/(listing/\\d+)/?': hs.t.Listing
-  '^/about/?': hs.t.About
-  '^/how-it-works/?': hs.t.HowItWorks
-  '^/settings/name/?': hs.t.NameSetting
-  '^/settings/password/?': hs.t.PasswordSetting
-  '^/settings/social/?': hs.t.SocialSetting
+  '^/(listing/\\d+)': hs.t.Listing
+  '^/about': hs.t.About
+  '^/how-it-works': hs.t.HowItWorks
+  '^/settings/name': hs.t.NameSetting
+  '^/settings/password': hs.t.PasswordSetting
+  '^/settings/social': hs.t.SocialSetting
+  '^/social/connect/(\\w+)': hs.t.SocialResponse

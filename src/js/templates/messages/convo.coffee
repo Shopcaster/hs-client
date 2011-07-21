@@ -23,24 +23,31 @@ class hs.t.Convo extends hs.Template
       appendTo: '.message-form'
 
 
+  sort: (one, two) ->  two.created - one.created
+
+
   postRender: ->
     this.messageFormTmpl null,
-      convo: this.options.convo
       listing: this.options.listing
+      convo: this.options.convo
       appendTo: "##{this.id} .message-form"
 
 
   addModel: (msg, index) ->
+    console.log 'addModel', index, msg._id
     index = undefined if index == -1
+
     this.messageTmpl msg,
       nthChild: index
       appendTo: "##{this.id} .message-list"
 
 
   removeModel: (id, index) ->
-    this.removeTmpl index
+    console.log 'removeModel', index
+    this.removeTmpl 'Message', index
 
 
   newConvo: -> this.parent.newConvo?()
+
 
 class hs.t.ConvoDialog extends hs.t.Convo

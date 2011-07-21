@@ -7,6 +7,7 @@ dep.provide 'hs.t.PasswordSetting'
 
 class hs.t.PasswordSetting extends hs.Template
 
+  authRequired: true
   appendTo: '#main'
 
   template: hs.settingsNav '''
@@ -17,6 +18,7 @@ class hs.t.PasswordSetting extends hs.Template
     <form id="password-form">
       <span class="formFields"></span>
       <input type="submit" />
+      <span class="confirm">saved</span>
     </form>
     '''
 

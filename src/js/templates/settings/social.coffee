@@ -7,6 +7,7 @@ dep.provide 'hs.t.SocialSetting'
 
 class hs.t.SocialSetting extends hs.Template
 
+  authRequired: true
   appendTo: '#main'
 
   template: hs.settingsNav '''
@@ -36,8 +37,8 @@ class hs.t.SocialSetting extends hs.Template
     ret = s.protocol + '://' + s.host + ':' + s.port + s.path
     ret += t + '/connect'
     ret += '?email=' + enc(user.email) +
-           '&password=' + enc(user.pass) +
-           '&return=' + enc(loc + '#!/social/connect/' + t)
+           '&password=' + enc(user.password) +
+           '&return=' + enc(loc + '/social/connect/' + t)
 
     ret = '<a href="' + ret + '"><img src="/img/' + t +
           '.png" alt="' + l + '"></a>'
@@ -51,16 +52,22 @@ class hs.t.SocialSetting extends hs.Template
     return if not user?
 
     if user.fb
-      this.$('#linked').append($(this._buildl(fb, 'fb', 'Facebook')))
+      this.$('#linked').append($(this._buildl(user.fb, 'fb', 'Facebook')))
 
     else
       this.$('#unlinked').append($(this._buildu('fb', 'Facebook')));
 
 
     if user.twitter
-      this.$('#linked').append($(this._buildl(twitter, 'twitter', 'Twitter')))
+      this.$('#linked').append($(this._buildl(user.twitter, 'twitter', 'Twitter')))
 
     else
       this.$('#unlinked').append($(this._buildu('twitter', 'Twitter')))
 
+    ###
+    if user.linkedin
+      this.$('#linked').append($(this._buildl(user.linkedin, 'linkedin', 'Facebook')))
+    else
+      this.$('#unlinked').append($(this._buildu('linkedin', 'LinkedIn')))
+    ###
 

@@ -26,6 +26,10 @@ class hs.t.Offers extends hs.Template
         div class: 'details my-offer'
 
 
+  postRender: ->
+    this.$('.asking.value').text "$#{this.options.listing.price}"
+
+
   _update: (node, amount) ->
     animate = node.text() != ''
 
@@ -46,7 +50,6 @@ class hs.t.Offers extends hs.Template
 
   setMyOffer: ->
     this._update this.$('.value.my-offer'), this.myOffer.amount
-    this.setBestOffer()
 
 
   setAuth: (prev, cur) ->
@@ -68,14 +71,18 @@ class hs.t.Offers extends hs.Template
     offer.heat()
     this.offers[offer._id] = offer
 
+    console.log 'addModel', offer
+
     if offer.creator == zz.auth.curUser()?._id
+      console.log 'myOffer', offer
       this.myOffer = offer
-      this.myOffer.on 'amount', => this.setMyOffer
+      this.myOffer.on 'amount', => this.setMyOffer()
       this.setMyOffer()
     else
-      this.setBestOffer()
+      console.log 'not myOffer', offer.creator, zz.auth.curUser()?._id
 
     offer.on 'amount', => this.setBestOffer()
+    this.setBestOffer()
 
 
   removeModel: (offer, index) ->
@@ -85,6 +92,4 @@ class hs.t.Offers extends hs.Template
     this.setBestOffer()
 
 
-  preRemove: ->
-    for id, offer of this.offers
-      offer.freeze() if offer.hot
+  preRemove: -> offer.freeze() for id, offer of this.offers

@@ -24,6 +24,8 @@ goTo = (url) ->
         pathname: url
         parsedUrl: parsed.slice(1)
 
+      break if Template.prototype.authRequired and not zz.auth.curUser()?
+
       Template.get kwargs, (template) ->
         current.t = template
 
@@ -35,10 +37,14 @@ goTo = (url) ->
 
 
 $('a').live 'click', (e) ->
-  # Only handle relative links
-  if $(this).attr('href').substr(0, 4) != 'http'
-    e.preventDefault();
-    load $(e.target).attr('href')
+
+  location = $(this).attr('href')
+
+  return if /^https?:\/\//.test location
+  return if /^javascript:;$/.test location
+
+  e.preventDefault();
+  load location
 
 load = (url) ->
   if not Modernizr.history

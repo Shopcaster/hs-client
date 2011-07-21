@@ -16,7 +16,7 @@ _.mixin
 
     now = since || new Date();
 
-    if (date < now)
+    if (date <= now)
       if (date.getFullYear() < now.getFullYear())
         return {'text': 'Years ago', 'num': now.getFullYear() - date.getFullYear()}
 
@@ -43,7 +43,8 @@ _.mixin
                   return {'text': 'just now', 'num': 0};
 
     else
-      hs.error('_.since only accepts dates from the past', date)
+      #throw new Error('_.since only accepts dates from the past', date)
+      return {'text': 'the future', 'num': 0};
 
 
   toRad: (n) ->

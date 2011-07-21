@@ -77,8 +77,7 @@ class hs.t.Listing extends hs.Template
   postRender: ->
     this.model.relatedInquiries this.inquiriesTmpl
     this.model.relatedOffers (offers) =>
-      console.log 'listing', this.model.hot, this.model._id, 'relatedOffers', offers
-      this.offersTmpl offers
+      this.offersTmpl offers, listing: this.model
 
     this.$('.twitter').html '
       <a href="http://twitter.com/share"
@@ -110,7 +109,7 @@ class hs.t.Listing extends hs.Template
 
     if not cur? or this.model.creator != cur._id
       this.$('.offer-button').show()
-      this.$('.bottom').css 'height': 260
+      this.$('.bottom').css 'height': 255
 
       this.offerFormTmpl null, listing: this.model
 

@@ -274,15 +274,26 @@ $section_width: ($layout_width - 15)/2;
                 input{
                     display:block;
                     width:100%;
+                    margin-bottom:5px;
                 }
 
                 @include dark-button($blue - #444, '[type=submit]');
                 input[type=submit]{
                     width:77px !important;
                     color:$white !important;
-                    margin-bottom:0;
-                    margin-top:5px;
                     float:right;
+                }
+
+                .confirm{
+                    display:none;
+                    margin:5px 5px 0;
+                    float:right;
+                    color:$green;
+                }
+            }
+            #unlinked, #linked{
+                a{
+                    margin-right:5px;
                 }
             }
         }

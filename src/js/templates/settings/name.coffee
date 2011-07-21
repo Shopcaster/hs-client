@@ -7,6 +7,7 @@ dep.provide 'hs.t.NameSetting'
 
 class hs.t.NameSetting extends hs.Template
 
+  authRequired: true
   appendTo: '#main'
 
   template: hs.settingsNav '''
@@ -15,6 +16,7 @@ class hs.t.NameSetting extends hs.Template
     <form id="name-form">
       <span class="formFields"></span>
       <input type="submit" />
+      <span class="confirm">saved</span>
     </form>
     '''
 
