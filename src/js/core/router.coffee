@@ -14,6 +14,7 @@ goTo = (url) ->
   for exp, Template of hs.urls
     parsed = new RegExp(exp).exec(url)
     if parsed?
+      $('title').text 'Hipsell'
 
       current.t?.remove()
       current.v?.remove()
