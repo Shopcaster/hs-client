@@ -16,11 +16,12 @@ class hs.v.MessageForm extends hs.View
 
 
   createMessage: (convo, clbk) ->
-    console.log 'adding message to convo', convo
+    console.log 'adding message to convo', convo, this.get('message')
     zz.create.message
       message: this.get('message')
       convo: convo._id
       =>
+        console.log 'create message response', arguments
         this.clear()
         clbk?()
 
