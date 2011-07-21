@@ -25,11 +25,11 @@ class hs.t.Inquiry extends hs.Template
 
 
   setQuestion: ->
-    this.$('.question').text "Q:#{this.model.question}"
+    this.$('.question').text "Q: #{this.model.question}"
 
 
   setAnswer: ->
-    this.$('.answer').text "A:#{this.model.answer}"
+    this.$('.answer').text "A: #{this.model.answer}"
 
 
   setCreated: ->
