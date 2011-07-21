@@ -9,6 +9,7 @@ dep.provide 'hs.v.Convo'
 class hs.v.Convo extends hs.View
 
   answerPublicly: (question) ->
+    console.log 'Convo answerPublicly', this, this.views.MessageForm
     this.views.MessageForm[0].answerPublicly(question)
 
 

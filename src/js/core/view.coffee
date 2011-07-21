@@ -9,10 +9,11 @@ dep.provide 'hs.View'
 class hs.View extends hs.EventEmitter
 
   initListeners: []
-  views: {}
   modInit: ->
 
   constructor: (@template, @options) ->
+    this.views = {}
+
     this.modInit()
 
     this._moveOptions()

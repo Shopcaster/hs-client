@@ -11,17 +11,16 @@ class hs.v.MessageForm extends hs.View
 
 
   answerPublicly: (question) ->
+    console.log 'MessageForm answerPublicly', this
     this.options.question = question
     this.template.$('[name=question]').val(question).show()
 
 
   createMessage: (convo, clbk) ->
-    console.log 'adding message to convo', convo, this.get('message')
     zz.create.message
       message: this.get('message')
       convo: convo._id
       =>
-        console.log 'create message response', arguments
         this.clear()
         clbk?()
 
@@ -45,7 +44,6 @@ class hs.v.MessageForm extends hs.View
         if convo?
           this.createMessage convo, clbk
         else
-          console.log 'creating new convo'
           zz.create.convo listing: this.options.listing, (convoId) =>
             zz.data.convo convoId, (convo) =>
               this.options.convo = convo
