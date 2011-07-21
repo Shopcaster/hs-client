@@ -45,8 +45,8 @@ class hs.t.User extends hs.Template
   setFb: ->
     this.$('.fb').attr('href', this.model.fb).show()
 
-  setFb: ->
+  setTwitter: ->
     this.$('.twitter').attr('href', this.model.twitter).show()
 
-  setFb: ->
+  setLinkedIn: ->
     this.$('.linkedin').attr('href', this.model.linkedin).show()
