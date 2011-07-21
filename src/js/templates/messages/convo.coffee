@@ -34,7 +34,6 @@ class hs.t.Convo extends hs.Template
 
 
   addModel: (msg, index) ->
-    console.log 'addModel', index, msg._id
     index = undefined if index == -1
 
     this.messageTmpl msg,

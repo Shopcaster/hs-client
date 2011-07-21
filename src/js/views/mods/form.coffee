@@ -7,23 +7,22 @@ dep.provide 'hs.v.mods.form'
 hs.v.mods.form = (View) ->
 
   View.prototype.events ||= {}
-  View.prototype.fields = {}
 
 
-  _.extend View.prototype.events,
-    'submit': '_submit'
+  _.extend View.prototype.events, 'submit': '_submit'
 
 
   oldInit = View.prototype.modInit
   View.prototype.modInit = ->
     oldInit.call(this)
+    this.fields = {}
 
     for fieldOpts in this.template.fields
 
       View = hs.formFields[fieldOpts.type].v
       break if not View?
 
-      field = new View this.template.fields[fieldOpts.name], fieldOpts
+      field = new View this.template._fields[fieldOpts.name], fieldOpts
 
       this.fields[fieldOpts.name] = field
 

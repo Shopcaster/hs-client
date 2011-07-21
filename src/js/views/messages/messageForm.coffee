@@ -16,7 +16,6 @@ class hs.v.MessageForm extends hs.View
 
 
   createMessage: (convo, clbk) ->
-    console.log 'adding message to convo', convo
     zz.create.message
       message: this.get('message')
       convo: convo._id
@@ -44,7 +43,6 @@ class hs.v.MessageForm extends hs.View
         if convo?
           this.createMessage convo, clbk
         else
-          console.log 'creating new convo'
           zz.create.convo listing: this.options.listing, (convoId) =>
             zz.data.convo convoId, (convo) =>
               this.options.convo = convo

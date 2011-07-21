@@ -9,16 +9,19 @@ dep.provide 'hs.View'
 class hs.View extends hs.EventEmitter
 
   initListeners: []
-  views: {}
   modInit: ->
 
   constructor: (@template, @options) ->
+    this.views = {}
+
     this.modInit()
 
     this._moveOptions()
     this._registerDomEvents()
     this._registerTmplEvents()
     this._subViewsStart()
+
+    this.init?()
 
 
   _moveOptions: ->
@@ -47,6 +50,9 @@ class hs.View extends hs.EventEmitter
   _registerTmplEvents: ->
     this.template.on 'subTemplateAdd', _.bind this._subViewAdd, this
     this.template.on 'subTemplateRemove', _.bind this._subViewRemove, this
+
+    this.template.on 'preRemove', _.bind(this.preRemove, this) if this.preRemove?
+    this.template.on 'postRemove', _.bind(this.postRemove, this) if this.postRemove?
 
 
   _subViewsStart: ->

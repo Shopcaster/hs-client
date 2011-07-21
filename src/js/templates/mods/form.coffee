@@ -22,17 +22,19 @@ hs.t.mods.form = (Template) ->
 
 
   Template.prototype._renderFields = () ->
+    this._fields = {}
+
     for fieldOpts in this.fields then do (fieldOpts) =>
 
       Field = hs.formFields[fieldOpts.type].t
       return if not Field?
 
-      fieldOpts.appendTo = "##{this.el.attr('id')} .formFields"
+      fieldOpts.appendTo = "##{this.id} .formFields"
       fieldOpts.id = "#{this.id}_#{fieldOpts.name}Field"
 
       field = new Field null, fieldOpts
 
-      this.fields[fieldOpts.name] = field
+      this._fields[fieldOpts.name] = field
       this.templates[fieldOpts.name] ||= []
       this.templates[fieldOpts.name].push field
 

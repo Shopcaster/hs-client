@@ -367,6 +367,7 @@ footer{
 
 #loading {
     display:none;
+    z-index:2;
 
     position:absolute;
     top:80px;right:0;
@@ -383,7 +384,9 @@ footer{
     @include box-shadow(0 1px 1px $black);
     @include rounded-left();
 
-    z-index:2;
+    img{
+        margin-right:5px;
+    }
 }
 
 
