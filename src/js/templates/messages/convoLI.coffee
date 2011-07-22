@@ -22,8 +22,14 @@ class hs.t.ConvoLI extends hs.Template
 
 
   postRender: ->
-    this.setAmount = => this.setAmount.apply this, arguments
-    this.setAccepted = => this.setAccepted.apply this, arguments
+    setAmount = this.setAmount
+    this.setAmount = => setAmount.apply(this, arguments)
+
+    setAccepted = this.setAccepted
+    this.setAccepted = => setAccepted.apply(this, arguments)
+
+    #this.setAmount = _.bind this.setAmount, this
+    #this.setAccepted = _.bind this.setAccepted, this
 
     zz.data.listing this.model.listing, (listing) =>
       this.model.relatedMessages (messages) =>
