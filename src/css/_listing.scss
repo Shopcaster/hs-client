@@ -72,7 +72,7 @@
       @include box-shadow(0 1px 1px $white);
 
       &.accepted{
-        background-color:$yellow - #444;
+        background-color:$darkYellow;
       }
       &.sold{
         background-color:$red;
@@ -285,7 +285,7 @@
         &.accepted{
           background-color:$lightGreen;
 
-          &.hover{background-color:$lightGreen - #111;}
+          &:hover{background-color:$lightGreen - #111;}
         }
 
         .actions{

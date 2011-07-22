@@ -22,8 +22,8 @@ class hs.t.ConvoLI extends hs.Template
 
 
   postRender: ->
-    this.setAmount = _.bind this.setAmount, this
-    this.setAccepted = _.bind this.setAccepted, this
+    this.setAmount = => this.setAmount.apply this, arguments
+    this.setAccepted = => this.setAccepted.apply this, arguments
 
     zz.data.listing this.model.listing, (listing) =>
       this.model.relatedMessages (messages) =>
@@ -40,9 +40,6 @@ class hs.t.ConvoLI extends hs.Template
     this.unSub()
 
     zz.data.listing this.model.listing, (listing) =>
-      this.listing = listing
-      this.listing.on 'accepted', this.setAccepted
-      this.setAccepted()
 
       zz.data.user this.model.creator, (creator) =>
         listing.offerForUser creator, (offer) =>
@@ -50,6 +47,10 @@ class hs.t.ConvoLI extends hs.Template
             this.offer = offer
             this.offer.on 'amount', this.setAmount
             this.setAmount()
+
+          this.listing = listing
+          this.listing.on 'accepted', this.setAccepted
+          this.setAccepted()
 
 
   unSub: ->
@@ -72,7 +73,8 @@ class hs.t.ConvoLI extends hs.Template
     this.$('.accepted').remove()
     this.$('.accept-offer').remove()
 
-    if this.listing.accepted?
+    if this.listing.accepted? and this.offer? and this.listing.accepted = this.offer._id
+      console.log 'setting accepted', this, this.listing.accepted
       this.el.addClass 'accepted'
       this.$('.offerbox').append '
         <span class="accepted">
