@@ -48,5 +48,5 @@ class hs.t.User extends hs.Template
   setTwitter: ->
     this.$('.twitter').attr('href', this.model.twitter).show()
 
-  setLinkedIn: ->
+  setLinkedin: ->
     this.$('.linkedin').attr('href', this.model.linkedin).show()

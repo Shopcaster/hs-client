@@ -12,7 +12,11 @@ class hs.v.OfferForm extends hs.View
   focusSelector: '.offer-button'
 
   amount: ->
-    parseFloat this.get('amount')
+    parseFloat this.get('amount').replace '$', ''
+
+
+  validateAmount: (clbk) ->
+    clbk !_.isNaN this.amount()
 
 
   submit: ->
