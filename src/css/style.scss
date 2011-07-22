@@ -47,6 +47,7 @@ p{
     text-align:right;
     font-size:12px;
     color:$grey;
+    height:15px;
 
     padding:5px;
     background-color:$black + #333;
@@ -88,21 +89,22 @@ header{
     height:50px;
     background-color:$black + #222;
     @include gradient($headerBack + #111, $headerBack - #111);
-    /*background-image:url(../img/ab_grad.png);*/
     border-top:1px solid $headerBack - #222;
-    /*border-bottom:3px solid #939598;*/
-    /*@include box-shadow(0 1px 0px $black + #666);*/
     border-bottom:1px solid $blue - #444;
     @include box-shadow(0 1px 2px $black + #666);
 
     #logo{
+        $height: 34px;
+
         position:absolute;
-        top:5px;left:5px;
-        width:176px;
-        height:40px;
+        top: 0;
+        left:5px;
+        width:200px;
+        height:50px;
+        @include background-size(auto 34px);
         background-image:url(../img/ab_logo.png);
-        @include background-size();
         background-repeat:no-repeat;
+        background-position:left center;
     }
 
     ul{
