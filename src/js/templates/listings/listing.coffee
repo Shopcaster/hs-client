@@ -32,8 +32,8 @@ class hs.t.Listing extends hs.Template
           div class: 'bottom', ->
             div id: 'listing-social', ->
               div class: 'twitter'
-              div class: 'goog'
               div class: 'fb'
+              div class: 'goog'
 
             div id: 'listing-loc-diff'
 
@@ -79,7 +79,7 @@ class hs.t.Listing extends hs.Template
     this.model.relatedOffers (offers) =>
       this.offersTmpl offers, listing: this.model
 
-    this.$('.twitter').html '
+    this.$('#listing-social .twitter').html '
       <a href="http://twitter.com/share"
          class="twitter-share-button"
          data-count="none"
@@ -89,10 +89,10 @@ class hs.t.Listing extends hs.Template
       </a>
       <script src="http://platform.twitter.com/widgets.js"></script>'
 
-    this.$('.fb').html "
-      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/#{this.model._id}/&amp;href&amp;send=false&amp;layout=standard&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;width=55&amp;height=30\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:55px; height:30px;\" allowTransparency=\"true\"></iframe>"
+    this.$('#listing-social .fb').html "
+      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/#{this.model._id}/&amp;href&amp;send=false&amp;layout=standard&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;width=55&amp;height=24\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:55px; height:24px;\" allowTransparency=\"true\"></iframe>"
 
-    this.$('.goog').html '
+    this.$('#listing-social .goog').html '
       <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
       <g:plusone size="medium" count="false"></g:plusone>'
 
