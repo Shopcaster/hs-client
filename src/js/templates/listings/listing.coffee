@@ -90,7 +90,7 @@ class hs.t.Listing extends hs.Template
       <script src="http://platform.twitter.com/widgets.js"></script>'
 
     this.$('#listing-social .fb').html "
-      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/#{this.model._id}/&amp;href&amp;send=false&amp;layout=standard&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;width=55&amp;height=24\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:55px; height:24px;\" allowTransparency=\"true\"></iframe>"
+      <iframe src=\"http://www.facebook.com/plugins/like.php?app_id=105236339569884&amp;href=http%3A%2F%2Fhipsell.com/#!/listings/#{this.model._id}/&amp;href&amp;send=false&amp;layout=standard&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;width=53&amp;height=24\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:53px; height:24px;\" allowTransparency=\"true\"></iframe>"
 
     this.$('#listing-social .goog').html '
       <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
