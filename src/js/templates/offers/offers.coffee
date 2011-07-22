@@ -33,7 +33,7 @@ class hs.t.Offers extends hs.Template
   _update: (node, amount) ->
     animate = node.text() != ''
 
-    node.text "$#{amount}"
+    node.text "$#{amount / 100}"
 
     if animate
       oldColor = node.css 'color'

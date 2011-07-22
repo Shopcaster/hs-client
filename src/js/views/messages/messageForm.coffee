@@ -30,7 +30,7 @@ class hs.v.MessageForm extends hs.View
         question: this.get 'question'
         answer: this.get 'message'
         =>
-          this.template.$('#question').hide().val('')
+          this.template.$('[name=question]').hide().val('')
           this.options.question = null
 
 

@@ -15,8 +15,7 @@ class hs.v.OfferForm extends hs.View
     parseFloat this.get('amount').replace '$', ''
 
 
-  validateAmount: (clbk) ->
-    clbk !_.isNaN this.amount()
+  validateAmount: (clbk) -> clbk !_.isNaN this.amount()
 
 
   submit: ->
