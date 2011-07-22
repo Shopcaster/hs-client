@@ -205,6 +205,21 @@ class hs.t.Listing extends hs.Template
     this.$('#listing-loc-diff').text "Roughly #{distStr} #{direction} of you."
 
 
+  setAccepted: ->
+    console.log 'setAccepted'
+    this.setStatus()
+  setSold: ->
+    console.log 'setSold'
+    this.setStatus()
+  setStatus: ->
+    if this.model.accepted? and not this.model.sold
+      this.$('.status').text('Offer Accepted').addClass('accepted').removeClass('sold')
+    else if this.model.sold
+      this.$('.status').text('Sold').addClass('sold').removeClass('accepted')
+    else
+      this.$('.status').text('Available').removeClass('sold').removeClass('accepted')
+
+
 
 hs.t.Listing.getModel = (options, clbk) ->
   zz.data.listing options.parsedUrl[0], clbk

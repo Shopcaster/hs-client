@@ -15,6 +15,9 @@ class hs.v.MessageForm extends hs.View
     this.template.$('[name=question]').val(question).show()
 
 
+  validateMessage: (clbk) -> clbk this.get('message').length > 0
+
+
   createMessage: (convo, clbk) ->
     zz.create.message
       message: this.get('message')

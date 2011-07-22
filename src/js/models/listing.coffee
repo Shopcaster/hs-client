@@ -33,3 +33,8 @@ zz.models.Listing.prototype.convoForUser = (user, clbk) ->
 
 zz.models.Listing.prototype.myConvo = (clbk) ->
   this.convoForUser zz.auth.curUser(), clbk
+
+
+zz.models.Listing.prototype.acceptOffer = (offer, clbk) ->
+  zz.update.listing this, accepted: offer._id, ->
+    clbl.apply null, arguments

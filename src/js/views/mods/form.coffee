@@ -91,9 +91,6 @@ hs.v.mods.form = (View) ->
 
 
   View.prototype.showInvalid = (name) ->
-    node = this.template.$ '[name="'+name+'"]'
-    oldColor = node.css 'backgroundColor'
-
-    node.animate backgroundColor: '#c33', 200, =>
-      node.one 'focus', => node.css backgroundColor: oldColor
+    this.template.$('[name="'+name+'"]').addClass('formError').one 'keydown change', =>
+      this.template.$('[name="'+name+'"]').removeClass('formError')
 
