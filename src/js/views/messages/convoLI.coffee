@@ -11,6 +11,11 @@ class hs.v.ConvoLI extends hs.View
     'mousedown .cancel-offer': 'stop'
     'mousedown .sold-offer': 'stop'
 
+
+  init: ->
+    this.template.on 'acceptedRendered', => this.registerDomEvents(true)
+
+
   acceptOffer: (e) ->
     e.preventDefault()
     zz.update.listing this.template.listing, accepted: this.template.offer._id
@@ -26,5 +31,7 @@ class hs.v.ConvoLI extends hs.View
     zz.update.listing this.template.listing, sold: true
 
 
-  stop: (e) -> e.stopPropagation()
+  stop: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
 

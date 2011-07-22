@@ -17,7 +17,7 @@ class hs.View extends hs.EventEmitter
     this.modInit()
 
     this._moveOptions()
-    this._registerDomEvents()
+    this.registerDomEvents()
     this._registerTmplEvents()
     this._subViewsStart()
 
@@ -29,10 +29,10 @@ class hs.View extends hs.EventEmitter
       if this.options.parent? then this.parent = this.options.parent
 
 
-  _registerDomEvents: ->
+  registerDomEvents: (remove) ->
     return if not this.events?
 
-    for pattern, methodName of this.events then do (pattern, methodName) =>
+    events = _.map this.events, (methodName, pattern, memo) =>
       pattern = pattern.split(' ')
       event = pattern.shift()
       selector = pattern.join(' ')
@@ -43,8 +43,15 @@ class hs.View extends hs.EventEmitter
       else
         node = this.template.el
 
-      node.bind event, =>
-        this[methodName].apply(this, arguments)
+      return [methodName, event, node]
+
+
+    if remove
+      for [methodName, event, node] in events
+        node.unbind event
+
+    for [methodName, event, node] in events
+      node.bind event, _.bind(this[methodName], this)
 
 
   _registerTmplEvents: ->
