@@ -28,6 +28,8 @@ goTo = (url) ->
       break if Template.prototype.authRequired and not zz.auth.curUser()?
 
       Template.get kwargs, (template) ->
+        return if not template?
+
         current.t = template
 
         View = hs.v[Template.name] ||  hs.View

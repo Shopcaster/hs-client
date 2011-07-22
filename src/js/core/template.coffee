@@ -216,6 +216,7 @@ hs.Template.get = (options, clbk) ->
   user = zz.auth.curUser()
   if this.getModel?
     this.getModel options, (model) =>
+      return clbk null if not model?
       template = new this(model, options)
       template.authChange null, user
       clbk template
