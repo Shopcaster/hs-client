@@ -36,4 +36,4 @@ class hs.t.ConvoLI extends hs.Template
 
       zz.data.listing this.model.listing, (listing) =>
         listing.offerForUser creator, (offer) =>
-          this.$('.offer').text "$#{offer.amount}" if offer?
+          this.$('.offer').text "$#{offer.amount/100}" if offer?

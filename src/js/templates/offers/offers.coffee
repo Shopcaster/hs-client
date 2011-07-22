@@ -33,7 +33,7 @@ class hs.t.Offers extends hs.Template
   _update: (node, amount) ->
     animate = node.text() != ''
 
-    node.text "$#{amount / 100}"
+    node.text "$#{amount/100}"
 
     if animate
       oldColor = node.css 'color'
@@ -54,7 +54,7 @@ class hs.t.Offers extends hs.Template
 
   setAuth: (prev, cur) ->
     if this.myOffer?
-      this.myOffer.removeAllListener 'amount'
+      this.myOffer.removeAllListeners 'amount'
       this.myOffer = null
 
     if cur?
@@ -71,15 +71,10 @@ class hs.t.Offers extends hs.Template
     offer.heat()
     this.offers[offer._id] = offer
 
-    console.log 'addModel', offer
-
     if offer.creator == zz.auth.curUser()?._id
-      console.log 'myOffer', offer
       this.myOffer = offer
       this.myOffer.on 'amount', => this.setMyOffer()
       this.setMyOffer()
-    else
-      console.log 'not myOffer', offer.creator, zz.auth.curUser()?._id
 
     offer.on 'amount', => this.setBestOffer()
     this.setBestOffer()
