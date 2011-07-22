@@ -33,30 +33,19 @@ class hs.t.ConvoLI extends hs.Template
           focusSelector: "##{this.id}"
           appendTo: "##{this.id}"
 
-    this.subSubs()
-
-
-  subSubs: ->
-    this.unSub()
-
     zz.data.listing this.model.listing, (listing) =>
-
       zz.data.user this.model.creator, (creator) =>
         listing.offerForUser creator, (offer) =>
           if offer?
             this.offer = offer
+            this.offer.heat()
             this.offer.on 'amount', this.setAmount
             this.setAmount()
 
           this.listing = listing
-          console.log 'binding to listing accepted'
+          this.listing.heat()
           this.listing.on 'accepted', this.setAccepted
           this.setAccepted()
-
-
-  unSub: ->
-    this.offer.removeListener 'amount', this.setAmount if this.offer?
-    this.listing.removeListener 'accepted', this.setAccepted if this.listing?
 
 
   setCreator: ->
@@ -74,8 +63,7 @@ class hs.t.ConvoLI extends hs.Template
     this.$('.accepted').remove()
     this.$('.accept-offer').remove()
 
-    if this.listing.accepted? and this.offer? and this.listing.accepted = this.offer._id
-      console.log 'setting accepted', this, this.listing.accepted
+    if this.listing.accepted? and this.offer? and this.listing.accepted == this.offer._id
       this.el.addClass 'accepted'
       this.$('.offerbox').append '
         <span class="accepted">
@@ -92,4 +80,6 @@ class hs.t.ConvoLI extends hs.Template
     this.emit 'acceptedRendered'
 
 
-  preRemove: -> this.unSub()
+  preRemove: ->
+    this.offer.freeze() if this.offer?
+    this.listing.freeze() if this.listing?
