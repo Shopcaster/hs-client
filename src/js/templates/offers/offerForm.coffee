@@ -18,6 +18,7 @@ class hs.t.OfferForm extends hs.Template
     'name': 'amount'
     'type': 'text'
     'placeholder': 'Make an Offer'
+    'maxlength': 6
   }]
 
 

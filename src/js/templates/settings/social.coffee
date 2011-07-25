@@ -21,12 +21,12 @@ class hs.t.SocialSetting extends hs.Template
     <p id="unlinked"></p>
     '''
 
-
+  # BuildLinked :: account absolute href -> type -> friendly name -> `a` element
   _buildl: (h, t, l) ->
     "<a target='_blank' href='#{h}'><img src='/img/#{t}.png' alt='#{l}'></a>"
 
 
-
+  ## BuildUnlinked :: type -> friendly name -> `a` element
   _buildu: (t, l) ->
     user = zz.auth.curUser()
     enc = encodeURIComponent
