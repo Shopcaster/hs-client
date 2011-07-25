@@ -183,9 +183,19 @@ $section_width: ($layout_width - 15)/2;
       height:10px;width:10px;
       @include rounded-bottom-right(2px);
 
-      &.offline{background-color:$grey;}
-      &.online{background-color:$green;}
-      &.away{background-color:$yellow;}
+      &.offline{
+        background-color:$grey;
+        @include transition(all, 0.5s, ease-in-out, 1s);
+      }
+      &.online{
+        background-color:$green;
+        @include transition(all, 0.5s, ease-in-out, 1s);
+      }
+
+      &.away{
+        background-color:$yellow;
+        @include transition(all, 0.5s, ease-in-out, 1s);
+      }
     }
 
     .name {
