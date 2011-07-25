@@ -30,12 +30,12 @@ class hs.t.Offers extends hs.Template
     this.$('.asking.value').text "$#{this.options.listing.price}"
 
 
+
   _update: (node, amount) ->
-    animate = node.text() != ''
 
     node.text "$#{amount/100}"
 
-    if animate
+    if not this.modelInit
       oldColor = node.css 'color'
       node.animate {color: '#828200'}, 250, () =>
         node.animate {color: oldColor}, 250

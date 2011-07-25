@@ -138,6 +138,8 @@ class hs.Template extends hs.EventEmitter
       if this.options.heat != false
         this.model.heat()
 
+      this.modelInit = true
+
       if this.model instanceof Array #model list
 
         if this.sort?
@@ -159,6 +161,8 @@ class hs.Template extends hs.EventEmitter
           if this[method]?
             this.model.on field, do (method) => => this[method].apply this, arguments
             this[method] this.model[field]
+
+      this.modelInit = false
 
 
   render: ->
