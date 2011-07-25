@@ -12,7 +12,7 @@ class hs.t.PasswordSetting extends hs.Template
 
   template: hs.settingsNav '''
     <h1>Change Password</h1>
-    <p>To change your password, enter your current password first, and
+    <p>To change your password, first enter your current password, and
     then the new password you'd like to set.</p>
 
     <form id="password-form">
