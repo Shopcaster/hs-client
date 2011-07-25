@@ -42,5 +42,5 @@ class hs.t.Message extends hs.Template
 
 
   setCreated: ->
-    since = _.since this.model.created
+    since = this.model.created.since()
     this.$('.created').text since.num+' '+since.text

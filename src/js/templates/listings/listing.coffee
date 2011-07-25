@@ -28,7 +28,7 @@ class hs.t.Listing extends hs.Template
           div id: 'listing-creator'
           span class: 'status', => 'Available'
           div id: 'listing-description'
-          div id: 'created'
+          div class: 'created'
           div class: 'bottom', ->
             div id: 'listing-social', ->
               div class: 'twitter'
@@ -157,7 +157,7 @@ class hs.t.Listing extends hs.Template
 
 
   setCreated: () ->
-    since = _.since this.model.created
+    since = this.model.created.since()
     this.$('.created').text "#{since.num} #{since.text}"
 
 
@@ -195,7 +195,7 @@ class hs.t.Listing extends hs.Template
     dist = parseFloat userLoc.distanceTo listingLoc
     brng = userLoc.bearingTo listingLoc
 
-    direction = _.degreesToDirection brng
+    direction = brng.degreesToDirection()
 
     if dist < 1
       distStr = Math.round(dist*1000)+' metres'
