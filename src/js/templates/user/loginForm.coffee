@@ -22,7 +22,7 @@ class hs.t.LoginForm extends hs.Template
 
 
   template: ->
-    form ->
+    form class: 'formDialog', ->
       fields()
       input type: 'submit', value: 'Submit', class: 'dark submit'
 
