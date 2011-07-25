@@ -17,6 +17,15 @@ class hs.t.User extends hs.Template
         a target: '_blank', class: 'linkedin', -> img src: '/img/linkedin.png'
 
 
+  postRender: ->
+    this.setPresence = _.bind(this.setPresence, this)
+    zz.presence.on this.model._id, this.setPresence
+
+
+  preRemove: ->
+    zz.presence.removeListener this.model._id, this.setPresence
+
+
   setName: ->
     this.$('.name').text this.model.name
 
@@ -25,21 +34,11 @@ class hs.t.User extends hs.Template
     this.$('.avatar').attr 'src', this.model.getAvatarUrl(75)
 
 
-  setPresence: ->
-    node = this.$('.presence').removeClass 'away online offline'
-
-    switch this.model.presence
-      when 0
-        node.addClass 'offline'
-        node.attr 'title', 'Offline'
-
-      when 1
-        node.addClass 'online'
-        node.attr 'title', 'Online'
-
-      when 2
-        node.addClass 'away'
-        node.attr 'title', 'Away'
+  setPresence: (status) ->
+    node = this.$('.presence')
+    node.removeClass 'away online offline'
+    node.addClass status
+    node.attr 'title', status.toUpperCase()
 
 
   setFb: ->
