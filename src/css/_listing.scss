@@ -331,7 +331,7 @@
         .convo{
           position:absolute;
           top:41px;left:50px;
-          width:$section_width - 60px;
+          width:$section_width - 50px;
           padding:0;
           margin-bottom:10px;
           z-index:2;
@@ -342,7 +342,7 @@
           @include angled-top();
 
           input{
-            width:$section_width - 215px;
+            width:$section_width - 175px;
           }
         }
       }

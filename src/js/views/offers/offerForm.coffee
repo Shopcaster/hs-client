@@ -21,8 +21,9 @@ class hs.v.OfferForm extends hs.View
   createMessage: (amount, offerId) ->
     this.options.listing.myConvo (convo) =>
       if convo?
+        name = zz.auth.curUser().name || 'Anonymous'
         zz.create.message
-          message: "I've made an offer for $#{amount/100}!"
+          message: "#{name} made an offer for $#{amount/100}!"
           convo: convo._id
           offer: offerId
 
