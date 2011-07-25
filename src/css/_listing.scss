@@ -276,7 +276,7 @@
           background-color:$blue + #222;
           @include gradient($blue + #333, $blue);
 
-          .offer, & > .user{
+          & > .offer, & > .user{
             color:$white - #111;
             text-shadow: 0px -1px 1px $black + #222;
           }
@@ -292,7 +292,7 @@
           background-color:$green + #222;
           @include gradient($green + #333, $green);
 
-          .offer, & > .user{
+          & > .offer, & > .user{
             color:$white - #111;
             text-shadow: 0px -1px 1px $black + #222;
           }
@@ -322,7 +322,7 @@
               font-weight:bold;
             }
 
-            .accept -offer{
+            .accept-offer{
             }
 
           }
@@ -332,10 +332,11 @@
           position:absolute;
           top:41px;left:50px;
           width:$section_width - 60px;
-          z-index:2;
-          border:none;
+          padding:0;
           margin-bottom:10px;
+          z-index:2;
 
+          border:none;
           background-color:$white;
           @include box-shadow(0 1px 3px $black + #666);
           @include angled-top();
@@ -351,6 +352,15 @@
 
       .message{
         min-height:20px;
+
+        &.offer{
+          padding-top:5px;
+          padding-bottom:5px;
+
+          background-color:$lightYellow;
+
+          .message-body{margin-left:0;}
+        }
 
         .name{
           font-size:14px !important;

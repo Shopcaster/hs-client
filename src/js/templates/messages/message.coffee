@@ -19,7 +19,13 @@ class hs.t.Message extends hs.Template
       class: hs.t.InlineUser
 
 
+  setOffer: ->
+    this.el.addClass 'offer'
+
+
   setCreator: ->
+    return if this.model.offer?
+
     zz.data.user this.model.creator, (creator) =>
       this.userTmpl creator, appendTo: "##{this.id} .creator"
 
