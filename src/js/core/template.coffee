@@ -153,15 +153,11 @@ class hs.Template extends hs.EventEmitter
 
       else
 
-        for own field of this.model then do (field) =>
+        for own field of this.model
           method = 'set'+ field.charAt(0).toUpperCase() + field.slice(1)
 
           if this[method]?
-            this.model.on field, => #_.bind this[method], this
-              console.log 'data pushed', this, method, arguments
-              this[method].apply this, arguments
-            #console.log this.model, 'on', field, this, '.', method
-
+            this.model.on field, do (method) => => this[method].apply this, arguments
             this[method] this.model[field]
 
 

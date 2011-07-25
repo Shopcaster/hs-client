@@ -18,14 +18,29 @@ class hs.v.OfferForm extends hs.View
   validateAmount: (clbk) -> clbk !_.isNaN this.amount()
 
 
+  createMessage: (amount) ->
+    this.options.listing.myConvo (convo) =>
+      if convo?
+        zz.create.message
+          message: "I've made an offer for $#{amount/100}!"
+          convo: convo._id
+
+      else
+        zz.create.convo listing: this.options.listing, (convoId) =>
+          zz.data.convo convoId, (convo) =>
+            this.createMessage amount
+
+
   submit: ->
     this.options.listing.myOffer (offer) =>
 
       if offer?
         console.log 'updating offer'
         zz.update.offer offer, amount: this.amount(), =>
+          this.createMessage(this.amount())
           this.clear()
           this.blur()
+
 
       else
         console.log 'creating offer'
