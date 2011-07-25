@@ -255,6 +255,19 @@
         margin-bottom:0;
         float:right;
       }
+
+
+      .question{
+
+        .qa{
+          display:inline;
+          margin-right:3px;
+        }
+
+        input{
+          width:$section_width - 135px;
+        }
+      }
     }
 
 
@@ -333,6 +346,7 @@
           input{
             width:$section_width - 175px;
           }
+          .question input{width:$section_width - 185px;}
         }
       }
     }

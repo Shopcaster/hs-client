@@ -12,7 +12,24 @@ class hs.v.MessageForm extends hs.View
 
   answerPublicly: (question) ->
     this.options.question = question
-    this.template.$('[name=question]').val(question).show()
+
+    this.template.el.addClass 'question'
+
+    this.template.$('[name=question]')
+      .before('<div class="qa">Q:</div>')
+      .val(question)
+      .show()
+
+    this.template.$('[name=message]')
+      .before('<br><div class="qa">A:</div>')
+
+
+  removePublicly: ->
+    this.options.question = undefined
+    this.template.el.removeClass 'question'
+    this.template.$('.qa').remove()
+    this.template.$('br').remove()
+    this.template.$('[name=question]').val('').hide()
 
 
   validateMessage: (clbk) -> clbk this.get('message').length > 0
@@ -32,9 +49,7 @@ class hs.v.MessageForm extends hs.View
         listing: this.options.listing
         question: this.get 'question'
         answer: this.get 'message'
-        =>
-          this.template.$('[name=question]').hide().val('')
-          this.options.question = null
+        => this.removePublicly()
 
 
   submit: (clbk) ->
