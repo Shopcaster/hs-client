@@ -103,19 +103,27 @@ class hs.t.Listing extends hs.Template
     this.meta property: 'fb:app_id', content: '110693249023137'
 
 
+  showOfferButton: ->
+      this.$('.offer-button').show()
+      this.$('.bottom').css 'height': 255
+
+
+  hideOfferButton: ->
+      this.$('.offer-button').hide()
+      this.$('.bottom').css 'height': 210
+
+
   setAuth: (prev, cur) ->
     this.offerFormTmpl.remove()
     this.newConvo()
 
     if not cur? or this.model.creator != cur._id
-      this.$('.offer-button').show()
-      this.$('.bottom').css 'height': 255
+      this.showOfferButton() if not this.model.sold
 
       this.offerFormTmpl null, listing: this.model
 
     else
-      this.$('.offer-button').hide()
-      this.$('.bottom').css 'height': 210
+      this.hideOfferButton()
 
 
   newConvo: ->
@@ -212,6 +220,7 @@ class hs.t.Listing extends hs.Template
       this.$('.status').text('Offer Accepted').addClass('accepted').removeClass('sold')
     else if this.model.sold
       this.$('.status').text('Sold').addClass('sold').removeClass('accepted')
+      this.hideOfferButton()
     else
       this.$('.status').text('Available').removeClass('sold').removeClass('accepted')
 
