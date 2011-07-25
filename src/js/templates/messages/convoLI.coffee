@@ -22,8 +22,6 @@ class hs.t.ConvoLI extends hs.Template
 
 
   postRender: ->
-    this.setAmount = _.bind(this.setAmount, this)
-    this.setAccepted = _.bind(this.setAccepted, this)
 
     zz.data.listing this.model.listing, (listing) =>
       this.model.relatedMessages (messages) =>
@@ -39,12 +37,14 @@ class hs.t.ConvoLI extends hs.Template
           if offer?
             this.offer = offer
             this.offer.heat()
-            this.offer.on 'amount', this.setAmount
+            this.offer.on 'amount', _.bind(this.setAmount, this)
             this.setAmount()
 
           this.listing = listing
           this.listing.heat()
-          this.listing.on 'accepted', this.setAccepted
+          this.listing.on 'accepted', _.bind(this.setAccepted, this)
+          this.listing.on 'sold', _.bind(this.setSold, this)
+          this.setSold()
           this.setAccepted()
 
 
@@ -60,6 +60,8 @@ class hs.t.ConvoLI extends hs.Template
 
 
   setAccepted: ->
+    return if this.listing.sold
+
     this.$('.accepted').remove()
     this.$('.accept-offer').remove()
 
@@ -78,6 +80,14 @@ class hs.t.ConvoLI extends hs.Template
         <a class="accept-offer" href="javascript:;">Accept Offer</a>'
 
     this.emit 'acceptedRendered'
+
+
+  setSold: ->
+    if this.offer? and this.listing.sold and this.listing.accepted == this.offer._id
+      this.$('.accepted').remove()
+      this.$('.accept-offer').remove()
+      this.el.removeClass 'accepted'
+      this.el.addClass 'sold'
 
 
   preRemove: ->

@@ -205,12 +205,8 @@ class hs.t.Listing extends hs.Template
     this.$('#listing-loc-diff').text "Roughly #{distStr} #{direction} of you."
 
 
-  setAccepted: ->
-    console.log 'setAccepted'
-    this.setStatus()
-  setSold: ->
-    console.log 'setSold'
-    this.setStatus()
+  setAccepted: -> this.setStatus()
+  setSold: -> this.setStatus()
   setStatus: ->
     if this.model.accepted? and not this.model.sold
       this.$('.status').text('Offer Accepted').addClass('accepted').removeClass('sold')
