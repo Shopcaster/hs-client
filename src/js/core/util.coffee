@@ -2,11 +2,28 @@
 dep.require 'lib'
 dep.provide 'util'
 
+
+
+String.prototype.truncateWords = (number) ->
+  words = this.substr(0, number).split(' ')
+
+  if words.length > 1
+    words.pop()
+    words = words.join(' ')+'...'
+
+  else
+    words = words[0]
+
+  return words
+
+
+
+Number.prototype.isFloat = (n) -> n == +n and not _.isInteger(n)
+Number.prototype.isInteger = (n) -> n==+n && n==Math.floor(n)
+
+
+
 _.mixin
-
-  isFloat: (n) -> n == +n and not _.isInteger(n)
-
-  isInteger: (n) -> n==+n && n==Math.floor(n)
 
   since: (date, since) ->
     if not _.isDate date

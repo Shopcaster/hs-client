@@ -9,8 +9,10 @@ class hs.t.ConvoLI extends hs.Template
 
   template: ->
     div class: 'convo-li li', ->
-      div class: 'offerbox', ->
-        div class: 'offer', href: 'javascript:;', -> '$0'
+      div class: 'inside', ->
+        div class: 'message-preview'
+        div class: 'offerbox', ->
+          div class: 'offer', href: 'javascript:;', -> '$0'
       div class: 'clicky'
 
 
@@ -25,11 +27,16 @@ class hs.t.ConvoLI extends hs.Template
 
     zz.data.listing this.model.listing, (listing) =>
       this.model.relatedMessages (messages) =>
+
         this.convoTmpl messages,
           convo: this.model
           listing: listing
           focusSelector: "##{this.id}"
           appendTo: "##{this.id}"
+
+        this.messages = messages
+        this.messages.on 'add', _.bind(this.setMessage, this)
+        this.setMessage this.messages[0], 0
 
     zz.data.listing this.model.listing, (listing) =>
       zz.data.user this.model.creator, (creator) =>
@@ -48,6 +55,11 @@ class hs.t.ConvoLI extends hs.Template
           this.setAccepted()
 
 
+  preRemove: ->
+    this.offer.freeze() if this.offer?
+    this.listing.freeze() if this.listing?
+
+
   setCreator: ->
     this.userTmpl.remove()
     zz.data.user this.model.creator, (creator) =>
@@ -57,6 +69,11 @@ class hs.t.ConvoLI extends hs.Template
   setAmount: ->
     this.$('.offerbox').show()
     this.$('.offer').text "$#{this.offer.amount/100}"
+
+
+  setMessage: (msg, index) ->
+    if index == 0
+      this.$('.message-preview').text msg.message.truncateWords(50)
 
 
   setAccepted: ->
@@ -88,8 +105,3 @@ class hs.t.ConvoLI extends hs.Template
       this.$('.accept-offer').remove()
       this.el.removeClass 'accepted'
       this.el.addClass 'sold'
-
-
-  preRemove: ->
-    this.offer.freeze() if this.offer?
-    this.listing.freeze() if this.listing?

@@ -299,24 +299,33 @@
 
         }
 
-        .actions{
+        .inside{
+          position:relative;
+          margin-top:-20px;
           margin-left:40px;
-        }
 
-        .offerbox{
-            display:none;
-            float:right;
-            text-align:right;
-            margin-top:-5px;
 
-          .offer{
-            font-size: 24px;
-            font-weight:bold;
+          .message-preview {
+            position:absolute;
+            top:20px;
+            width:$section_width - 20px - 40px;
           }
 
-          .accept -offer{
-          }
+          .offerbox{
+              display:none;
+              float:right;
+              text-align:right;
+              margin-top:-5px;
 
+            .offer{
+              font-size: 24px;
+              font-weight:bold;
+            }
+
+            .accept -offer{
+            }
+
+          }
         }
 
         .convo{
