@@ -39,14 +39,13 @@ reg 'text', 'password', 'email', {
       attrs = name: name, type: type
       attrs.class = clas if clas?
       attrs.placeholder = placeholder if placeholder?
+      attrs.maxlength = maxlength if maxlength?
       attrs.style = 'display:none' if hide? and hide
 
       input attrs
 
   v: class InputV extends hs.FormFieldView
 }
-
-
 
 reg 'textarea', {
   t: class TextareaT extends hs.FormFieldTemplate
