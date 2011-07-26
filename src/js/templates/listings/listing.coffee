@@ -20,8 +20,6 @@ class hs.t.Listing extends hs.Template
 
       div class: 'section-left', ->
         div id: 'listing-image', -> img()
-        div id: 'listing-messages', class: 'list-box', ->
-          h2 -> 'Ask A Question'
 
       div class: 'section-right', ->
         div id: 'listing-details', ->
@@ -43,9 +41,11 @@ class hs.t.Listing extends hs.Template
             div class: 'offer-form-wrapper', ->
               div class: 'button offer-button', -> 'Make an Offer'
 
+      div id: 'listing-messages', class: 'section-left list-box', ->
+        h2 -> 'Ask A Question'
 
-        div id: 'listing-inquiries', class: 'list-box', ->
-          h2 -> 'Frequently Asked Questions'
+      div id: 'listing-inquiries', class: 'section-right list-box', ->
+        h2 -> 'Frequently Asked Questions'
 
 
   subTemplates:
@@ -179,8 +179,13 @@ class hs.t.Listing extends hs.Template
     lat = this.model.latitude
     lng = this.model.longitude
 
+    if document.documentElement.clientWidth <= 480
+      width = 210
+    else
+      width = 380
+
     this.$('img.map').attr 'src',
-      "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=380x100&sensor=false"
+      "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=#{width}x100&sensor=false"
 
     this.$('.mapLink').attr 'href',
       "http://maps.google.com/?ll=#{lat},#{lng}&z=16"

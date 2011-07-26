@@ -1,10 +1,9 @@
-/*  Retina media query.
-    Overrides styles for devices with a
-    device-pixel-ratio of 2+, such as iPhone 4.
+/*  iOS Retina display and android HDPI devices
 -----------------------------------------------    */
 @media
-    only screen and (-webkit-min-device-pixel-ratio: 2),
-    only screen and (min-device-pixel-ratio: 2) {
+    only screen and (-webkit-min-device-pixel-ratio: 1.5),
+    only screen and (-o-min-device-pixel-ratio: 3/2),
+    only screen and (min-device-pixel-ratio: 1.5) {
 
     #logo{
         background-image:url(../img/ab_logo@2x.png) !important;

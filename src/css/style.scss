@@ -15,6 +15,11 @@ $orange: #ff5c46;
 $gorange: #EF4136;
 
 $layout_width: 960px;
+$section_width: ($layout_width - 15)/2;
+
+$mob_layout_width: 320px;
+$mob_section_width: $mob_layout_width - 20px;
+
 
 @import "reset";
 @import "mixins";
@@ -22,6 +27,7 @@ $layout_width: 960px;
 
 html, body{
   background-image:url(../img/bg.png);
+  margin:0;padding:0;
 }
 
 html{
@@ -34,25 +40,29 @@ body{
   font-family: 'Cantarell', arial, sans-serif;
 }
 
-p{
-  margin-top: 16px;
-  margin-bottom: 16px;
-  padding-right: 10px;
-}
-
 .width{
   position:relative;
   width: $layout_width;
+  @media only screen and (max-width: 480px) {
+    width: $mob_layout_width;
+  }
 }
 
 #top-bar{
   text-align:right;
   font-size:12px;
   color:$grey;
-  height:15px;
 
-  padding:5px;
   background-color:$black + #333;
+
+  .inner-top-bar{
+    height:15px;
+    padding:5px;
+
+    @media only screen and (max-width: 480px) {
+      padding-right:10px;
+    }
+  }
 
   .login, .logout{
     color:$white;
@@ -88,11 +98,12 @@ p{
 header{
   $headerBack: $blue;
 
+  width:100%;
   height:50px;
   background-color:$black + #222;
-  @include gradient($headerBack + #111, $headerBack - #111);
   border-top:1px solid $headerBack - #222;
   border-bottom:1px solid $blue - #444;
+  @include gradient($headerBack + #111, $headerBack - #111);
   @include box-shadow(0 1px 2px $black + #666);
 
   #logo{
@@ -104,9 +115,12 @@ header{
     width:200px;
     height:50px;
     @include background-size(auto 34px);
-    background-image:url(../img/ab_logo.png);
     background-repeat:no-repeat;
     background-position:left center;
+    background-image:url(../img/ab_logo.png);
+    @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+      background-image:url(../img/ab_logo@2x.png) !important;
+    }
   }
 
   ul{
@@ -114,6 +128,9 @@ header{
     position:absolute;
     top:0;left:200px;
     width: $layout_width - 200px;
+    @media only screen and (max-width: 480px) {
+      width: $mob_layout_width - 200px;
+    }
 
     li{
       height:100%;
@@ -138,8 +155,6 @@ header{
 }
 
 
-$section_width: ($layout_width - 15)/2;
-
 #body{
   padding:10px 0 0;
   z-index:2;
@@ -147,19 +162,35 @@ $section_width: ($layout_width - 15)/2;
   .section-left, .section-right, .flatpage{
     margin:10px 0;
     position:relative;
-
-    width: $section_width;
   }
   .section-left{
+    width: $section_width;
     float:left;
     clear:left;
+
+    @media screen and (max-width: 480px) {
+      width: $mob_section_width;
+      float:none;
+      margin:10px auto;
+    }
   }
   .section-right{
+    width: $section_width;
     float:right;
     clear:right;
+
+    @media screen and (max-width: 480px) {
+      width: $mob_section_width;
+      float:none;
+      margin:10px auto;
+    }
   }
   .flatpage{
     width:700px;
+    @media screen and (max-width: 480px) {
+      width: $mob_section_width;
+    }
+
     margin:10px auto;
 
     padding: 10px;

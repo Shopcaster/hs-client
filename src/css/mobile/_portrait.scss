@@ -1,27 +1,7 @@
 /*      Portrait Mobile Layout: 320px.*/
 @media only screen and (max-width: 480px) {
 
-    $layout_width: 320px;
-
-    .width{width: $layout_width !important;}
-
-    #top-bar{display:none;}
-
-    header{
-        ul{
-            width: $layout_width - 210px;
-
-            li{display:none;}
-            li.right{
-                display:block;
-            }
-            #newListing{
-                display:block;
-            }
-        }
-    }
-
-    footer{display:none;}
+    .width{width: 320px !important;}
 
     #loading {
         display:none;

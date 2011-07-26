@@ -11,7 +11,7 @@ class hs.t.TopBar extends hs.Template
   appendTo: '#top-bar > .width'
 
   template: ->
-    span ->
+    div class: 'inner-top-bar', ->
       a href: '/about', -> 'About'
       a href: '/how-it-works', -> 'How It Works'
       a href: 'https://getsatisfaction.com/hipsell', target: '_blank', -> 'Feedback'
