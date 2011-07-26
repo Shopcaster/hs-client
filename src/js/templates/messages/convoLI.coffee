@@ -36,7 +36,7 @@ class hs.t.ConvoLI extends hs.Template
 
         this.messages = messages
         this.messages.on 'add', _.bind(this.setMessage, this)
-        this.setMessage this.messages[0], 0
+        this.setMessage this.messages[0], 0 if this.messages[0]?
 
     zz.data.listing this.model.listing, (listing) =>
       zz.data.user this.model.creator, (creator) =>
