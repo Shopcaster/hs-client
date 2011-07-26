@@ -11,8 +11,9 @@ class hs.v.MessageForm extends hs.View
 
 
   answerPublicly: (question) ->
-    this.options.question = question
+    this.removePublicly()
 
+    this.options.question = question
     this.template.el.addClass 'question'
 
     this.template.$('[name=question]')
@@ -42,6 +43,7 @@ class hs.v.MessageForm extends hs.View
       =>
         this.clear()
         clbk?()
+        mpq.push(["track", "create:message", {}]);
 
     if this.options.question?
 
