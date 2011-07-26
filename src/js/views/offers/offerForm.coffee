@@ -18,17 +18,18 @@ class hs.v.OfferForm extends hs.View
   validateAmount: (clbk) -> clbk !_.isNaN this.amount()
 
 
-  createMessage: (amount) ->
+  createMessage: (amount, offerId) ->
     this.options.listing.myConvo (convo) =>
       if convo?
+        name = zz.auth.curUser().name || 'Anonymous'
         zz.create.message
-          message: "I've made an offer for $#{amount/100}!"
+          message: "#{name} made an offer for $#{amount/100}!"
           convo: convo._id
+          offer: offerId
 
       else
-        zz.create.convo listing: this.options.listing, (convoId) =>
-          zz.data.convo convoId, (convo) =>
-            this.createMessage amount
+        zz.create.convo listing: this.options.listing, =>
+          this.createMessage amount, offerId
 
 
   submit: ->
@@ -37,7 +38,7 @@ class hs.v.OfferForm extends hs.View
       if offer?
         console.log 'updating offer'
         zz.update.offer offer, amount: this.amount(), =>
-          this.createMessage(this.amount())
+          this.createMessage(this.amount(), offer._id)
           this.clear()
           this.blur()
 
@@ -47,7 +48,8 @@ class hs.v.OfferForm extends hs.View
         zz.create.offer
           amount: this.amount()
           listing: this.options.listing._id
-          =>
+          (id) =>
+            this.createMessage(this.amount(), id)
             this.clear()
             this.blur()
 

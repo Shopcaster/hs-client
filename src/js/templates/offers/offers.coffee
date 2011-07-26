@@ -31,11 +31,10 @@ class hs.t.Offers extends hs.Template
 
 
   _update: (node, amount) ->
-    animate = node.text() != ''
 
     node.text "$#{amount/100}"
 
-    if animate
+    if not this.modelInit
       oldColor = node.css 'color'
       node.animate {color: '#828200'}, 250, () =>
         node.animate {color: oldColor}, 250
@@ -57,7 +56,14 @@ class hs.t.Offers extends hs.Template
       this.myOffer.removeAllListeners 'amount'
       this.myOffer = null
 
-    if cur?
+    this.$('.right .title').text 'My Offer'
+    this.$('.right .value').text '$0'
+
+    if cur? and cur._id == this.options.listing.creator
+      this.$('.right .title').text ''
+      this.$('.right .value').text ''
+
+    else if cur?
       for id, offer of this.offers
         if offer.creator == cur._id
           this.myOffer = offer

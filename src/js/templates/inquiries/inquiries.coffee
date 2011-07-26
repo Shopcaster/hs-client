@@ -7,7 +7,9 @@ dep.provide 'hs.t.Inquiries'
 
 class hs.t.Inquiries extends hs.Template
 
-  template: -> div class: 'inquiry-list'
+  template: ->
+    div class: 'inquiry-list', ->
+      div class: 'li no-qs', -> 'No Questions Yet.'
 
 
   subTemplates:
@@ -18,6 +20,7 @@ class hs.t.Inquiries extends hs.Template
 
   addModel: (inquiry, index) ->
     index = undefined if index == -1
+    this.$('.no-qs').remove()
     this.inquiryTmpl inquiry, {nthChild: index}
 
 

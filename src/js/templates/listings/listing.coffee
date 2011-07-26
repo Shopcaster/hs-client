@@ -20,15 +20,13 @@ class hs.t.Listing extends hs.Template
 
       div class: 'section-left', ->
         div id: 'listing-image', -> img()
-        div id: 'listing-messages', class: 'list-box', ->
-          h2 -> 'Ask A Question'
 
       div class: 'section-right', ->
         div id: 'listing-details', ->
           div id: 'listing-creator'
           span class: 'status', => 'Available'
           div id: 'listing-description'
-          div id: 'created'
+          div class: 'created'
           div class: 'bottom', ->
             div id: 'listing-social', ->
               div class: 'twitter'
@@ -43,9 +41,11 @@ class hs.t.Listing extends hs.Template
             div class: 'offer-form-wrapper', ->
               div class: 'button offer-button', -> 'Make an Offer'
 
+      div id: 'listing-messages', class: 'section-left list-box', ->
+        h2 -> 'Ask A Question'
 
-        div id: 'listing-inquiries', class: 'list-box', ->
-          h2 -> 'Frequently Asked Questions'
+      div id: 'listing-inquiries', class: 'section-right list-box', ->
+        h2 -> 'Frequently Asked Questions'
 
 
   subTemplates:
@@ -103,19 +103,27 @@ class hs.t.Listing extends hs.Template
     this.meta property: 'fb:app_id', content: '110693249023137'
 
 
+  showOfferButton: ->
+      this.$('.offer-button').show()
+      this.$('.bottom').css 'height': 255
+
+
+  hideOfferButton: ->
+      this.$('.offer-button').hide()
+      this.$('.bottom').css 'height': 210
+
+
   setAuth: (prev, cur) ->
     this.offerFormTmpl.remove()
     this.newConvo()
 
     if not cur? or this.model.creator != cur._id
-      this.$('.offer-button').show()
-      this.$('.bottom').css 'height': 255
+      this.showOfferButton() if not this.model.sold
 
       this.offerFormTmpl null, listing: this.model
 
     else
-      this.$('.offer-button').hide()
-      this.$('.bottom').css 'height': 210
+      this.hideOfferButton()
 
 
   newConvo: ->
@@ -157,7 +165,7 @@ class hs.t.Listing extends hs.Template
 
 
   setCreated: () ->
-    since = _.since this.model.created
+    since = this.model.created.since()
     this.$('.created').text "#{since.num} #{since.text}"
 
 
@@ -171,8 +179,13 @@ class hs.t.Listing extends hs.Template
     lat = this.model.latitude
     lng = this.model.longitude
 
+    if document.documentElement.clientWidth <= 480
+      width = 210
+    else
+      width = 380
+
     this.$('img.map').attr 'src',
-      "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=380x100&sensor=false"
+      "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=#{width}x100&sensor=false"
 
     this.$('.mapLink').attr 'href',
       "http://maps.google.com/?ll=#{lat},#{lng}&z=16"
@@ -195,7 +208,7 @@ class hs.t.Listing extends hs.Template
     dist = parseFloat userLoc.distanceTo listingLoc
     brng = userLoc.bearingTo listingLoc
 
-    direction = _.degreesToDirection brng
+    direction = brng.degreesToDirection()
 
     if dist < 1
       distStr = Math.round(dist*1000)+' metres'
@@ -212,6 +225,7 @@ class hs.t.Listing extends hs.Template
       this.$('.status').text('Offer Accepted').addClass('accepted').removeClass('sold')
     else if this.model.sold
       this.$('.status').text('Sold').addClass('sold').removeClass('accepted')
+      this.hideOfferButton()
     else
       this.$('.status').text('Available').removeClass('sold').removeClass('accepted')
 

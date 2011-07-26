@@ -19,7 +19,13 @@ class hs.t.Message extends hs.Template
       class: hs.t.InlineUser
 
 
+  setOffer: ->
+    this.el.addClass 'offer'
+
+
   setCreator: ->
+    return if this.model.offer?
+
     zz.data.user this.model.creator, (creator) =>
       this.userTmpl creator, appendTo: "##{this.id} .creator"
 
@@ -36,5 +42,5 @@ class hs.t.Message extends hs.Template
 
 
   setCreated: ->
-    since = _.since this.model.created
+    since = this.model.created.since()
     this.$('.created').text since.num+' '+since.text

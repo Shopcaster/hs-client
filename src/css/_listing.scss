@@ -6,9 +6,13 @@
   #listing-image{
 
     width: $section_width - 20px !important;
-    height:450px;
+    height: 450px;
+    @media only screen and (max-width: 480px) {
+      width: $mob_section_width - 20px !important;
+      height:auto;
+    }
+
     padding: 10px;
-    margin-bottom:15px;
 
     background-color:$white;
     @include box-shadow(0 1px 3px $black + #666);
@@ -17,6 +21,10 @@
       /*can be removed later*/
       height:448px;
       width:448px;
+      @media only screen and (max-width: 480px) {
+        width: $mob_section_width - 20px !important;
+        height: auto;
+      }
 
       border:1px solid $grey;
     }
@@ -43,9 +51,11 @@
     position:relative;
 
     width:$section_width - 20;
+    @media only screen and (max-width: 480px) {
+      width: $mob_section_width - 20;
+    }
     height:450px;
     padding:10px;
-    margin-bottom:15px;
 
     /*text-shadow: 0 1px 1px #fff;*/
     background-color:$white;
@@ -90,8 +100,11 @@
     .bottom{
       position:absolute;
       bottom:10px;
-      width: $section_width - 20px;
       height:255px;
+      width: $section_width - 20px;
+      @media only screen and (max-width: 480px) {
+        width: $mob_section_width - 20;
+      }
 
       #listing-loc-diff{
         font-size:12px;
@@ -143,6 +156,9 @@
         & > div{
           float:left;
           width: (($section_width - 20px)/3) - 33px;
+          @media only screen and (max-width: 480px) {
+            width: (($mob_section_width - 20px)/3) - 33px;
+          }
           height:55px;
           padding:10px;
           margin:0 5px;
@@ -170,11 +186,17 @@
           .title{
             font-size:18px;
             font-weight:bold;
+            @media only screen and (max-width: 480px) {
+              font-size:14px;
+            }
           }
           .value{
             margin:5px 0;
             font-size:28px;
             font-weight:bold;
+            @media only screen and (max-width: 480px) {
+              font-size:22px;
+            }
           }
           .details{
             font-size:16px;
@@ -186,7 +208,11 @@
       .offer-form-wrapper{
         position:absolute;
         bottom:0px;left:0;
+        z-index:2;
         width: $section_width - 20px;
+        @media only screen and (max-width: 480px) {
+          width: $mob_section_width - 20px;
+        }
 
         @include light-button($green);
 
@@ -213,6 +239,9 @@
           display:none;
 
           width: $section_width - 32px;
+          @media only screen and (max-width: 480px) {
+            width: $mob_section_width - 32px;
+          }
 
           border:1px solid $grey - #222;
           background-color:$grey;
@@ -224,6 +253,9 @@
           input{
             margin-bottom:5px;
             width:$section_width - 135px;
+            @media only screen and (max-width: 480px) {
+              width: $mob_section_width - 135px;
+            }
           }
           .submit{
             width:77px !important;
@@ -248,12 +280,31 @@
       input{
         margin-bottom:5px;
         width:$section_width - 125px;
+        @media only screen and (max-width: 480px) {
+          width:$mob_section_width - 125px;
+        }
       }
       .submit{
         width:77px !important;
         color:$white !important;
         margin-bottom:0;
         float:right;
+      }
+
+
+      .question{
+
+        .qa{
+          display:inline;
+          margin-right:3px;
+        }
+
+        input{
+          width:$section_width - 135px;
+          @media only screen and (max-width: 480px) {
+            width:$mob_section_width - 135px;
+          }
+        }
       }
     }
 
@@ -276,27 +327,16 @@
           background-color:$blue + #222;
           @include gradient($blue + #333, $blue);
 
-          .offer, & > .user{
+/*          & > .offer, & > .user{
             color:$white - #111;
             text-shadow: 0px -1px 1px $black + #222;
-          }
+          }*/
         }
 
         &.accepted{
           background-color:$lightGreen;
 
           &:hover{background-color:$lightGreen - #111;}
-        }
-
-        &.sold{
-          background-color:$green + #222;
-          @include gradient($green + #333, $green);
-
-          .offer, & > .user{
-            color:$white - #111;
-            text-shadow: 0px -1px 1px $black + #222;
-          }
-
         }
 
         .inside{
@@ -309,6 +349,9 @@
             position:absolute;
             top:20px;
             width:$section_width - 20px - 40px;
+            @media only screen and (max-width: 480px) {
+              width:$mob_section_width - 20px - 40px;
+            }
           }
 
           .offerbox{
@@ -322,7 +365,7 @@
               font-weight:bold;
             }
 
-            .accept -offer{
+            .accept-offer{
             }
 
           }
@@ -331,17 +374,30 @@
         .convo{
           position:absolute;
           top:41px;left:50px;
-          width:$section_width - 60px;
-          z-index:2;
-          border:none;
+          padding:0;
           margin-bottom:10px;
+          z-index:2;
+          width:$section_width - 50px;
+          @media only screen and (max-width: 480px) {
+            width:$mob_section_width - 50px;
+          }
 
+          border:none;
           background-color:$white;
           @include box-shadow(0 1px 3px $black + #666);
           @include angled-top();
 
           input{
-            width:$section_width - 215px;
+            width:$section_width - 175px;
+            @media only screen and (max-width: 480px) {
+              width:$mob_section_width - 175px;
+            }
+          }
+          .question input{
+            width:$section_width - 185px;
+            @media only screen and (max-width: 480px) {
+              width:$mob_section_width - 185px;
+            }
           }
         }
       }
@@ -351,6 +407,15 @@
 
       .message{
         min-height:20px;
+
+        &.offer{
+          padding-top:5px;
+          padding-bottom:5px;
+
+          background-color:$lightYellow;
+
+          .message-body{margin-left:0;}
+        }
 
         .name{
           font-size:14px !important;
@@ -366,9 +431,6 @@
   }
 
   #listing-inquiries{
-    width: $section_width;
-    margin-top:10px;
-
     background-color:$lightBlue;
 
     .inquiry{

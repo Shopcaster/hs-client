@@ -36,7 +36,7 @@ class hs.t.ConvoLI extends hs.Template
 
         this.messages = messages
         this.messages.on 'add', _.bind(this.setMessage, this)
-        this.setMessage this.messages[0], 0
+        this.setMessage this.messages[0], 0 if this.messages[0]?
 
     zz.data.listing this.model.listing, (listing) =>
       zz.data.user this.model.creator, (creator) =>
@@ -78,12 +78,12 @@ class hs.t.ConvoLI extends hs.Template
 
   setAccepted: ->
     return if this.listing.sold
-
     this.$('.accepted').remove()
     this.$('.accept-offer').remove()
 
     if this.listing.accepted? and this.offer? and this.listing.accepted == this.offer._id
       this.el.addClass 'accepted'
+
       this.$('.offerbox').append '
         <span class="accepted">
           Offer Accepted -
@@ -103,5 +103,5 @@ class hs.t.ConvoLI extends hs.Template
     if this.offer? and this.listing.sold and this.listing.accepted == this.offer._id
       this.$('.accepted').remove()
       this.$('.accept-offer').remove()
-      this.el.removeClass 'accepted'
-      this.el.addClass 'sold'
+      this.el.addClass 'accepted'
+      this.$('.offerbox').append 'sold'
