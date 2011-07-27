@@ -35,8 +35,8 @@ class hs.t.SocialSetting extends hs.Template
     s = conf.zz.server
 
     ret = s.protocol + '://' + s.host + ':' + s.port + s.path
-    ret += t + '/connect'
-    ret += '?email=' + enc(user.email) +
+    ret += 'iapi/social/connect?type=' + t
+    ret += '&email=' + enc(user.email) +
            '&password=' + enc(user.password) +
            '&return=' + enc(loc + '/social/connect/' + t)
 
