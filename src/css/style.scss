@@ -49,15 +49,18 @@ body{
 }
 
 #top-bar{
-  text-align:right;
   font-size:12px;
-  color:$grey;
+  height:15px;
+  padding:5px;
 
+  text-align:left;
+  color:$grey;
   background-color:$black + #333;
 
   .inner-top-bar{
     height:15px;
-    padding:5px;
+    float:right;
+    color:$grey;
 
     @media only screen and (max-width: 480px) {
       padding-right:10px;
@@ -140,20 +143,16 @@ header{
       height:100%;
       float:left;
 
-      a{
+      a.button{
+        padding:4px 10px 6px;
         margin:12px 5px 0;
       }
-      @include dark-button();
+      @include dark-button($blue - #444);
     }
     li.active{@include dark-button($red - #555)}
-    li.thanks{@include dark-button($blue - #555)}
     li.right{
       float:right;
       margin-right:-6px;
-    }
-
-    #newListing{
-      display:none;
     }
   }
 }

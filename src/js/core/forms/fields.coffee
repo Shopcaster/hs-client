@@ -32,7 +32,7 @@ class hs.FormFieldView extends hs.View
 
 
 
-reg 'text', 'password', 'email', {
+reg 'text', 'password', 'email', 'number', {
   t: class InputT extends hs.FormFieldTemplate
 
     template: ->
@@ -47,16 +47,43 @@ reg 'text', 'password', 'email', {
   v: class InputV extends hs.FormFieldView
 }
 
+
 reg 'textarea', {
   t: class TextareaT extends hs.FormFieldTemplate
 
     template: ->
-      textarea
-        id: name
-        name: name
-        class: clas or ''
-        placeholder: placeholder or ''
-        style: 'display:none' if hide
+      attrs = name: name
+      attrs.class = clas if clas?
+      attrs.placeholder = placeholder if placeholder?
+      attrs.maxlength = maxlength if maxlength?
+      attrs.style = 'display:none' if hide? and hide
+
+      textarea attrs
 
   v: hs.FormFieldView
+}
+
+
+reg 'image', {
+  t: class ImageT extends hs.FormFieldTemplate
+
+    template: ->
+      attrs.class = clas if clas?
+      attrs.style = 'display:none' if hide? and hide
+
+      div attrs, ->
+        input type: 'file', name: name
+        span class: 'drop', -> 'Drag files here'
+
+
+  v: class ImageV extends hs.FormFieldView
+
+    get: () -> this.template.el.val()
+
+    set: (value) -> this.template.el.val value
+
+    valid: () ->
+      value = this.get()
+      return value? or this.options.nullable
+
 }

@@ -517,58 +517,24 @@
 }
 
 
-#new_listing{
-  width:100%;
+#new-listing{
+  position:absolute;
+  top:50px;right:0;
+  width:320px;
+  z-index:2;
 
-  li, ul {margin:0;padding:0;list-style:none;}
-  input[type=text], input[type=email], input[type=password], textarea, .image_capture{
-    width:93%;
-    padding:2%;
-    margin:2%;
-    display:block;
-    font-size:16px;
-    @include sans();
+  border-top:none;
+  @include angled-top();
 
-    border:none;
-    background-color:$white;
-    @include box-shadow(0 2px 4px $black + #222);
-    @include rounded(0px);
+  textarea, input[type=number]{
+    width:300px;
+    margin:5px 5px;
   }
-  .image_capture{
-    img{
-      max-height:40px;
-      width:auto;
-      margin:0 0 -7px;
-      padding:0;
-    }
-    .take, .selectFile{
-      float:right;
-    }
-  }
-  .form_item:after {@include clearfix();}
-}
 
-#thanks{
-  width:93%;
-  padding:2%;
-  margin:2%;
-  display:block;
-  font-size:16px;
-  @include sans();
-
-  border:none;
-  background-color:$white;
-  @include box-shadow(0 2px 4px $black + #222);
-  @include rounded(0px);
-
-  p{
-    padding: 10px 0px 10px 10px;
-  }
-  input{
-    margin-top: 25px;
-    margin-bottom: -10px;
-    width: 95%;
-    padding: 10px 5px 10px 5px;
+  @include dark-button($blue - #444, '.submit');
+  .submit{
+    width:77px !important;
+    margin:5px 5px;
+    float:right;
   }
 }
-

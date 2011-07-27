@@ -21,7 +21,8 @@ h4{
   font-size:16px;
 }
 
-textarea, input[type=text], input[type=email], input[type=password], .fakeInput{
+textarea, input[type=text], input[type=email], input[type=password],
+    input[type=number], .fakeInput{
   -webkit-appearance: none;
   padding:5px;
   cursor:text;

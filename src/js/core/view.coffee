@@ -11,7 +11,7 @@ class hs.View extends hs.EventEmitter
   initListeners: []
   modInit: ->
 
-  constructor: (@template, @options) ->
+  constructor: (@template, @options = {}) ->
     this.views = {}
 
     this.modInit()
