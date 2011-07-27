@@ -48,6 +48,7 @@ Date.prototype.since = (since) ->
     else
       if (this.getMonth() < now.getMonth())
         return {'text': 'Months ago', 'num': now.getMonth() - this.getMonth()}
+
       else
         if (this.getDate() < now.getDate())
           return {'text': 'Days ago', 'num': now.getDate() - this.getDate()}
@@ -65,7 +66,7 @@ Date.prototype.since = (since) ->
                 return {'text': 'Seconds ago', 'num': now.getSeconds() - this.getSeconds()}
 
               else
-                return {'text': 'just now', 'num': 0};
+                return {'text': 'just now', 'num': 0}
 
   else
     #throw new Error('_.since only accepts dates from the past', date)

@@ -37,10 +37,13 @@ class hs.t.User extends hs.Template
 
 
   setPresence: (status) ->
-    node = this.$('.presence')
-    node.removeClass 'away online offline'
-    node.addClass status
-    node.attr 'title', status.toUpperCase()
+    if typeof status == 'string'
+      node = this.$('.presence')
+      node.removeClass 'away online offline'
+      node.addClass status
+      node.attr 'title', status.toUpperCase()
+    else
+      console.error 'presence status is not a string ', status
 
 
   setFb: ->

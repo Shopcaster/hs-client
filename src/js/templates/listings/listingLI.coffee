@@ -12,6 +12,11 @@ class hs.t.ListingLI extends hs.Template
         span class: 'status', => 'Available'
         div class: 'listing-desc'
         div class: 'created'
+        div class: 'asking', ->
+          div class: 'title', -> 'Asking Price'
+          div class: 'value'
+        div class: 'link', href: 'javascript:;', ->
+          'Click for more info.'
 
 
   postRender: ->
@@ -35,9 +40,13 @@ class hs.t.ListingLI extends hs.Template
 
 
   setDescription: ->
-    this.$('.listing-desc').text this.model.description
+    this.$('.listing-desc').text this.model.description.truncateWords 50
 
 
   setCreated: () ->
     since = this.model.created.since()
     this.$('.created').text "#{since.num} #{since.text}"
+
+
+  setPrice: () ->
+    this.$('.asking .value').text "$#{this.model.price}"

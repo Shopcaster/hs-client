@@ -474,7 +474,7 @@
 
   .listing-info {
     position:absolute;
-    left:150px;top:10px;
+    left:155px;top:10px;
 
     height:130px;
     width: 130px;
@@ -488,6 +488,28 @@
 
     .created{
       font-size:10px;
+    }
+
+    .asking {
+      background-color:$grey + #111;
+      padding:3px;
+      color: $green - #111;
+      font-weight:bold;
+
+      .title{
+        margin-bottom:2px;
+      }
+      .value{
+        font-size:14px;
+      }
+    }
+
+    .link{
+      position:absolute;
+      bottom:0px;
+      left:0;
+      color:$blue;
+      &:hover{text-decoration:underline;}
     }
   }
 }
