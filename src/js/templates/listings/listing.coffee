@@ -26,14 +26,16 @@ class hs.t.Listing extends hs.Template
           div id: 'listing-creator'
           span class: 'status', => 'Available'
           div id: 'listing-description'
-          div class: 'created'
+
           div class: 'bottom', ->
             div id: 'listing-social', ->
               div class: 'twitter'
               div class: 'fb'
               div class: 'goog'
 
-            div id: 'listing-loc-diff'
+            span id: 'listing-loc-diff'
+            text '&nbsp;&nbsp;&ndash;&nbsp;&nbsp;'
+            span class: 'created'
 
             a href: 'javascript:;', class: 'map-link', target: '_blank', ->
               img class: 'map'
@@ -215,7 +217,7 @@ class hs.t.Listing extends hs.Template
     else
       distStr = Math.round(dist*100)/100+' km'
 
-    this.$('#listing-loc-diff').text "Roughly #{distStr} #{direction} of you."
+    this.$('#listing-loc-diff').text "Roughly #{distStr} #{direction} of you"
 
 
   setAccepted: -> this.setStatus()
