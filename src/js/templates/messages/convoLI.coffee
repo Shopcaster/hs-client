@@ -72,8 +72,10 @@ class hs.t.ConvoLI extends hs.Template
 
 
   setMessage: (msg, index) ->
-    if index == 0
-      this.$('.message-preview').text msg.message.truncateWords(50)
+    for message in this.messages
+      if message.creator != zz.auth.curUser()._id
+        this.$('.message-preview').text message.message.truncateWords(50)
+        break
 
 
   setAccepted: ->
