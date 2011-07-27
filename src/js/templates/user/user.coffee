@@ -10,7 +10,7 @@ class hs.t.User extends hs.Template
     div class: 'user', ->
       div class: 'presence offline'
       img class: 'avatar'
-      span class: 'name', -> 'Anonymous'
+      a class: 'name', -> 'Anonymous'
       div class: 'social', ->
         a target: '_blank', class: 'fb', -> img src: '/img/fb.png'
         a target: '_blank', class: 'twitter', -> img src: '/img/twitter.png'
@@ -20,6 +20,8 @@ class hs.t.User extends hs.Template
   postRender: ->
     this.setPresence = _.bind(this.setPresence, this)
     zz.presence.on this.model._id, this.setPresence
+
+    this.$('.name').attr 'href', '/'+this.model._id
 
 
   preRemove: ->

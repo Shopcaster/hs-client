@@ -154,7 +154,7 @@ class hs.t.Listing extends hs.Template
 
 
   setPhoto: () ->
-    url = "http://#{conf.zz.server.host}:#{conf.zz.server.port}/static/#{this.model.photo}"
+    url = "http://#{conf.zz.server.host}:#{conf.zz.server.port}/#{this.model.photo}"
     this.$('#listing-image > img').attr 'src', url
 
 

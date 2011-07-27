@@ -26,6 +26,7 @@ zz.models.Listing.prototype.convoForUser = (user, clbk) ->
   return clbk null if not user?
 
   this.relatedConvos (convos) =>
+    console.log 'relatedConvos', convos
     for convo in convos
       if convo.creator == user._id
         return clbk convo

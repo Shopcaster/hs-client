@@ -43,7 +43,6 @@ class hs.v.MessageForm extends hs.View
       =>
         this.clear()
         clbk?()
-        mpq.push(["track", "create:message", {}]);
 
     if this.options.question?
 
@@ -64,8 +63,9 @@ class hs.v.MessageForm extends hs.View
           this.createMessage convo, clbk
         else
           zz.create.convo listing: this.options.listing, (convoId) =>
-            zz.data.convo convoId, (convo) =>
-              this.options.convo = convo
+            # this line should be deleted pending the fix of:
+            #   https://www.pivotaltracker.com/story/show/16308701
+            zz.data.convo convoId, =>
               this.submit =>
                 this.template.parent.newConvo?()
                 clbk?()

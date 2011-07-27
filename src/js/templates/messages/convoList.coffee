@@ -7,7 +7,8 @@ dep.provide 'hs.t.ConvoList'
 class hs.t.ConvoList extends hs.Template
 
   template: ->
-    div class: 'convo-list list-box'
+    div class: 'convo-list list-box', ->
+      div class: 'li no-cs', -> 'No Messages Yet.'
 
 
   subTemplates:
@@ -18,6 +19,7 @@ class hs.t.ConvoList extends hs.Template
 
   addModel: (convo, index) ->
     index = undefined if index == -1
+    this.$('.no-cs').remove()
     this.convoLITmpl convo, {nthChild: index}
 
 
