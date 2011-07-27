@@ -43,27 +43,39 @@ Date.prototype.since = (since) ->
 
   if (this <= now)
     if (this.getFullYear() < now.getFullYear())
-      return {'text': 'Years ago', 'num': now.getFullYear() - this.getFullYear()}
+      num = now.getFullYear() - this.getFullYear()
+      s = if num != 1 then 's' else ''
+      return {'text': 'Year'+s+' ago', 'num': num}
 
     else
       if (this.getMonth() < now.getMonth())
-        return {'text': 'Months ago', 'num': now.getMonth() - this.getMonth()}
+        num = now.getMonth() - this.getMonth()
+        s = num != 1 ?'s':''
+        return {'text': 'Month'+s+' ago', 'num': num}
 
       else
         if (this.getDate() < now.getDate())
-          return {'text': 'Days ago', 'num': now.getDate() - this.getDate()}
+          num = now.getDate() - this.getDate()
+          s = if num != 1 then 's' else ''
+          return {'text': 'Day'+s+' ago', 'num': num}
 
         else
           if (this.getHours() < now.getHours())
-            return {'text': 'Hours ago', 'num': now.getHours() - this.getHours()}
+            num = now.getHours() - this.getHours()
+            s = if num != 1 then 's' else ''
+            return {'text': 'Hour'+s+' ago', 'num': num}
 
           else
             if (this.getMinutes() < now.getMinutes())
-              return {'text': 'Minutes ago', 'num': now.getMinutes() - this.getMinutes()}
+              num = now.getMinutes() - this.getMinutes()
+              s = if num != 1 then 's' else ''
+              return {'text': 'Minute'+s+' ago', 'num': num}
 
             else
               if (this.getSeconds() < now.getSeconds())
-                return {'text': 'Seconds ago', 'num': now.getSeconds() - this.getSeconds()}
+                num = now.getSeconds() - this.getSeconds()
+                s = if num != 1 then 's' else ''
+                return {'text': 'Second'+s+' ago', 'num': num}
 
               else
                 return {'text': 'just now', 'num': 0}
