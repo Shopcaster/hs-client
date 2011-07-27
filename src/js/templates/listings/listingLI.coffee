@@ -16,7 +16,7 @@ class hs.t.ListingLI extends hs.Template
           div class: 'title', -> 'Asking Price'
           div class: 'value'
         div class: 'link', href: 'javascript:;', ->
-          'Click for more info.'
+          'Click for more info'
 
 
   postRender: ->

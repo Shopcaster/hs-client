@@ -458,7 +458,7 @@
 
 
   &:hover{
-    background-color:$white - #111;
+    @include box-shadow(0 1px 6px $black + #555);
     text-decoration:none;
   }
 
@@ -492,7 +492,7 @@
 
     .asking {
       background-color:$grey + #111;
-      padding:3px;
+      padding:3px 0 3px 5px;
       color: $green - #111;
       font-weight:bold;
 
