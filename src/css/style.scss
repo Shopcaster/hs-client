@@ -201,6 +201,20 @@ header{
     background-color: $white;
   }
 
+  #launchrock{
+    width:340px;
+    margin:10px auto;
+    padding:10px;
+    @include box-shadow(0 1px 3px $black + #666);
+    background-color: rgba($black, 0.8);
+
+    #lrcontent #makea{
+      color:$white;
+      text-align:center;
+      margin-top:0px;
+    }
+  }
+
   .settings {
 
     #nav {

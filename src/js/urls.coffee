@@ -2,6 +2,7 @@
 dep.require 'hs'
 dep.provide 'hs.urls'
 
+dep.require 'hs.t.Home'
 dep.require 'hs.t.Listing'
 dep.require 'hs.t.Profile'
 dep.require 'hs.t.About'
@@ -11,6 +12,8 @@ dep.require 'hs.t.SocialSetting'
 dep.require 'hs.t.SocialResponse'
 
 hs.urls =
+  '^/?$': hs.t.Home
+
   '^/(listing/\\d+)': hs.t.Listing
   '^/(user/[\\da-f]+)': hs.t.Profile
 
