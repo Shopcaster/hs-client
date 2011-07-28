@@ -1,7 +1,5 @@
 
 dep.require 'hs'
-dep.provide 'hs.urls'
-
 dep.require 'hs.t.Home'
 dep.require 'hs.t.Listing'
 dep.require 'hs.t.Profile'
@@ -10,6 +8,8 @@ dep.require 'hs.t.HowItWorks'
 dep.require 'hs.t.NameSetting'
 dep.require 'hs.t.SocialSetting'
 dep.require 'hs.t.SocialResponse'
+
+dep.provide 'hs.urls'
 
 hs.urls =
   '^/?$': hs.t.Home

@@ -5,6 +5,8 @@ dep.require 'hs.globalTemplates'
 
 dep.provide 'hs.route'
 
+return if window.route == false
+
 current = t: null, v: null
 user = null
 

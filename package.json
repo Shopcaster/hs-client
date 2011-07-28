@@ -1,0 +1,16 @@
+{
+    "name": "hs-client",
+    "version": "0.8.0",
+    "description": "Hipsell client",
+    "author": "defrex",
+    "bin": {"hs": "./hs.js"},
+    "dependencies": {
+        "cli": "0.2.8",
+        "mime": "1.2.1",
+        "underscore": "1.1.6",
+        "wrench": "1.1.0",
+        "uglify-js": "1.0.2",
+        "coffee-script": "1.1.1",
+        "depends": "latest"
+    }
+}
