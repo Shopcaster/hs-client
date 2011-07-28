@@ -5,7 +5,6 @@ dep.provide 'hs.t.Offers'
 
 class hs.t.Offers extends hs.Template
 
-  offers: {}
   id: 'listing-offerbar'
 
 
@@ -25,13 +24,17 @@ class hs.t.Offers extends hs.Template
         div class: 'value my-offer', -> '$0'
         div class: 'details my-offer'
 
+  init: (clbk) ->
+    this.offers = {}
+    clbk()
+
 
   postRender: ->
     this.$('.asking.value').text "$#{this.options.listing.price}"
 
 
   preRemove: ->
-    (offer.freeze() if offer.hot) for id, offer of this.offers
+    offer.freeze() for id, offer of this.offers
 
 
   _update: (node, amount) ->
