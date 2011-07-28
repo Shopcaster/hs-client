@@ -30,6 +30,10 @@ class hs.t.Offers extends hs.Template
     this.$('.asking.value').text "$#{this.options.listing.price}"
 
 
+  preRemove: ->
+    (offer.freeze() if offer.hot) for id, offer of this.offers
+
+
   _update: (node, amount) ->
 
     node.text "$#{amount/100}"
@@ -91,6 +95,3 @@ class hs.t.Offers extends hs.Template
     delete this.offers[offer._id]
 
     this.setBestOffer()
-
-
-  preRemove: -> offer.freeze() for id, offer of this.offers
