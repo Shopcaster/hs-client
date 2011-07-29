@@ -1,50 +1,63 @@
 
 depends = require 'depends'
-jsdom = require 'jsdom'
+jsdom  = require("jsdom").jsdom
+XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 fs = require 'fs'
 
-exports.run = (opt, res) ->
+# module vars
+dep = null
 
+
+# initialize
+exports.init = (opt, clbk)->
   fs.readFile opt.build+'/index.html', 'utf8', (err, index)->
     throw err if err?
 
     zz = "#{opt.conf.zz.server.protocol}://#{opt.conf.zz.server.host}:#{opt.conf.zz.server.port}/api-library.js"
 
-    console.log 'zz', zz
+    doc = jsdom index
 
-    jsdom.env
-      html: index
-      scripts: [zz]
-      done: (err, window)->
-        throw err if err
+    window = doc.createWindow()
+    window.route = false
+    window.alert = -> console.log.apply console, arguments
+    window.console = console
+    window.XDomainRequest = XMLHttpRequest
+    window.XMLHttpRequest = XMLHttpRequest
+    window.window = window
 
-        console.log 'window.zz', window.zz
+    depends.manageNode
+      src: opt.build+'/js'
+      context: window
+      init: 'hs.urls'
+      ,(err, nodeDep)->
+        return clbk err if err?
 
-        window.route = false
+        dep = nodeDep
 
-        depends.manageNode opt.build+'/js', window, (err, dep)->
-          throw err if err?
+        dep.dlIntoContext zz, (err)->
+          return clbk err if err?
+          dep.execute 'hs.urls', clbk
 
-          dep.context.renderFinished = (dom) ->
-            res.writeHead 200, 'Content-Type': 'text/html'
-            res.write dom
-            res.end()
 
-          dep.inContext ->
-            dep.require 'hs.urls'
+#route
+exports.route = (pathname, clbk) ->
+  for exp, Template of dep.context.hs.urls
 
-            for exp, Template of hs.urls
-              parsed = new RegExp(exp).exec(url)
-              if parsed?
-                kwargs =
-                  pathname: pathname
-                  parsedUrl: parsed.slice(1)
+    parsed = new RegExp(exp).exec(pathname)
+    if parsed?
 
-                break if Template.prototype.authRequired
+      kwargs =
+        pathname: pathname
+        parsedUrl: parsed.slice(1)
 
-                Template.get kwargs, (template) ->
-                  return if not template?
+      break if Template.prototype.authRequired
 
-                  renderFinished document.documentElement.innerHTML
+      Template.get kwargs, (t) ->
+        return clbk 'template init error' if not t?
+        template = t
 
-                break
+        clbk null, document.documentElement.innerHTML
+        template.remove()
+        return
+
+  clbk 404

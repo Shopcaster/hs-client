@@ -2,3 +2,4 @@
 build/*
 localConf.json
 node_modules
+.node-xmlhttprequest-sync*

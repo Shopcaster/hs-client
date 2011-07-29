@@ -278,6 +278,16 @@
     position:relative;
     background-color:$lightBlue;
 
+    h2{
+      color:$white;
+      text-shadow:0 -1px 1px $black;
+      /*border: 1px solid $grey - #333;*/
+      border-bottom:1px solid $blue - #333;
+      border-top:1px solid $white;
+      @include gradient($blue, $blue - #080808);
+      /*@include box-shadow(inset 0 1px 2px $grey - #333);*/
+    }
+
     .message-form{
       padding:10px;
 

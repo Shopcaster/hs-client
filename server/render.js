@@ -1,64 +1,68 @@
-var depends, fs, jsdom;
+var XMLHttpRequest, dep, depends, fs, jsdom;
 depends = require('depends');
-jsdom = require('jsdom');
+jsdom = require("jsdom").jsdom;
+XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 fs = require('fs');
-exports.run = function(opt, res) {
+dep = null;
+exports.init = function(opt, clbk) {
   return fs.readFile(opt.build + '/index.html', 'utf8', function(err, index) {
-    var zz;
+    var doc, window, zz;
     if (err != null) {
       throw err;
     }
     zz = "" + opt.conf.zz.server.protocol + "://" + opt.conf.zz.server.host + ":" + opt.conf.zz.server.port + "/api-library.js";
-    console.log('zz', zz);
-    return jsdom.env({
-      html: index,
-      scripts: [zz],
-      done: function(err, window) {
-        if (err) {
-          throw err;
-        }
-        console.log('window.zz', window.zz);
-        window.route = false;
-        return depends.manageNode(opt.build + '/js', window, function(err, dep) {
-          if (err != null) {
-            throw err;
-          }
-          dep.context.renderFinished = function(dom) {
-            res.writeHead(200, {
-              'Content-Type': 'text/html'
-            });
-            res.write(dom);
-            return res.end();
-          };
-          return dep.inContext(function() {
-            var Template, exp, kwargs, parsed, _ref, _results;
-            dep.require('hs.urls');
-            _ref = hs.urls;
-            _results = [];
-            for (exp in _ref) {
-              Template = _ref[exp];
-              parsed = new RegExp(exp).exec(url);
-              if (parsed != null) {
-                kwargs = {
-                  pathname: pathname,
-                  parsedUrl: parsed.slice(1)
-                };
-                if (Template.prototype.authRequired) {
-                  break;
-                }
-                Template.get(kwargs, function(template) {
-                  if (!(template != null)) {
-                    return;
-                  }
-                  return renderFinished(document.documentElement.innerHTML);
-                });
-                break;
-              }
-            }
-            return _results;
-          });
-        });
+    doc = jsdom(index);
+    window = doc.createWindow();
+    window.route = false;
+    window.alert = function() {
+      return console.log.apply(console, arguments);
+    };
+    window.console = console;
+    window.XDomainRequest = XMLHttpRequest;
+    window.XMLHttpRequest = XMLHttpRequest;
+    window.window = window;
+    return depends.manageNode({
+      src: opt.build + '/js',
+      context: window,
+      init: 'hs.urls'
+    }, function(err, nodeDep) {
+      if (err != null) {
+        return clbk(err);
       }
+      dep = nodeDep;
+      return dep.dlIntoContext(zz, function(err) {
+        if (err != null) {
+          return clbk(err);
+        }
+        return dep.execute('hs.urls', clbk);
+      });
     });
   });
+};
+exports.route = function(pathname, clbk) {
+  var Template, exp, kwargs, parsed, _ref;
+  _ref = dep.context.hs.urls;
+  for (exp in _ref) {
+    Template = _ref[exp];
+    parsed = new RegExp(exp).exec(pathname);
+    if (parsed != null) {
+      kwargs = {
+        pathname: pathname,
+        parsedUrl: parsed.slice(1)
+      };
+      if (Template.prototype.authRequired) {
+        break;
+      }
+      Template.get(kwargs, function(t) {
+        var template;
+        if (!(t != null)) {
+          return clbk('template init error');
+        }
+        template = t;
+        clbk(null, document.documentElement.innerHTML);
+        template.remove();
+      });
+    }
+  }
+  return clbk(404);
 };

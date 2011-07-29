@@ -17,12 +17,19 @@ exports.run = (opt) ->
 
     path.exists filename, (exists) ->
 
-      if not exists?
-        render.run opt, res
+      if not exists
+        opt.pathname = pathname
+        render.render opt, (err, content)->
+          return errEnd "render: #{err}" if err?
+
+          cli.info 'GET 200 '+pathname
+          res.writeHead 200, 'Content-Type': 'text/html'
+          res.write content
+          res.end()
 
       else
         fs.stat filename, (err, stat) ->
-          return errEnd "Something wrong with stat: #{err}" if err?
+          return errEnd "stat: #{err}" if err?
 
           return render.run opt, res if stat.isDirectory()
 
@@ -40,5 +47,7 @@ exports.run = (opt) ->
       res.write err + '\n'
       res.end()
 
-  server = http.createServer(onRequest).listen(opt.port, opt.host)
-  console.log "server listening - http://#{opt.host}:#{opt.port}"
+
+  render.init opt, ->
+    server = http.createServer(onRequest).listen(opt.port, opt.host)
+    console.log "server listening - http://#{opt.host}:#{opt.port}"

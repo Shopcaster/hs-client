@@ -43,10 +43,10 @@ class hs.t.Listing extends hs.Template
             div class: 'offer-form-wrapper', ->
               div class: 'button offer-button', -> 'Make an Offer'
 
-      div id: 'listing-messages', class: 'section-left list-box', ->
-        h2 -> 'Ask A Question'
+      div id: 'listing-messages', class: 'section-right list-box', ->
+        h2 -> 'Message the Seller'
 
-      div id: 'listing-inquiries', class: 'section-right list-box', ->
+      div id: 'listing-inquiries', class: 'section-left list-box', ->
         h2 -> 'Frequently Asked Questions'
 
 
@@ -141,7 +141,7 @@ class hs.t.Listing extends hs.Template
         this.convoListTmpl.apply(this, arguments)
 
     else
-      this.$('#listing-messages h2').text 'Ask A Question'
+      this.$('#listing-messages h2').text 'Message the Seller'
       this.model.myConvo (convo) =>
         if convo?
           convo.relatedMessages (messages) =>

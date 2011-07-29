@@ -9,7 +9,7 @@ hs.t.mods.authForm = (Template) ->
   Template.prototype.fields = Template.prototype.fields.concat [{
       name: 'email'
       type: 'email'
-      placeholder: 'Email'
+      placeholder: 'Your Email Address'
       hide: true
     },{
       name: 'password'

@@ -7,7 +7,7 @@ render = require('./render');
 fs = require('fs');
 cli = require('cli');
 exports.run = function(opt) {
-  var onRequest, server;
+  var onRequest;
   mime.define({
     'text/cache-manifest': ['appcache', 'appCache']
   });
@@ -16,12 +16,23 @@ exports.run = function(opt) {
     pathname = url.parse(req.url).pathname;
     filename = path.join(opt.build, pathname);
     path.exists(filename, function(exists) {
-      if (!(exists != null)) {
-        return render.run(opt, res);
+      if (!exists) {
+        opt.pathname = pathname;
+        return render.render(opt, function(err, content) {
+          if (err != null) {
+            return errEnd("render: " + err);
+          }
+          cli.info('GET 200 ' + pathname);
+          res.writeHead(200, {
+            'Content-Type': 'text/html'
+          });
+          res.write(content);
+          return res.end();
+        });
       } else {
         return fs.stat(filename, function(err, stat) {
           if (err != null) {
-            return errEnd("Something wrong with stat: " + err);
+            return errEnd("stat: " + err);
           }
           if (stat.isDirectory()) {
             return render.run(opt, res);
@@ -48,6 +59,9 @@ exports.run = function(opt) {
       return res.end();
     };
   };
-  server = http.createServer(onRequest).listen(opt.port, opt.host);
-  return console.log("server listening - http://" + opt.host + ":" + opt.port);
+  return render.init(opt, function() {
+    var server;
+    server = http.createServer(onRequest).listen(opt.port, opt.host);
+    return console.log("server listening - http://" + opt.host + ":" + opt.port);
+  });
 };
