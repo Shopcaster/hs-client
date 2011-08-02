@@ -15,6 +15,7 @@ hs.urls =
   '^/?$': hs.t.Home
 
   '^/(listing/\\d+)': hs.t.Listing
+  '^/(item/\\d+)': hs.t.Listing
   '^/(user/[\\da-f]+)': hs.t.Profile
 
   #settings
