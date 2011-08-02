@@ -13,6 +13,7 @@ class hs.t.Home extends hs.Template
 
 
   postRender: ->
+    return if not LR?
 
     LR.lrInstance = new LrInstance 'launchrock',
       tagLine: ""

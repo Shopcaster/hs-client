@@ -52,7 +52,7 @@ $('a').live 'click', (e) ->
   load location
 
 load = (url) ->
-  if not Modernizr.history
+  if not window.history.pushState?
     return document.location = url
 
   window.history.pushState {}, '', url

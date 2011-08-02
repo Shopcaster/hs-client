@@ -23,6 +23,12 @@ exports.init = (opt, clbk)->
     window.console = console
     window.XDomainRequest = XMLHttpRequest
     window.XMLHttpRequest = XMLHttpRequest
+    window.localStorage = {}
+    window.Date = Date
+    window.Array = Array
+    window.Number = Number
+    window.conf = opt.conf
+
     window.window = window
 
     depends.manageNode
@@ -36,11 +42,14 @@ exports.init = (opt, clbk)->
 
         dep.dlIntoContext zz, (err)->
           return clbk err if err?
+
           dep.execute 'hs.urls', clbk
 
 
 #route
 exports.route = (pathname, clbk) ->
+  console.log 'routing to', pathname
+
   for exp, Template of dep.context.hs.urls
 
     parsed = new RegExp(exp).exec(pathname)
@@ -53,11 +62,10 @@ exports.route = (pathname, clbk) ->
       break if Template.prototype.authRequired
 
       Template.get kwargs, (t) ->
-        return clbk 'template init error' if not t?
-        template = t
-
-        clbk null, document.documentElement.innerHTML
-        template.remove()
-        return
+        html = '<!DOCTYPE html>'
+        html += dep.context.document.documentElement.innerHTML
+        clbk null, html
+        t.remove()
+      return
 
   clbk 404
