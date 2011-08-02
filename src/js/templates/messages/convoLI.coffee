@@ -110,5 +110,6 @@ class hs.t.ConvoLI extends hs.Template
     if this.offer? and this.listing.sold and this.listing.accepted == this.offer._id
       this.$('.accepted').remove()
       this.$('.accept-offer').remove()
+      this.$('.sold').remove()
       this.el.addClass 'accepted'
-      this.$('.offerbox').append 'sold'
+      this.$('.offerbox').append '<span class="sold">sold</span>'
