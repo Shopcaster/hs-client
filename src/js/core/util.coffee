@@ -44,7 +44,9 @@ Date.prototype.since = (since) ->
   if (this <= now)
     if (this.getFullYear() < now.getFullYear())
       num = now.getFullYear() - this.getFullYear()
-      s = if num != 1 then 's' else ''
+      s = ''
+      if num != 1 then s = 's'
+      
       return {'text': 'Year'+s+' ago', 'num': num}
 
     else
