@@ -20,6 +20,11 @@ exports.init = function(opt, clbk) {
     window.console = console;
     window.XDomainRequest = XMLHttpRequest;
     window.XMLHttpRequest = XMLHttpRequest;
+    window.localStorage = {};
+    window.Date = Date;
+    window.Array = Array;
+    window.Number = Number;
+    window.conf = opt.conf;
     window.window = window;
     return depends.manageNode({
       src: opt.build + '/js',
@@ -41,6 +46,7 @@ exports.init = function(opt, clbk) {
 };
 exports.route = function(pathname, clbk) {
   var Template, exp, kwargs, parsed, _ref;
+  console.log('routing to', pathname);
   _ref = dep.context.hs.urls;
   for (exp in _ref) {
     Template = _ref[exp];
@@ -54,14 +60,13 @@ exports.route = function(pathname, clbk) {
         break;
       }
       Template.get(kwargs, function(t) {
-        var template;
-        if (!(t != null)) {
-          return clbk('template init error');
-        }
-        template = t;
-        clbk(null, document.documentElement.innerHTML);
-        template.remove();
+        var html;
+        html = '<!DOCTYPE html>';
+        html += dep.context.document.documentElement.innerHTML;
+        clbk(null, html);
+        return t.remove();
       });
+      return;
     }
   }
   return clbk(404);

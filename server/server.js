@@ -1,4 +1,5 @@
 var cli, fs, http, mime, path, render, url;
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 http = require('http');
 url = require('url');
 path = require('path');
@@ -12,30 +13,33 @@ exports.run = function(opt) {
     'text/cache-manifest': ['appcache', 'appCache']
   });
   onRequest = function(req, res) {
-    var errEnd, filename, pathname;
+    var errEnd, filename, pathname, route;
     pathname = url.parse(req.url).pathname;
     filename = path.join(opt.build, pathname);
+    route = __bind(function() {
+      opt.pathname = pathname;
+      return render.route(pathname, function(err, content) {
+        if (err != null) {
+          return errEnd("render: " + err);
+        }
+        cli.info('GET 200 ' + pathname);
+        res.writeHead(200, {
+          'Content-Type': 'text/html'
+        });
+        res.write(content);
+        return res.end();
+      });
+    }, this);
     path.exists(filename, function(exists) {
       if (!exists) {
-        opt.pathname = pathname;
-        return render.render(opt, function(err, content) {
-          if (err != null) {
-            return errEnd("render: " + err);
-          }
-          cli.info('GET 200 ' + pathname);
-          res.writeHead(200, {
-            'Content-Type': 'text/html'
-          });
-          res.write(content);
-          return res.end();
-        });
+        return route();
       } else {
         return fs.stat(filename, function(err, stat) {
           if (err != null) {
             return errEnd("stat: " + err);
           }
           if (stat.isDirectory()) {
-            return render.run(opt, res);
+            return route();
           }
           return fs.readFile(filename, 'binary', function(err, file) {
             if (err != null) {

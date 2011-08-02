@@ -15,23 +15,25 @@ exports.run = (opt) ->
     pathname = url.parse(req.url).pathname
     filename = path.join opt.build, pathname
 
+    route = =>
+      opt.pathname = pathname
+      render.route pathname, (err, content)->
+        return errEnd "render: #{err}" if err?
+
+        cli.info 'GET 200 '+pathname
+        res.writeHead 200, 'Content-Type': 'text/html'
+        res.write content
+        res.end()
+
     path.exists filename, (exists) ->
 
       if not exists
-        opt.pathname = pathname
-        render.render opt, (err, content)->
-          return errEnd "render: #{err}" if err?
-
-          cli.info 'GET 200 '+pathname
-          res.writeHead 200, 'Content-Type': 'text/html'
-          res.write content
-          res.end()
-
+        route()
       else
         fs.stat filename, (err, stat) ->
           return errEnd "stat: #{err}" if err?
 
-          return render.run opt, res if stat.isDirectory()
+          return route() if stat.isDirectory()
 
           fs.readFile filename, 'binary', (err, file) ->
             return errEnd "Unable to read file #{filename}" if err?
@@ -46,7 +48,6 @@ exports.run = (opt) ->
       res.writeHead 500, 'Content-Type': 'text/plain'
       res.write err + '\n'
       res.end()
-
 
   render.init opt, ->
     server = http.createServer(onRequest).listen(opt.port, opt.host)
