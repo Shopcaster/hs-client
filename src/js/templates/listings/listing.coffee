@@ -100,7 +100,7 @@ class hs.t.Listing extends hs.Template
 
     this.meta property: 'og:title', content: 'Listing at Hipsell'
     this.meta property: 'og:type', content: 'product'
-    this.meta property: 'og:url', content: window.location.toString()
+    this.meta property: 'og:url', content: window.location.toString() if window.location?
     this.meta property: 'og:site_name', content: 'Hipsell'
     this.meta property: 'fb:app_id', content: '110693249023137'
 
@@ -195,7 +195,7 @@ class hs.t.Listing extends hs.Template
     this.meta property: 'og:latitude', content: lat
     this.meta property: 'og:longitude', content: lng
 
-    if Modernizr.geolocation
+    if navigator.geolocation?
       navigator.geolocation.getCurrentPosition =>
         this.updateLocation.apply(this, arguments)
 

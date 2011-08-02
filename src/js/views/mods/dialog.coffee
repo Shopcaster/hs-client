@@ -21,42 +21,36 @@ hs.v.mods.dialog = (View) ->
     if not this.template.el
       throw new Error 'cannot creator a dialog without a template element'
 
-    this._dialogSetMousedown()
     this.blur = _.bind this.blur, this
 
     this.template.el.addClass('dialog')
-    this._dialogSetBlur()
+    this.template.el.click stop
 
     this.template.on 'preRemove', =>
       $('body').unbind('click', this.blur)
       $(this.focusSelector).unbind('click mousedown')
 
+    this._setFocus()
 
-  View.prototype._dialogSetMousedown = ->
+
+  View.prototype._setFocus = ->
     $(this.focusSelector).one 'mousedown', =>
       $(this.focusSelector).one 'click', stop
       this.focus.apply this, arguments
 
 
-  View.prototype._dialogSetBlur = ->
-    $('body').click(this.blur)
-    this.template.el.click stop
+  View.prototype._setBlur = ->
+    $('body').one 'click', this.blur
 
 
   View.prototype.focus = ->
-    this.blurAllElse()
+    $('body').click()
     this.template.el.addClass('open').show()
     $(this.focusSelector).addClass('open')
+    this._setBlur()
 
 
   View.prototype.blur = ->
     this.template.el.hide().removeClass('open')
     $(this.focusSelector).removeClass('open')
-    this._dialogSetMousedown()
-
-
-  View.prototype.blurAllElse = ->
-    $('body').unbind('click', this.blur).click().bind('click', this.blur)
-
-
-
+    this._setFocus()
