@@ -362,10 +362,6 @@
           .message-preview {
             position:absolute;
             top:20px;
-            width:$section_width - 20px - 40px;
-            @media only screen and (max-width: 480px) {
-              width:$mob_section_width - 20px - 40px;
-            }
           }
 
           .offerbox{

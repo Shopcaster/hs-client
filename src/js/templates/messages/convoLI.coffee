@@ -10,8 +10,8 @@ class hs.t.ConvoLI extends hs.Template
   template: ->
     div class: 'convo-li li', ->
       div class: 'inside', ->
-        div class: 'message-preview', ->
-          span class: 'count'
+        span class: 'message-preview', ->
+          a class: 'count', href: 'javascript:;'
           span class: 'message'
         div class: 'offerbox', ->
           div class: 'offer', href: 'javascript:;', -> '$0'
@@ -74,10 +74,11 @@ class hs.t.ConvoLI extends hs.Template
 
 
   setMessage: (msg, index) ->
-    for message in this.messages
-      if message.creator != zz.auth.curUser()._id
-        this.$('.message-preview .message').text ' | '+message.message.truncateWords(50)
-        break
+    ## Message preview, gone for now.
+    #for message in this.messages
+    #  if message.creator != zz.auth.curUser()._id
+    #    this.$('.message-preview .message').text ' | '+message.message.truncateWords(50)
+    #    break
 
     this.$('.message-preview .count').text "#{this.messages.length} messages"
 
