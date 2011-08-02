@@ -189,7 +189,7 @@ class hs.t.Listing extends hs.Template
     this.$('img.map').attr 'src',
       "http://maps.google.com/maps/api/staticmap?center=#{lat},#{lng}&zoom=14&size=#{width}x100&sensor=false"
 
-    this.$('.mapLink').attr 'href',
+    this.$('.map-link').attr 'href',
       "http://maps.google.com/?ll=#{lat},#{lng}&z=16"
 
     this.meta property: 'og:latitude', content: lat
