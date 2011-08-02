@@ -4,6 +4,8 @@ dep.provide 'util'
 
 
 String.prototype.truncateWords = (number) ->
+  return this.substr(0) if this.length <= 67
+
   words = this.substr(0, number).split(' ')
 
   if words.length > 1
