@@ -7,15 +7,20 @@ dep.provide 'hs.t.ConvoLI'
 
 class hs.t.ConvoLI extends hs.Template
 
-  template: ->
-    div class: 'convo-li li', ->
-      div class: 'inside', ->
-        span class: 'message-preview', ->
-          a class: 'count', href: 'javascript:;'
-          span class: 'message'
-        div class: 'offerbox', ->
-          div class: 'offer', href: 'javascript:;', -> '$0'
-      div class: 'clicky'
+  template: -> """
+    <div class="convo-li li">
+      <div class="inside">
+        <span class="message-preview">
+          <a class="count" href="javascript:;"></a>
+          <span class="message"></span>
+        </span>
+        <div class="offerbox">
+          <div class="offer">$0</div>
+        </div>
+      </div>
+      <div class="clicky"></div>
+    </div>
+    """
 
 
   subTemplates:

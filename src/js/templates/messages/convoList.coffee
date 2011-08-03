@@ -6,9 +6,11 @@ dep.provide 'hs.t.ConvoList'
 
 class hs.t.ConvoList extends hs.Template
 
-  template: ->
-    div class: 'convo-list list-box', ->
-      div class: 'li no-cs', -> 'No Messages Yet.'
+  template: -> """
+    <div class="convo-list list-box">
+      <div class="li no-cs">No Messages Yet.</div>
+    </div>
+    """
 
 
   subTemplates:

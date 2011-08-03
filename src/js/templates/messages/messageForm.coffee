@@ -7,10 +7,12 @@ dep.provide 'hs.t.MessageForm'
 
 class hs.t.MessageForm extends hs.Template
 
-  template: ->
-    form ->
-      span class: 'formFields'
-      input type: 'submit', class: 'submit', value: 'Submit'
+  template: -> """
+    <form>
+      <span class="formFields"></span>
+      <input type="submit" class="submit" value="Submit" />
+    </form>
+    """
 
 
   fields: [{

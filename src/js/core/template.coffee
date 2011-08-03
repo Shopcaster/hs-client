@@ -1,6 +1,5 @@
 
 dep.require 'hs'
-dep.require 'CoffeeKup'
 dep.require 'zz.models'
 dep.require 'hs.EventEmitter'
 
@@ -9,7 +8,6 @@ dep.provide 'hs.Template'
 
 class hs.Template extends hs.EventEmitter
 
-  templateLocals: {}
   injected: false
   _meta: []
   initListeners: []
@@ -102,10 +100,11 @@ class hs.Template extends hs.EventEmitter
         html = this.template
 
       else
-        html = CoffeeKup.render this.template,
-          context: this
-          locals: this.templateLocals
-          cache: off
+        html = this.template()
+#        html = CoffeeKup.render this.template,
+#          context: this
+#          locals: this.templateLocals
+#          cache: off
 
       this.el = $(html)
       this.el.attr 'id', this.id

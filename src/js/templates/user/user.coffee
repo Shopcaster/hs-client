@@ -6,15 +6,18 @@ dep.provide 'hs.t.User'
 
 class hs.t.User extends hs.Template
 
-  template: ->
-    div class: 'user', ->
-      div class: 'presence offline'
-      img class: 'avatar'
-      a class: 'name', -> 'Anonymous'
-      div class: 'social', ->
-        a target: '_blank', class: 'fb', -> img src: '/img/fb.png'
-        a target: '_blank', class: 'twitter', -> img src: '/img/twitter.png'
-        a target: '_blank', class: 'linkedin', -> img src: '/img/linkedin.png'
+  template: -> """
+    <div class="user">
+      <div class="presence offline"></div>
+      <img class="avatar">
+      <a class="name">Anonymous</a>
+      <div class="social">
+        <a target="_blank" class="fb"><img src="/img/fb.png"></a>
+        <a target="_blank" class="twitter"><img src="/img/twitter.png"></a>
+        <a target="_blank" class="linkedin"><img src="/img/linkedin.png"></a>
+      </div>
+    </div>
+    """
 
 
   postRender: ->

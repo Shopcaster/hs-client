@@ -7,8 +7,7 @@ dep.provide 'hs.t.UserListings'
 
 class hs.t.UserListings extends hs.Template
 
-  template: ->
-    div class: 'user-listings'
+  template: -> '<div class="user-listings"></div>'
 
 
   subTemplates:

@@ -7,11 +7,13 @@ dep.provide 'hs.t.Message'
 
 class hs.t.Message extends hs.Template
 
-  template: ->
-    div class: 'message li', ->
-      div class: 'creator'
-      div class: 'message-body'
-      div class: 'actions'
+  template: -> """
+    <div class="message li">
+      <div class="creator"></div>
+      <div class="message-body"></div>
+      <div class="actions"></div>
+    </div>
+    """
 
 
   subTemplates:

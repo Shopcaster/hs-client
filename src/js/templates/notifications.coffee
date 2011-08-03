@@ -8,4 +8,4 @@ class hs.t.Notifications extends hs.Template
 
   appendTo: 'body'
   id: 'notifications'
-  template: -> div()
+  template: -> '<div></div>'

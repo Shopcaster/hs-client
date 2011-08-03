@@ -8,10 +8,7 @@ class hs.t.SocialResponse extends hs.Template
 
   appendTo: '#main'
 
-  template: ->
-    div class: 'flatpage', ->
-      h1()
-      p()
+  template: -> '<div class="flatpage"><h1></h1><p></p></div>'
 
 
   postRender: ->

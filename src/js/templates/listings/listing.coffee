@@ -15,39 +15,49 @@ class hs.t.Listing extends hs.Template
 
   appendTo: '#main'
 
-  template: ->
-    div class: 'listing clearfix', ->
+  template: -> """
+    <div class="listing clearfix">
+      
+      <div class="section-left">
+        <div id="listing-image"><img></div>
+      </div>
 
-      div class: 'section-left', ->
-        div id: 'listing-image', -> img()
+      <div class="section-right">
+        <div id="listing-details">
+          <div id="listing-creator"></div>
+          <span class="status">Available</span>
+          <div id="listing-description"></div>
 
-      div class: 'section-right', ->
-        div id: 'listing-details', ->
-          div id: 'listing-creator'
-          span class: 'status', => 'Available'
-          div id: 'listing-description'
+          <div class="bottom">
+            <div id="listing-social">
+              <div class="twitter"></div>
+              <div class="fb"></div>
+              <div class="goog"></div>
+            </div>
 
-          div class: 'bottom', ->
-            div id: 'listing-social', ->
-              div class: 'twitter'
-              div class: 'fb'
-              div class: 'goog'
+            <span id="listing-loc-diff"></span>
+            &nbsp;&nbsp;&ndash;&nbsp;&nbsp;
+            <span class="created"></span>
 
-            span id: 'listing-loc-diff'
-            text '&nbsp;&nbsp;&ndash;&nbsp;&nbsp;'
-            span class: 'created'
+            <a href="javascript:;" class="map-link" target="_blank">
+              <img class="map">
+            </a>
 
-            a href: 'javascript:;', class: 'map-link', target: '_blank', ->
-              img class: 'map'
+            <div class="offer-form-wrapper">
+              <div class="button offer-button">Make an Offer</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            div class: 'offer-form-wrapper', ->
-              div class: 'button offer-button', -> 'Make an Offer'
+      <div id="listing-messages" class="section-right list-box">
+        <h2>Message the Seller</h2>
+      </div>
 
-      div id: 'listing-messages', class: 'section-right list-box', ->
-        h2 -> 'Message the Seller'
-
-      div id: 'listing-inquiries', class: 'section-left list-box', ->
-        h2 -> 'Frequently Asked Questions'
+      <div id="listing-inquiries" class="section-left list-box">
+        <h2>Frequently Asked Questions</h2>
+      </div>
+    """
 
 
   subTemplates:
