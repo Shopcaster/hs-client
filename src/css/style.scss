@@ -57,6 +57,12 @@ body{
   color:$grey;
   background-color:$black + #333;
 
+  @media only screen and (max-width: 480px) {
+    .tagline{
+      display:none;
+    }
+  }
+  
   .inner-top-bar{
     height:15px;
     float:right;

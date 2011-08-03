@@ -244,5 +244,5 @@ class hs.t.Listing extends hs.Template
 
 
 hs.t.Listing.getModel = (options, clbk) ->
-  id = options.parsedUrl[0].replace('item', 'listing')
+  id = options.parsedUrl[0]#.replace('item', 'listing')
   zz.data.listing id, clbk

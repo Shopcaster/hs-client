@@ -38,6 +38,19 @@ goTo = (url) ->
 
         current.v = new View template, kwargs
 
+        referrer = new URL document.referrer
+
+        mpq.push ['track', 'route', 
+          browser: BrowserDetect.browser
+          browser_version: BrowserDetect.version
+          os: BrowserDetect.OS
+          referrer_host: referrer.host
+          referrer_path: referrer.path
+          referrer_protocol: referrer.protocol
+          referrer_args: referrer.query
+          referrer_raw: referrer.raw
+          model: template.model?._id
+        ]
       break
 
 
