@@ -1,5 +1,6 @@
 
 dep.require 'hs.Template'
+dep.require 'hs.formFields'
 
 dep.provide 'hs.t.mods.form'
 
