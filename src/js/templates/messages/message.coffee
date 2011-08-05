@@ -26,7 +26,7 @@ class hs.t.Message extends hs.Template
 
 
   setCreator: ->
-    return if this.model.offer?
+    return if this.model.offer? or not this.model.creator?
 
     zz.data.user this.model.creator, (creator) =>
       this.userTmpl creator, appendTo: "##{this.id} .creator"
@@ -44,5 +44,6 @@ class hs.t.Message extends hs.Template
 
 
   setCreated: ->
+    return unless this.model.created instanceof Date
     since = this.model.created.since()
     this.$('.created').text since.num+' '+since.text

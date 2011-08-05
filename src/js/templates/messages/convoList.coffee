@@ -29,7 +29,3 @@ class hs.t.ConvoList extends hs.Template
 
   removeModel: (id, index) ->
     this.removeTmpl index
-
-
-
-

@@ -23,7 +23,7 @@ compile = (files, opt, cache, clbk) ->
       try
         js = coffee.compile content
       catch e
-        return clbk e
+        return clbk 'coffee error in file: '+file+'\n'+e
 
       name = file.replace(opt.src, '').replace(/\.coffee$/, '.js')
       cache[name] = js

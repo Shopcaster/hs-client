@@ -45,6 +45,8 @@ class hs.t.ConvoLI extends hs.Template
         this.messages.on 'add', _.bind(this.setMessage, this)
         this.setMessage this.messages[0], 0 if this.messages[0]?
 
+    return if not this.model.creator?
+
     zz.data.listing this.model.listing, (listing) =>
       zz.data.user this.model.creator, (creator) =>
         listing.offerForUser creator, (offer) =>
@@ -68,6 +70,8 @@ class hs.t.ConvoLI extends hs.Template
 
 
   setCreator: ->
+    return if not this.model.creator?
+
     this.userTmpl.remove()
     zz.data.user this.model.creator, (creator) =>
       this.userTmpl creator, prependTo: '#'+this.id
