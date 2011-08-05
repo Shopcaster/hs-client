@@ -25,9 +25,6 @@ doRender = function(res, pathname) {
   return render.route(pathname, function(status, content) {
     var lg;
     rendering = false;
-    if (renderQ.length) {
-      renderQ.pop()();
-    }
     if (!(status != null)) {
       status = 200;
     }
@@ -40,7 +37,10 @@ doRender = function(res, pathname) {
       'Content-Type': 'text/html; charset=utf-8'
     });
     res.write(content);
-    return res.end();
+    res.end();
+    if (renderQ.length) {
+      return renderQ.pop()();
+    }
   });
 };
 exports.run = function(opt) {

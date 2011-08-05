@@ -32,16 +32,18 @@ doRender = (res, pathname)->
   rendering = true
   render.route pathname, (status, content)->
     rendering = false
-    renderQ.pop()() if renderQ.length
 
     status = 200 if not status?
 
     lg = ('GET '+status+' '+pathname).bold
     lg = lg.red if status != 200
     console.log lg
+
     res.writeHead status, 'Content-Type': 'text/html; charset=utf-8'
     res.write content
     res.end()
+
+    renderQ.pop()() if renderQ.length
 
 
 exports.run = (opt) ->
