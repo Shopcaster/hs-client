@@ -28,7 +28,11 @@ compile = (files, opt, cache, clbk) ->
     manifest += 'CACHE:\n';
 
     for file, content of cache
-      manifest += file+'\n'
+      if not opt.concat or not /\.js$/.test file
+        manifest += file+'\n'
+
+    if opt.concat
+      manifest += '/main.js\n'
 
     cache[manifestFilename] = manifest
     clbk()
