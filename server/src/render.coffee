@@ -22,8 +22,13 @@ exports.init = (c, opt, clbk)->
   window = doc.createWindow()
 
   window.route = false
-  window.alert = -> console.log.apply console, arguments
-  window.console = console
+
+  window.console.log = ->
+    args = Array.prototype.slice.call arguments, 0
+    args.unshift 'client:'.blue
+    console.log.apply console, args
+
+  window.alert = window.console.log
   window.XDomainRequest = XMLHttpRequest
   window.XMLHttpRequest = XMLHttpRequest
   window.localStorage = {}

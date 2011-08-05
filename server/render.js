@@ -17,10 +17,13 @@ exports.init = function(c, opt, clbk) {
   });
   window = doc.createWindow();
   window.route = false;
-  window.alert = function() {
-    return console.log.apply(console, arguments);
+  window.console.log = function() {
+    var args;
+    args = Array.prototype.slice.call(arguments, 0);
+    args.unshift('client:'.blue);
+    return console.log.apply(console, args);
   };
-  window.console = console;
+  window.alert = window.console.log;
   window.XDomainRequest = XMLHttpRequest;
   window.XMLHttpRequest = XMLHttpRequest;
   window.localStorage = {};
