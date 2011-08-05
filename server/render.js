@@ -70,6 +70,9 @@ exports.route = function(pathname, clbk) {
           break;
         }
         Template.get(kwargs, function(t) {
+          if (!(t != null)) {
+            return clbk(500, '');
+          }
           html += dep.context.document.innerHTML;
           clbk(null, html);
           return t.remove();
