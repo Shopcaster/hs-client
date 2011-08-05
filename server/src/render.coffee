@@ -78,7 +78,7 @@ exports.route = (pathname, clbk) ->
           html += dep.context.document.innerHTML
           clbk null, html
           t.remove()
-          this.context.$('#main').html('')
+          dep.context.$('#main').html('')
         return
 
     html += dep.context.document.innerHTML
