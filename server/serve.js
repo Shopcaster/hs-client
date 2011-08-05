@@ -1,4 +1,4 @@
-var build, cache, cli, fs, http, mime, mimetypes, path, render, url, watchRecursive;
+var build, cache, cli, doRender, fs, http, mime, mimetypes, path, render, renderQ, rendering, url, watchRecursive;
 http = require('http');
 url = require('url');
 path = require('path');
@@ -18,6 +18,31 @@ mimetypes = {
   html: 'text/html; charset=utf-8',
   css: 'text/css; charset=utf-8'
 };
+renderQ = [];
+rendering = false;
+doRender = function(res, pathname) {
+  rendering = true;
+  return render.route(pathname, function(status, content) {
+    var lg;
+    rendering = false;
+    if (renderQ.length) {
+      renderQ.pop()();
+    }
+    if (!(status != null)) {
+      status = 200;
+    }
+    lg = ('GET ' + status + ' ' + pathname).bold;
+    if (status !== 200) {
+      lg = lg.red;
+    }
+    console.log(lg);
+    res.writeHead(status, {
+      'Content-Type': 'text/html; charset=utf-8'
+    });
+    res.write(content);
+    return res.end();
+  });
+};
 exports.run = function(opt) {
   var onRequest;
   onRequest = function(req, res) {
@@ -33,22 +58,13 @@ exports.run = function(opt) {
       res.end();
     } else {
       opt.pathname = pathname;
-      render.route(pathname, function(status, content) {
-        var lg;
-        if (!(status != null)) {
-          status = 200;
-        }
-        lg = ('GET ' + status + ' ' + pathname).bold;
-        if (status !== 200) {
-          lg = lg.red;
-        }
-        console.log(lg);
-        res.writeHead(status, {
-          'Content-Type': 'text/html; charset=utf-8'
+      if (!rendering) {
+        doRender(res, pathname);
+      } else {
+        renderQ.push(function() {
+          return doRender(res, pathname);
         });
-        res.write(content);
-        return res.end();
-      });
+      }
     }
     return errEnd = function(err) {
       console.log('ERROR'.red);

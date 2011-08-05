@@ -25,6 +25,25 @@ mimetypes =
   css: 'text/css; charset=utf-8'
 
 
+renderQ = []
+rendering = false
+
+doRender = (res, pathname)->
+  rendering = true
+  render.route pathname, (status, content)->
+    rendering = false
+    renderQ.pop()() if renderQ.length
+
+    status = 200 if not status?
+
+    lg = ('GET '+status+' '+pathname).bold
+    lg = lg.red if status != 200
+    console.log lg
+    res.writeHead status, 'Content-Type': 'text/html; charset=utf-8'
+    res.write content
+    res.end()
+
+
 exports.run = (opt) ->
 
   onRequest = (req, res) ->
@@ -39,15 +58,11 @@ exports.run = (opt) ->
 
     else
       opt.pathname = pathname
-      render.route pathname, (status, content)->
-        status = 200 if not status?
+      if not rendering
+        doRender res, pathname
 
-        lg = ('GET '+status+' '+pathname).bold
-        lg = lg.red if status != 200
-        console.log lg
-        res.writeHead status, 'Content-Type': 'text/html; charset=utf-8'
-        res.write content
-        res.end()
+      else
+        renderQ.push -> doRender res, pathname
 
     errEnd = (err) ->
       console.log 'ERROR'.red
@@ -56,17 +71,21 @@ exports.run = (opt) ->
       res.write err + '\n'
       res.end()
 
-
+  # initial build
   build.buildDir opt.src, opt, cache, (err)->
     return cli.fatal err if err?
 
+    # start renderer
     console.log 'initializing render'.magenta
     render.init cache, opt, (err)->
       return cli.fatal err if err?
 
+      #serve
       server = http.createServer(onRequest).listen(opt.port, opt.host)
       console.log "server listening - http://#{opt.host}:#{opt.port}"
 
+
+      # Autobuild
       if opt.autobuild
         watchRecursive opt.src, (file)->
           console.log 'File change detected'.yellow

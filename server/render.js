@@ -75,7 +75,8 @@ exports.route = function(pathname, clbk) {
           }
           html += dep.context.document.innerHTML;
           clbk(null, html);
-          return t.remove();
+          t.remove();
+          return this.context.$('#main').html('');
         });
         return;
       }
