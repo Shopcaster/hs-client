@@ -17,6 +17,7 @@ compile = (files, opt, cache, clbk) ->
 
   exec "sass #{opt.src}/css/style.scss", (err, stdout, stderr)->
     return clbk err if err?
+    return clbk strerr if stderr? and stderr != ''
     cache['/style.css'] = stdout
 
     clbk()

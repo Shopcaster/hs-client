@@ -19,6 +19,9 @@ compile = function(files, opt, cache, clbk) {
     if (err != null) {
       return clbk(err);
     }
+    if ((stderr != null) && stderr !== '') {
+      return clbk(strerr);
+    }
     cache['/style.css'] = stdout;
     return clbk();
   });
