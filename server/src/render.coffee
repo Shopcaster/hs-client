@@ -71,7 +71,7 @@ exports.route = (pathname, clbk) ->
         break if Template.prototype.authRequired
 
         Template.get kwargs, (t) ->
-          return clbk 500, '' if not t?
+          return clbk 404, '' if not t?
 
           html += dep.context.document.innerHTML
           clbk null, html

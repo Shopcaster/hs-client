@@ -71,7 +71,7 @@ exports.route = function(pathname, clbk) {
         }
         Template.get(kwargs, function(t) {
           if (!(t != null)) {
-            return clbk(500, '');
+            return clbk(404, '');
           }
           html += dep.context.document.innerHTML;
           clbk(null, html);

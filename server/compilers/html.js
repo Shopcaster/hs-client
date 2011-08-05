@@ -17,26 +17,14 @@ compile = function(files, opt, cache, clbk) {
   }
   console.log('building html'.magenta);
   return fs.readFile(file, 'utf8', function(err, html) {
-    var content, file, manifest, manifestFilename, scripts, stamp;
+    var content, file, scripts;
     if (err != null) {
       return clbk(err);
     }
     html = html.replace('</head>', '<script>var conf=' + JSON.stringify(opt.conf) + ';</script></head>');
-    manifestFilename = '/manifest.appcache';
-    manifest = '';
-    manifest += 'CACHE MANIFEST\n';
-    stamp = Math.round(new Date().getTime() / 1000);
-    manifest += "#built: " + stamp + "\n\n";
-    manifest += 'NETWORK:\n*\n\n';
     if (!opt['noappcache']) {
-      manifest += 'CACHE:\n';
-      for (file in cache) {
-        content = cache[file];
-        manifest += file + '\n';
-      }
-      html = html.replace('<html', "<html manifest='" + manifestFilename + "'");
+      html = html.replace('<html', "<html manifest='/manifest.appcache'");
     }
-    cache[manifestFilename] = manifest;
     html = html.replace('</head>', "<link rel='stylesheet' href='/style.css'></head>");
     html = html.replace('</body>', "<script src='" + opt.conf.zz.server.protocol + "://" + opt.conf.zz.server.host + ":" + opt.conf.zz.server.port + "/api-library.js'></script></body>");
     scripts = '';

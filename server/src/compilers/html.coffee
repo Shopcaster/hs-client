@@ -24,26 +24,8 @@ compile = (files, opt, cache, clbk) ->
 
 
     # appcache
-    manifestFilename = '/manifest.appcache'
-    manifest = ''
-
-    manifest += 'CACHE MANIFEST\n'
-
-    stamp = Math.round(new Date().getTime() / 1000)
-    manifest += "#built: #{stamp}\n\n"
-
-    manifest += 'NETWORK:\n*\n\n'
-
     if not opt['noappcache']
-      manifest += 'CACHE:\n';
-
-      for file, content of cache
-        manifest += file+'\n'
-
-      html = html.replace '<html', "<html manifest='#{manifestFilename}'"
-
-    cache[manifestFilename] = manifest
-
+      html = html.replace '<html', "<html manifest='/manifest.appcache'"
 
 
     #CSS
