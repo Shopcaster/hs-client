@@ -21,8 +21,7 @@ class hs.t.Message extends hs.Template
       class: hs.t.InlineUser
 
 
-  setOffer: ->
-    this.el.addClass 'offer'
+  setOffer: -> this.el.addClass 'offer' if this.model.offer?
 
 
   setCreator: ->
