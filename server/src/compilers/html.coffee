@@ -8,7 +8,7 @@ compile = (files, opt, cache, clbk) ->
   file = null
 
   for f in files
-    if /\.html$/.test
+    if /\.html$/.test f
       file = f
       break
 

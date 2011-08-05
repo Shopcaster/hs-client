@@ -20,11 +20,11 @@ cli.parse
   noappcache: ['n', 'Disable HTML5 Application Cache', 'boolean', false]
   jsconf: ['c', 'JSON config file', 'path', './localConf.json']
 
+  minify: ['m', 'Minify JS using Uglify JS', 'boolean', false]
+  pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
 
   ##TODO:
   #test: ['t', 'Build js with tests', 'boolean', false]
-  #minify: ['m', 'Minify JS using Uglify JS', 'boolean', false]
-  #pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
 
 
 cleanOpt = (opt, clbk)->

@@ -9,7 +9,9 @@ cli.parse({
   port: ['p', 'Serve on port', 'number', 3000],
   autobuild: ['a', 'Automatically rebuild on file change', 'boolean', false],
   noappcache: ['n', 'Disable HTML5 Application Cache', 'boolean', false],
-  jsconf: ['c', 'JSON config file', 'path', './localConf.json']
+  jsconf: ['c', 'JSON config file', 'path', './localConf.json'],
+  minify: ['m', 'Minify JS using Uglify JS', 'boolean', false],
+  pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
 });
 cleanOpt = function(opt, clbk) {
   return fs.realpath(opt.src, function(err, srcPath) {

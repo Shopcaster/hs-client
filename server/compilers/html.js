@@ -7,7 +7,7 @@ compile = function(files, opt, cache, clbk) {
   file = null;
   for (_i = 0, _len = files.length; _i < _len; _i++) {
     f = files[_i];
-    if (/\.html$/.test) {
+    if (/\.html$/.test(f)) {
       file = f;
       break;
     }
