@@ -3,7 +3,7 @@
     "version": "0.8.0",
     "description": "Hipsell client",
     "author": "defrex",
-    "bin": {"hs": "./hs.js"},
+    "bin": {"hsc": "./main.js"},
     "dependencies": {
         "cli": "0.2.8",
         "underscore": "1.1.6",
