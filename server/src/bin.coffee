@@ -9,10 +9,6 @@ cli.parse
   #options
   src: ['s', 'Source directory', 'path', './src']
 
-  verbose: ['v', 'Print more', 'boolean', false]
-  silent: ['s', 'stop output', 'boolean', false]
-
-
   #server
   host:  ['h', 'Address to serve on', 'string', '0.0.0.0']
   port:  ['p', 'Serve on port', 'number', 3000]
@@ -23,9 +19,12 @@ cli.parse
   #builder
   noappcache: [false, 'Disable HTML5 Application Cache', 'boolean', false]
   jsconf: ['c', 'JSON config file', 'path', './localConf.json']
-  test: ['t', 'Build js with tests', 'boolean', false]
-  minify: ['m', 'Minify JS using Uglify JS', 'boolean', false]
-  pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
+
+
+  ##TODO:
+  #test: ['t', 'Build js with tests', 'boolean', false]
+  #minify: ['m', 'Minify JS using Uglify JS', 'boolean', false]
+  #pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
 
 
 cleanOpt = (opt, clbk)->

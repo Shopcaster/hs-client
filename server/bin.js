@@ -5,16 +5,11 @@ _ = require('underscore')._;
 serve = require('./serve');
 cli.parse({
   src: ['s', 'Source directory', 'path', './src'],
-  verbose: ['v', 'Print more', 'boolean', false],
-  silent: ['s', 'stop output', 'boolean', false],
   host: ['h', 'Address to serve on', 'string', '0.0.0.0'],
   port: ['p', 'Serve on port', 'number', 3000],
   autobuild: ['a', 'Automatically rebuild on file change', 'boolean', false],
   noappcache: [false, 'Disable HTML5 Application Cache', 'boolean', false],
-  jsconf: ['c', 'JSON config file', 'path', './localConf.json'],
-  test: ['t', 'Build js with tests', 'boolean', false],
-  minify: ['m', 'Minify JS using Uglify JS', 'boolean', false],
-  pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
+  jsconf: ['c', 'JSON config file', 'path', './localConf.json']
 });
 cleanOpt = function(opt, clbk) {
   return fs.realpath(opt.src, function(err, srcPath) {
