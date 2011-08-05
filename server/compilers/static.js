@@ -24,7 +24,6 @@ compile = function(files, opt, cache, clbk) {
   console.log('building static'.magenta);
   return (next = function() {
     if (!((file = matching.pop()) != null)) {
-      cache['/favicon.ico'] = cache['/img/favicon.ico'];
       return clbk();
     }
     return fs.readFile(file, function(err, content) {

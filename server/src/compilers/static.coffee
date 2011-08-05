@@ -17,9 +17,7 @@ compile = (files, opt, cache, clbk) ->
   console.log 'building static'.magenta
 
   do next = ->
-    if not (file = matching.pop())?
-      cache['/favicon.ico'] = cache['/img/favicon.ico']
-      return clbk()
+    return clbk() if not (file = matching.pop())?
 
     fs.readFile file, (err, content) ->
       return clbk err if err?
@@ -29,6 +27,7 @@ compile = (files, opt, cache, clbk) ->
 
       else
         name = file.replace opt.src, ''
+
 
       cache[name] = content
       next()
