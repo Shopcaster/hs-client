@@ -34,9 +34,9 @@ compile = function(files, opt, cache, clbk) {
         content = cache[file];
         manifest += file + '\n';
       }
+      html = html.replace('<html', "<html manifest='" + manifestFilename + "'");
     }
     cache[manifestFilename] = manifest;
-    html = html.replace('<html', "<html manifest='" + manifestFilename + "'");
     html = html.replace('</head>', "<link rel='stylesheet' href='/style.css'></head>");
     html = html.replace('</body>', "<script src='" + opt.conf.zz.server.protocol + "://" + opt.conf.zz.server.host + ":" + opt.conf.zz.server.port + "/api-library.js'></script></body>");
     scripts = '';

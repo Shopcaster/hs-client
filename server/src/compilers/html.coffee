@@ -40,9 +40,10 @@ compile = (files, opt, cache, clbk) ->
       for file, content of cache
         manifest += file+'\n'
 
+      html = html.replace '<html', "<html manifest='#{manifestFilename}'"
+
     cache[manifestFilename] = manifest
 
-    html = html.replace '<html', "<html manifest='#{manifestFilename}'"
 
 
     #CSS

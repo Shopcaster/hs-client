@@ -8,7 +8,7 @@ cli.parse({
   host: ['h', 'Address to serve on', 'string', '0.0.0.0'],
   port: ['p', 'Serve on port', 'number', 3000],
   autobuild: ['a', 'Automatically rebuild on file change', 'boolean', false],
-  noappcache: [false, 'Disable HTML5 Application Cache', 'boolean', false],
+  noappcache: ['n', 'Disable HTML5 Application Cache', 'boolean', false],
   jsconf: ['c', 'JSON config file', 'path', './localConf.json']
 });
 cleanOpt = function(opt, clbk) {

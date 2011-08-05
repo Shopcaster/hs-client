@@ -120,13 +120,13 @@ watchRecursive = function(path, clbk) {
   });
 };
 mime = function(filename) {
-  var ext, parsed, type, _len;
+  var ext, parsed, type;
   parsed = /\.(\w+)$/.exec(filename);
   if (!(parsed != null)) {
     return 'text/plain; charset=utf-8';
   }
-  for (type = 0, _len = mimetypes.length; type < _len; type++) {
-    ext = mimetypes[type];
+  for (ext in mimetypes) {
+    type = mimetypes[ext];
     if (parsed[1] === ext) {
       return type;
     }

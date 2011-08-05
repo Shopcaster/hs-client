@@ -17,7 +17,7 @@ cli.parse
 
 
   #builder
-  noappcache: [false, 'Disable HTML5 Application Cache', 'boolean', false]
+  noappcache: ['n', 'Disable HTML5 Application Cache', 'boolean', false]
   jsconf: ['c', 'JSON config file', 'path', './localConf.json']
 
 

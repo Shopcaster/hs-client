@@ -33,7 +33,7 @@ exports.run = (opt) ->
 
     if cache[pathname]?
       console.log ('GET 200 '+pathname).grey
-      res.writeHead 200, 'Content-Type': mime(filename)
+      res.writeHead 200, 'Content-Type': mime filename
       res.write cache[pathname], 'binary'
       res.end()
 
@@ -102,6 +102,6 @@ mime = (filename)->
   parsed = /\.(\w+)$/.exec(filename)
   return 'text/plain; charset=utf-8' if not parsed?
 
-  for ext, type in mimetypes
+  for ext, type of mimetypes
     if parsed[1] == ext
       return type
