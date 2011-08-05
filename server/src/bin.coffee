@@ -14,10 +14,10 @@ cli.parse
 
 
   #server
-  host:  ['a', 'Address to serve on', 'string', '0.0.0.0']
+  host:  ['h', 'Address to serve on', 'string', '0.0.0.0']
   port:  ['p', 'Serve on port', 'number', 3000]
 
-  autobuild:  [false, 'Automatically rebuild on file change', 'boolean', false]
+  autobuild:  ['a', 'Automatically rebuild on file change', 'boolean', false]
 
 
   #builder

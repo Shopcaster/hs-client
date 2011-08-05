@@ -12,10 +12,12 @@ compilers = [
 
 
 build = (files, opt, cache, clbk) ->
+
+  comps = _.clone compilers
   do next = (err) ->
     return clbk err if err?
 
-    return clbk() if not (compiler = compilers.shift())
+    return clbk() if not (compiler = comps.shift())
     compiler.compile files, opt, cache, next
 
 

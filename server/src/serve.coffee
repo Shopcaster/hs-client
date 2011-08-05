@@ -12,6 +12,18 @@ render = require './render'
 
 cache = {}
 
+mimetypes =
+  png: 'image/png'
+  jpg: 'image/jpeg'
+  gif: 'image/gif'
+  ico: 'image/vnd.microsoft.icon'
+
+  js: 'application/javascript; charset=utf-8'
+
+  appcache: 'text/cache-manifest; charset=utf-8'
+  html: 'text/html; charset=utf-8'
+  css: 'text/css; charset=utf-8'
+
 
 exports.run = (opt) ->
 
@@ -48,28 +60,48 @@ exports.run = (opt) ->
   build.buildDir opt.src, opt, cache, (err)->
     return cli.fatal err if err?
 
+    console.log 'initializing render'.magenta
     render.init cache, opt, (err)->
       return cli.fatal err if err?
 
       server = http.createServer(onRequest).listen(opt.port, opt.host)
       console.log "server listening - http://#{opt.host}:#{opt.port}"
 
+      if opt.autobuild
+        watchRecursive opt.src, (file)->
+          console.log 'File change detected'.yellow
 
+          build.build [file], opt, cache, ->
+
+            if /\.(\w+)$/.exec(file)[1] in ['js', 'html']
+              console.log 'Reloading render'.yellow
+
+              render.init cache, opt, (err)->
+                return cli.fatal err if err?
+                console.log 'render reload complete'.yellow
+
+
+watchRecursive = (path, clbk)->
+  fs.stat path, (err, stats)->
+    throw err if err?
+
+    if stats.isDirectory()
+      fs.readdir path, (err, files)->
+        throw err if err?
+
+        for file in files
+          watchRecursive path+'/'+file, clbk
+
+    else
+      fs.watchFile path, (cur, prev)->
+        if cur.mtime.getTime() != prev.mtime.getTime()
+          clbk path
 
 
 mime = (filename)->
   parsed = /\.(\w+)$/.exec(filename)
-
   return 'text/plain; charset=utf-8' if not parsed?
 
-  switch parsed[1]
-    when 'png' then return 'image/png'
-    when 'jpg' then return 'image/jpeg'
-    when 'gif' then return 'image/gif'
-    when 'ico' then return 'image/vnd.microsoft.icon'
-
-    when 'js' then return 'application/javascript; charset=utf-8'
-
-    when 'appcache' then return 'text/cache-manifest; charset=utf-8'
-    when 'html' then return 'text/html; charset=utf-8'
-    when 'css' then return 'text/css; charset=utf-8'
+  for ext, type in mimetypes
+    if parsed[1] == ext
+      return type

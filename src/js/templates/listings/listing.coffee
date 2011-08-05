@@ -17,7 +17,7 @@ class hs.t.Listing extends hs.Template
 
   template: -> """
     <div class="listing clearfix">
-      
+
       <div class="section-left">
         <div id="listing-image"><img></div>
       </div>
@@ -36,7 +36,6 @@ class hs.t.Listing extends hs.Template
             </div>
 
             <span id="listing-loc-diff"></span>
-            &nbsp;&nbsp;&ndash;&nbsp;&nbsp;
             <span class="created"></span>
 
             <a href="javascript:;" class="map-link" target="_blank">
@@ -210,7 +209,7 @@ class hs.t.Listing extends hs.Template
     else
       distStr = Math.round(dist*100)/100+' km'
 
-    this.$('#listing-loc-diff').text "Roughly #{distStr} #{direction} of you"
+    this.$('#listing-loc-diff').text "Roughly #{distStr} #{direction} of you&nbsp;&nbsp;&ndash;&nbsp;&nbsp;"
 
 
   setAccepted: -> this.setStatus()

@@ -3,13 +3,14 @@ _ = require('underscore')._;
 fs = require('fs');
 compilers = [require('./compilers/coffee'), require('./compilers/scss'), require('./compilers/static'), require('./compilers/html')];
 build = function(files, opt, cache, clbk) {
-  var next;
+  var comps, next;
+  comps = _.clone(compilers);
   return (next = function(err) {
     var compiler;
     if (err != null) {
       return clbk(err);
     }
-    if (!(compiler = compilers.shift())) {
+    if (!(compiler = comps.shift())) {
       return clbk();
     }
     return compiler.compile(files, opt, cache, next);

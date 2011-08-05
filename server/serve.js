@@ -1,4 +1,4 @@
-var build, cache, cli, fs, http, mime, path, render, url;
+var build, cache, cli, fs, http, mime, mimetypes, path, render, url, watchRecursive;
 http = require('http');
 url = require('url');
 path = require('path');
@@ -8,6 +8,16 @@ require('colors');
 build = require('./build');
 render = require('./render');
 cache = {};
+mimetypes = {
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  gif: 'image/gif',
+  ico: 'image/vnd.microsoft.icon',
+  js: 'application/javascript; charset=utf-8',
+  appcache: 'text/cache-manifest; charset=utf-8',
+  html: 'text/html; charset=utf-8',
+  css: 'text/css; charset=utf-8'
+};
 exports.run = function(opt) {
   var onRequest;
   onRequest = function(req, res) {
@@ -54,38 +64,71 @@ exports.run = function(opt) {
     if (err != null) {
       return cli.fatal(err);
     }
+    console.log('initializing render'.magenta);
     return render.init(cache, opt, function(err) {
       var server;
       if (err != null) {
         return cli.fatal(err);
       }
       server = http.createServer(onRequest).listen(opt.port, opt.host);
-      return console.log("server listening - http://" + opt.host + ":" + opt.port);
+      console.log("server listening - http://" + opt.host + ":" + opt.port);
+      if (opt.autobuild) {
+        return watchRecursive(opt.src, function(file) {
+          console.log('File change detected'.yellow);
+          return build.build([file], opt, cache, function() {
+            var _ref;
+            if ((_ref = /\.(\w+)$/.exec(file)[1]) === 'js' || _ref === 'html') {
+              console.log('Reloading render'.yellow);
+              return render.init(cache, opt, function(err) {
+                if (err != null) {
+                  return cli.fatal(err);
+                }
+                return console.log('render reload complete'.yellow);
+              });
+            }
+          });
+        });
+      }
     });
   });
 };
+watchRecursive = function(path, clbk) {
+  return fs.stat(path, function(err, stats) {
+    if (err != null) {
+      throw err;
+    }
+    if (stats.isDirectory()) {
+      return fs.readdir(path, function(err, files) {
+        var file, _i, _len, _results;
+        if (err != null) {
+          throw err;
+        }
+        _results = [];
+        for (_i = 0, _len = files.length; _i < _len; _i++) {
+          file = files[_i];
+          _results.push(watchRecursive(path + '/' + file, clbk));
+        }
+        return _results;
+      });
+    } else {
+      return fs.watchFile(path, function(cur, prev) {
+        if (cur.mtime.getTime() !== prev.mtime.getTime()) {
+          return clbk(path);
+        }
+      });
+    }
+  });
+};
 mime = function(filename) {
-  var parsed;
+  var ext, parsed, type, _len;
   parsed = /\.(\w+)$/.exec(filename);
   if (!(parsed != null)) {
     return 'text/plain; charset=utf-8';
   }
-  switch (parsed[1]) {
-    case 'png':
-      return 'image/png';
-    case 'jpg':
-      return 'image/jpeg';
-    case 'gif':
-      return 'image/gif';
-    case 'ico':
-      return 'image/vnd.microsoft.icon';
-    case 'js':
-      return 'application/javascript; charset=utf-8';
-    case 'appcache':
-      return 'text/cache-manifest; charset=utf-8';
-    case 'html':
-      return 'text/html; charset=utf-8';
-    case 'css':
-      return 'text/css; charset=utf-8';
+  for (type = 0, _len = mimetypes.length; type < _len; type++) {
+    ext = mimetypes[type];
+    if (parsed[1] === ext) {
+      return type;
+    }
   }
 };
