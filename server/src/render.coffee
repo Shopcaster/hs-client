@@ -7,50 +7,46 @@ require 'colors'
 
 # module vars
 dep = null
-id = 1
-
+cache = null
 
 # initialize
-exports.init = (opt, clbk)->
-  fs.readFile opt.build+'/index.html', 'utf8', (err, index)->
+exports.init = (c, opt, clbk)->
+  cache = c
+
+  index = cache['/index.html']
+
+  doc = jsdom index, null,
+    features:
+      FetchExternalResources: false
+
+  window = doc.createWindow()
+
+  window.route = false
+  window.alert = -> console.log.apply console, arguments
+  window.console = console
+  window.XDomainRequest = XMLHttpRequest
+  window.XMLHttpRequest = XMLHttpRequest
+  window.localStorage = {}
+  window.Date = Date
+  window.Array = Array
+  window.Number = Number
+  window.JSON = JSON
+  window.conf = opt.conf
+
+  window.window = window
+
+  files = new depends.Files()
+  files.js = {}
+  for file, content of cache
+    files.js[file] = content if /\.js$/.test file
+
+  dep = new depends.NodeDep files, context: window, init: 'hs.urls'
+
+  zz = "#{opt.conf.zz.server.protocol}://#{opt.conf.zz.server.host}:#{opt.conf.zz.server.port}/api-library.js"
+
+  dep.dlIntoContext zz, (err)->
     return clbk err if err?
-
-    zz = "#{opt.conf.zz.server.protocol}://#{opt.conf.zz.server.host}:#{opt.conf.zz.server.port}/api-library.js"
-
-    doc = jsdom index, null,
-      features:
-        FetchExternalResources: false
-
-    window = doc.createWindow()
-
-    window.route = false
-    window.alert = -> console.log.apply console, arguments
-    window.console = console
-    window.XDomainRequest = XMLHttpRequest
-    window.XMLHttpRequest = XMLHttpRequest
-    window.localStorage = {}
-    window.Date = Date
-    window.Array = Array
-    window.Number = Number
-    window.JSON = JSON
-    window.conf = opt.conf
-
-    window.window = window
-
-    depends.manageNode
-      src: opt.build+'/js'
-      context: window
-      init: 'hs.urls'
-      ,(err, nodeDep)->
-        return clbk err if err?
-
-        dep = nodeDep
-
-        dep.dlIntoContext zz, (err)->
-          return clbk err if err?
-
-          dep.execute 'hs.urls', ->
-            clbk()
+    dep.execute 'hs.urls', clbk
 
 
 #route

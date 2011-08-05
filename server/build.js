@@ -1,7 +1,7 @@
 var build, buildDir, compilers, fs, listDir, _;
 _ = require('underscore')._;
 fs = require('fs');
-compilers = [require('./compilers/coffee'), require('./compilers/scss'), require('./compilers/img'), require('./compilers/html')];
+compilers = [require('./compilers/coffee'), require('./compilers/scss'), require('./compilers/static'), require('./compilers/html')];
 build = function(files, opt, cache, clbk) {
   var next;
   return (next = function(err) {
@@ -9,7 +9,7 @@ build = function(files, opt, cache, clbk) {
     if (err != null) {
       return clbk(err);
     }
-    if (!(compiler = compilers.pop())) {
+    if (!(compiler = compilers.shift())) {
       return clbk();
     }
     return compiler.compile(files, opt, cache, next);

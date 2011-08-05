@@ -1,17 +1,21 @@
 
 coffee = require 'coffee-script'
 fs = require 'fs'
+require 'colors'
 
 
 compile = (files, opt, cache, clbk) ->
 
-  coffee = []
-  coffee.push file if /\.coffee$/.test file for file in files
+  coff = []
+  for file in files
+    coff.push file if /\.coffee$/.test file
 
-  return clbk() if coffee.length = 0
+  return clbk() if coff.length == 0
+
+  console.log 'building coffee'.magenta
 
   do next = ->
-    return clbk() if not (file = coffee.pop())?
+    return clbk() if not (file = coff.pop())?
 
     fs.readFile file, 'utf8', (err, content) ->
       return clbk err if err?
@@ -21,7 +25,8 @@ compile = (files, opt, cache, clbk) ->
       catch e
         return clbk e
 
-      cache[file.replace opt.src, ''] = js
+      name = file.replace(opt.src, '').replace(/\.coffee$/, '.js')
+      cache[name] = js
       next()
 
 

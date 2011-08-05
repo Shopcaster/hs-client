@@ -2,7 +2,6 @@ var build, cache, cli, fs, http, mime, path, render, url;
 http = require('http');
 url = require('url');
 path = require('path');
-mime = require('mime');
 fs = require('fs');
 cli = require('cli');
 require('colors');
@@ -11,57 +10,41 @@ render = require('./render');
 cache = {};
 exports.run = function(opt) {
   var onRequest;
-  mime.define({
-    'text/cache-manifest': ['appcache', 'appCache']
-  });
   onRequest = function(req, res) {
-    var errEnd, filename, pathname, route;
+    var errEnd, filename, pathname;
     pathname = url.parse(req.url).pathname;
     filename = path.join(opt.build, pathname);
-    route = function() {
+    if (cache[pathname] != null) {
+      console.log(('GET 200 ' + pathname).grey);
+      res.writeHead(200, {
+        'Content-Type': mime(filename)
+      });
+      res.write(cache[pathname], 'binary');
+      res.end();
+    } else {
       opt.pathname = pathname;
-      return render.route(pathname, function(status, content) {
+      render.route(pathname, function(status, content) {
+        var lg;
         if (!(status != null)) {
           status = 200;
         }
-        console.log(('GET ' + status + ' ' + pathname).bold);
+        lg = ('GET ' + status + ' ' + pathname).bold;
+        if (status !== 200) {
+          lg = lg.red;
+        }
+        console.log(lg);
         res.writeHead(status, {
-          'Content-Type': 'text/html'
+          'Content-Type': 'text/html; charset=utf-8'
         });
         res.write(content);
         return res.end();
       });
-    };
-    path.exists(filename, function(exists) {
-      if (!exists) {
-        return route();
-      } else {
-        return fs.stat(filename, function(err, stat) {
-          if (err != null) {
-            return errEnd("stat: " + err);
-          }
-          if (stat.isDirectory()) {
-            return route();
-          }
-          return fs.readFile(filename, 'binary', function(err, file) {
-            if (err != null) {
-              return errEnd("Unable to read file " + filename);
-            }
-            console.log(('GET 200 ' + pathname).grey);
-            res.writeHead(200, {
-              'Content-Type': mime.lookup(filename)
-            });
-            res.write(file, 'binary');
-            return res.end();
-          });
-        });
-      }
-    });
+    }
     return errEnd = function(err) {
       console.log('ERROR'.red);
       console.log(err.stack.red);
       res.writeHead(500, {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'text/plain; charset=utf-8'
       });
       res.write(err + '\n');
       return res.end();
@@ -71,7 +54,7 @@ exports.run = function(opt) {
     if (err != null) {
       return cli.fatal(err);
     }
-    return render.init(opt, function(err) {
+    return render.init(cache, opt, function(err) {
       var server;
       if (err != null) {
         return cli.fatal(err);
@@ -80,4 +63,29 @@ exports.run = function(opt) {
       return console.log("server listening - http://" + opt.host + ":" + opt.port);
     });
   });
+};
+mime = function(filename) {
+  var parsed;
+  parsed = /\.(\w+)$/.exec(filename);
+  if (!(parsed != null)) {
+    return 'text/plain; charset=utf-8';
+  }
+  switch (parsed[1]) {
+    case 'png':
+      return 'image/png';
+    case 'jpg':
+      return 'image/jpeg';
+    case 'gif':
+      return 'image/gif';
+    case 'ico':
+      return 'image/vnd.microsoft.icon';
+    case 'js':
+      return 'application/javascript; charset=utf-8';
+    case 'appcache':
+      return 'text/cache-manifest; charset=utf-8';
+    case 'html':
+      return 'text/html; charset=utf-8';
+    case 'css':
+      return 'text/css; charset=utf-8';
+  }
 };

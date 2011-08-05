@@ -1,56 +1,53 @@
-var XMLHttpRequest, dep, depends, fs, id, jsdom;
+var XMLHttpRequest, cache, dep, depends, fs, jsdom;
 depends = require('depends');
 jsdom = require("jsdom").jsdom;
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 fs = require('fs');
 require('colors');
 dep = null;
-id = 1;
-exports.init = function(opt, clbk) {
-  return fs.readFile(opt.build + '/index.html', 'utf8', function(err, index) {
-    var doc, window, zz;
+cache = null;
+exports.init = function(c, opt, clbk) {
+  var content, doc, file, files, index, window, zz;
+  cache = c;
+  index = cache['/index.html'];
+  doc = jsdom(index, null, {
+    features: {
+      FetchExternalResources: false
+    }
+  });
+  window = doc.createWindow();
+  window.route = false;
+  window.alert = function() {
+    return console.log.apply(console, arguments);
+  };
+  window.console = console;
+  window.XDomainRequest = XMLHttpRequest;
+  window.XMLHttpRequest = XMLHttpRequest;
+  window.localStorage = {};
+  window.Date = Date;
+  window.Array = Array;
+  window.Number = Number;
+  window.JSON = JSON;
+  window.conf = opt.conf;
+  window.window = window;
+  files = new depends.Files();
+  files.js = {};
+  for (file in cache) {
+    content = cache[file];
+    if (/\.js$/.test(file)) {
+      files.js[file] = content;
+    }
+  }
+  dep = new depends.NodeDep(files, {
+    context: window,
+    init: 'hs.urls'
+  });
+  zz = "" + opt.conf.zz.server.protocol + "://" + opt.conf.zz.server.host + ":" + opt.conf.zz.server.port + "/api-library.js";
+  return dep.dlIntoContext(zz, function(err) {
     if (err != null) {
       return clbk(err);
     }
-    zz = "" + opt.conf.zz.server.protocol + "://" + opt.conf.zz.server.host + ":" + opt.conf.zz.server.port + "/api-library.js";
-    doc = jsdom(index, null, {
-      features: {
-        FetchExternalResources: false
-      }
-    });
-    window = doc.createWindow();
-    window.route = false;
-    window.alert = function() {
-      return console.log.apply(console, arguments);
-    };
-    window.console = console;
-    window.XDomainRequest = XMLHttpRequest;
-    window.XMLHttpRequest = XMLHttpRequest;
-    window.localStorage = {};
-    window.Date = Date;
-    window.Array = Array;
-    window.Number = Number;
-    window.JSON = JSON;
-    window.conf = opt.conf;
-    window.window = window;
-    return depends.manageNode({
-      src: opt.build + '/js',
-      context: window,
-      init: 'hs.urls'
-    }, function(err, nodeDep) {
-      if (err != null) {
-        return clbk(err);
-      }
-      dep = nodeDep;
-      return dep.dlIntoContext(zz, function(err) {
-        if (err != null) {
-          return clbk(err);
-        }
-        return dep.execute('hs.urls', function() {
-          return clbk();
-        });
-      });
-    });
+    return dep.execute('hs.urls', clbk);
   });
 };
 exports.route = function(pathname, clbk) {

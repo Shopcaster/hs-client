@@ -6,7 +6,7 @@ fs = require 'fs'
 compilers = [
   require './compilers/coffee'
   require './compilers/scss'
-  require './compilers/img'
+  require './compilers/static'
   require './compilers/html'
 ]
 
@@ -15,7 +15,7 @@ build = (files, opt, cache, clbk) ->
   do next = (err) ->
     return clbk err if err?
 
-    return clbk() if not (compiler = compilers.pop())
+    return clbk() if not (compiler = compilers.shift())
     compiler.compile files, opt, cache, next
 
 

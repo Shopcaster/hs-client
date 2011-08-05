@@ -1,21 +1,25 @@
 
 exec = require('child_process').exec
+require 'colors'
 
 
 compile = (files, opt, cache, clbk) ->
 
-  scss = []
-  scss.push file if /\.scss$/.test file for file in files
+  scss = false
+  for file in files
+    if /\.scss$/.test file
+      scss = true
+      break
 
-  return clbk() if scss.length = 0
+  return clbk() if not scss
 
-  do next = ->
-    return clbk() if not (file = scss.pop())?
+  console.log 'building scss'.magenta
 
-    exec "sass #{file}", (err, stdout, stderr)->
-      return clbk err if err?
-      cache[file.replace opt.src, ''] = stdout
-      next()
+  exec "sass #{opt.src}/css/style.scss", (err, stdout, stderr)->
+    return clbk err if err?
+    cache['/style.css'] = stdout
+
+    clbk()
 
 
 exports.compile = compile

@@ -1,29 +1,26 @@
 var coffee, compile, fs;
 coffee = require('coffee-script');
 fs = require('fs');
+require('colors');
 compile = function(files, opt, cache, clbk) {
-  var file, next;
-  coffee = [];
-  if ((function() {
-    var _i, _len, _results;
-    _results = [];
-    for (_i = 0, _len = files.length; _i < _len; _i++) {
-      file = files[_i];
-      _results.push(/\.coffee$/.test(file));
+  var coff, file, next, _i, _len;
+  coff = [];
+  for (_i = 0, _len = files.length; _i < _len; _i++) {
+    file = files[_i];
+    if (/\.coffee$/.test(file)) {
+      coff.push(file);
     }
-    return _results;
-  })()) {
-    coffee.push(file);
   }
-  if (coffee.length = 0) {
+  if (coff.length === 0) {
     return clbk();
   }
+  console.log('building coffee'.magenta);
   return (next = function() {
-    if (!((file = coffee.pop()) != null)) {
+    if (!((file = coff.pop()) != null)) {
       return clbk();
     }
     return fs.readFile(file, 'utf8', function(err, content) {
-      var js;
+      var js, name;
       if (err != null) {
         return clbk(err);
       }
@@ -32,7 +29,8 @@ compile = function(files, opt, cache, clbk) {
       } catch (e) {
         return clbk(e);
       }
-      cache[file.replace(opt.src, '')] = js;
+      name = file.replace(opt.src, '').replace(/\.coffee$/, '.js');
+      cache[name] = js;
       return next();
     });
   })();
