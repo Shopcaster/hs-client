@@ -37,7 +37,7 @@ exports.init = function(c, opt, clbk) {
   files.js = {};
   for (file in cache) {
     content = cache[file];
-    if (/\.js$/.test(file)) {
+    if (/\.js$/.test(file) && file !== '/main.js') {
       files.js[file] = content;
     }
   }

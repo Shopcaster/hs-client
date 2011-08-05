@@ -35,26 +35,35 @@ compile = (files, opt, cache, clbk) ->
     # JavaScript
     html = html.replace '</body>', "<script src='#{opt.conf.zz.server.protocol}://#{opt.conf.zz.server.host}:#{opt.conf.zz.server.port}/api-library.js'></script></body>"
 
-    scripts = ''
-
-    files = new depends.Files()
-
-    files.js = {}
-    for file, content of cache
-      files.js[file] = content if /\.js$/.test file
-
-    files.getClient false, (err, content) ->
-      return clbk err if err?
-
-      scripts += '<script src="/loader.js"></script>'
-      cache['/loader.js'] = content
-
-      for file in files.output
-        scripts += "<script src='#{file}'></script>"
-
-      html = html.replace '</body>', scripts+'</body>'
-
+    done = ->
       cache['/index.html'] = html
       clbk()
+
+    if opt.concat
+      html = html.replace '</body>', '<script src="/main.js"></script></body>'
+      done()
+
+    else
+      scripts = ''
+
+      files = new depends.Files()
+
+      files.js = {}
+      for file, content of cache
+        files.js[file] = content if /\.js$/.test file
+
+      files.getClient false, (err, content) ->
+        return clbk err if err?
+
+        scripts += '<script src="/loader.js"></script>'
+        cache['/loader.js'] = content
+
+        for file in files.output
+          scripts += "<script src='#{file}'></script>"
+
+        html = html.replace '</body>', scripts+'</body>'
+
+        done()
+
 
 exports.compile = compile

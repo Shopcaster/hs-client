@@ -20,6 +20,7 @@ cli.parse
   noappcache: ['n', 'Disable HTML5 Application Cache', 'boolean', false]
   jsconf: ['c', 'JSON config file', 'path', './localConf.json']
 
+  concat: [false, 'Connatinate js info one file', 'boolean', false]
   minify: ['m', 'Minify JS using Uglify JS', 'boolean', false]
   pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
 
@@ -28,6 +29,9 @@ cli.parse
 
 
 cleanOpt = (opt, clbk)->
+
+  opt.concat = true if opt.minify
+
   fs.realpath opt.src, (err, srcPath)->
     cli.fatal err if err?
     opt.src = srcPath

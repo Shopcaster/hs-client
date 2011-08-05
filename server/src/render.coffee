@@ -41,9 +41,11 @@ exports.init = (c, opt, clbk)->
   window.window = window
 
   files = new depends.Files()
+
   files.js = {}
   for file, content of cache
-    files.js[file] = content if /\.js$/.test file
+    if /\.js$/.test(file) and file != '/main.js'
+      files.js[file] = content
 
   dep = new depends.NodeDep files, context: window, init: 'hs.urls'
 

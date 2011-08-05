@@ -1,36 +1,42 @@
 
 ug = require 'uglify-js'
 fs = require 'fs'
+depends = require 'depends'
 require 'colors'
 
 
 compile = (files, opt, cache, clbk) ->
 
-  return clbk() if not opt.minify
+  return clbk() if not opt.minify and not opt.concat
 
-  console.log 'uglifying js'.magenta
+  console.log 'minifying js'.magenta
 
-  js = {}
-  for file in cache
-    coff.push file if /\.coffee$/.test file
+  files = new depends.Files()
 
-  return clbk() if coff.length == 0
+  files.js = {}
+  for file, content of cache
+    files.js[file] = content if /\.js$/.test file
 
+  files.getClient false, (err, loader) ->
+    return clbk err if err?
 
-  do next = ->
-    return clbk() if not (file = coff.pop())?
+    js = ''
+    js += loader
 
-    fs.readFile file, 'utf8', (err, content) ->
-      return clbk err if err?
+    for file in files.output
+      js += files.js[file]
 
-      try
-        js = coffee.compile content
-      catch e
-        return clbk 'coffee error in file: '+file+'\n'+e
+    if opt.minify
+      ast = ug.parser.parse js
+      ast = ug.uglify.ast_mangle ast, toplevel: true
+      ast = ug.uglify.ast_squeeze ast
+      js = ug.uglify.gen_code ast,
+        beautify: opt.pretify
+        indent_level: 2
 
-      name = file.replace(opt.src, '').replace(/\.coffee$/, '.js')
-      cache[name] = js
-      next()
+    cache['/main.js'] = js
+
+    clbk()
 
 
 exports.compile = compile

@@ -10,10 +10,14 @@ cli.parse({
   autobuild: ['a', 'Automatically rebuild on file change', 'boolean', false],
   noappcache: ['n', 'Disable HTML5 Application Cache', 'boolean', false],
   jsconf: ['c', 'JSON config file', 'path', './localConf.json'],
+  concat: [false, 'Connatinate js info one file', 'boolean', false],
   minify: ['m', 'Minify JS using Uglify JS', 'boolean', false],
   pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
 });
 cleanOpt = function(opt, clbk) {
+  if (opt.minify) {
+    opt.concat = true;
+  }
   return fs.realpath(opt.src, function(err, srcPath) {
     if (err != null) {
       cli.fatal(err);

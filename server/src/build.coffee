@@ -5,9 +5,9 @@ fs = require 'fs'
 
 compilers = [
   require './compilers/coffee'
-  #require './compilers/min'
   require './compilers/scss'
   require './compilers/static'
+  require './compilers/min'
   require './compilers/appcache'
   require './compilers/html'
 ]

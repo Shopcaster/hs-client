@@ -5,6 +5,8 @@ dep.require 'hs.EventEmitter'
 
 dep.provide 'hs.Template'
 
+constructorId = 0
+
 
 class hs.Template extends hs.EventEmitter
 
@@ -34,7 +36,7 @@ class hs.Template extends hs.EventEmitter
       this.id = this.options.id
 
     else if not this.id?
-      this.id = this.constructor.name
+      this.id = ''+this.constructor.id or (this.constructor.id = constructorId++)
       this.id = this.parent.id + '_' + this.id if this.parent?
 
       if this.model?._id?
