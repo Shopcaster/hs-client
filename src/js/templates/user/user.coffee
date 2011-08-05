@@ -21,14 +21,19 @@ class hs.t.User extends hs.Template
 
 
   postRender: ->
-    this.setPresence = _.bind(this.setPresence, this)
-    zz.presence.on this.model._id, this.setPresence
+    if this.model?
+      this.setPresence = _.bind(this.setPresence, this)
+      zz.presence.on this.model._id, this.setPresence
 
-    this.$('.name').attr 'href', '/'+this.model._id
+      this.$('.name').attr 'href', '/'+this.model._id
+
+    else
+      this.$('.avatar').attr 'src', '/img/default_avatar.png'
 
 
   preRemove: ->
-    zz.presence.removeListener this.model._id, this.setPresence
+    if this.model?
+      zz.presence.removeListener this.model._id, this.setPresence
 
 
   setName: ->

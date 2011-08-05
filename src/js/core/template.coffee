@@ -96,7 +96,6 @@ class hs.Template extends hs.EventEmitter
     this.el = $ "##{this.id}"
 
     if this.alwaysFresh and this.el.length > 0
-      console.log 'removing alwaysFresh', this.constructor.name
       this.el.remove()
       this.el = []
 

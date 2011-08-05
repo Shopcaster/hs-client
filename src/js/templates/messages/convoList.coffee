@@ -20,6 +20,8 @@ class hs.t.ConvoList extends hs.Template
       class: hs.t.ConvoLI
       appendTo: '.convo-list'
 
+  preRender: -> $('.convo').remove()
+
 
   addModel: (convo, index) ->
     index = undefined if index == -1

@@ -45,23 +45,25 @@ class hs.t.ConvoLI extends hs.Template
         this.messages.on 'add', _.bind(this.setMessage, this)
         this.setMessage this.messages[0], 0 if this.messages[0]?
 
-    return if not this.model.creator?
+    if not this.model.creator?
+      this.userTmpl null, prependTo: '#'+this.id
 
-    zz.data.listing this.model.listing, (listing) =>
-      zz.data.user this.model.creator, (creator) =>
-        listing.offerForUser creator, (offer) =>
-          if offer?
-            this.offer = offer
-            this.offer.heat()
-            this.offer.on 'amount', _.bind(this.setAmount, this)
-            this.setAmount()
+    else
+      zz.data.listing this.model.listing, (listing) =>
+        zz.data.user this.model.creator, (creator) =>
+          listing.offerForUser creator, (offer) =>
+            if offer?
+              this.offer = offer
+              this.offer.heat()
+              this.offer.on 'amount', _.bind(this.setAmount, this)
+              this.setAmount()
 
-          this.listing = listing
-          this.listing.heat()
-          this.listing.on 'accepted', _.bind(this.setAccepted, this)
-          this.listing.on 'sold', _.bind(this.setSold, this)
-          this.setSold()
-          this.setAccepted()
+            this.listing = listing
+            this.listing.heat()
+            this.listing.on 'accepted', _.bind(this.setAccepted, this)
+            this.listing.on 'sold', _.bind(this.setSold, this)
+            this.setSold()
+            this.setAccepted()
 
 
   preRemove: ->
