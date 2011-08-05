@@ -7,9 +7,11 @@ dep.provide 'hs.t.Inquiries'
 
 class hs.t.Inquiries extends hs.Template
 
-  template: ->
-    div class: 'inquiry-list', ->
-      div class: 'li no-qs', -> 'No Questions Yet.'
+  template: -> """
+    <div class="inquiry-list">
+      <div class="li no-qs">No Questions Yet.</div>
+    </div>
+    """
 
 
   subTemplates:

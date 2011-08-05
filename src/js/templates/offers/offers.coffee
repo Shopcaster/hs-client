@@ -8,21 +8,27 @@ class hs.t.Offers extends hs.Template
   id: 'listing-offerbar'
 
 
-  template: ->
-    div class: 'clearfix', ->
+  template: -> """
+    <div class="clearfix">
 
-      div class: 'left', ->
-        div class: 'title', -> 'Asking Price'
-        div class: 'value asking', -> '$0'
-        div class: 'details asking'
-      div class: 'middle', ->
-        div class: 'title', -> 'Best Offer'
-        div class: 'value best-offer', -> '$0'
-        div class: 'details best-offer'
-      div class: 'right', ->
-        div class: 'title', -> 'My Offer'
-        div class: 'value my-offer', -> '$0'
-        div class: 'details my-offer'
+      <div class="left">
+        <div class="title">Asking Price</div>
+        <div class="value asking">$0</div>
+        <div class="details asking"></div>
+      </div>
+      <div class="middle">
+        <div class="title">Best Offer</div>
+        <div class="value best-offer">$0</div>
+        <div class="details best-offer"></div>
+      </div>
+      <div class="right">
+        <div class="title">My Offer</div>
+        <div class="value my-offer">$0</div>
+        <div class="details my-offer"></div>
+      </div>
+    
+    </div>
+    """
 
   init: (clbk) ->
     this.offers = {}

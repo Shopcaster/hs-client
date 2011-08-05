@@ -4,6 +4,8 @@ dep.provide 'util'
 
 
 String.prototype.truncateWords = (number) ->
+  return this.substr(0) if this.length <= 67
+
   words = this.substr(0, number).split(' ')
 
   if words.length > 1
@@ -44,7 +46,9 @@ Date.prototype.since = (since) ->
   if (this <= now)
     if (this.getFullYear() < now.getFullYear())
       num = now.getFullYear() - this.getFullYear()
-      s = if num != 1 then 's' else ''
+      s = ''
+      if num != 1 then s = 's'
+      
       return {'text': 'Year'+s+' ago', 'num': num}
 
     else
@@ -85,3 +89,25 @@ Date.prototype.since = (since) ->
     return {'text': 'the future', 'num': 0}
 
 
+
+
+class window.URL
+  
+  reg: /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
+
+  constructor: (@raw) ->
+    throw 'raw url required' if not raw?
+
+    parsed = this.reg.exec this
+
+    throw 'invalid url' if not parsed?
+
+    this.protocol = parsed[2]
+    this.host = parsed[3]
+    this.path = parsed[4]
+    this.file = parsed[6]
+    this.query = parsed[7]
+    this.hash = parsed[8]
+
+  toString: -> this.raw
+  valueOf: -> this.raw

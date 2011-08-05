@@ -1,6 +1,5 @@
 
 dep.require 'hs'
-dep.require 'CoffeeKup'
 dep.require 'zz.models'
 dep.require 'hs.EventEmitter'
 
@@ -9,7 +8,6 @@ dep.provide 'hs.Template'
 
 class hs.Template extends hs.EventEmitter
 
-  templateLocals: {}
   injected: false
   _meta: []
   initListeners: []
@@ -97,15 +95,16 @@ class hs.Template extends hs.EventEmitter
   _renderTemplate: ->
     this.el = $ "##{this.id}"
 
+    if this.alwaysFresh and this.el.length > 0
+      this.el.remove()
+      this.el = []
+
     if this.el.length == 0
       if typeof this.template == 'string'
         html = this.template
 
       else
-        html = CoffeeKup.render this.template,
-          context: this
-          locals: this.templateLocals
-          cache: off
+        html = this.template()
 
       this.el = $(html)
       this.el.attr 'id', this.id

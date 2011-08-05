@@ -6,15 +6,21 @@ dep.provide 'hs.t.ConvoList'
 
 class hs.t.ConvoList extends hs.Template
 
-  template: ->
-    div class: 'convo-list list-box', ->
-      div class: 'li no-cs', -> 'No Messages Yet.'
+  alwaysFresh: true
+
+  template: -> """
+    <div class="convo-list list-box">
+      <div class="li no-cs">No Messages Yet.</div>
+    </div>
+    """
 
 
   subTemplates:
     convoLI:
       class: hs.t.ConvoLI
       appendTo: '.convo-list'
+
+  preRender: -> $('.convo').remove()
 
 
   addModel: (convo, index) ->
@@ -25,7 +31,3 @@ class hs.t.ConvoList extends hs.Template
 
   removeModel: (id, index) ->
     this.removeTmpl index
-
-
-
-

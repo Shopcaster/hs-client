@@ -7,15 +7,20 @@ dep.provide 'hs.t.ConvoLI'
 
 class hs.t.ConvoLI extends hs.Template
 
-  template: ->
-    div class: 'convo-li li', ->
-      div class: 'inside', ->
-        span class: 'message-preview', ->
-          a class: 'count', href: 'javascript:;'
-          span class: 'message'
-        div class: 'offerbox', ->
-          div class: 'offer', href: 'javascript:;', -> '$0'
-      div class: 'clicky'
+  template: -> """
+    <div class="convo-li li">
+      <div class="inside">
+        <span class="message-preview">
+          <a class="count" href="javascript:;"></a>
+          <span class="message"></span>
+        </span>
+        <div class="offerbox">
+          <div class="offer">$0</div>
+        </div>
+      </div>
+      <div class="clicky"></div>
+    </div>
+    """
 
 
   subTemplates:
@@ -40,21 +45,25 @@ class hs.t.ConvoLI extends hs.Template
         this.messages.on 'add', _.bind(this.setMessage, this)
         this.setMessage this.messages[0], 0 if this.messages[0]?
 
-    zz.data.listing this.model.listing, (listing) =>
-      zz.data.user this.model.creator, (creator) =>
-        listing.offerForUser creator, (offer) =>
-          if offer?
-            this.offer = offer
-            this.offer.heat()
-            this.offer.on 'amount', _.bind(this.setAmount, this)
-            this.setAmount()
+    if not this.model.creator?
+      this.userTmpl null, prependTo: '#'+this.id
 
-          this.listing = listing
-          this.listing.heat()
-          this.listing.on 'accepted', _.bind(this.setAccepted, this)
-          this.listing.on 'sold', _.bind(this.setSold, this)
-          this.setSold()
-          this.setAccepted()
+    else
+      zz.data.listing this.model.listing, (listing) =>
+        zz.data.user this.model.creator, (creator) =>
+          listing.offerForUser creator, (offer) =>
+            if offer?
+              this.offer = offer
+              this.offer.heat()
+              this.offer.on 'amount', _.bind(this.setAmount, this)
+              this.setAmount()
+
+            this.listing = listing
+            this.listing.heat()
+            this.listing.on 'accepted', _.bind(this.setAccepted, this)
+            this.listing.on 'sold', _.bind(this.setSold, this)
+            this.setSold()
+            this.setAccepted()
 
 
   preRemove: ->
@@ -63,6 +72,8 @@ class hs.t.ConvoLI extends hs.Template
 
 
   setCreator: ->
+    return if not this.model.creator?
+
     this.userTmpl.remove()
     zz.data.user this.model.creator, (creator) =>
       this.userTmpl creator, prependTo: '#'+this.id

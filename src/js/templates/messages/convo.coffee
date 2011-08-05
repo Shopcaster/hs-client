@@ -8,10 +8,12 @@ dep.provide 'hs.t.ConvoDialog'
 
 class hs.t.Convo extends hs.Template
 
-  template: ->
-    div class: 'convo list-box', ->
-      div class: 'message-form'
-      div class: 'message-list'
+  template: -> """
+    <div class="convo list-box">
+      <div class="message-form"></div>
+      <div class="message-list"></div>
+    </div>
+    """
 
 
   subTemplates:

@@ -8,10 +8,12 @@ dep.provide 'hs.t.OfferForm'
 
 class hs.t.OfferForm extends hs.Template
 
-  template: ->
-    form class: 'offer-form', ->
-      span class: 'formFields'
-      input type: 'submit', class: 'submit'
+  template: -> """
+    <form class="offer-form">
+      <span class="formFields"></span>
+      <input type="submit" class="submit" />
+    </form>
+    """
 
 
   fields: [{

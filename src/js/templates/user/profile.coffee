@@ -11,10 +11,8 @@ class hs.t.Profile extends hs.Template
   appendTo: '#main'
 
 
-  template: ->
-    div class: 'profile', ->
-
-      div class: 'user-info'
+  template: -> '
+    <div class="profile"><div class="user-info"></div></div>'
 
 
   subTemplates:

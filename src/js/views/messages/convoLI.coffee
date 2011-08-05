@@ -28,7 +28,8 @@ class hs.v.ConvoLI extends hs.View
 
   sold: (e) ->
     e.preventDefault()
-    zz.update.listing this.template.listing, sold: true
+    zz.update.listing this.template.listing, sold: true, ->
+      mpq.push ['track', 'item_sold']
 
 
   stop: (e) ->

@@ -6,5 +6,6 @@
       "path": "/",
       "protocol": "http"
     }
-  }
+  },
+  "analytics": false
 }

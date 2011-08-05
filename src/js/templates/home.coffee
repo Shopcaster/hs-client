@@ -9,7 +9,7 @@ class hs.t.Home extends hs.Template
   appendTo: '#main'
   id: 'launchrock'
 
-  template: -> div()
+  template: -> '<div></div>'
 
 
   postRender: ->

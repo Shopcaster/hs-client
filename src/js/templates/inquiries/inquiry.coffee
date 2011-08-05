@@ -6,12 +6,14 @@ dep.provide 'hs.t.Inquiry'
 
 class hs.t.Inquiry extends hs.Template
 
-  template: ->
-    div class: 'inquiry li', ->
-      span class: 'created'
-      div class: 'question'
-      div class: 'answer'
-      div class: 'clicky'
+  template: -> """
+    <div class="inquiry li">
+      <span class="created"></span>
+      <div class="question"></div>
+      <div class="answer"></div>
+      <div class="clicky"></div>
+    </div>
+    """
 
 
   subTemplates:

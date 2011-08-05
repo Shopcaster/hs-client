@@ -1,5 +1,6 @@
 
 dep.require 'hs.Template'
+dep.require 'hs.formFields'
 
 dep.provide 'hs.t.mods.form'
 
@@ -15,13 +16,11 @@ hs.t.mods.form = (Template) ->
 
     this.on 'postRender', => this._renderFields()
 
-    this.templateLocals.fields = (attrs, clbk) ->
-      attrs ||= {}
-      attrs.class = 'formFields'
-      ck_tag 'span', [attrs, clbk]
+
+  Template.prototype.renderFields = -> '<span class="formFields"></span>'
 
 
-  Template.prototype._renderFields = () ->
+  Template.prototype._renderFields = ->
     this._fields = {}
 
     for fieldOpts in this.fields then do (fieldOpts) =>

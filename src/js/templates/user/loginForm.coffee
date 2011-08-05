@@ -21,11 +21,12 @@ class hs.t.LoginForm extends hs.Template
   }]
 
 
-  template: ->
-    form class: 'formDialog', ->
-      fields()
-      input type: 'submit', value: 'Submit', class: 'dark submit'
-
+  template: -> """
+    <form class="formDialog">
+      #{this.renderFields()}
+      <input type="submit" value="Submit" class="dark submit" />
+    </form>
+    """
 
 
 hs.t.mods.form hs.t.LoginForm

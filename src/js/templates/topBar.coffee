@@ -10,15 +10,17 @@ class hs.t.TopBar extends hs.Template
 
   appendTo: '#top-bar > .width'
 
-  template: ->
-    div class: 'inner-top-bar', ->
-      a href: '/about', -> 'About'
-      a href: '/how-it-works', -> 'How It Works'
-      a href: 'https://getsatisfaction.com/hipsell', target: '_blank', -> 'Feedback'
-      a class: 'name'
-      a href: '/settings/name', class: 'settings', -> 'Settings'
-      a href: 'javascript:;', class: 'logout', -> 'Logout'
-      a href: 'javascript:;', class: 'login', -> 'Login'
+  template: -> """
+    <div class="inner-top-bar">
+      <a href="/about">About</a>
+      <a href="/how-it-works">How It Works</a>
+      <a href="https://getsatisfaction.com/hipsell" target="_blank">Feedback</a>
+      <a class="name"></a>
+      <a href="/settings/name" class="settings">Settings</a>
+      <a href="javascript:;" class="logout">Logout</a>
+      <a href="javascript:;" class="login">Login</a>
+    </div>
+    """
 
 
   subTemplates:

@@ -5,18 +5,21 @@ dep.provide 'hs.t.ListingLI'
 
 class hs.t.ListingLI extends hs.Template
 
-  template: ->
-    a class: 'listing listing-li', ->
-      img class: 'listing-image'
-      div class: 'listing-info', ->
-        span class: 'status', => 'Available'
-        div class: 'listing-desc'
-        div class: 'created'
-        div class: 'asking', ->
-          div class: 'title', -> 'Asking Price'
-          div class: 'value'
-        div class: 'link', href: 'javascript:;', ->
-          'Click for more info'
+  template: -> """
+    <a class="listing listing-li">
+      <img class="listing-image">
+      <div class="listing-info">
+        <span class="status">Available</span>
+        <div class="listing-desc"></div>
+        <div class="created"></div>
+        <div class="asking">
+          <div class="title">Asking Price</div>
+          <div class="value"></div>
+        </div>
+        <div class="link">Click for more info</div>
+      </div>
+    </a>
+    """
 
 
   postRender: ->
