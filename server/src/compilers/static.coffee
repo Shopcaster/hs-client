@@ -2,7 +2,7 @@
 fs = require 'fs'
 require 'colors'
 
-exts = ['png', 'jpg', 'jpeg', 'gif', 'js']
+exts = ['png', 'jpg', 'jpeg', 'gif', 'js', 'ico']
 
 compile = (files, opt, cache, clbk) ->
 
