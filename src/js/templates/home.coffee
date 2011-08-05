@@ -7,12 +7,29 @@ dep.provide 'hs.t.Home'
 class hs.t.Home extends hs.Template
 
   appendTo: '#main'
-  id: 'launchrock'
 
-  template: -> '<div></div>'
+
+  template: -> '<div class="home"></div>'
+
+###
+  subTemplates:
+    userListings:
+      class: hs.t.UserListings
 
 
   postRender: ->
+    this.model.relatedListings 'creator', (listings) =>
+      this.userListingsTmpl listings, appendTo: '#'+this.id
+
+
+hs.t.Profile.getModel = (options, clbk) ->
+  zz.data.user options.parsedUrl[0], clbk
+###
+
+
+
+
+###Launchrock
     return if not LR?
 
     LR.lrInstance = new LrInstance 'launchrock',
@@ -47,4 +64,4 @@ class hs.t.Home extends hs.Template
       showStats: true
       showShareButtons: true
       showFooterLinks: true
-
+###
