@@ -13,7 +13,7 @@ exports.build = function(opt, clbk){
   manifest += '#built: '+ Math.round(new Date().getTime() / 1000) +'\n\n';
   manifest += 'NETWORK:\n*\n\n';
 
-  if (opt['no-appcache'] || opt['test'])
+  if (opt['noappcache'] || opt['test'])
     return fs.writeFile(manifestFile, manifest, _.bind(clbk, null, null, {}));
 
   manifest += 'CACHE:\n';

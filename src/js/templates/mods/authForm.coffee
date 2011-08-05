@@ -38,4 +38,3 @@ hs.t.mods.authForm = (Template) ->
       this.$('input[name=email]').hide()
       this.$('input[name=password]').hide()
 
-

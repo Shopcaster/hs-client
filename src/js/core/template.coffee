@@ -95,16 +95,17 @@ class hs.Template extends hs.EventEmitter
   _renderTemplate: ->
     this.el = $ "##{this.id}"
 
+    if this.alwaysFresh and this.el.length > 0
+      console.log 'removing alwaysFresh', this.constructor.name
+      this.el.remove()
+      this.el = []
+
     if this.el.length == 0
       if typeof this.template == 'string'
         html = this.template
 
       else
         html = this.template()
-#        html = CoffeeKup.render this.template,
-#          context: this
-#          locals: this.templateLocals
-#          cache: off
 
       this.el = $(html)
       this.el.attr 'id', this.id

@@ -6,6 +6,8 @@ dep.provide 'hs.t.ConvoList'
 
 class hs.t.ConvoList extends hs.Template
 
+  alwaysFresh: true
+
   template: -> """
     <div class="convo-list list-box">
       <div class="li no-cs">No Messages Yet.</div>

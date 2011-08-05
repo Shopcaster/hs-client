@@ -1,12 +1,14 @@
-var cli, fs, http, mime, path, render, url;
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var build, cache, cli, fs, http, mime, path, render, url;
 http = require('http');
 url = require('url');
 path = require('path');
 mime = require('mime');
-render = require('./render');
 fs = require('fs');
 cli = require('cli');
+require('colors');
+build = require('./build');
+render = require('./render');
+cache = {};
 exports.run = function(opt) {
   var onRequest;
   mime.define({
@@ -16,20 +18,20 @@ exports.run = function(opt) {
     var errEnd, filename, pathname, route;
     pathname = url.parse(req.url).pathname;
     filename = path.join(opt.build, pathname);
-    route = __bind(function() {
+    route = function() {
       opt.pathname = pathname;
-      return render.route(pathname, function(err, content) {
-        if (err != null) {
-          return errEnd("render: " + err);
+      return render.route(pathname, function(status, content) {
+        if (!(status != null)) {
+          status = 200;
         }
-        cli.info('GET 200 ' + pathname);
-        res.writeHead(200, {
+        console.log(('GET ' + status + ' ' + pathname).bold);
+        res.writeHead(status, {
           'Content-Type': 'text/html'
         });
         res.write(content);
         return res.end();
       });
-    }, this);
+    };
     path.exists(filename, function(exists) {
       if (!exists) {
         return route();
@@ -45,7 +47,7 @@ exports.run = function(opt) {
             if (err != null) {
               return errEnd("Unable to read file " + filename);
             }
-            cli.info('GET 200 ' + pathname);
+            console.log(('GET 200 ' + pathname).grey);
             res.writeHead(200, {
               'Content-Type': mime.lookup(filename)
             });
@@ -56,6 +58,8 @@ exports.run = function(opt) {
       }
     });
     return errEnd = function(err) {
+      console.log('ERROR'.red);
+      console.log(err.stack.red);
       res.writeHead(500, {
         'Content-Type': 'text/plain'
       });
@@ -63,9 +67,17 @@ exports.run = function(opt) {
       return res.end();
     };
   };
-  return render.init(opt, function() {
-    var server;
-    server = http.createServer(onRequest).listen(opt.port, opt.host);
-    return console.log("server listening - http://" + opt.host + ":" + opt.port);
+  return build.buildDir(opt.src, opt, cache, function(err) {
+    if (err != null) {
+      return cli.fatal(err);
+    }
+    return render.init(opt, function(err) {
+      var server;
+      if (err != null) {
+        return cli.fatal(err);
+      }
+      server = http.createServer(onRequest).listen(opt.port, opt.host);
+      return console.log("server listening - http://" + opt.host + ":" + opt.port);
+    });
   });
 };
