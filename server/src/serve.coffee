@@ -73,7 +73,7 @@ exports.run = (opt) ->
 
           build.build [file], opt, cache, ->
 
-            if /\.(\w+)$/.exec(file)[1] in ['js', 'html']
+            if /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
               console.log 'Reloading render'.yellow
 
               render.init cache, opt, (err)->

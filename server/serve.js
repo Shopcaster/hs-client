@@ -77,7 +77,7 @@ exports.run = function(opt) {
           console.log('File change detected'.yellow);
           return build.build([file], opt, cache, function() {
             var _ref;
-            if ((_ref = /\.(\w+)$/.exec(file)[1]) === 'js' || _ref === 'html') {
+            if ((_ref = /\.(\w+)$/.exec(file)[1]) === 'coffee' || _ref === 'html') {
               console.log('Reloading render'.yellow);
               return render.init(cache, opt, function(err) {
                 if (err != null) {
