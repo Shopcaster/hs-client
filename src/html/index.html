@@ -50,6 +50,19 @@
         if (conf.analytics){mpq.push(["init","2a3e7cd1b6f051894a6937c956e28b73"]);(function(){var a=document.createElement("script");a.type="text/javascript";a.async=true;a.src=(document.location.protocol==="https:"?"https:":"http:")+"//api.mixpanel.com/site_media/js/api/mixpanel.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)})();}
     </script>
 
+    <!-- google Analytics -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-19600520-3']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
     <!-- Launchrock -->
     <link rel="stylesheet" href="http://launchrock.com/api/lr.api.0.2.plain.css">
     <script src="http://launchrock.com/api/lr.api.0.5-min.js"></script>
