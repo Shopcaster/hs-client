@@ -59,12 +59,18 @@ exports.run = (opt) ->
       res.end()
 
     else
-      opt.pathname = pathname
-      if not rendering
-        doRender res, pathname
+      console.log 'GET 200 /index.html'
+      res.writeHead 200, 'Content-Type': 'text/html'
+      res.write cache['/index.html']
+      res.end()
 
-      else
-        renderQ.push -> doRender res, pathname
+
+      #opt.pathname = pathname
+      #if not rendering
+      #  doRender res, pathname
+
+      #else
+      #  renderQ.push -> doRender res, pathname
 
     errEnd = (err) ->
       console.log 'ERROR'.red
@@ -77,29 +83,29 @@ exports.run = (opt) ->
   build.buildDir opt.src, opt, cache, (err)->
     return cli.fatal err if err?
 
-    # start renderer
-    console.log 'initializing render'.magenta
-    render.init cache, opt, (err)->
-      return cli.fatal err if err?
+    ## start renderer
+    #console.log 'initializing render'.magenta
+    #render.init cache, opt, (err)->
+    #  return cli.fatal err if err?
 
-      #serve
-      server = http.createServer(onRequest).listen(opt.port, opt.host)
-      console.log "server listening - http://#{opt.host}:#{opt.port}"
+    #serve
+    server = http.createServer(onRequest).listen(opt.port, opt.host)
+    console.log "server listening - http://#{opt.host}:#{opt.port}"
 
 
-      # Autobuild
-      if opt.autobuild
-        watchRecursive opt.src, (file)->
-          console.log 'File change detected'.yellow
+    # Autobuild
+    if opt.autobuild
+      watchRecursive opt.src, (file)->
+        console.log 'File change detected'.yellow
 
-          build.build [file], opt, cache, ->
+        build.build [file], opt, cache#, ->
 
-            if /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
-              console.log 'Reloading render'.yellow
+          #if /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
+          #  console.log 'Reloading render'.yellow
 
-              render.init cache, opt, (err)->
-                return cli.fatal err if err?
-                console.log 'render reload complete'.yellow
+          #  render.init cache, opt, (err)->
+          #    return cli.fatal err if err?
+          #    console.log 'render reload complete'.yellow
 
 
 watchRecursive = (path, clbk)->

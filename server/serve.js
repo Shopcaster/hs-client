@@ -57,14 +57,12 @@ exports.run = function(opt) {
       res.write(cache[pathname], 'binary');
       res.end();
     } else {
-      opt.pathname = pathname;
-      if (!rendering) {
-        doRender(res, pathname);
-      } else {
-        renderQ.push(function() {
-          return doRender(res, pathname);
-        });
-      }
+      console.log('GET 200 /index.html');
+      res.writeHead(200, {
+        'Content-Type': 'text/html'
+      });
+      res.write(cache['/index.html']);
+      res.end();
     }
     return errEnd = function(err) {
       console.log('ERROR'.red);
@@ -77,35 +75,18 @@ exports.run = function(opt) {
     };
   };
   return build.buildDir(opt.src, opt, cache, function(err) {
+    var server;
     if (err != null) {
       return cli.fatal(err);
     }
-    console.log('initializing render'.magenta);
-    return render.init(cache, opt, function(err) {
-      var server;
-      if (err != null) {
-        return cli.fatal(err);
-      }
-      server = http.createServer(onRequest).listen(opt.port, opt.host);
-      console.log("server listening - http://" + opt.host + ":" + opt.port);
-      if (opt.autobuild) {
-        return watchRecursive(opt.src, function(file) {
-          console.log('File change detected'.yellow);
-          return build.build([file], opt, cache, function() {
-            var _ref;
-            if ((_ref = /\.(\w+)$/.exec(file)[1]) === 'coffee' || _ref === 'html') {
-              console.log('Reloading render'.yellow);
-              return render.init(cache, opt, function(err) {
-                if (err != null) {
-                  return cli.fatal(err);
-                }
-                return console.log('render reload complete'.yellow);
-              });
-            }
-          });
-        });
-      }
-    });
+    server = http.createServer(onRequest).listen(opt.port, opt.host);
+    console.log("server listening - http://" + opt.host + ":" + opt.port);
+    if (opt.autobuild) {
+      return watchRecursive(opt.src, function(file) {
+        console.log('File change detected'.yellow);
+        return build.build([file], opt, cache);
+      });
+    }
   });
 };
 watchRecursive = function(path, clbk) {
