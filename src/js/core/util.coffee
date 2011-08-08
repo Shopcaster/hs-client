@@ -100,14 +100,14 @@ class window.URL
 
     parsed = this.reg.exec this
 
-    throw 'invalid url' if not parsed?
+    if parsed?
+      this.protocol = parsed[2]
+      this.host = parsed[3]
+      this.path = parsed[4]
+      this.file = parsed[6]
+      this.query = parsed[7]
+      this.hash = parsed[8]
 
-    this.protocol = parsed[2]
-    this.host = parsed[3]
-    this.path = parsed[4]
-    this.file = parsed[6]
-    this.query = parsed[7]
-    this.hash = parsed[8]
 
   toString: -> this.raw
   valueOf: -> this.raw

@@ -9,7 +9,7 @@ class hs.t.About extends hs.Template
   appendTo: '#main'
 
   template: -> """
-    <div class-"flatpage">
+    <div class="flatpage">
       <h1>About Hipsell</h1>
       <p>
         Hipsell is a mobile and web app that offers a completely new and
@@ -28,8 +28,8 @@ class hs.t.About extends hs.Template
       <h2>The Team</h2>
       <p>
         Hipsell is built by
-        <a href="http://twitter.com/mattskilly">@mattskilly</a> 
-        <a href="http://twitter.com/defrex">@defrex</a> 
+        <a href="http://twitter.com/mattskilly">@mattskilly</a>
+        <a href="http://twitter.com/defrex">@defrex</a>
         <a href="http://twitter.com/lylepstein">@lylepstein</a>.
 
       <h2>Contact Us</h2>
