@@ -23,7 +23,12 @@ compile = function(files, opt, cache, clbk) {
     manifest += 'CACHE:\n';
     for (file in cache) {
       content = cache[file];
-      manifest += file + '\n';
+      if (!opt.concat || !/\.js$/.test(file)) {
+        manifest += file + '\n';
+      }
+    }
+    if (opt.concat) {
+      manifest += '/main.js\n';
     }
     cache[manifestFilename] = manifest;
     return clbk();

@@ -1,4 +1,4 @@
-var build, cache, cli, fs, http, mime, mimetypes, path, render, url, watchRecursive;
+var build, cache, cli, doRender, fs, http, mime, mimetypes, path, render, renderQ, rendering, url, watchRecursive;
 http = require('http');
 url = require('url');
 path = require('path');
@@ -18,11 +18,33 @@ mimetypes = {
   html: 'text/html; charset=utf-8',
   css: 'text/css; charset=utf-8'
 };
+renderQ = [];
+rendering = false;
+doRender = function(res, pathname) {
+  rendering = true;
+  return render.route(pathname, function(status, content) {
+    var lg;
+    rendering = false;
+    if (!(status != null)) {
+      status = 200;
+    }
+    lg = ('GET ' + status + ' ' + pathname).bold;
+    if (status !== 200) {
+      lg = lg.red;
+    }
+    console.log(lg);
+    res.writeHead(status, {
+      'Content-Type': 'text/html; charset=utf-8'
+    });
+    res.write(content);
+    return res.end();
+  });
+};
 exports.run = function(opt) {
-  var onRequest;
+  var autoBuild, onRequest, startServe;
   onRequest = function(req, res) {
     var errEnd, filename, pathname;
-    pathname = url.parse(req.url).pathname;
+    pathname = opt.pathname = url.parse(req.url).pathname;
     filename = path.join(opt.build, pathname);
     if (cache[pathname] != null) {
       console.log(('GET 200 ' + pathname).grey);
@@ -31,24 +53,15 @@ exports.run = function(opt) {
       });
       res.write(cache[pathname], 'binary');
       res.end();
+    } else if (opt.prerender) {
+      doRender(res, pathname);
     } else {
-      opt.pathname = pathname;
-      render.route(pathname, function(status, content) {
-        var lg;
-        if (!(status != null)) {
-          status = 200;
-        }
-        lg = ('GET ' + status + ' ' + pathname).bold;
-        if (status !== 200) {
-          lg = lg.red;
-        }
-        console.log(lg);
-        res.writeHead(status, {
-          'Content-Type': 'text/html; charset=utf-8'
-        });
-        res.write(content);
-        return res.end();
+      console.log('GET 200 /index.html');
+      res.writeHead(200, {
+        'Content-Type': 'text/html'
       });
+      res.write(cache['/index.html']);
+      res.end();
     }
     return errEnd = function(err) {
       console.log('ERROR'.red);
@@ -60,36 +73,44 @@ exports.run = function(opt) {
       return res.end();
     };
   };
+  startServe = function(err) {
+    var server;
+    if (err != null) {
+      return cli.fatal(err);
+    }
+    server = http.createServer(onRequest).listen(opt.port, opt.host);
+    console.log("server listening - http://" + opt.host + ":" + opt.port);
+    if (opt.autobuild) {
+      return autoBuild();
+    }
+  };
+  autoBuild = function() {
+    return watchRecursive(opt.src, function(file) {
+      console.log('File change detected'.yellow);
+      return build.build([file], opt, cache, function() {
+        var _ref;
+        if (opt.prerender && ((_ref = /\.(\w+)$/.exec(file)[1]) === 'coffee' || _ref === 'html')) {
+          console.log('Reloading render'.yellow);
+          return render.init(cache, opt, function(err) {
+            if (err != null) {
+              return cli.fatal(err);
+            }
+            return console.log('render reload complete'.yellow);
+          });
+        }
+      });
+    });
+  };
   return build.buildDir(opt.src, opt, cache, function(err) {
     if (err != null) {
       return cli.fatal(err);
     }
-    console.log('initializing render'.magenta);
-    return render.init(cache, opt, function(err) {
-      var server;
-      if (err != null) {
-        return cli.fatal(err);
-      }
-      server = http.createServer(onRequest).listen(opt.port, opt.host);
-      console.log("server listening - http://" + opt.host + ":" + opt.port);
-      if (opt.autobuild) {
-        return watchRecursive(opt.src, function(file) {
-          console.log('File change detected'.yellow);
-          return build.build([file], opt, cache, function() {
-            var _ref;
-            if ((_ref = /\.(\w+)$/.exec(file)[1]) === 'js' || _ref === 'html') {
-              console.log('Reloading render'.yellow);
-              return render.init(cache, opt, function(err) {
-                if (err != null) {
-                  return cli.fatal(err);
-                }
-                return console.log('render reload complete'.yellow);
-              });
-            }
-          });
-        });
-      }
-    });
+    if (opt.prerender) {
+      console.log('initializing render'.magenta);
+      return render.init(cache, opt, startServe);
+    } else {
+      return startServe();
+    }
   });
 };
 watchRecursive = function(path, clbk) {

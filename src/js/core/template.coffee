@@ -5,6 +5,8 @@ dep.require 'hs.EventEmitter'
 
 dep.provide 'hs.Template'
 
+constructorId = 0
+
 
 class hs.Template extends hs.EventEmitter
 

@@ -1,41 +1,47 @@
-var compile, fs, ug;
+var compile, depends, fs, ug;
 ug = require('uglify-js');
 fs = require('fs');
+depends = require('depends');
 require('colors');
 compile = function(files, opt, cache, clbk) {
-  var file, js, next, _i, _len;
-  if (!opt.minify) {
+  var content, file;
+  if (!opt.minify && !opt.concat) {
     return clbk();
   }
-  console.log('uglifying js'.magenta);
-  js = {};
-  for (_i = 0, _len = cache.length; _i < _len; _i++) {
-    file = cache[_i];
-    if (/\.coffee$/.test(file)) {
-      coff.push(file);
+  console.log('minifying js'.magenta);
+  files = new depends.Files();
+  files.js = {};
+  for (file in cache) {
+    content = cache[file];
+    if (/\.js$/.test(file)) {
+      files.js[file] = content;
     }
   }
-  if (coff.length === 0) {
+  return files.getClient(false, function(err, loader) {
+    var ast, file, js, _i, _len, _ref;
+    if (err != null) {
+      return clbk(err);
+    }
+    js = '';
+    js += loader;
+    _ref = files.output;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      file = _ref[_i];
+      js += files.js[file];
+    }
+    if (opt.minify) {
+      ast = ug.parser.parse(js);
+      ast = ug.uglify.ast_mangle(ast, {
+        toplevel: true
+      });
+      ast = ug.uglify.ast_squeeze(ast);
+      js = ug.uglify.gen_code(ast, {
+        beautify: opt.pretify,
+        indent_level: 2
+      });
+    }
+    cache['/main.js'] = js;
     return clbk();
-  }
-  return (next = function() {
-    if (!((file = coff.pop()) != null)) {
-      return clbk();
-    }
-    return fs.readFile(file, 'utf8', function(err, content) {
-      var name;
-      if (err != null) {
-        return clbk(err);
-      }
-      try {
-        js = coffee.compile(content);
-      } catch (e) {
-        return clbk('coffee error in file: ' + file + '\n' + e);
-      }
-      name = file.replace(opt.src, '').replace(/\.coffee$/, '.js');
-      cache[name] = js;
-      return next();
-    });
-  })();
+  });
 };
 exports.compile = compile;

@@ -37,7 +37,7 @@ exports.init = function(c, opt, clbk) {
   files.js = {};
   for (file in cache) {
     content = cache[file];
-    if (/\.js$/.test(file)) {
+    if (/\.js$/.test(file) && file !== '/main.js') {
       files.js[file] = content;
     }
   }
@@ -75,7 +75,8 @@ exports.route = function(pathname, clbk) {
           }
           html += dep.context.document.innerHTML;
           clbk(null, html);
-          return t.remove();
+          t.remove();
+          return dep.context.$('#main').html('');
         });
         return;
       }

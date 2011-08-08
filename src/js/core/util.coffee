@@ -46,15 +46,15 @@ Date.prototype.since = (since) ->
   if (this <= now)
     if (this.getFullYear() < now.getFullYear())
       num = now.getFullYear() - this.getFullYear()
-      s = ''
-      if num != 1 then s = 's'
-      
+
+      s = if num != 1 then 's' else ''
+
       return {'text': 'Year'+s+' ago', 'num': num}
 
     else
       if (this.getMonth() < now.getMonth())
         num = now.getMonth() - this.getMonth()
-        s = num != 1 ?'s':''
+        s = if num != 1 then 's' else ''
         return {'text': 'Month'+s+' ago', 'num': num}
 
       else
@@ -92,7 +92,7 @@ Date.prototype.since = (since) ->
 
 
 class window.URL
-  
+
   reg: /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
 
   constructor: (@raw) ->
@@ -100,14 +100,14 @@ class window.URL
 
     parsed = this.reg.exec this
 
-    throw 'invalid url' if not parsed?
+    if parsed?
+      this.protocol = parsed[2]
+      this.host = parsed[3]
+      this.path = parsed[4]
+      this.file = parsed[6]
+      this.query = parsed[7]
+      this.hash = parsed[8]
 
-    this.protocol = parsed[2]
-    this.host = parsed[3]
-    this.path = parsed[4]
-    this.file = parsed[6]
-    this.query = parsed[7]
-    this.hash = parsed[8]
 
   toString: -> this.raw
   valueOf: -> this.raw
