@@ -32,7 +32,6 @@ exports.init = function(c, opt, clbk) {
   window.Number = Number;
   window.JSON = JSON;
   window.conf = opt.conf;
-  window.window = window;
   files = new depends.Files();
   files.js = {};
   for (file in cache) {

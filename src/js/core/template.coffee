@@ -75,6 +75,8 @@ class hs.Template extends hs.EventEmitter
 
         this.emit 'subTemplateAdd', className, tmpl, opts.nthChild
 
+        return tmpl
+
       this[method].remove = () =>
         return if not this.templates[className]?
 

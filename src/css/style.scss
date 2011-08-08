@@ -62,7 +62,7 @@ body{
       display:none;
     }
   }
-  
+
   .inner-top-bar{
     height:15px;
     float:right;
@@ -296,6 +296,19 @@ header{
       }
     }
 
+  }
+
+  .home{
+
+    .splash{
+      font-size:20px;
+      text-shadow: 0pt -2pt 2px white;
+    }
+
+    .listing{
+      float:left;
+      margin:20px 20px 0 0;
+    }
   }
 
 }

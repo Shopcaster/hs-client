@@ -38,9 +38,12 @@ goTo = (url) ->
 
         current.v = new View template, kwargs
 
-        referrer = new URL document.referrer
+        if document.referrer.length > 0
+          referrer = new URL document.referrer
+        else
+          referrer = host: 'direct'
 
-        mpq.push ['track', 'route', 
+        mpq.push ['track', 'route',
           browser: BrowserDetect.browser
           browser_version: BrowserDetect.version
           os: BrowserDetect.OS
@@ -50,6 +53,8 @@ goTo = (url) ->
           referrer_args: referrer.query
           referrer_raw: referrer.raw
           model: template.model?._id
+          url: url
+          mp_note: 'User was routed to '+url
         ]
       break
 

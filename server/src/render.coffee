@@ -38,8 +38,6 @@ exports.init = (c, opt, clbk)->
   window.JSON = JSON
   window.conf = opt.conf
 
-  window.window = window
-
   files = new depends.Files()
 
   files.js = {}
