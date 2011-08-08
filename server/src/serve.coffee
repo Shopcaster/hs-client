@@ -43,13 +43,13 @@ doRender = (res, pathname)->
     res.write content
     res.end()
 
-    renderQ.pop()() if renderQ.length
+    #renderQ.pop()() if renderQ.length
 
 
 exports.run = (opt) ->
 
   onRequest = (req, res) ->
-    pathname = url.parse(req.url).pathname
+    pathname = opt.pathname = url.parse(req.url).pathname
     filename = path.join opt.build, pathname
 
     if cache[pathname]?
@@ -58,19 +58,19 @@ exports.run = (opt) ->
       res.write cache[pathname], 'binary'
       res.end()
 
+    else if opt.prerender
+      #if not rendering or true# temp disable q
+      doRender res, pathname
+
+      #else
+      #  renderQ.push -> doRender res, pathname
+
     else
       console.log 'GET 200 /index.html'
       res.writeHead 200, 'Content-Type': 'text/html'
       res.write cache['/index.html']
       res.end()
 
-
-      #opt.pathname = pathname
-      #if not rendering
-      #  doRender res, pathname
-
-      #else
-      #  renderQ.push -> doRender res, pathname
 
     errEnd = (err) ->
       console.log 'ERROR'.red
@@ -79,33 +79,42 @@ exports.run = (opt) ->
       res.write err + '\n'
       res.end()
 
+
+  startServe = (err)->
+    return cli.fatal err if err?
+    #serve
+    server = http.createServer(onRequest).listen(opt.port, opt.host)
+    console.log "server listening - http://#{opt.host}:#{opt.port}"
+
+    autoBuild() if opt.autobuild
+
+
+  autoBuild = ->
+    # Autobuild
+    watchRecursive opt.src, (file)->
+      console.log 'File change detected'.yellow
+
+      build.build [file], opt, cache, ->
+
+        if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
+          console.log 'Reloading render'.yellow
+
+          render.init cache, opt, (err)->
+            return cli.fatal err if err?
+            console.log 'render reload complete'.yellow
+
+
   # initial build
   build.buildDir opt.src, opt, cache, (err)->
     return cli.fatal err if err?
 
     ## start renderer
-    #console.log 'initializing render'.magenta
-    #render.init cache, opt, (err)->
-    #  return cli.fatal err if err?
+    if opt.prerender
+      console.log 'initializing render'.magenta
+      render.init cache, opt, startServe
 
-    #serve
-    server = http.createServer(onRequest).listen(opt.port, opt.host)
-    console.log "server listening - http://#{opt.host}:#{opt.port}"
-
-
-    # Autobuild
-    if opt.autobuild
-      watchRecursive opt.src, (file)->
-        console.log 'File change detected'.yellow
-
-        build.build [file], opt, cache#, ->
-
-          #if /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
-          #  console.log 'Reloading render'.yellow
-
-          #  render.init cache, opt, (err)->
-          #    return cli.fatal err if err?
-          #    console.log 'render reload complete'.yellow
+    else
+      startServe()
 
 
 watchRecursive = (path, clbk)->

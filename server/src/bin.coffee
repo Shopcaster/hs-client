@@ -13,7 +13,8 @@ cli.parse
   host:  ['h', 'Address to serve on', 'string', '0.0.0.0']
   port:  ['p', 'Serve on port', 'number', 3000]
 
-  autobuild:  ['a', 'Automatically rebuild on file change', 'boolean', false]
+  autobuild:  ['b', 'Automatically rebuild on file change', 'boolean', false]
+  prerender:  ['r', 'Prerender pages before serving', 'boolean', false]
 
 
   #builder

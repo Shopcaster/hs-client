@@ -37,17 +37,14 @@ doRender = function(res, pathname) {
       'Content-Type': 'text/html; charset=utf-8'
     });
     res.write(content);
-    res.end();
-    if (renderQ.length) {
-      return renderQ.pop()();
-    }
+    return res.end();
   });
 };
 exports.run = function(opt) {
-  var onRequest;
+  var autoBuild, onRequest, startServe;
   onRequest = function(req, res) {
     var errEnd, filename, pathname;
-    pathname = url.parse(req.url).pathname;
+    pathname = opt.pathname = url.parse(req.url).pathname;
     filename = path.join(opt.build, pathname);
     if (cache[pathname] != null) {
       console.log(('GET 200 ' + pathname).grey);
@@ -56,6 +53,8 @@ exports.run = function(opt) {
       });
       res.write(cache[pathname], 'binary');
       res.end();
+    } else if (opt.prerender) {
+      doRender(res, pathname);
     } else {
       console.log('GET 200 /index.html');
       res.writeHead(200, {
@@ -74,7 +73,7 @@ exports.run = function(opt) {
       return res.end();
     };
   };
-  return build.buildDir(opt.src, opt, cache, function(err) {
+  startServe = function(err) {
     var server;
     if (err != null) {
       return cli.fatal(err);
@@ -82,10 +81,35 @@ exports.run = function(opt) {
     server = http.createServer(onRequest).listen(opt.port, opt.host);
     console.log("server listening - http://" + opt.host + ":" + opt.port);
     if (opt.autobuild) {
-      return watchRecursive(opt.src, function(file) {
-        console.log('File change detected'.yellow);
-        return build.build([file], opt, cache);
+      return autoBuild();
+    }
+  };
+  autoBuild = function() {
+    return watchRecursive(opt.src, function(file) {
+      console.log('File change detected'.yellow);
+      return build.build([file], opt, cache, function() {
+        var _ref;
+        if (opt.prerender && ((_ref = /\.(\w+)$/.exec(file)[1]) === 'coffee' || _ref === 'html')) {
+          console.log('Reloading render'.yellow);
+          return render.init(cache, opt, function(err) {
+            if (err != null) {
+              return cli.fatal(err);
+            }
+            return console.log('render reload complete'.yellow);
+          });
+        }
       });
+    });
+  };
+  return build.buildDir(opt.src, opt, cache, function(err) {
+    if (err != null) {
+      return cli.fatal(err);
+    }
+    if (opt.prerender) {
+      console.log('initializing render'.magenta);
+      return render.init(cache, opt, startServe);
+    } else {
+      return startServe();
     }
   });
 };
