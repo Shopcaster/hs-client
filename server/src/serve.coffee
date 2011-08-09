@@ -17,7 +17,9 @@ mimetypes =
   jpg: 'image/jpeg'
   gif: 'image/gif'
   ico: 'image/vnd.microsoft.icon'
+  svg: 'image/svg'
 
+  eot: 'application/vnd.ms-fontobject'
   js: 'application/javascript; charset=utf-8'
 
   appcache: 'text/cache-manifest; charset=utf-8'
@@ -25,10 +27,31 @@ mimetypes =
   css: 'text/css; charset=utf-8'
 
 
+renderQ = []
+rendering = false
+
+doRender = (res, pathname)->
+  rendering = true
+  render.route pathname, (status, content)->
+    rendering = false
+
+    status = 200 if not status?
+
+    lg = ('GET '+status+' '+pathname).bold
+    lg = lg.red if status != 200
+    console.log lg
+
+    res.writeHead status, 'Content-Type': 'text/html; charset=utf-8'
+    res.write content
+    res.end()
+
+    #renderQ.pop()() if renderQ.length
+
+
 exports.run = (opt) ->
 
   onRequest = (req, res) ->
-    pathname = url.parse(req.url).pathname
+    pathname = opt.pathname = url.parse(req.url).pathname
     filename = path.join opt.build, pathname
 
     if cache[pathname]?
@@ -37,17 +60,19 @@ exports.run = (opt) ->
       res.write cache[pathname], 'binary'
       res.end()
 
-    else
-      opt.pathname = pathname
-      render.route pathname, (status, content)->
-        status = 200 if not status?
+    else if opt.prerender
+      #if not rendering or true# temp disable q
+      doRender res, pathname
 
-        lg = ('GET '+status+' '+pathname).bold
-        lg = lg.red if status != 200
-        console.log lg
-        res.writeHead status, 'Content-Type': 'text/html; charset=utf-8'
-        res.write content
-        res.end()
+      #else
+      #  renderQ.push -> doRender res, pathname
+
+    else
+      console.log 'GET 200 /index.html'
+      res.writeHead 200, 'Content-Type': 'text/html'
+      res.write cache['/index.html']
+      res.end()
+
 
     errEnd = (err) ->
       console.log 'ERROR'.red
@@ -57,28 +82,42 @@ exports.run = (opt) ->
       res.end()
 
 
+  startServe = (err)->
+    return cli.fatal err if err?
+    #serve
+    server = http.createServer(onRequest).listen(opt.port, opt.host)
+    console.log "server listening - http://#{opt.host}:#{opt.port}"
+
+    autoBuild() if opt.autobuild
+
+
+  autoBuild = ->
+    # Autobuild
+    watchRecursive opt.src, (file)->
+      console.log 'File change detected'.yellow
+
+      build.build [file], opt, cache, (err)->
+        return console.log 'ERROR:'.red, err if err?
+
+        if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
+          console.log 'Reloading render'.yellow
+
+          render.init cache, opt, (err)->
+            return cli.fatal err if err?
+            console.log 'render reload complete'.yellow
+
+
+  # initial build
   build.buildDir opt.src, opt, cache, (err)->
     return cli.fatal err if err?
 
-    console.log 'initializing render'.magenta
-    render.init cache, opt, (err)->
-      return cli.fatal err if err?
+    ## start renderer
+    if opt.prerender
+      console.log 'initializing render'.magenta
+      render.init cache, opt, startServe
 
-      server = http.createServer(onRequest).listen(opt.port, opt.host)
-      console.log "server listening - http://#{opt.host}:#{opt.port}"
-
-      if opt.autobuild
-        watchRecursive opt.src, (file)->
-          console.log 'File change detected'.yellow
-
-          build.build [file], opt, cache, ->
-
-            if /\.(\w+)$/.exec(file)[1] in ['js', 'html']
-              console.log 'Reloading render'.yellow
-
-              render.init cache, opt, (err)->
-                return cli.fatal err if err?
-                console.log 'render reload complete'.yellow
+    else
+      startServe()
 
 
 watchRecursive = (path, clbk)->

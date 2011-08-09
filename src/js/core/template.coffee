@@ -5,6 +5,8 @@ dep.require 'hs.EventEmitter'
 
 dep.provide 'hs.Template'
 
+constructorId = 0
+
 
 class hs.Template extends hs.EventEmitter
 
@@ -72,6 +74,8 @@ class hs.Template extends hs.EventEmitter
           this.templates[className].splice opts.nthChild, 0, tmpl
 
         this.emit 'subTemplateAdd', className, tmpl, opts.nthChild
+
+        return tmpl
 
       this[method].remove = () =>
         return if not this.templates[className]?

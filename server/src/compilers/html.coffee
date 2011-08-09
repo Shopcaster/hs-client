@@ -24,26 +24,8 @@ compile = (files, opt, cache, clbk) ->
 
 
     # appcache
-    manifestFilename = '/manifest.appcache'
-    manifest = ''
-
-    manifest += 'CACHE MANIFEST\n'
-
-    stamp = Math.round(new Date().getTime() / 1000)
-    manifest += "#built: #{stamp}\n\n"
-
-    manifest += 'NETWORK:\n*\n\n'
-
     if not opt['noappcache']
-      manifest += 'CACHE:\n';
-
-      for file, content of cache
-        manifest += file+'\n'
-
-      html = html.replace '<html', "<html manifest='#{manifestFilename}'"
-
-    cache[manifestFilename] = manifest
-
+      html = html.replace '<html', "<html manifest='/manifest.appcache'"
 
 
     #CSS
@@ -53,26 +35,35 @@ compile = (files, opt, cache, clbk) ->
     # JavaScript
     html = html.replace '</body>', "<script src='#{opt.conf.zz.server.protocol}://#{opt.conf.zz.server.host}:#{opt.conf.zz.server.port}/api-library.js'></script></body>"
 
-    scripts = ''
-
-    files = new depends.Files()
-
-    files.js = {}
-    for file, content of cache
-      files.js[file] = content if /\.js$/.test file
-
-    files.getClient false, (err, content) ->
-      return clbk err if err?
-
-      scripts += '<script src="/loader.js"></script>'
-      cache['/loader.js'] = content
-
-      for file in files.output
-        scripts += "<script src='#{file}'></script>"
-
-      html = html.replace '</body>', scripts+'</body>'
-
+    done = ->
       cache['/index.html'] = html
       clbk()
+
+    if opt.concat
+      html = html.replace '</body>', '<script src="/main.js"></script></body>'
+      done()
+
+    else
+      scripts = ''
+
+      files = new depends.Files()
+
+      files.js = {}
+      for file, content of cache
+        files.js[file] = content if /\.js$/.test file
+
+      files.getClient false, (err, content) ->
+        return clbk err if err?
+
+        scripts += '<script src="/loader.js"></script>'
+        cache['/loader.js'] = content
+
+        for file in files.output
+          scripts += "<script src='#{file}'></script>"
+
+        html = html.replace '</body>', scripts+'</body>'
+
+        done()
+
 
 exports.compile = compile

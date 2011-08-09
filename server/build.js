@@ -1,7 +1,7 @@
 var build, buildDir, compilers, fs, listDir, _;
 _ = require('underscore')._;
 fs = require('fs');
-compilers = [require('./compilers/coffee'), require('./compilers/scss'), require('./compilers/static'), require('./compilers/html')];
+compilers = [require('./compilers/coffee'), require('./compilers/scss'), require('./compilers/static'), require('./compilers/min'), require('./compilers/appcache'), require('./compilers/html')];
 build = function(files, opt, cache, clbk) {
   var comps, next;
   comps = _.clone(compilers);

@@ -13,13 +13,15 @@ cli.parse
   host:  ['h', 'Address to serve on', 'string', '0.0.0.0']
   port:  ['p', 'Serve on port', 'number', 3000]
 
-  autobuild:  ['a', 'Automatically rebuild on file change', 'boolean', false]
+  autobuild:  ['b', 'Automatically rebuild on file change', 'boolean', false]
+  prerender:  ['r', 'Prerender pages before serving', 'boolean', false]
 
 
   #builder
   noappcache: ['n', 'Disable HTML5 Application Cache', 'boolean', false]
   jsconf: ['c', 'JSON config file', 'path', './localConf.json']
 
+  concat: [false, 'Connatinate js info one file', 'boolean', false]
   minify: ['m', 'Minify JS using Uglify JS', 'boolean', false]
   pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
 
@@ -28,6 +30,9 @@ cli.parse
 
 
 cleanOpt = (opt, clbk)->
+
+  opt.concat = true if opt.minify
+
   fs.realpath opt.src, (err, srcPath)->
     cli.fatal err if err?
     opt.src = srcPath
