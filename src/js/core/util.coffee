@@ -43,56 +43,47 @@ Number.prototype.degreesToDirection = () ->
 Date.prototype.since = (since) ->
   now = since || new Date();
 
-  if (this <= now)
-    if (this.getFullYear() < now.getFullYear())
-      num = now.getFullYear() - this.getFullYear()
-      s = ''
-      if num != 1 then s = 's'
-      
-      return {'text': 'Year'+s+' ago', 'num': num}
+  if (now > this)
+    return {text: 'the future', num: 0}
 
-    else
-      if (this.getMonth() < now.getMonth())
-        num = now.getMonth() - this.getMonth()
-        s = num != 1 ?'s':''
-        return {'text': 'Month'+s+' ago', 'num': num}
+  if (this.getFullYear() < now.getFullYear())
+    num = now.getFullYear() - this.getFullYear()
+    s = if num > 1 then 's' else ''
+    return {text: "year#{ s } ago", num: num}
 
-      else
-        if (this.getDate() < now.getDate())
-          num = now.getDate() - this.getDate()
-          s = if num != 1 then 's' else ''
-          return {'text': 'Day'+s+' ago', 'num': num}
+  if (this.getMonth() < now.getMonth())
+    num = now.getMonth() - this.getMonth()
+    s = if num > 1 then 's' else ''
+    return {text: "month#{ s } ago", num: num}
 
-        else
-          if (this.getHours() < now.getHours())
-            num = now.getHours() - this.getHours()
-            s = if num != 1 then 's' else ''
-            return {'text': 'Hour'+s+' ago', 'num': num}
+  if (this.getDate() < now.getDate())
+    num = now.getDate() - this.getDate()
+    s = if num != 1 then 's' else ''
+    return {text: "day#{ s } ago", num: num}
 
-          else
-            if (this.getMinutes() < now.getMinutes())
-              num = now.getMinutes() - this.getMinutes()
-              s = if num != 1 then 's' else ''
-              return {'text': 'Minute'+s+' ago', 'num': num}
+  if (this.getHours() < now.getHours())
+    num = now.getHours() - this.getHours()
+    s = if num != 1 then 's' else ''
+    return {text: "hour#{ s } ago", num: num}
 
-            else
-              if (this.getSeconds() < now.getSeconds())
-                num = now.getSeconds() - this.getSeconds()
-                s = if num != 1 then 's' else ''
-                return {'text': 'Second'+s+' ago', 'num': num}
+  if (this.getMinutes() < now.getMinutes())
+    num = now.getMinutes() - this.getMinutes()
+    s = if num != 1 then 's' else ''
+    return {text: "minute#{ s } ago", num: num}
 
-              else
-                return {'text': 'just now', 'num': 0}
+  if (this.getSeconds() < now.getSeconds())
+    num = now.getSeconds() - this.getSeconds()
+    s = if num != 1 then 's' else ''
+    return {text: "second#{ s } ago", num: num}
 
-  else
-    #throw new Error('_.since only accepts dates from the past', date)
-    return {'text': 'the future', 'num': 0}
+  return {text: just now, num: 0}
+
 
 
 
 
 class window.URL
-  
+
   reg: /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
 
   constructor: (@raw) ->
