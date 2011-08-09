@@ -20,10 +20,13 @@ $section_width: ($layout_width - 15)/2;
 $mob_layout_width: 320px;
 $mob_section_width: $mob_layout_width - 20px;
 
+@import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,700|Cabin+Sketch:700|Istok+Web:400,700|Open+Sans:400,700|Lato:400,700);
 
 @import "reset";
 @import "mixins";
 @import "generic";
+
+/*h1,h2,h3,h4,h5,h6{font-family: 'Maven Pro', arial, sans-serif;}*/
 
 html, body{
   background-image:url(../img/bg.png);
@@ -37,7 +40,7 @@ html{
 body{
   /*@include gradient(#E5E5E6, #87888B);*/
   font-size: 14px;
-  font-family: 'Cantarell', arial, sans-serif;
+  font-family: 'Open Sans', arial, sans-serif;
 }
 
 .width{
