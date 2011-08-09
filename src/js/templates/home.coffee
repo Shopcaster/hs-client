@@ -13,8 +13,18 @@ class hs.t.Home extends hs.Template
   template: -> '''
     <div class="home">
       <div class="splash">
-        Hipsell is currently in beta. If your interested in trying it out, please fill out this form: <a href="http://★.to/oeIeDr">★.to/oeIeDr</a>.
+        <div class="left">
+          <iframe width="560" height="349" src="http://www.youtube.com/embed/jl1devFMfD4" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="right">
+          <h3>Sellers – Snap. Post. Sell.</h3>
+          <p>Post an item from your phone in under 30 seconds. It will be prossposted to Craigslist and Kijiji to help your item sell fast.</p>
+          <h3>Buyers – Browse. Want. Buy.</h3>
+          <p>Browse items near you and communicate in real-time. Know if the item is still available and who you're buying from.</p>
+        </div>
+        <a class="close pictos" href="javascript:;">D</a>
       </div>
+      <a href="javascript:;" class="expand" style="display:none;">What is Hipsell again?</a>
     </div>
   '''
 

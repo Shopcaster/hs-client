@@ -209,7 +209,7 @@ class hs.t.Listing extends hs.Template
     else
       distStr = Math.round(dist*100)/100+' km'
 
-    this.$('#listing-loc-diff').text "Roughly #{distStr} #{direction} of you  –  "
+    this.$('#listing-loc-diff').html "Roughly #{distStr} #{direction} of you &ndash; "
 
 
   setAccepted: -> this.setStatus()

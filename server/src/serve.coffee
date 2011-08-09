@@ -17,7 +17,9 @@ mimetypes =
   jpg: 'image/jpeg'
   gif: 'image/gif'
   ico: 'image/vnd.microsoft.icon'
+  svg: 'image/svg'
 
+  eot: 'application/vnd.ms-fontobject'
   js: 'application/javascript; charset=utf-8'
 
   appcache: 'text/cache-manifest; charset=utf-8'
@@ -94,7 +96,8 @@ exports.run = (opt) ->
     watchRecursive opt.src, (file)->
       console.log 'File change detected'.yellow
 
-      build.build [file], opt, cache, ->
+      build.build [file], opt, cache, (err)->
+        return console.log 'ERROR:'.red, err if err?
 
         if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
           console.log 'Reloading render'.yellow

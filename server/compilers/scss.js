@@ -17,7 +17,7 @@ compile = function(files, opt, cache, clbk) {
   console.log('building scss'.magenta);
   return exec("sass " + opt.src + "/css/style.scss", function(err, stdout, stderr) {
     if (err != null) {
-      return clbk(err);
+      return clbk(err.stack);
     }
     if ((stderr != null) && stderr !== '') {
       return clbk(strerr);

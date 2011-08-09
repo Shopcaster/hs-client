@@ -1,4 +1,14 @@
 
+
+@import "pictos/pictos";
+
+.pictos{
+  font-weight: normal;
+  font-style: normal;
+  line-height: normal;
+  font-family: 'Pictos', sans-serif;
+}
+
 a{text-decoration:none;color:$blue;}
 a:hover{text-decoration:underline;}
 ul, li{margin:0;padding:0;list-style:none;}
