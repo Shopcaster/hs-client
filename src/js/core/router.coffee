@@ -26,7 +26,7 @@ display = (Template, url, parsedUrl)->
   return if Template.prototype.authRequired and not zz.auth.curUser()?
 
   Template.get kwargs, (template) ->
-    return if not template?
+    return display hs.t.e404, [] if not template?
 
     current.t = template
 
