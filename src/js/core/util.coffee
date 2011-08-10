@@ -43,8 +43,8 @@ Number.prototype.degreesToDirection = () ->
 Date.prototype.since = (since) ->
   now = since || new Date();
 
-  if (now > this)
-    return {text: 'the future', num: 0}
+  if (this > now)
+    return {text: 'the future', num: ''}
 
   if (this.getFullYear() < now.getFullYear())
     num = now.getFullYear() - this.getFullYear()
