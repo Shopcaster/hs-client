@@ -43,6 +43,7 @@ class hs.t.ListingLI extends hs.Template
 
 
   setDescription: ->
+    return if not this.model.description.truncateWords?
     this.$('.listing-desc').text this.model.description.truncateWords 50
 
 

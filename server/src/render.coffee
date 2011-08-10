@@ -38,8 +38,6 @@ exports.init = (c, opt, clbk)->
   window.JSON = JSON
   window.conf = opt.conf
 
-  window.window = window
-
   files = new depends.Files()
 
   files.js = {}
@@ -60,29 +58,29 @@ exports.init = (c, opt, clbk)->
 exports.route = (pathname, clbk) ->
   html = '<!DOCTYPE html>'
 
+  e404 = -> use dep.context.hs.t.e404, [], 404
+
+  use = (Template, parsedUrl, status=200)->
+    Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
+      return e404() if not t?
+
+      html += dep.context.document.innerHTML
+      clbk status, html
+      t.remove()
+      dep.context.$('#main').html('')
+
+
   try
     for exp, Template of dep.context.hs.urls
 
       parsed = new RegExp(exp).exec(pathname)
       if parsed?
-
-        kwargs =
-          pathname: pathname
-          parsedUrl: parsed.slice(1)
-
         break if Template.prototype.authRequired
 
-        Template.get kwargs, (t) ->
-          return clbk 404, '' if not t?
-
-          html += dep.context.document.innerHTML
-          clbk null, html
-          t.remove()
-          dep.context.$('#main').html('')
+        use Template, parsed.slice(1)
         return
 
-    html += dep.context.document.innerHTML
-    clbk 404, html
+    e404()
 
   catch e
     console.log ('error'+e.stack).red

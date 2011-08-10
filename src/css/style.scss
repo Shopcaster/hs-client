@@ -20,10 +20,10 @@ $section_width: ($layout_width - 15)/2;
 $mob_layout_width: 320px;
 $mob_section_width: $mob_layout_width - 20px;
 
-
 @import "reset";
 @import "mixins";
 @import "generic";
+@import "video";
 
 html, body{
   background-image:url(../img/bg.png);
@@ -37,7 +37,7 @@ html{
 body{
   /*@include gradient(#E5E5E6, #87888B);*/
   font-size: 14px;
-  font-family: 'Cantarell', arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif;
 }
 
 .width{
@@ -62,7 +62,7 @@ body{
       display:none;
     }
   }
-  
+
   .inner-top-bar{
     height:15px;
     float:right;
@@ -296,6 +296,76 @@ header{
       }
     }
 
+  }
+
+  .home{
+
+    .splash{
+      position:relative;
+      height:290px;
+      $width: $layout_width;
+      width: $width;
+
+      @media screen and (max-width: 480px) {
+        width: $mob_section_width;
+      }
+
+      margin:10px auto 0;
+
+      .left{
+        float:left;
+        width: 480px;
+
+        padding:10px;
+        background-color: $white;
+        @include box-shadow(0 1px 3px $black + #666);
+      }
+      .right{
+        float:right;
+        width: $width - 510px;
+
+        text-shadow: 0px -1px 1px $white;
+
+        h3{
+          font-size:33px;
+          margin:5px 0 0 0;
+        }
+        .tagline{
+          margin:5px 0;
+          color:$green;
+          font-weight:bold;
+
+          .pictos{font-size:20px;}
+        }
+        .desc{
+          margin:5px 0 30px;
+        }
+
+        .platforms{margin-bottom:0;}
+      }
+
+      .close{
+        display:block;
+        position:absolute;
+        top:-6px;
+        left:-6px;
+        font-size:20px;
+        text-decoration:none;
+        color:#444;
+      }
+    }
+
+    .expand{
+      display:none;
+      text-align:left;
+    }
+
+    .listing{
+      float:left;
+      margin:20px 30px 0 0;
+
+      &:nth-child(3n+3){margin-right:0;}
+    }
   }
 
 }

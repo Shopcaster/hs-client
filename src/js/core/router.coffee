@@ -11,47 +11,60 @@ current = t: null, v: null
 user = null
 
 
+display = (Template, url, parsedUrl)->
+  $('title').text 'Hipsell'
+
+  current.t?.remove()
+  current.v?.remove()
+
+  current = t: null, v:null
+
+  kwargs =
+    pathname: url
+    parsedUrl: parsedUrl
+
+  return if Template.prototype.authRequired and not zz.auth.curUser()?
+
+  Template.get kwargs, (template) ->
+    return if not template?
+
+    current.t = template
+
+    View = hs.v[Template.name] ||  hs.View
+
+    current.v = new View template, kwargs
+
+    if document.referrer.length > 0
+      referrer = new URL document.referrer
+    else
+      referrer = host: 'direct'
+
+    mpq.push ['track', 'route',
+      browser: BrowserDetect.browser
+      browser_version: BrowserDetect.version
+      os: BrowserDetect.OS
+      referrer_host: referrer.host
+      referrer_path: referrer.path
+      referrer_protocol: referrer.protocol
+      referrer_args: referrer.query
+      referrer_raw: referrer.raw
+      model: template.model?._id
+      url: url
+      mp_note: 'User was routed to '+url
+    ]
+
+
 goTo = (url) ->
 
   for exp, Template of hs.urls
     parsed = new RegExp(exp).exec(url)
     if parsed?
-      $('title').text 'Hipsell'
+      break if Template.prototype.authRequired
+      display Template, url, parsed.slice(1)
+      return
 
-      current.t?.remove()
-      current.v?.remove()
+  display hs.t.e404, []
 
-      current = t: null, v:null
-
-      kwargs =
-        pathname: url
-        parsedUrl: parsed.slice(1)
-
-      break if Template.prototype.authRequired and not zz.auth.curUser()?
-
-      Template.get kwargs, (template) ->
-        return if not template?
-
-        current.t = template
-
-        View = hs.v[Template.name] ||  hs.View
-
-        current.v = new View template, kwargs
-
-        referrer = new URL document.referrer
-
-        mpq.push ['track', 'route', 
-          browser: BrowserDetect.browser
-          browser_version: BrowserDetect.version
-          os: BrowserDetect.OS
-          referrer_host: referrer.host
-          referrer_path: referrer.path
-          referrer_protocol: referrer.protocol
-          referrer_args: referrer.query
-          referrer_raw: referrer.raw
-          model: template.model?._id
-        ]
-      break
 
 
 $('a').live 'click', (e) ->

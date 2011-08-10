@@ -13,6 +13,11 @@ mimetypes = {
   jpg: 'image/jpeg',
   gif: 'image/gif',
   ico: 'image/vnd.microsoft.icon',
+  svg: 'image/svg',
+  mp4: 'video/mp4',
+  ogg: 'video/ogg',
+  webm: 'video/webm',
+  eot: 'application/vnd.ms-fontobject',
   js: 'application/javascript; charset=utf-8',
   appcache: 'text/cache-manifest; charset=utf-8',
   html: 'text/html; charset=utf-8',
@@ -87,8 +92,11 @@ exports.run = function(opt) {
   autoBuild = function() {
     return watchRecursive(opt.src, function(file) {
       console.log('File change detected'.yellow);
-      return build.build([file], opt, cache, function() {
+      return build.build([file], opt, cache, function(err) {
         var _ref;
+        if (err != null) {
+          return console.log('ERROR:'.red, err);
+        }
         if (opt.prerender && ((_ref = /\.(\w+)$/.exec(file)[1]) === 'coffee' || _ref === 'html')) {
           console.log('Reloading render'.yellow);
           return render.init(cache, opt, function(err) {

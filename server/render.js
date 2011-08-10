@@ -32,7 +32,6 @@ exports.init = function(c, opt, clbk) {
   window.Number = Number;
   window.JSON = JSON;
   window.conf = opt.conf;
-  window.window = window;
   files = new depends.Files();
   files.js = {};
   for (file in cache) {
@@ -54,35 +53,42 @@ exports.init = function(c, opt, clbk) {
   });
 };
 exports.route = function(pathname, clbk) {
-  var Template, exp, html, kwargs, parsed, _ref;
+  var Template, e404, exp, html, parsed, use, _ref;
   html = '<!DOCTYPE html>';
+  e404 = function() {
+    return use(dep.context.hs.t.e404, [], 404);
+  };
+  use = function(Template, parsedUrl, status) {
+    if (status == null) {
+      status = 200;
+    }
+    return Template.get({
+      pathname: pathname,
+      parsedUrl: parsedUrl
+    }, function(t) {
+      if (!(t != null)) {
+        return e404();
+      }
+      html += dep.context.document.innerHTML;
+      clbk(status, html);
+      t.remove();
+      return dep.context.$('#main').html('');
+    });
+  };
   try {
     _ref = dep.context.hs.urls;
     for (exp in _ref) {
       Template = _ref[exp];
       parsed = new RegExp(exp).exec(pathname);
       if (parsed != null) {
-        kwargs = {
-          pathname: pathname,
-          parsedUrl: parsed.slice(1)
-        };
         if (Template.prototype.authRequired) {
           break;
         }
-        Template.get(kwargs, function(t) {
-          if (!(t != null)) {
-            return clbk(404, '');
-          }
-          html += dep.context.document.innerHTML;
-          clbk(null, html);
-          t.remove();
-          return dep.context.$('#main').html('');
-        });
+        use(Template, parsed.slice(1));
         return;
       }
     }
-    html += dep.context.document.innerHTML;
-    return clbk(404, html);
+    return e404();
   } catch (e) {
     console.log(('error' + e.stack).red);
     html += dep.context.document.innerHTML;
