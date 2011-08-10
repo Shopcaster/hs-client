@@ -9,6 +9,7 @@ dep.require 'hs.t.HowItWorks'
 dep.require 'hs.t.NameSetting'
 dep.require 'hs.t.SocialSetting'
 dep.require 'hs.t.SocialResponse'
+dep.require 'hs.t.AvatarSetting'
 
 dep.provide 'hs.urls'
 
@@ -24,6 +25,7 @@ hs.urls =
   '^/settings/password': hs.t.PasswordSetting
   '^/settings/social': hs.t.SocialSetting
   '^/social/connect/(\\w+)': hs.t.SocialResponse
+  '^/settings/avatar': hs.t.AvatarSetting
 
   #flat
   '^/about': hs.t.About

@@ -9,7 +9,8 @@ hs.settingsNav = (input) ->
       <div id="nav">
           <a href="/settings/name">Change Public Name</a>
           <a href="/settings/password">Change Password</a>
-          <a href="/settings/social">Social Integration</a>
+          <a href="/settings/social">Link Social Networks</a>
+          <a href="/settings/avatar">Change Avatar</a>
       </div>
 
       <div id="setting">
