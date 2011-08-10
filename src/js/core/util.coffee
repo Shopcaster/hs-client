@@ -76,7 +76,7 @@ Date.prototype.since = (since) ->
     s = if num != 1 then 's' else ''
     return {text: "second#{ s } ago", num: num}
 
-  return {text: just now, num: 0}
+  return {text: 'just now', num: 0}
 
 
 
