@@ -19,6 +19,10 @@ mimetypes =
   ico: 'image/vnd.microsoft.icon'
   svg: 'image/svg'
 
+  mp4: 'video/mp4'
+  ogg: 'video/ogg'
+  webm: 'video/webm'
+
   eot: 'application/vnd.ms-fontobject'
   js: 'application/javascript; charset=utf-8'
 

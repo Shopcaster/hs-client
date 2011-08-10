@@ -4,6 +4,27 @@ dep.require 'hs.t.ListingLI'
 
 dep.provide 'hs.t.Home'
 
+###
+        <!-- Begin VideoJS -->
+        <div class="video-js-box" id="splash-video">
+          <!-- Using the Video for Everybody Embed Code http://camendesign.com/code/video_for_everybody -->
+          <video class="video-js" width="480" height="272" controls preload poster="/video/test2.png">
+            <source src="/video/test.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+            <source src="/video/test.webm" type='video/webm; codecs="vp8, vorbis"' />
+            <source src="/video/test.ogv" type='video/ogg; codecs="theora, vorbis"' />
+            <!-- Flash Fallback. Use any flash video player here. Make sure to keep the vjs-flash-fallback class. -->
+            <object class="vjs-flash-fallback" width="480" height="272" type="application/x-shockwave-flash"
+              data="http://www.youtube.com/v/jl1devFMfD4">
+              <param name="movie" value="http://www.youtube.com/v/jl1devFMfD4" />
+              <param name="allowfullscreen" value="true" />
+              <!-- Image Fallback. Typically the same as the poster image. -->
+              <img src="/video/test2.png" width="480" height="272>
+            </object>
+          </video>
+        </div>
+        <!-- End VideoJS -->
+###
+
 
 class hs.t.Home extends hs.Template
 
@@ -14,17 +35,23 @@ class hs.t.Home extends hs.Template
     <div class="home">
       <div class="splash">
         <div class="left">
-          <iframe width="560" height="349" src="http://www.youtube.com/embed/jl1devFMfD4" frameborder="0" allowfullscreen></iframe>
+          <img width="480" height="272" src="/video/soon.png">
         </div>
         <div class="right">
-          <h3>Sellers – Snap. Post. Sell.</h3>
-          <p>Post an item from your phone in under 30 seconds. It will be prossposted to Craigslist and Kijiji to help your item sell fast.</p>
-          <h3>Buyers – Browse. Want. Buy.</h3>
-          <p>Browse items near you and communicate in real-time. Know if the item is still available and who you're buying from.</p>
+          <h3>Sellers</h3>
+          <p class="tagline">Snap. Post. Sell.</p>
+          <p class="desc top">Post an item from your phone in under 30 seconds. It will be prossposted to Craigslist and Kijiji to help your item sell fast.</p>
+
+          <h3>Buyers</h3>
+          <p class="tagline">Browse. Want. Buy.</p>
+          <p class="desc">Browse items near you and communicate in real-time. Know if the item is still available and who you're buying from.</p>
+
+          <p class="platforms">Coming soon to iPhone and Android</p>
         </div>
         <a class="close pictos" href="javascript:;">D</a>
       </div>
-      <a href="javascript:;" class="expand" style="display:none;">What is Hipsell again?</a>
+      <div class="expand"><a href="javascript:;">What is Hipsell again?</a></div>
+      <div style="clear:both"></div>
     </div>
   '''
 

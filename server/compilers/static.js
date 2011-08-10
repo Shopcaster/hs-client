@@ -7,7 +7,7 @@ var __indexOf = Array.prototype.indexOf || function(item) {
 };
 fs = require('fs');
 require('colors');
-exts = ['png', 'jpg', 'jpeg', 'gif', 'js', 'ico', 'eot', 'svg'];
+exts = ['png', 'jpg', 'jpeg', 'gif', 'js', 'ico', 'eot', 'svg', 'mp4', 'ogv', 'webm'];
 compile = function(files, opt, cache, clbk) {
   var ext, file, matching, next, _i, _len;
   matching = [];

@@ -61,7 +61,6 @@ exports.route = (pathname, clbk) ->
   e404 = -> use dep.context.hs.t.e404, [], 404
 
   use = (Template, parsedUrl, status=200)->
-
     Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
       return e404() if not t?
 

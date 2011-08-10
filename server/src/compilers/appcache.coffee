@@ -4,6 +4,9 @@ fs = require 'fs'
 require 'colors'
 
 
+exts = ['png', 'jpg', 'gif', 'js', 'ico', 'eot', 'svg']
+
+
 compile = (files, opt, cache, clbk) ->
 
   manifestFilename = '/manifest.appcache'
@@ -28,7 +31,8 @@ compile = (files, opt, cache, clbk) ->
     manifest += 'CACHE:\n';
 
     for file, content of cache
-      if not opt.concat or not /\.js$/.test file
+      ext = /\.(\w+)$/.exec(file)[1]
+      if ext in exts and (not opt.concat or ext != 'js')
         manifest += file+'\n'
 
     if opt.concat
