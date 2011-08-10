@@ -282,7 +282,15 @@ header{
       }
 
       .avatar{
-
+        img.current{
+          margin:10px 0 15px;
+        }
+        input[type=file]{
+          width:200px;
+        }
+        input[type=submit]{
+          float:right;
+        }
       }
     }
 

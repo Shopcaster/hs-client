@@ -10,17 +10,19 @@ class hs.t.AvatarSetting extends hs.Template
   appendTo: '#main'
 
   template: hs.settingsNav '''
-    <h1>Change Avatar</h1>
-    <img class="current">
+    <span class="avatar">
+      <h1>Change Avatar</h1>
+      <img class="current">
 
-    <form id="password-form" method="POST" enctype="multipart/form-data">
-      <input type="file" name="avatar" />
-      <input type="hidden" name="email" />
-      <input type="hidden" name="password" />
-      <input type="hidden" name="return" />
-      <input type="submit" />
-      <span class="confirm">saved</span>
-    </form>
+      <form id="password-form" method="POST" enctype="multipart/form-data">
+        <input type="submit" />
+        <input type="file" name="avatar" />
+        <input type="hidden" name="email" />
+        <input type="hidden" name="password" />
+        <input type="hidden" name="return" />
+        <span class="confirm">saved</span>
+      </form>
+    </span>
     '''
 
   fields: [{
