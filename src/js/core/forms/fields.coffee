@@ -45,10 +45,30 @@ reg 'text', 'password', 'email', 'number', {
       for key, val of attrs
         op += "#{key}='#{val}' "
       op += '/>'
-      
+
       return op
 
   v: class InputV extends hs.FormFieldView
+}
+
+
+reg 'file', {
+  t: class FileT extends hs.FormFieldTemplate
+
+    template: ->
+      attrs = name: this.options.name, type: this.options.type
+      attrs.class = this.options.clas if this.options.clas?
+      attrs.style = 'display:none' if this.options.hide? and this.options.hide
+      attrs.type = 'file'
+
+      op = '<input '
+      for key, val of attrs
+        op += "#{key}='#{val}' "
+      op += '/>'
+
+      return op
+
+  v: class FileV extends hs.FormFieldView
 }
 
 
@@ -66,7 +86,7 @@ reg 'textarea', {
       for key, val of attrs
         op += "#{key}='#{val}' "
       op += '></textarea>'
-      
+
       return op
 
   v: hs.FormFieldView
@@ -88,7 +108,7 @@ reg 'image', {
 
       op += "<input type='file' name='#{name} />
         <span class='drop'>Drag files here</span>"
-      
+
       return op
 
 
