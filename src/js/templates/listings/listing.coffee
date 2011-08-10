@@ -98,13 +98,13 @@ class hs.t.Listing extends hs.Template
 
 
   showOfferButton: ->
-      this.$('.offer-button').show()
-      this.$('.bottom').css 'height': 255
+    this.$('.offer-button').show()
+    this.$('.bottom').css 'height': 255
 
 
   hideOfferButton: ->
-      this.$('.offer-button').hide()
-      this.$('.bottom').css 'height': 210
+    this.$('.offer-button').hide()
+    this.$('.bottom').css 'height': 210
 
 
   setAuth: (prev, cur) ->

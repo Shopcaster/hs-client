@@ -70,15 +70,23 @@ class hs.t.Home extends hs.Template
 
 
   renderListings: ->
-    zz.data.listing.query().sort('-created').limit(24).offset(this.rendered).run (listings)=>
+    run = false
+    navigator.geolocation.getCurrentPosition (pos)=>
+      return if run
+      run = true
 
-      if listings.length < 24
-        this.scrollDone = true
+      zz.data.listing.query('location-near')
+        .params(latitude: pos.coords.latitude, longitude: pos.coords.longitude)
+        .limit(24)
+        .offset(this.rendered)
+        .run (listings)=>
+          if listings.length < 24
+            this.scrollDone = true
 
-      for listingID in listings then do (listingID)=>
-        this.rendered++
-        zz.data.listing listingID, (listing)=>
-          tmpl = this.listingTmpl listing, appendTo: '#'+this.id
-          scroll = tmpl.el.offset().top
-          this.scrollTrigger = scroll if scroll > this.scrollTrigger
+          for listingID in listings then do (listingID)=>
+            this.rendered++
+            zz.data.listing listingID, (listing)=>
+              tmpl = this.listingTmpl listing, appendTo: '#'+this.id
+              scroll = tmpl.el.offset().top
+              this.scrollTrigger = scroll if scroll > this.scrollTrigger
 
