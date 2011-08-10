@@ -170,10 +170,12 @@ class hs.t.Listing extends hs.Template
   setLongitude: -> this.setLocation.apply this, arguments
   setLatitude: -> this.setLocation.apply this, arguments
   setLocation: () ->
-    return if not this.model.location?
-
-    lat = this.model.location[0]
-    lng = this.model.location[1]
+    if this.model.location?
+      lat = this.model.location[0]
+      lng = this.model.location[1]
+    else
+      lat = this.model.latitude
+      lng = this.model.longitude
 
     if document.documentElement && document.documentElement.clientWidth <= 480
       width = 210
@@ -195,12 +197,14 @@ class hs.t.Listing extends hs.Template
 
 
   updateLocation: (position) ->
-    return if not this.model.location?
-
     this.lat ?= position.coords.latitude
     this.lng ?= position.coords.longitude
 
-    listingLoc = new LatLon this.model.location[0], this.model.location[1]
+    if this.model.location?
+      listingLoc = new LatLon this.model.location[0], this.model.location[1]
+    else
+      listingLoc = new LatLon this.model.latitude, this.model.longitude
+
     userLoc = new LatLon this.lat, this.lng
 
     dist = parseFloat userLoc.distanceTo listingLoc

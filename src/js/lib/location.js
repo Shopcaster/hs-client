@@ -549,6 +549,6 @@ Geo.toBrng = function(deg, format, dp) {
   deg = (Number(deg)+360) % 360;  // normalise -ve values to 180º..360º
   var brng =  Geo.toDMS(deg, format, dp);
   return brng.replace('360', '0');  // just in case rounding took us up to 360º!
-}
+};
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
