@@ -15,3 +15,6 @@ if window.applicationCache
       window.applicationCache.swapCache()
       zz.emit 'notification',
         'A new version of Hipsell is available! Refresh the page to update.'
+
+# document.head polyfill
+document.head || (document.head = document.getElementsByTagName('head')[0]);

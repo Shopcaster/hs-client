@@ -170,6 +170,8 @@ class hs.t.Listing extends hs.Template
   setLongitude: -> this.setLocation.apply this, arguments
   setLatitude: -> this.setLocation.apply this, arguments
   setLocation: () ->
+    return if not this.model.location?
+
     lat = this.model.location[0]
     lng = this.model.location[1]
 
@@ -193,6 +195,8 @@ class hs.t.Listing extends hs.Template
 
 
   updateLocation: (position) ->
+    return if not this.model.location?
+
     this.lat ?= position.coords.latitude
     this.lng ?= position.coords.longitude
 

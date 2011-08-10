@@ -1,7 +1,14 @@
-var compile, fs, getModTime, _;
+var compile, exts, fs, getModTime, _;
+var __indexOf = Array.prototype.indexOf || function(item) {
+  for (var i = 0, l = this.length; i < l; i++) {
+    if (this[i] === item) return i;
+  }
+  return -1;
+};
 _ = require('underscore')._;
 fs = require('fs');
 require('colors');
+exts = ['png', 'jpg', 'gif', 'js', 'ico', 'eot', 'svg'];
 compile = function(files, opt, cache, clbk) {
   var manifest, manifestFilename;
   manifestFilename = '/manifest.appcache';
@@ -14,7 +21,7 @@ compile = function(files, opt, cache, clbk) {
   }
   console.log('building appcache'.magenta);
   return getModTime(opt.src, function(err, time) {
-    var content, file;
+    var content, ext, file;
     if (err != null) {
       return clbk(err);
     }
@@ -23,7 +30,8 @@ compile = function(files, opt, cache, clbk) {
     manifest += 'CACHE:\n';
     for (file in cache) {
       content = cache[file];
-      if (!opt.concat || !/\.js$/.test(file)) {
+      ext = /\.(\w+)$/.exec(file)[1];
+      if (__indexOf.call(exts, ext) >= 0 && (!opt.concat || ext !== 'js')) {
         manifest += file + '\n';
       }
     }
