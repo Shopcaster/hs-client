@@ -23,8 +23,6 @@ display = (Template, url, parsedUrl)->
     pathname: url
     parsedUrl: parsedUrl
 
-  return if Template.prototype.authRequired and not zz.auth.curUser()?
-
   Template.get kwargs, (template) ->
     return if not template?
 
@@ -59,7 +57,7 @@ goTo = (url) ->
   for exp, Template of hs.urls
     parsed = new RegExp(exp).exec(url)
     if parsed?
-      break if Template.prototype.authRequired
+      break if Template.prototype.authRequired and not zz.auth.curUser()?
       display Template, url, parsed.slice(1)
       return
 
