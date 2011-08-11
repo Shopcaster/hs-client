@@ -36,11 +36,13 @@ class hs.t.Home extends hs.Template
         <div class="right">
           <h3>Sellers</h3>
           <p class="tagline">Snap. Post. Sell.</p>
-          <p class="desc top">Post an item from your phone in under 30 seconds. It will be prossposted to Craigslist and Kijiji to help your item sell fast.</p>
+          <p class="desc top">Post an item from your phone in under 30 seconds.
+          It will be crossposted to Craigslist and Kijiji to help your item sell fast.</p>
 
           <h3>Buyers</h3>
           <p class="tagline">Browse. Want. Buy.</p>
-          <p class="desc">Browse items near you and communicate in real-time. Know if the item is still available and who you're buying from.</p>
+          <p class="desc">Browse items near you and communicate in real-time.
+          Know if the item is still available and who you're buying from.</p>
 
           <p class="platforms">Coming soon to iPhone and Android</p>
         </div>
