@@ -49,10 +49,10 @@ body{
 }
 
 #top-bar{
-  font-size:12px;
-  height:15px;
-  padding:5px;
+  height:25px;
+  width:100%;
 
+  font-size:12px;
   text-align:left;
   color:$grey;
   background-color:$black + #333;
@@ -63,10 +63,17 @@ body{
     }
   }
 
+  .tagline{
+    padding:5px;
+    width:150px;
+    float:left;
+  }
+
   .inner-top-bar{
     height:15px;
     float:right;
     color:$grey;
+    padding:5px;
 
     @media only screen and (max-width: 480px) {
       padding-right:10px;
@@ -207,20 +214,6 @@ header{
     background-color: $white;
   }
 
-  #launchrock{
-    width:340px;
-    margin:10px auto;
-    padding:10px;
-    @include box-shadow(0 1px 3px $black + #666);
-    background-color: rgba($black, 0.8);
-
-    #lrcontent #makea{
-      color:$white;
-      text-align:center;
-      margin-top:0px;
-    }
-  }
-
   .settings {
 
     #nav {
@@ -294,6 +287,18 @@ header{
           margin-right:5px;
         }
       }
+
+      .avatar{
+        img.current{
+          margin:10px 0 15px;
+        }
+        input[type=file]{
+          width:200px;
+        }
+        input[type=submit]{
+          float:right;
+        }
+      }
     }
 
   }
@@ -307,10 +312,10 @@ header{
       width: $width;
 
       @media screen and (max-width: 480px) {
-        width: $mob_section_width;
+        display:none;
       }
 
-      margin:10px auto 0;
+      margin:10px auto 15px;
 
       .left{
         float:left;
@@ -360,11 +365,18 @@ header{
       text-align:left;
     }
 
-    .listing{
-      float:left;
-      margin:20px 30px 0 0;
+    .listings{
+      .listing{
+        float:left;
+        margin:10px 30px 10px 0;
 
-      &:nth-child(3n+3){margin-right:0;}
+        &:nth-child(3n){margin-right:0;}
+
+
+        @media screen and (max-width: 480px) {
+          margin: 10px;
+        }
+      }
     }
   }
 
@@ -458,25 +470,18 @@ footer{
   }
 }
 
+.topError{
+  position:relative;
+  width:100%;
 
-.clicky{
-  display:none;
-  position:absolute;
-  height:15px;width:15px;
-  @include rounded(3px);
+  text-align:left;
+  color:$white;
+  text-shadow: 0 -1px 1px $red - #444;
+  @include gradient($red - #111, $red - #222);
 
-  font-size:12px;
-  line-height:12px;
-  font-weight:bold;
-  color:$grey - #666;
-  text-shadow: $white 0 -1px 1px;
-  text-align:center;
-  vertical-align:middle;
-
-  border:0px solid $grey - #111;
-  background-color: $grey - #111;
-  @include box-shadow((inset 0 -1px 1px $grey + #222,
-             inset 0 1px 1px $grey - #333));
+  .message{
+    padding:5px;
+  }
 }
 
 .error{

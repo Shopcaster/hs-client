@@ -98,13 +98,13 @@ class hs.t.Listing extends hs.Template
 
 
   showOfferButton: ->
-      this.$('.offer-button').show()
-      this.$('.bottom').css 'height': 255
+    this.$('.offer-button').show()
+    this.$('.bottom').css 'height': 255
 
 
   hideOfferButton: ->
-      this.$('.offer-button').hide()
-      this.$('.bottom').css 'height': 210
+    this.$('.offer-button').hide()
+    this.$('.bottom').css 'height': 210
 
 
   setAuth: (prev, cur) ->
@@ -159,9 +159,7 @@ class hs.t.Listing extends hs.Template
 
 
   setCreated: () ->
-    since = this.model.created.since()
-    this.$('.created').text "#{since.num} #{since.text}"
-
+    this.$('#listing-details .created').liveSince this.model.created
 
   setPrice: () ->
     this.$('.asking.value').text "$#{this.model.price}"
