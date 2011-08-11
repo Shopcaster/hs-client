@@ -159,9 +159,7 @@ class hs.t.Listing extends hs.Template
 
 
   setCreated: () ->
-    since = this.model.created.since()
-    this.$('.created').text "#{since.num} #{since.text}"
-
+    this.$('.created').liveSince this.model.created
 
   setPrice: () ->
     this.$('.asking.value').text "$#{this.model.price}"

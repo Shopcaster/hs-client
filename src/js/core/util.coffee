@@ -42,7 +42,8 @@ Number.prototype.degreesToDirection = () ->
 
 Date.prototype.since = (since) ->
   now = 0
-  minute = 60 * 1000
+  second = 1000
+  minute = 60 * second
   hour = 60 * minute
   day = 24 * hour
   week = 7 * day
@@ -58,7 +59,8 @@ Date.prototype.since = (since) ->
                if t % day < t then day else
                  if t % hour < t then hour else
                    if t % minute < t then minute else
-                     now
+                     if t % second < t then second else
+                       now
   num = Math.floor(t / unit)
   s = if num > 1 then 's' else ''
 
@@ -69,6 +71,7 @@ Date.prototype.since = (since) ->
     when day then {text: "day#{s} ago", num: num}
     when hour then {text: "hour#{s} ago", num: num}
     when minute then {text: "minute#{s} ago", num: num}
+    when second then {text: "second#{s} ago", num: num}
     else {text: "just now", num: 0}
 
 
@@ -93,3 +96,16 @@ class window.URL
 
   toString: -> this.raw
   valueOf: -> this.raw
+
+# Fancy jQuery live since functionality
+jQuery.fn.liveSince = (timestamp) ->
+  since = timestamp.since()
+  this.text "#{since.num || ''} #{since.text || ''}"
+  this.attr 'data-timestamp', +timestamp
+  this.addClass '_live_since'
+# Update live sinces every half minute
+setInterval ->
+  $('._live_since').each ->
+    since = new Date(parseInt($(this).attr 'data-timestamp')).since()
+    $(this).text "#{since.num || ''} #{since.text || ''}"
+, 30 * 1000
