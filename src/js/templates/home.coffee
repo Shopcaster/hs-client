@@ -4,25 +4,20 @@ dep.require 'hs.t.ListingLI'
 
 dep.provide 'hs.t.Home'
 
-###
-        <!-- Begin VideoJS -->
+###TO be added when video is ready
         <div class="video-js-box" id="splash-video">
-          <!-- Using the Video for Everybody Embed Code http://camendesign.com/code/video_for_everybody -->
           <video class="video-js" width="480" height="272" controls preload poster="/video/test2.png">
             <source src="/video/test.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
             <source src="/video/test.webm" type='video/webm; codecs="vp8, vorbis"' />
             <source src="/video/test.ogv" type='video/ogg; codecs="theora, vorbis"' />
-            <!-- Flash Fallback. Use any flash video player here. Make sure to keep the vjs-flash-fallback class. -->
             <object class="vjs-flash-fallback" width="480" height="272" type="application/x-shockwave-flash"
               data="http://www.youtube.com/v/jl1devFMfD4">
               <param name="movie" value="http://www.youtube.com/v/jl1devFMfD4" />
               <param name="allowfullscreen" value="true" />
-              <!-- Image Fallback. Typically the same as the poster image. -->
               <img src="/video/test2.png" width="480" height="272>
             </object>
           </video>
         </div>
-        <!-- End VideoJS -->
 ###
 
 
@@ -52,6 +47,7 @@ class hs.t.Home extends hs.Template
       </div>
       <div class="expand"><a href="javascript:;">What is Hipsell again?</a></div>
       <div style="clear:both"></div>
+      <div class="listings"></div>
     </div>
   '''
 
@@ -86,7 +82,7 @@ class hs.t.Home extends hs.Template
           for listingID in listings then do (listingID)=>
             this.rendered++
             zz.data.listing listingID, (listing)=>
-              tmpl = this.listingTmpl listing, appendTo: '#'+this.id
+              tmpl = this.listingTmpl listing, appendTo: '#'+this.id+' .listings'
               scroll = tmpl.el.offset().top
               this.scrollTrigger = scroll if scroll > this.scrollTrigger
 
