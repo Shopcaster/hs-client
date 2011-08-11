@@ -37,7 +37,7 @@ class hs.t.Home extends hs.Template
           <h3>Sellers</h3>
           <p class="tagline">Snap. Post. Sell.</p>
           <p class="desc top">Post an item from your phone in under 30 seconds.
-          It will be crossposted to Craigslist and Kijiji to help your item sell fast.</p>
+          We'll crosspost it to Craigslist and Kijiji to get your item sold fast.</p>
 
           <h3>Buyers</h3>
           <p class="tagline">Browse. Want. Buy.</p>
