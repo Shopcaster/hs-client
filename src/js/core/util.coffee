@@ -41,44 +41,35 @@ Number.prototype.degreesToDirection = () ->
 
 
 Date.prototype.since = (since) ->
-  now = since || new Date();
+  now = 0
+  minute = 60 * 1000
+  hour = 60 * minute
+  day = 24 * hour
+  week = 7 * day
+  month = 4 * week
+  year = 52 * week
 
-  if (this > now)
-    return {text: 'the future', num: ''}
+  t = +(since || new Date()) - (+this)
 
-  if (this.getFullYear() < now.getFullYear())
-    num = now.getFullYear() - this.getFullYear()
-    s = if num > 1 then 's' else ''
-    return {text: "year#{ s } ago", num: num}
+  # Indiana Jones and the staircase of doom
+  unit = if t % year < t then year else
+           if t % month < t then month else
+             if t % week < t then week else
+               if t % day < t then day else
+                 if t % hour < t then hour else
+                   if t % minute < t then minute else
+                     now
+  num = Math.floor(t / unit)
+  s = if num > 1 then 's' else ''
 
-  if (this.getMonth() < now.getMonth())
-    num = now.getMonth() - this.getMonth()
-    s = if num > 1 then 's' else ''
-    return {text: "month#{ s } ago", num: num}
-
-  if (this.getDate() < now.getDate())
-    num = now.getDate() - this.getDate()
-    s = if num != 1 then 's' else ''
-    return {text: "day#{ s } ago", num: num}
-
-  if (this.getHours() < now.getHours())
-    num = now.getHours() - this.getHours()
-    s = if num != 1 then 's' else ''
-    return {text: "hour#{ s } ago", num: num}
-
-  if (this.getMinutes() < now.getMinutes())
-    num = now.getMinutes() - this.getMinutes()
-    s = if num != 1 then 's' else ''
-    return {text: "minute#{ s } ago", num: num}
-
-  if (this.getSeconds() < now.getSeconds())
-    num = now.getSeconds() - this.getSeconds()
-    s = if num != 1 then 's' else ''
-    return {text: "second#{ s } ago", num: num}
-
-  return {text: 'just now', num: 0}
-
-
+  return switch unit
+    when year then {text: "year#{s} ago", num: num}
+    when month then {text: "month#{s} ago", num: num}
+    when week then {text: "week#{s} ago", num: num}
+    when day then {text: "day#{s} ago", num: num}
+    when hour then {text: "hour#{s} ago", num: num}
+    when minute then {text: "minute#{s} ago", num: num}
+    else {text: "just now", num: 0}
 
 
 
