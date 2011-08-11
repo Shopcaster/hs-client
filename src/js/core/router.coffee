@@ -65,13 +65,22 @@ goTo = (url) ->
   display hs.t.e404, []
 
 
-
+# Global link handler
 $('a').live 'click', (e) ->
+
+  # Only handle plain left clicks, so that right clicking, shift
+  # clicking, etc function as per usual.
+  if (event.which != 1 || event.metaKey || event.shiftKey)
+    return;
 
   location = $(this).attr('href')
 
+  # Allow absolute urls to go through
   return if /^https?:\/\//.test location
+  # Javascript dead links should be dead
   return if /^javascript:;$/.test location
+  # As should standard hash only links
+  return if location == '#'
 
   e.preventDefault();
   load location
