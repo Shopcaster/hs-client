@@ -52,16 +52,17 @@ display = (Template, url, parsedUrl)->
     ]
 
 
-goTo = (url) ->
+goTo = hs.goTo = (url) ->
 
   for exp, Template of hs.urls
     parsed = new RegExp(exp).exec(url)
     if parsed?
-      break if Template.prototype.authRequired and not zz.auth.curUser()?
+      if Template.prototype.authRequired and not zz.auth.curUser()?
+        return display hs.t.e403, []
+
       display Template, url, parsed.slice(1)
       return
 
-  console.log 'nourl 404'
   display hs.t.e404, []
 
 
