@@ -1,6 +1,7 @@
 
 dep.require 'hs.Template'
 dep.require 'hs.t.ListingLI'
+dep.require 'hs.geo'
 
 dep.provide 'hs.t.Home'
 
@@ -67,7 +68,7 @@ class hs.t.Home extends hs.Template
 
   renderListings: ->
     run = false
-    navigator.geolocation.getCurrentPosition (pos)=>
+    hs.geo.get (pos)=>
       return if run
       run = true
 
