@@ -93,6 +93,9 @@ load = (url) ->
   window.history.pushState {}, '', url
   goTo url
 
+  # Scroll to the top of the page
+  $('window, body').scrollTop 0
+
 
 # Handle url changes
 popped = `('state' in window.history)`
