@@ -12,7 +12,7 @@ user = null
 
 
 display = (Template, url, parsedUrl)->
-  $('title').text 'Hipsell'
+  document.title = 'Hipsell'
 
   current.t?.remove()
   current.v?.remove()

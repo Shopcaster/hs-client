@@ -115,11 +115,11 @@ body{
   }
 }
 
-header{
+#header{
   $headerBack: $blue;
 
+  height: 50px;
   width:100%;
-  height:50px;
   background-color:$black + #222;
   border-top:1px solid $headerBack - #222;
   border-bottom:1px solid $blue - #444;
@@ -129,10 +129,8 @@ header{
   #logo{
     $height: 34px;
 
-    position:absolute;
-    top: 0;
-    left:5px;
-    width:200px;
+    width:$layout_width;
+    margin:auto;
     height:50px;
     @include background-size(auto 34px);
     background-repeat:no-repeat;
@@ -382,7 +380,7 @@ header{
 
 }
 
-footer{
+#footer{
   padding:10px 0 200px;
   z-index:1;
   clear:both;
