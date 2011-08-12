@@ -31,18 +31,29 @@ class hs.Template extends hs.EventEmitter
     if this.options.nthChild? then this.nthChild = this.options.nthChild
     if this.options.parent? then this.parent = this.options.parent
     if this.options.authRequired? then this.authRequired = this.options.authRequired
+    this.getId()
+
+
+  getId:->
+    return this.id if this.id?
+
+    if not this.constructor.id?
+      this.constructor.id = constructorId++
+      console.log 'adding constructor id', this.constructor.name, this.constructor.id
 
     if this.options.id?
       this.id = this.options.id
 
     else if not this.id?
-      this.id = this.constructor.name || (++constructorId) + ''
+      this.id = this.constructor.id + ''
       this.id = this.parent.id + '_' + this.id if this.parent?
 
       if this.model?._id?
         this.id += "-#{this.model._id}"
 
       this.id = this.id.toLowerCase().replace '/', ''
+
+    return this.id
 
 
   _init: ->
@@ -128,10 +139,10 @@ class hs.Template extends hs.EventEmitter
 
       else
         children = $(this.appendTo).children()
-        if children.length > 0
-          $(children[this.nthChild - 1]).after this.el
+        if this.nthChild == 0
+          $(this.appendTo).prepend this.el
         else
-          $(this.appendTo).append this.el
+          $(children[this.nthChild - 1]).after this.el
 
       this.injected = true
 
