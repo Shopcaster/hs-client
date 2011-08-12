@@ -12,7 +12,7 @@ class hs.t.SocialSetting extends hs.Template
 
   template: hs.settingsNav '''
     <h1>Social Integration</h1>
-    <p>You can link Facebook, Twitter, and LinkedIn accounts to your Hipsell account.  Links to these will show up on your profile.</p>
+    <p>You can link Facebook and Twitter accounts to your Hipsell account.  Links to these will show up on your profile.</p>
 
     <h3>Accounts You've Linked</h3>
     <p id="linked"></p>
