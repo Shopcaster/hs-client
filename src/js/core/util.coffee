@@ -2,6 +2,12 @@
 dep.require 'lib'
 dep.provide 'util'
 
+# Dummy console.log, just in case (*cough* ie *cough*)
+unless window.console
+  window.console =
+    log: () ->
+    error: () ->
+    warn: () ->
 
 String.prototype.truncateWords = (number) ->
   return this.substr(0) if this.length <= 67
