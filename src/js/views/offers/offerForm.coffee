@@ -32,6 +32,8 @@ class hs.v.OfferForm extends hs.View
           # this line should be deleted pending the fix of:
           #   https://www.pivotaltracker.com/story/show/16308701
           zz.data.convo id, =>
+
+            this.template.parent.newConvo()
             this.createMessage amount, offerId
 
 

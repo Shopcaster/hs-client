@@ -112,10 +112,16 @@ class hs.t.Listing extends hs.Template
     this.offerFormTmpl.remove()
     this.newConvo()
 
+    this.$('#listing-creator .profile').remove()
+
     if not cur? or this.model.creator != cur._id
       this.showOfferButton() if not this.model.sold
 
       this.offerFormTmpl null, listing: this.model
+
+      this.$('#listing-creator .name').after("
+      <a href='/#{this.model.creator}' class='profile'>
+          More items by this seller</a>");
 
     else
       this.hideOfferButton()

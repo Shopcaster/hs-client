@@ -50,4 +50,3 @@ class hs.t.Message extends hs.Template
   setCreated: ->
     return unless this.model.created instanceof Date
     since = this.model.created.since()
-    #this.$('.created').text since.num+' '+since.text

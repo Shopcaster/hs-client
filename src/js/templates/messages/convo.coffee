@@ -25,7 +25,7 @@ class hs.t.Convo extends hs.Template
       appendTo: '.message-form'
 
 
-  sort: (one, two) ->  two.created - one.created
+  sort: (one, two)->  two.created - one.created
 
 
   postRender: ->
@@ -35,17 +35,13 @@ class hs.t.Convo extends hs.Template
       appendTo: "##{this.id} .message-form"
 
 
-  addModel: (msg, index) ->
-    index = undefined if index == -1
-
+  addModel: (msg, index)->
     this.messageTmpl msg,
       nthChild: index
       appendTo: "##{this.id} .message-list"
 
 
-  removeModel: (id, index) ->
-    console.log 'removeModel', index
-    this.removeTmpl 'Message', index
+  removeModel: (id, index)-> this.removeTmpl 'Message', index
 
 
   newConvo: -> this.parent.newConvo?()

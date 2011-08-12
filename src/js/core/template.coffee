@@ -127,7 +127,11 @@ class hs.Template extends hs.EventEmitter
         $(this.appendTo).append this.el
 
       else
-        $($(this.appendTo).children()[this.nthChild]).before this.el
+        children = $(this.appendTo).children()
+        if children.length > 0
+          $(children[this.nthChild - 1]).after this.el
+        else
+          $(this.appendTo).append this.el
 
       this.injected = true
 
