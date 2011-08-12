@@ -71,7 +71,7 @@ $('a').live 'click', (e) ->
 
   # Only handle plain left clicks, so that right clicking, shift
   # clicking, etc function as per usual.
-  if (event.which != 1 || event.metaKey || event.shiftKey)
+  if (e.which != 1 || e.metaKey || e.shiftKey)
     return;
 
   location = $(this).attr('href')
