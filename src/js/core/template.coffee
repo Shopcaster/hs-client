@@ -169,7 +169,8 @@ class hs.Template extends hs.EventEmitter
         if this.removeModel?
           this.model.on 'remove', => this.removeModel.apply this, arguments
 
-        this.addModel m, -1 for m in this.model
+        for m, i in this.model
+          this.addModel m, i
 
       else
 
