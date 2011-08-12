@@ -21,6 +21,7 @@ class hs.t.Inquiries extends hs.Template
 
 
   addModel: (inquiry, index) ->
+    console.log 'inquiries addModel', index, inquiry
     this.$('.no-qs').remove()
     this.inquiryTmpl inquiry, {nthChild: index}
 

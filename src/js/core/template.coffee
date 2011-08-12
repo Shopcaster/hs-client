@@ -68,7 +68,7 @@ class hs.Template extends hs.EventEmitter
         tmpl = new classOpts.class model, opts
 
         this.templates[className] ||= []
-        if not opts.nthChild? or opts.nthChild == -1
+        if not opts.nthChild?
           this.templates[className].push tmpl
         else
           this.templates[className].splice opts.nthChild, 0, tmpl
@@ -123,11 +123,15 @@ class hs.Template extends hs.EventEmitter
     return if this.injected
 
     if this.appendTo?
-      if not this.nthChild? or this.nthChild == -1
+      if not this.nthChild?
         $(this.appendTo).append this.el
 
       else
-        $($(this.appendTo).children()[this.nthChild]).before this.el
+        children = $(this.appendTo).children()
+        if children.length > 0
+          $(children[this.nthChild - 1]).after this.el
+        else
+          $(this.appendTo).append this.el
 
       this.injected = true
 
