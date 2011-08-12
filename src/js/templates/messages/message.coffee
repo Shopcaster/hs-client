@@ -44,7 +44,6 @@ class hs.t.Message extends hs.Template
 
 
   setMessage: ->
-    console.log 'set message', this.model.message
     this.$('.message-body').text this.model.message
 
 

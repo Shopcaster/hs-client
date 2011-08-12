@@ -11,7 +11,6 @@ class hs.t.User extends hs.Template
       <div class="presence offline"></div>
       <img class="avatar">
       <span class="name">Anonymous</span>
-      <a class="profile">More items by this seller</a>
       <div class="social">
         <a target="_blank" class="fb"><img src="/img/fb.png"></a>
         <a target="_blank" class="twitter"><img src="/img/twitter.png"></a>
@@ -25,8 +24,6 @@ class hs.t.User extends hs.Template
     if this.model?
       this.setPresence = _.bind(this.setPresence, this)
       zz.presence.on this.model._id, this.setPresence
-
-      this.$('.profile').attr 'href', '/'+this.model._id
 
     else
       this.$('.avatar').attr 'src', '/img/default_avatar.png'
