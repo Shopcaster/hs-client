@@ -10,6 +10,8 @@ dep.require 'hs.t.NameSetting'
 dep.require 'hs.t.SocialSetting'
 dep.require 'hs.t.SocialResponse'
 dep.require 'hs.t.AvatarSetting'
+dep.require 'hs.t.TermsAndConditions'
+dep.require 'hs.t.PrivacyPolicy'
 
 dep.provide 'hs.urls'
 
@@ -30,3 +32,5 @@ hs.urls =
   #flat
   '^/about': hs.t.About
   '^/how-it-works': hs.t.HowItWorks
+  '^/terms-and-conditions': hs.t.TermsAndConditions
+  '^/privacy-policy': hs.t.PrivacyPolicy
