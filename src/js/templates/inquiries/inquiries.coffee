@@ -21,7 +21,6 @@ class hs.t.Inquiries extends hs.Template
 
 
   addModel: (inquiry, index) ->
-    index = undefined if index == -1
     this.$('.no-qs').remove()
     this.inquiryTmpl inquiry, {nthChild: index}
 

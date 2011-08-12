@@ -15,7 +15,6 @@ class hs.t.Inquiry extends hs.Template
     </div>
     """
 
-
   subTemplates:
     user:
       class: hs.t.InlineUser

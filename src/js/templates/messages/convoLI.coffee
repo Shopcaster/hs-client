@@ -81,7 +81,7 @@ class hs.t.ConvoLI extends hs.Template
 
   setAmount: ->
     this.$('.offerbox').show()
-    this.$('.offer').text "$#{this.offer.amount/100}"
+    this.$('.offerbox > .offer').text "$#{this.offer.amount/100}"
 
 
   setMessage: (msg, index) ->
