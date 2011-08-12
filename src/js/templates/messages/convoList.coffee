@@ -29,5 +29,4 @@ class hs.t.ConvoList extends hs.Template
     this.convoLITmpl convo, {nthChild: index}
 
 
-  removeModel: (id, index) ->
-    this.removeTmpl index
+  removeModel: (id, index) -> this.removeTmpl index
