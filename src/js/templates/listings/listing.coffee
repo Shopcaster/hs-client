@@ -161,7 +161,7 @@ class hs.t.Listing extends hs.Template
 
   setDescription: () ->
     this.$('#listing-description').text this.model.description
-    $('title').text "Hipsell - #{this.model.description}"
+    $('document.title').text "Hipsell - #{this.model.description}"
     this.meta property: 'og:description', content: this.model.description
 
 

@@ -14,7 +14,6 @@ class hs.View extends hs.EventEmitter
   constructor: (@template, @options = {}) ->
     this.views = {}
 
-    console.log 'modInit', this.constructor.getName(), this.modInit
     this.modInit()
 
     this._moveOptions()

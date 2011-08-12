@@ -31,13 +31,7 @@ display = (Template, url, parsedUrl)->
 
     current.t = template
 
-    console.log 'routed to template'
-    #View = hs.v[Template.getName()] ||  hs.View
-    console.log 'finding view', Template.getName()
-    View = hs.v[Template.getName()]
-    if not VIew?
-      console.log 'view not found'
-      View = hs.View
+    View = hs.v[Template.getName()] || hs.View
 
     current.v = new View template, kwargs
 
@@ -178,7 +172,5 @@ $ -> zz.init ->
     hs.globalTemplates[i] = new Tmpl()
     hs.globalTemplates[i].authChange null, user
 
-    View = hs.v[Tmpl.name] or hs.View
+    View = hs.v[Tmpl.getName()] or hs.View
     hs.globalViews[i] = new View(hs.globalTemplates[i])
-
-

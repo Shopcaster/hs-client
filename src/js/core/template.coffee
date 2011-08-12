@@ -16,7 +16,6 @@ class hs.Template extends hs.EventEmitter
   modInit: ->
 
   constructor: (@model, @options = {}) ->
-
     this.emit('preConstructor')
     this._moveOptions()
     this._setupTemplates()
@@ -150,7 +149,6 @@ class hs.Template extends hs.EventEmitter
       this.modelInit = true
 
       if this.model instanceof Array #model list
-
         if this.sort?
           this.model.sort this.sort
 
@@ -164,7 +162,6 @@ class hs.Template extends hs.EventEmitter
           this.addModel m, i
 
       else
-
         for own field of this.model
           method = 'set'+ field.charAt(0).toUpperCase() + field.slice(1)
 
@@ -230,21 +227,14 @@ hs.util
 
 
 hs.Template.get = (options, clbk) ->
-  console.log 'Template.get'
   user = zz.auth.curUser()
   if this.getModel?
-    console.log 'getting model'
     this.getModel options, (model) =>
-      console.log 'got model ', model
       return clbk null if not model?
-      console.log 'model exists'
       template = new this(model, options)
-      console.log 'template instantiated'
       template.authChange null, user
-      console.log 'Template.get clbk'
       clbk template
   else
     template = new this(null, options)
     template.authChange null, user
-    console.log 'Template.get clbk'
     clbk template
