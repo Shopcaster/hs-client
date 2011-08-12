@@ -99,15 +99,15 @@
 @mixin gradient($from, $to){
     background: $to; /* for non-css3 browsers */
     -ms-filter: progid:DXImageTransform.Microsoft.gradient(
-        startColorstr='$from', endColorstr='$to'); /* for IE */
+        startColorStr='#{$from}', endColorStr='#{$to}'); /* for IE */
     background:-webkit-gradient(linear, left top, left bottom,
         from($from), to($to)); /* for webkit browsers */
     background: -moz-linear-gradient(top,  $from,  $to); /* for firefox 3.6+ */
 }
 
 @mixin gradient-clear(){
-    filter: none;
     background:none;
+    -ms-filter: none;
 }
 
 @mixin background-size($val:contain){
