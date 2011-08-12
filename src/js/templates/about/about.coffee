@@ -11,38 +11,39 @@ class hs.t.About extends hs.Template
   template: -> """
     <div class="flatpage">
       <h1>About Hipsell</h1>
-      <p>
-        Hipsell is a mobile and web app that offers a completely new and
-        streamlined buying and selling experience. We let you sell things
-        right from your phone in one simple step, and leverage cutting-edge
-        technology to help you communicate with buyers and sellers as fast
-        and painlessly as possible. Seriously. We're so confident in what
-        we're building that we'll guarantee you won't find a better way to
-        sell or buy things anywhere.
-      </p>
-      <p>
-        At the moment we're still in private beta, which means only selected
-        users will be able to create new listings.
-      </p>
 
-      <h2>The Team</h2>
-      <p>
-        Hipsell is built by
-        <a href="http://twitter.com/mattskilly">@mattskilly</a>
-        <a href="http://twitter.com/defrex">@defrex</a>
-        <a href="http://twitter.com/lylepstein">@lylepstein</a>.
+      <p>Hipsell is a new local marketplace for mobile phones and the web that offers
+      a completely rethought and streamlined buying and selling experience.</p>
 
-      <h2>Contact Us</h2>
+      <p>Using Hipsell you can sell items from your phone in record time with
+      one simple step.  From there we take you to your item's page, which you
+      can use to easily and quickly handle offers, create a public FAQ, and
+      message with buyers.  No more inbox overload, no more clunky management
+      tools, and no more hassle.  We even crosspost your item to other popular
+      services to give it maximum exposure and get it sold <i>fast</i>.</p>
 
-      <p>
-        For feedback, questions, or generally anything related to the site,
-        you should visit our <a href="https://getsatisfaction.com/hipsell">
-        GetSatisfaction</a> page by clicking the Feedback link above.
-      </p>
+      <p>As a buyer on Hipsell, you're able to quickly browse nearby items.  When
+      you see one you like we provide you with extra information about it, such as
+      whether it's still available, what the highest offer is, who the seller is, and
+      more.  Buyers on Hipsell use the same real-time messaging system as sellers,
+      which makes it a breeze to ask questions or find a place to make an exchange.</p>
 
-      <p>
-        If you need to get in touch with us for other reasons, you can email us
-        at <a href="mailto:sold@hipsell.com">sold@hipsell.com</a>.
-      </p>
+      <p>It's buy and sell, reinvented.</p>
+
+      <h1>The Team</h1>
+
+      <p>Hipsell is built by
+      <a href="http://twitter.com/mattskilly">@mattskilly</a>
+      <a href="http://twitter.com/defrex">@defrex</a> and
+      <a href="http://twitter.com/lylepstein">@lylepstein</a>.</p>
+
+      <h1>Contact Us</h1>
+
+      <p>For feedack, questions, or anything else related to the site or app, you
+      should visit our <a href="http://getsatisfaction.com/hipsell">GetSatisfaction</a>
+      page by clicking the Feedback link above.</p>
+
+      <p>If you need to get in touch with us for other reasons, you can email us
+      at <a href="mailto: sold@hipsell.com">sold@hipsell.com</a>.</p>
     </div>
     """

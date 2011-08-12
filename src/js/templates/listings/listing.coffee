@@ -7,6 +7,7 @@ dep.require 'hs.t.Convo'
 dep.require 'hs.t.ConvoList'
 dep.require 'hs.t.OfferForm'
 dep.require 'hs.t.Offers'
+dep.require 'hs.geo'
 
 dep.provide 'hs.t.Listing'
 
@@ -189,9 +190,7 @@ class hs.t.Listing extends hs.Template
     this.meta property: 'og:latitude', content: lat
     this.meta property: 'og:longitude', content: lng
 
-    if navigator.geolocation?
-      navigator.geolocation.getCurrentPosition =>
-        this.updateLocation.apply(this, arguments)
+    hs.geo.get => this.updateLocation.apply(this, arguments)
 
 
   updateLocation: (position) ->
