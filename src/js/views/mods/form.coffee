@@ -17,8 +17,6 @@ hs.v.mods.form = (View) ->
     oldInit.call(this)
     this.fields = {}
 
-    $('input[placeholder], textarea[placeholder]').placeholder();
-
     for fieldOpts in this.template.fields
 
       View = hs.formFields[fieldOpts.type].v
@@ -27,6 +25,28 @@ hs.v.mods.form = (View) ->
       field = new View this.template._fields[fieldOpts.name], fieldOpts
 
       this.fields[fieldOpts.name] = field
+
+    # only pass if you suck
+    return if not 'placeholder' in document.createElement('input')
+
+    for name, field of this.fields then do (field)->
+      el = field.template.el
+      return if not placeholder = el.attr('placeholder')
+
+      el.val placeholder
+      el.addClass 'placeheld'
+
+      el.focus ->
+        if el.val() == placeholder
+          el.val ''
+          el.removeClass 'placeheld'
+
+      el.blur ->
+        if el.val() == ''
+          el.val placeholder
+          el.addClass 'placeheld'
+
+
 
 
   View.prototype._validate = (clbk) ->
@@ -65,8 +85,31 @@ hs.v.mods.form = (View) ->
 
   View.prototype._submit = (e) ->
     e?.preventDefault()
+
+    if not 'placeholder' in document.createElement('input')
+      for name, field of this.fields
+        el = field.template.el
+        return if not placeholder = el.attr('placeholder')?
+
+        if el.val() == placeholder
+          el.val ''
+          el.removeClass 'placeheld'
+
+
     this._validate (valid) =>
-      this.submit?.apply(this, arguments) if valid
+      if valid
+        this.submit?.apply(this, arguments)
+
+      else
+        if not 'placeholder' in document.createElement('input')
+          for name, field of this.fields
+            el = field.template.el
+            return if not placeholder = el.attr('placeholder')?
+
+            if el.val() == ''
+              el.val placeholder
+              el.addClass 'placeheld'
+
 
 
   View.prototype._cache = {}

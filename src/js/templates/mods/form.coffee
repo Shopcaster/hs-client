@@ -25,8 +25,10 @@ hs.t.mods.form = (Template) ->
 
     for fieldOpts in this.fields then do (fieldOpts) =>
 
+      if not hs.formFields[fieldOpts.type]?
+        throw new Error 'invalid field type '+fieldOpts.type
+
       Field = hs.formFields[fieldOpts.type].t
-      return if not Field?
 
       fieldOpts.appendTo = "##{this.id} .formFields"
       fieldOpts.id = "#{this.id}_#{fieldOpts.name}Field"
