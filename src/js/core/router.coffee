@@ -33,6 +33,9 @@ display = (Template, url, parsedUrl)->
 
     View = hs.v[Template.getName()] || hs.View
 
+
+    console.log 'route t: ', Template.getName(), ' v: ', View.getName()
+
     current.v = new View template, kwargs
 
     if document.referrer.length > 0

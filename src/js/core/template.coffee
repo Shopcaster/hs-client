@@ -61,7 +61,7 @@ class hs.Template extends hs.EventEmitter
     for name, classOpts of this.subTemplates then do (name, classOpts) =>
 
       method = "#{name}Tmpl"
-      className = classOpts.class.name
+      className = classOpts.class.getName()
 
       this[method] = (model, instOpts) =>
         opts = _.extend {parent: this}, classOpts, instOpts
