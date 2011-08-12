@@ -499,11 +499,15 @@
     width: 130px;
 
     font-size:12px;
-    word-wrap:break-word;
+
 
     .status{
       font-size:10px;
       margin-top:1px;
+    }
+
+    .listing-desc{
+      word-wrap:break-word;
     }
 
     .created{
