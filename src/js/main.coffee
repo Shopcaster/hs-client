@@ -16,6 +16,3 @@ if window.applicationCache
       zz.emit 'notification',
         'A new version of Hipsell is available! Refresh the page to update.'
   ), false
-
-# document.head polyfill
-document.head || (document.head = document.getElementsByTagName('head')[0]);

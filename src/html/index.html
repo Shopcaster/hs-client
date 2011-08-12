@@ -1,68 +1,78 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hipsell</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <title>Hipsell</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+<!-- <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script> -->
+
+
   </head>
   <body>
-    <div id="top-bar"><div class="width">
-        <div class="tagline">★Buy & Sell Reinvented</div>
-    </div></div>
+  <div id="top-bar"><div class="width">
+    <div class="tagline">&#9733;Buy & Sell Reinvented</div>
+  </div></div>
 
-    <div class="width" id="header">
-        <a href="/"><div id="logo"></div></a>
-        <ul>
+  <div class="width" id="header">
+    <a href="/"><div id="logo"></div></a>
+    <ul>
 <!--
-            <li class="right">
-                <a href="javascript:;" class="button new-listing">New Item</a>
-            </li>
+      <li class="right">
+        <a href="javascript:;" class="button new-listing">New Item</a>
+      </li>
 -->
-        </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div id="body"><div class="width">
-        <div id="main"></div>
-    </div></div>
+  <div id="body"><div class="width">
+    <div id="main"></div>
+  </div></div>
 
-    <div class="width" id="footer">
-        <a href="http://twitter.com/#!/hipsellapp">Twitter</a>
-        <a href="http://www.facebook.com/hipsell">Facebook</a>
-        <a href="/privacy-policy">Privacy</a>
-        <a href="/terms-and-conditions">Terms</a>
-        © 2011 Hipsell Inc.
-    </div>
+  <div class="width" id="footer">
+    <a href="http://twitter.com/#!/hipsellapp">Twitter</a>
+    <a href="http://www.facebook.com/hipsell">Facebook</a>
+    <a href="/privacy-policy">Privacy</a>
+    <a href="/terms-and-conditions">Terms</a>
+    © 2011 Hipsell Inc.
+  </div>
 
+  <!--[if IE 8]>
+  <script>
+    //document.head polyfill
+    document.head = document.getElementsByTagName('head')[0];
+  </script>
+  <![endif]-->
 
-    <!-- Chromeframe -->
-    <!--[if lt IE 8]>
-        <script type="text/javascript"
-            src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-        <style> .chromeFrameInstallDefaultStyle{z-index:999;
-            border: 2px solid blue; width:960px; margin-left:-482px} </style>
-        <script> CFInstall.check(); </script>
-    <![endif]-->
+  <!-- Chromeframe -->
+  <!--[if lt IE 8]>
+    <script type="text/javascript"
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+    <style> .chromeFrameInstallDefaultStyle{z-index:999;
+      border: 2px solid blue; width:960px; margin-left:-482px} </style>
+    <script> CFInstall.check(); </script>
+  <![endif]-->
 
-    <!-- Mixpanel -->
-    <script type="text/javascript">
-        var mpq=[];
-        if (conf.analytics){mpq.push(["init","2a3e7cd1b6f051894a6937c956e28b73"]);(function(){var a=document.createElement("script");a.type="text/javascript";a.async=true;a.src=(document.location.protocol==="https:"?"https:":"http:")+"//api.mixpanel.com/site_media/js/api/mixpanel.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)})();}
-    </script>
+  <!-- Mixpanel -->
+  <script type="text/javascript">
+    var mpq=[];
+    if (conf.analytics){mpq.push(["init","2a3e7cd1b6f051894a6937c956e28b73"]);(function(){var a=document.createElement("script");a.type="text/javascript";a.async=true;a.src=(document.location.protocol==="https:"?"https:":"http:")+"//api.mixpanel.com/site_media/js/api/mixpanel.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)})();}
+  </script>
 
-    <!-- Google Analytics -->
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-24976799-1']);
-      _gaq.push(['_trackPageview']);
+  <!-- Google Analytics -->
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-24976799-1']);
+    _gaq.push(['_trackPageview']);
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
   </body>
 </html>

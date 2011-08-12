@@ -9,6 +9,7 @@ return if window.route == false
 
 current = t: null, v: null
 user = null
+viewMap = {}
 
 
 display = (Template, url, parsedUrl)->
@@ -23,12 +24,20 @@ display = (Template, url, parsedUrl)->
     pathname: url
     parsedUrl: parsedUrl
 
+  console.log 'routed to ', url
+
   Template.get kwargs, (template) ->
     return display hs.t.e404, [] if not template?
 
     current.t = template
 
-    View = hs.v[Template.name] ||  hs.View
+    console.log 'routed to template'
+    #View = hs.v[Template.getName()] ||  hs.View
+    console.log 'finding view', Template.getName()
+    View = hs.v[Template.getName()]
+    if not VIew?
+      console.log 'view not found'
+      View = hs.View
 
     current.v = new View template, kwargs
 

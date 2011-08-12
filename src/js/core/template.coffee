@@ -31,21 +31,12 @@ class hs.Template extends hs.EventEmitter
     if this.options.nthChild? then this.nthChild = this.options.nthChild
     if this.options.parent? then this.parent = this.options.parent
     if this.options.authRequired? then this.authRequired = this.options.authRequired
-    this.getId()
-
-
-  getId:->
-    return this.id if this.id?
-
-    if not this.constructor.id?
-      this.constructor.id = constructorId++
-      console.log 'adding constructor id', this.constructor.name, this.constructor.id
 
     if this.options.id?
       this.id = this.options.id
 
     else if not this.id?
-      this.id = this.constructor.id + ''
+      this.id = this.constructor.getName() + ''
       this.id = this.parent.id + '_' + this.id if this.parent?
 
       if this.model?._id?
@@ -235,15 +226,25 @@ class hs.Template extends hs.EventEmitter
     this.emit('postRemove')
 
 
+hs.util
+
+
 hs.Template.get = (options, clbk) ->
+  console.log 'Template.get'
   user = zz.auth.curUser()
   if this.getModel?
+    console.log 'getting model'
     this.getModel options, (model) =>
+      console.log 'got model ', model
       return clbk null if not model?
+      console.log 'model exists'
       template = new this(model, options)
+      console.log 'template instantiated'
       template.authChange null, user
+      console.log 'Template.get clbk'
       clbk template
   else
     template = new this(null, options)
     template.authChange null, user
+    console.log 'Template.get clbk'
     clbk template

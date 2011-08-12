@@ -23,6 +23,7 @@ hs.v.mods.dialog = (View) ->
 
     this.blur = _.bind this.blur, this
 
+    console.log 'adding dialog class'
     this.template.el.addClass('dialog')
     this.template.el.click stop
 

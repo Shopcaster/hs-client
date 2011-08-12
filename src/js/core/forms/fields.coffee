@@ -14,7 +14,7 @@ reg = (fields..., handlers)->
 class hs.FormFieldTemplate extends hs.Template
 
   constructor: (@model, @options) ->
-    this.id = this.getId()+this.options.name
+    this.id = this.constructor.getName()+this.options.name
     hs.Template.apply(this, arguments)
 
 

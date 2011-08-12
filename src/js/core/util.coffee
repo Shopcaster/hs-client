@@ -97,15 +97,23 @@ class window.URL
   toString: -> this.raw
   valueOf: -> this.raw
 
+
 # Fancy jQuery live since functionality
 jQuery.fn.liveSince = (timestamp) ->
   since = timestamp.since()
   this.text "#{since.num || ''} #{since.text || ''}"
   this.attr 'data-timestamp', +timestamp
   this.addClass '_live_since'
+
 # Update live sinces every half minute
 setInterval ->
   $('._live_since').each ->
     since = new Date(parseInt($(this).attr 'data-timestamp')).since()
     $(this).text "#{since.num || ''} #{since.text || ''}"
 , 30 * 1000
+
+
+
+Function.prototype.getName =->
+  return this.name if this.name?
+  return /function (.+)\(/.exec(this.toString())[1]
