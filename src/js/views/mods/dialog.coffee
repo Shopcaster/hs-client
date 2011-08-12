@@ -5,15 +5,12 @@ dep.provide 'hs.v.mods.dialog'
 
 
 hs.v.mods.dialog = (View) ->
-  console.log 'dialog mod for view ', View.getName()
 
   stop = (e) -> e.stopPropagation()
 
   oldInit = View.prototype.modInit
   View.prototype.modInit = ->
     oldInit.call(this)
-    console.log 'dialog init for view ', View.getName()
-
 
     if this.options.focusSelector?
       this.focusSelector = this.options.focusSelector
@@ -26,7 +23,6 @@ hs.v.mods.dialog = (View) ->
 
     this.blur = _.bind this.blur, this
 
-    console.log 'adding dialog class'
     this.template.el.addClass('dialog')
     this.template.el.click stop
 

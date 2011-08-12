@@ -24,17 +24,12 @@ display = (Template, url, parsedUrl)->
     pathname: url
     parsedUrl: parsedUrl
 
-  console.log 'routed to ', url
-
   Template.get kwargs, (template) ->
     return display hs.t.e404, [] if not template?
 
     current.t = template
 
     View = hs.v[Template.getName()] || hs.View
-
-
-    console.log 'route t: ', Template.getName(), ' v: ', View.getName()
 
     current.v = new View template, kwargs
 

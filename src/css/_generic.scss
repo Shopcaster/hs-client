@@ -65,7 +65,7 @@ textarea, input[type=text], input[type=email], input[type=password],
 @mixin placeholder(){
   color:#777 !important;
 }
-.placeheld {@include placeholder;}
+.placeheld, .placeholder {@include placeholder;}
 ::-webkit-input-placeholder {@include placeholder;}
 :-moz-placeholder {@include placeholder;}
 

@@ -17,6 +17,8 @@ hs.v.mods.form = (View) ->
     oldInit.call(this)
     this.fields = {}
 
+    $('input[placeholder], textarea[placeholder]').placeholder();
+
     for fieldOpts in this.template.fields
 
       View = hs.formFields[fieldOpts.type].v
