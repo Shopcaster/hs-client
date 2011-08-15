@@ -51,7 +51,7 @@ cleanOpt = (opt, clbk)->
   if opt.mode in Object.keys settings
     settings = mash settings.default, settings[opt.mode], opt
 
-  else if fs.statSync(opt.settings).isFile()
+  else if fs.statSync(opt.mode).isFile()
     lsettings = fs.readFileSync opt.mode, 'utf8'
     lsettings = JSON.parse lsettings
 

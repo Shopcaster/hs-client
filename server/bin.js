@@ -54,12 +54,13 @@ cleanOpt = function(opt, clbk) {
   settings = JSON.parse(settings);
   if (_ref = opt.mode, __indexOf.call(Object.keys(settings), _ref) >= 0) {
     settings = mash(settings["default"], settings[opt.mode], opt);
-  } else if (fs.statSync(opt.settings).isFile()) {
+  } else if (fs.statSync(opt.mode).isFile()) {
     lsettings = fs.readFileSync(opt.mode, 'utf8');
     lsettings = JSON.parse(lsettings);
     settings = mash(settings["default"], lsettings, opt);
   }
   delete settings.settings;
+  console.log('abc');
   return clbk(settings);
 };
 cli.main(function(args, opt) {
