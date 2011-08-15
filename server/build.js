@@ -1,6 +1,7 @@
-var build, buildDir, compilers, fs, listDir, _;
+var build, buildDir, compilers, fs, gzip, listDir, zippit, _;
 _ = require('underscore')._;
 fs = require('fs');
+gzip = require('gzip');
 compilers = [require('./compilers/coffee'), require('./compilers/scss'), require('./compilers/static'), require('./compilers/min'), require('./compilers/appcache'), require('./compilers/html')];
 build = function(files, opt, cache, clbk) {
   var comps, next;
@@ -61,5 +62,28 @@ listDir = function(dir, clbk) {
     })();
   });
 };
+zippit = function(cache, clbk) {
+  var content, done, name, zipped, _results;
+  console.log('performing gzip'.magenta);
+  zipped = {};
+  done = _.after(Object.keys(cache).length, function() {
+    return clbk(null, zipped);
+  });
+  _results = [];
+  for (name in cache) {
+    content = cache[name];
+    _results.push((function(name, content) {
+      return gzip(content, function(err, zipd) {
+        if (err !== 0) {
+          return clbk(err);
+        }
+        zipped[name] = zipd;
+        return done();
+      });
+    })(name, content));
+  }
+  return _results;
+};
 exports.build = build;
 exports.buildDir = buildDir;
+exports.gzip = zippit;

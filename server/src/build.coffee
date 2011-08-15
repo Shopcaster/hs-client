@@ -1,6 +1,7 @@
 
 _ = require('underscore')._
 fs = require 'fs'
+gzip = require 'gzip'
 
 
 compilers = [
@@ -57,5 +58,21 @@ listDir = (dir, clbk)->
           next()
 
 
+zippit = (cache, clbk)->
+  console.log 'performing gzip'.magenta
+
+  zipped = {}
+
+  done = _.after Object.keys(cache).length, -> clbk null, zipped
+
+  for name, content of cache then do (name, content)->
+    gzip content, (err, zipd)->
+      return clbk err if err != 0
+
+      zipped[name] = zipd
+      done()
+
+
 exports.build = build
 exports.buildDir = buildDir
+exports.gzip = zippit

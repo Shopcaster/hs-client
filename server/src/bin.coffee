@@ -49,8 +49,6 @@ cleanOpt = (opt, clbk)->
 
   delete settings.settings
 
-  console.log settings
-
   clbk settings
 
 

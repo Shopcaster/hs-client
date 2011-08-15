@@ -50,7 +50,6 @@ cleanOpt = function(opt, clbk) {
     settings = mash(settings["default"], lsettings, opt);
   }
   delete settings.settings;
-  console.log(settings);
   return clbk(settings);
 };
 cli.main(function(args, opt) {

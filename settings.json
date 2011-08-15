@@ -8,7 +8,8 @@
     "prerender": false,
     "concatJS": true,
     "minifyJS": false,
-    "autobuild": false
+    "autobuild": false,
+    "gzip": true
   },
   "production": {
     "serverUri": "http://hipsell.com:8080",

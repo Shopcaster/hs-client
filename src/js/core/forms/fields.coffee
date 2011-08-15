@@ -37,6 +37,7 @@ reg 'text', 'password', 'email', 'number', {
     template: ->
       attrs = name: this.options.name, type: this.options.type
       attrs.class = this.options.clas if this.options.clas?
+      attrs.value = this.options.value if this.options.value?
       attrs.placeholder = this.options.placeholder if this.options.placeholder?
       attrs.maxlength = this.options.maxlength if this.options.maxlength?
       attrs.style = 'display:none' if this.options.hide? and this.options.hide

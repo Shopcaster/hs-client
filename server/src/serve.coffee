@@ -11,6 +11,7 @@ render = require './render'
 
 
 cache = {}
+gzip = {}
 
 mimetypes =
   png: 'image/png'
@@ -57,10 +58,20 @@ exports.run = (opt) ->
   onRequest = (req, res) ->
     pathname = opt.pathname = url.parse(req.url).pathname
 
-    if cache[pathname]?
+
+
+    if (opt.gzip and gzip[pathname]?) or cache[pathname]?
       console.log ('GET 200 '+pathname).grey
-      res.writeHead 200, 'Content-Type': mime pathname
-      res.write cache[pathname], 'binary'
+      headers = 'Content-Type': mime pathname
+
+      if opt.gzip and 'gzip' in req.headers['accept-encoding'].split(',')
+        headers['Content-Encoding'] = 'gzip'
+        content = gzip[pathname]
+      else
+        content = cache[pathname]
+
+      res.writeHead 200, headers
+      res.write content, 'binary'
       res.end()
 
     else if opt.prerender
@@ -115,13 +126,18 @@ exports.run = (opt) ->
   build.buildDir opt.clientSource, opt, cache, (err)->
     return cli.fatal err if err?
 
-    ## start renderer
-    if opt.prerender
-      console.log 'initializing render'.magenta
-      render.init cache, opt, startServe
+    build.gzip cache, (err, zipped)->
+      return cli.fatal err if err?
 
-    else
-      startServe()
+      gzip = zipped
+
+      ## start renderer
+      if opt.prerender
+        console.log 'initializing render'.magenta
+        render.init cache, opt, startServe
+
+      else
+        startServe()
 
 
 watchRecursive = (path, clbk)->

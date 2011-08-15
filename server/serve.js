@@ -1,4 +1,10 @@
-var build, cache, cli, doRender, fs, http, mime, mimetypes, path, render, renderQ, rendering, url, watchRecursive;
+var build, cache, cli, doRender, fs, gzip, http, mime, mimetypes, path, render, renderQ, rendering, url, watchRecursive;
+var __indexOf = Array.prototype.indexOf || function(item) {
+  for (var i = 0, l = this.length; i < l; i++) {
+    if (this[i] === item) return i;
+  }
+  return -1;
+};
 http = require('http');
 url = require('url');
 path = require('path');
@@ -8,6 +14,7 @@ require('colors');
 build = require('./build');
 render = require('./render');
 cache = {};
+gzip = {};
 mimetypes = {
   png: 'image/png',
   jpg: 'image/jpeg',
@@ -48,14 +55,21 @@ doRender = function(res, pathname) {
 exports.run = function(opt) {
   var autoBuild, onRequest, startServe;
   onRequest = function(req, res) {
-    var errEnd, pathname;
+    var content, errEnd, headers, pathname;
     pathname = opt.pathname = url.parse(req.url).pathname;
-    if (cache[pathname] != null) {
+    if ((opt.gzip && (gzip[pathname] != null)) || (cache[pathname] != null)) {
       console.log(('GET 200 ' + pathname).grey);
-      res.writeHead(200, {
+      headers = {
         'Content-Type': mime(pathname)
-      });
-      res.write(cache[pathname], 'binary');
+      };
+      if (opt.gzip && __indexOf.call(req.headers['accept-encoding'].split(','), 'gzip') >= 0) {
+        headers['Content-Encoding'] = 'gzip';
+        content = gzip[pathname];
+      } else {
+        content = cache[pathname];
+      }
+      res.writeHead(200, headers);
+      res.write(content, 'binary');
       res.end();
     } else if (opt.prerender) {
       doRender(res, pathname);
@@ -113,12 +127,18 @@ exports.run = function(opt) {
     if (err != null) {
       return cli.fatal(err);
     }
-    if (opt.prerender) {
-      console.log('initializing render'.magenta);
-      return render.init(cache, opt, startServe);
-    } else {
-      return startServe();
-    }
+    return build.gzip(cache, function(err, zipped) {
+      if (err != null) {
+        return cli.fatal(err);
+      }
+      gzip = zipped;
+      if (opt.prerender) {
+        console.log('initializing render'.magenta);
+        return render.init(cache, opt, startServe);
+      } else {
+        return startServe();
+      }
+    });
   });
 };
 watchRecursive = function(path, clbk) {
