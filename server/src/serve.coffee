@@ -98,7 +98,7 @@ exports.run = (opt) ->
     return cli.fatal err if err?
     #serve
     addy = url.parse opt.clientUri
-    server = http.createServer(onRequest).listen(addy.port, addy.hostname)
+    server = http.createServer(onRequest).listen(addy.port, '0.0.0.0')
     console.log "server listening - http://#{addy.hostname}:#{addy.port}"
 
     autoBuild() if opt.autobuild
