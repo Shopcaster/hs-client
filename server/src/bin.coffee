@@ -18,8 +18,8 @@ cli.parse
   #builder
   appcache: ['a', 'HTML5 Application Cache', 'boolean']
 
-  concat: ['c', 'Connatinate js info one file', 'boolean']
-  minify: ['m', 'Minify JS using Uglify JS', 'boolean']
+  concatJS: ['c', 'Connatinate js info one file', 'boolean']
+  minifyJS: ['m', 'Minify JS using Uglify JS', 'boolean']
 
   ##TODO:
   #test: ['t', 'Build js with tests', 'boolean', false]

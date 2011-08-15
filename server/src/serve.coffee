@@ -58,8 +58,6 @@ exports.run = (opt) ->
   onRequest = (req, res) ->
     pathname = opt.pathname = url.parse(req.url).pathname
 
-
-
     if (opt.gzip and gzip[pathname]?) or cache[pathname]?
       console.log ('GET 200 '+pathname).grey
       headers = 'Content-Type': mime pathname

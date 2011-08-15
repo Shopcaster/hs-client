@@ -16,8 +16,8 @@ cli.parse({
   autobuild: ['b', 'Automatically rebuild on file change', 'boolean'],
   prerender: ['r', 'Prerender pages before serving', 'boolean'],
   appcache: ['a', 'HTML5 Application Cache', 'boolean'],
-  concat: ['c', 'Connatinate js info one file', 'boolean'],
-  minify: ['m', 'Minify JS using Uglify JS', 'boolean']
+  concatJS: ['c', 'Connatinate js info one file', 'boolean'],
+  minifyJS: ['m', 'Minify JS using Uglify JS', 'boolean']
 });
 mash = function() {
   var key, obj, objs, res, val, _i, _len;
