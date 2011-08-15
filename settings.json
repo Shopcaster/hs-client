@@ -15,11 +15,11 @@
     "serverUri": "http://hipsell.com:8080",
     "clientUri": "http://hipsell.com",
     "clientSource": "/data/web/s.hipsell.com/client/src",
-    "analytics": true,
+    "analytics": true
   },
   "staging": {
     "serverUri": "http://s.hipsell.com:8080",
     "clientUri": "http://s.hipsell.com",
-    "clientSource": "/data/web/s.hipsell.com/client/src",
+    "clientSource": "/data/web/s.hipsell.com/client/src"
   }
 }
