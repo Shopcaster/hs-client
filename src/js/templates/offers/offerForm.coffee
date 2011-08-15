@@ -19,7 +19,6 @@ class hs.t.OfferForm extends hs.Template
   fields: [{
     'name': 'amount'
     'type': 'text'
-    'value': '$'
     'placeholder': 'Make an Offer'
     'maxlength': 6
   }]
