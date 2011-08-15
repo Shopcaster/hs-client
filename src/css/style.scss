@@ -127,6 +127,8 @@ body{
   @include gradient($headerBack + #111, $headerBack - #111);
   @include box-shadow(0 1px 2px $black + #666);
 
+  .width{position:relative;}
+
   #logo{
     $height: 34px;
 
@@ -145,7 +147,7 @@ body{
   ul{
     height:100%;
     position:absolute;
-    top:0;left:200px;
+    top:0;right:0;
     width: $layout_width - 200px;
     @media only screen and (max-width: 480px) {
       width: $mob_layout_width - 200px;
