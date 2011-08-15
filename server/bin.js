@@ -10,9 +10,9 @@ fs = require('fs');
 _ = require('underscore')._;
 serve = require('./serve');
 cli.parse({
-  settings: ['t', 'JSON config file or predefined mode', 'path', './lsettings.json'],
-  clientSource: ['s', 'Source directory', 'path'],
-  clientUri: ['u', 'Address to serve on', 'string'],
+  mode: [false, 'JSON config file or predefined mode', 'path', './lsettings.json'],
+  'client-source': ['s', 'Source directory', 'path'],
+  'client-uri': ['u', 'Address to serve on', 'string'],
   autobuild: ['b', 'Automatically rebuild on file change', 'boolean'],
   prerender: ['r', 'Prerender pages before serving', 'boolean'],
   appcache: ['a', 'HTML5 Application Cache', 'boolean'],
@@ -36,16 +36,26 @@ mash = function() {
   return res;
 };
 cleanOpt = function(opt, clbk) {
-  var lsettings, settings, _ref;
+  var arg, i, lsettings, m, settings, t, _ref;
+  for (arg in opt) {
+    if (!__hasProp.call(opt, arg)) continue;
+    t = opt[arg];
+    delete opt[arg];
+    while ((i = arg.indexOf('-')) >= 0) {
+      m = arg.substr(i, 2);
+      arg = arg.replace(m, arg[i + 1].toUpperCase());
+    }
+    opt[arg] = t;
+  }
   if (opt.minify) {
     opt.concat = true;
   }
   settings = fs.readFileSync(__dirname + '/../settings.json', 'utf8');
   settings = JSON.parse(settings);
-  if (_ref = opt.settings, __indexOf.call(Object.keys(settings), _ref) >= 0) {
-    settings = mash(settings["default"], settings[opt.settings], opt);
+  if (_ref = opt.mode, __indexOf.call(Object.keys(settings), _ref) >= 0) {
+    settings = mash(settings["default"], settings[opt.mode], opt);
   } else if (fs.statSync(opt.settings).isFile()) {
-    lsettings = fs.readFileSync(opt.settings, 'utf8');
+    lsettings = fs.readFileSync(opt.mode, 'utf8');
     lsettings = JSON.parse(lsettings);
     settings = mash(settings["default"], lsettings, opt);
   }
