@@ -68,6 +68,9 @@ navigator.geolocation ||=
         heading: null
         speed: null
 
+    # Remove the JSONP script from the DOM
+    document.getElementsByTagName('head')[0].removeChild(navigator.geolocation._req)
+
     # Fire all the callbacks
     for clbk in navigator.geolocation._callbacks
       clbk(navigator.geolocation._cache)
