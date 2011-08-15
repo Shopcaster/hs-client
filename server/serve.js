@@ -97,7 +97,7 @@ exports.run = function(opt) {
       return cli.fatal(err);
     }
     addy = url.parse(opt.clientUri);
-    server = http.createServer(onRequest).listen(addy.port, addy.hostname);
+    server = http.createServer(onRequest).listen(addy.port, '0.0.0.0');
     console.log("server listening - http://" + addy.hostname + ":" + addy.port);
     if (opt.autobuild) {
       return autoBuild();
