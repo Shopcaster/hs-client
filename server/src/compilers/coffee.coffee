@@ -25,7 +25,7 @@ compile = (files, opt, cache, clbk) ->
       catch e
         return clbk 'coffee error in file: '+file+'\n'+e
 
-      name = file.replace(opt.src, '').replace(/\.coffee$/, '.js')
+      name = file.replace(opt.clientSource, '').replace(/\.coffee$/, '.js')
       cache[name] = js
       next()
 

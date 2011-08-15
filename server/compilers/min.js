@@ -5,7 +5,7 @@ depends = require('depends');
 require('colors');
 compile = function(files, opt, cache, clbk) {
   var content, file;
-  if (!opt.minify && !opt.concat) {
+  if (!opt.minifyJS && !opt.concatJS) {
     return clbk();
   }
   console.log('minifying js'.magenta);
@@ -29,14 +29,13 @@ compile = function(files, opt, cache, clbk) {
       file = _ref[_i];
       js += files.js[file];
     }
-    if (opt.minify) {
+    if (opt.minifyJS) {
       ast = ug.parser.parse(js);
       ast = ug.uglify.ast_mangle(ast, {
         toplevel: true
       });
       ast = ug.uglify.ast_squeeze(ast);
       js = ug.uglify.gen_code(ast, {
-        beautify: opt.pretify,
         indent_level: 2
       });
     }

@@ -36,7 +36,7 @@ exports.init = (c, opt, clbk)->
   window.Array = Array
   window.Number = Number
   window.JSON = JSON
-  window.conf = opt.conf
+  window.conf = opt
 
   files = new depends.Files()
 
@@ -47,9 +47,7 @@ exports.init = (c, opt, clbk)->
 
   dep = new depends.NodeDep files, context: window, init: 'hs.urls'
 
-  zz = "#{opt.conf.zz.server.protocol}://#{opt.conf.zz.server.host}:#{opt.conf.zz.server.port}/api-library.js"
-
-  dep.dlIntoContext zz, (err)->
+  dep.dlIntoContext "#{opt.serverUri}/api-library.js", (err)->
     return clbk err if err?
     dep.execute 'hs.urls', clbk
 

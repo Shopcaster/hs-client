@@ -14,13 +14,13 @@ compile = function(files, opt, cache, clbk) {
   manifestFilename = '/manifest.appcache';
   manifest = '';
   manifest += 'CACHE MANIFEST\n';
-  if (opt.noappcache) {
+  if (!opt.appcache) {
     manifest += 'NETWORK:\n*\n';
     cache[manifestFilename] = manifest;
     return clbk();
   }
   console.log('building appcache'.magenta);
-  return getModTime(opt.src, function(err, time) {
+  return getModTime(opt.clientSource, function(err, time) {
     var content, ext, file;
     if (err != null) {
       return clbk(err);
@@ -31,11 +31,11 @@ compile = function(files, opt, cache, clbk) {
     for (file in cache) {
       content = cache[file];
       ext = /\.(\w+)$/.exec(file)[1];
-      if (__indexOf.call(exts, ext) >= 0 && (!opt.concat || ext !== 'js')) {
+      if (__indexOf.call(exts, ext) >= 0 && (!opt.concatJS || ext !== 'js')) {
         manifest += file + '\n';
       }
     }
-    if (opt.concat) {
+    if (opt.concatJS) {
       manifest += '/main.js\n';
     }
     cache[manifestFilename] = manifest;

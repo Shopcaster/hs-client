@@ -7,7 +7,7 @@ require('colors');
 dep = null;
 cache = null;
 exports.init = function(c, opt, clbk) {
-  var content, doc, file, files, index, window, zz;
+  var content, doc, file, files, index, window;
   cache = c;
   index = cache['/index.html'];
   doc = jsdom(index, null, {
@@ -31,7 +31,7 @@ exports.init = function(c, opt, clbk) {
   window.Array = Array;
   window.Number = Number;
   window.JSON = JSON;
-  window.conf = opt.conf;
+  window.conf = opt;
   files = new depends.Files();
   files.js = {};
   for (file in cache) {
@@ -44,8 +44,7 @@ exports.init = function(c, opt, clbk) {
     context: window,
     init: 'hs.urls'
   });
-  zz = "" + opt.conf.zz.server.protocol + "://" + opt.conf.zz.server.host + ":" + opt.conf.zz.server.port + "/api-library.js";
-  return dep.dlIntoContext(zz, function(err) {
+  return dep.dlIntoContext("" + opt.serverUri + "/api-library.js", function(err) {
     if (err != null) {
       return clbk(err);
     }

@@ -27,7 +27,7 @@ class hs.t.ListingLI extends hs.Template
 
 
   setPhoto: () ->
-    url = "http://#{conf.zz.server.host}:#{conf.zz.server.port}/#{this.model.photo}"
+    url = "#{conf.serverUri}/#{this.model.photo}"
     this.$('.listing-image').attr 'src', url
 
 

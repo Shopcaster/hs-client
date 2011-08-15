@@ -15,7 +15,7 @@ compile = (files, opt, cache, clbk) ->
 
   console.log 'building scss'.magenta
 
-  exec "sass #{opt.src}/css/style.scss", (err, stdout, stderr)->
+  exec "sass #{opt.clientSource}/css/style.scss", (err, stdout, stderr)->
     return clbk err.stack if err?
     return clbk strerr if stderr? and stderr != ''
     cache['/style.css'] = stdout

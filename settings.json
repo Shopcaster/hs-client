@@ -1,0 +1,22 @@
+{
+  "default": {
+    "serverUri": null,
+    "clientUri": null,
+    "clientSource": "./src",
+    "analytics": false,
+    "appcache": true,
+    "prerender": false,
+    "concatJS": true,
+    "minifyJS": false,
+    "autobuild": false
+  },
+  "production": {
+    "serverUri": "http://hipsell.com:8080",
+    "clientUri": "http://hipsell.com",
+    "analytics": true
+  },
+  "staging": {
+    "serverUri": "http://s.hipsell.com:8080",
+    "clientUri": "http://s.hipsell.com"
+  }
+}

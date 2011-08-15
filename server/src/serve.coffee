@@ -56,11 +56,10 @@ exports.run = (opt) ->
 
   onRequest = (req, res) ->
     pathname = opt.pathname = url.parse(req.url).pathname
-    filename = path.join opt.build, pathname
 
     if cache[pathname]?
       console.log ('GET 200 '+pathname).grey
-      res.writeHead 200, 'Content-Type': mime filename
+      res.writeHead 200, 'Content-Type': mime pathname
       res.write cache[pathname], 'binary'
       res.end()
 
@@ -89,15 +88,16 @@ exports.run = (opt) ->
   startServe = (err)->
     return cli.fatal err if err?
     #serve
-    server = http.createServer(onRequest).listen(opt.port, opt.host)
-    console.log "server listening - http://#{opt.host}:#{opt.port}"
+    addy = url.parse opt.clientUri
+    server = http.createServer(onRequest).listen(addy.port, addy.hostname)
+    console.log "server listening - http://#{addy.hostname}:#{addy.port}"
 
     autoBuild() if opt.autobuild
 
 
   autoBuild = ->
     # Autobuild
-    watchRecursive opt.src, (file)->
+    watchRecursive opt.clientSource, (file)->
       console.log 'File change detected'.yellow
 
       build.build [file], opt, cache, (err)->
@@ -112,7 +112,7 @@ exports.run = (opt) ->
 
 
   # initial build
-  build.buildDir opt.src, opt, cache, (err)->
+  build.buildDir opt.clientSource, opt, cache, (err)->
     return cli.fatal err if err?
 
     ## start renderer

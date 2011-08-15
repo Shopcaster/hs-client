@@ -6,47 +6,56 @@ serve = require './serve'
 
 cli.parse
 
+  settings: ['t', 'JSON config file or predefined mode', 'path', './lsettings.json']
+
   #options
-  src: ['s', 'Source directory', 'path', './src']
+  clientSource: ['s', 'Source directory', 'path']
+  clientUri:  ['u', 'Address to serve on', 'string']
 
-  #server
-  host:  ['h', 'Address to serve on', 'string', '0.0.0.0']
-  port:  ['p', 'Serve on port', 'number', 3000]
-
-  autobuild:  ['b', 'Automatically rebuild on file change', 'boolean', false]
-  prerender:  ['r', 'Prerender pages before serving', 'boolean', false]
-
+  autobuild:  ['b', 'Automatically rebuild on file change', 'boolean']
+  prerender:  ['r', 'Prerender pages before serving', 'boolean']
 
   #builder
-  noappcache: ['n', 'Disable HTML5 Application Cache', 'boolean', false]
-  jsconf: ['c', 'JSON config file', 'path', './localConf.json']
+  appcache: ['a', 'HTML5 Application Cache', 'boolean']
 
-  concat: [false, 'Connatinate js info one file', 'boolean', false]
-  minify: ['m', 'Minify JS using Uglify JS', 'boolean', false]
-  pretify: ['p', 'Pretify minified JS using Uglify JS', 'boolean', false]
+  concat: ['c', 'Connatinate js info one file', 'boolean']
+  minify: ['m', 'Minify JS using Uglify JS', 'boolean']
 
   ##TODO:
   #test: ['t', 'Build js with tests', 'boolean', false]
 
 
-cleanOpt = (opt, clbk)->
+mash = (objs...)->
+  res = {}
+  for obj in objs
+    for own key, val of obj
+      res[key] = val if val?
+  return res
 
+cleanOpt = (opt, clbk)->
   opt.concat = true if opt.minify
 
-  fs.realpath opt.src, (err, srcPath)->
-    cli.fatal err if err?
-    opt.src = srcPath
+  settings = fs.readFileSync __dirname+'/../settings.json', 'utf8'
+  settings = JSON.parse settings
 
-    fs.readFile opt.src+'/conf.json', 'utf8', (err, data)->
-      cli.fatal err if err?
+  if opt.settings in Object.keys settings
+    settings = mash settings.default, settings[opt.settings], opt
 
-      fs.readFile opt.jsconf, 'utf8', (err, localData)->
-        cli.fatal err if err?
+  else if fs.statSync(opt.settings).isFile()
+    lsettings = fs.readFileSync opt.settings, 'utf8'
+    lsettings = JSON.parse lsettings
 
-        opt.conf = _.extend({}, JSON.parse(data), JSON.parse(localData))
-        clbk opt
+    settings = mash settings.default, lsettings, opt
+
+  delete settings.settings
+
+  console.log settings
+
+  clbk settings
 
 
 cli.main (args, opt)->
   if (opt.silent) then cli.status = ->
   cleanOpt opt, (opt)-> serve.run(opt)
+
+

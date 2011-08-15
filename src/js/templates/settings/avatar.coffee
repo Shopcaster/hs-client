@@ -31,8 +31,7 @@ class hs.t.AvatarSetting extends hs.Template
   }]
 
   postRender:->
-    server = "#{conf.zz.server.protocol}://#{conf.zz.server.host}:#{conf.zz.server.port}"
-    this.$('form').attr 'action', "#{server}/iapi/avatar"
+    this.$('form').attr 'action', "#{conf.serverUri}/iapi/avatar"
 
     user = zz.auth.curUser()
     this.$('[name=email]').val user.email

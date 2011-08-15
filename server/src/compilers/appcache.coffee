@@ -14,14 +14,14 @@ compile = (files, opt, cache, clbk) ->
 
   manifest += 'CACHE MANIFEST\n'
 
-  if opt.noappcache
+  if not opt.appcache
     manifest += 'NETWORK:\n*\n'
     cache[manifestFilename] = manifest
     return clbk()
 
   console.log 'building appcache'.magenta
 
-  getModTime opt.src, (err, time)->
+  getModTime opt.clientSource, (err, time)->
     return clbk err if err?
 
     manifest += "#built: #{time}\n\n"
@@ -32,10 +32,10 @@ compile = (files, opt, cache, clbk) ->
 
     for file, content of cache
       ext = /\.(\w+)$/.exec(file)[1]
-      if ext in exts and (not opt.concat or ext != 'js')
+      if ext in exts and (not opt.concatJS or ext != 'js')
         manifest += file+'\n'
 
-    if opt.concat
+    if opt.concatJS
       manifest += '/main.js\n'
 
     cache[manifestFilename] = manifest

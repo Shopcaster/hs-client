@@ -20,7 +20,7 @@ compile = (files, opt, cache, clbk) ->
     return clbk err if err?
 
     # conf
-    html = html.replace '</head>', '<script>var conf='+JSON.stringify(opt.conf)+';</script></head>'
+    html = html.replace '</head>', '<script>var conf='+JSON.stringify(opt)+';</script></head>'
 
 
     # appcache
@@ -33,13 +33,13 @@ compile = (files, opt, cache, clbk) ->
 
 
     # JavaScript
-    html = html.replace '</body>', "<script src='#{opt.conf.zz.server.protocol}://#{opt.conf.zz.server.host}:#{opt.conf.zz.server.port}/api-library.js'></script></body>"
+    html = html.replace '</body>', "<script src='#{opt.serverUri}/api-library.js'></script></body>"
 
     done = ->
       cache['/index.html'] = html
       clbk()
 
-    if opt.concat
+    if opt.concatJS
       html = html.replace '</body>', '<script src="/main.js"></script></body>'
       done()
 

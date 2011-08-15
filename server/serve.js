@@ -48,13 +48,12 @@ doRender = function(res, pathname) {
 exports.run = function(opt) {
   var autoBuild, onRequest, startServe;
   onRequest = function(req, res) {
-    var errEnd, filename, pathname;
+    var errEnd, pathname;
     pathname = opt.pathname = url.parse(req.url).pathname;
-    filename = path.join(opt.build, pathname);
     if (cache[pathname] != null) {
       console.log(('GET 200 ' + pathname).grey);
       res.writeHead(200, {
-        'Content-Type': mime(filename)
+        'Content-Type': mime(pathname)
       });
       res.write(cache[pathname], 'binary');
       res.end();
@@ -79,18 +78,19 @@ exports.run = function(opt) {
     };
   };
   startServe = function(err) {
-    var server;
+    var addy, server;
     if (err != null) {
       return cli.fatal(err);
     }
-    server = http.createServer(onRequest).listen(opt.port, opt.host);
-    console.log("server listening - http://" + opt.host + ":" + opt.port);
+    addy = url.parse(opt.clientUri);
+    server = http.createServer(onRequest).listen(addy.port, addy.hostname);
+    console.log("server listening - http://" + addy.hostname + ":" + addy.port);
     if (opt.autobuild) {
       return autoBuild();
     }
   };
   autoBuild = function() {
-    return watchRecursive(opt.src, function(file) {
+    return watchRecursive(opt.clientSource, function(file) {
       console.log('File change detected'.yellow);
       return build.build([file], opt, cache, function(err) {
         var _ref;
@@ -109,7 +109,7 @@ exports.run = function(opt) {
       });
     });
   };
-  return build.buildDir(opt.src, opt, cache, function(err) {
+  return build.buildDir(opt.clientSource, opt, cache, function(err) {
     if (err != null) {
       return cli.fatal(err);
     }

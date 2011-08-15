@@ -26,7 +26,7 @@ compile = (files, opt, cache, clbk) ->
         name = '/favicon.ico'
 
       else
-        name = file.replace opt.src, ''
+        name = file.replace opt.clientSource, ''
 
 
       cache[name] = content

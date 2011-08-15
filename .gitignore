@@ -1,5 +1,4 @@
 .sass-cache
-build/*
-localConf.json
+lsettings.json
 node_modules
 .node-xmlhttprequest-sync*

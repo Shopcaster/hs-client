@@ -21,17 +21,17 @@ compile = function(files, opt, cache, clbk) {
     if (err != null) {
       return clbk(err);
     }
-    html = html.replace('</head>', '<script>var conf=' + JSON.stringify(opt.conf) + ';</script></head>');
+    html = html.replace('</head>', '<script>var conf=' + JSON.stringify(opt) + ';</script></head>');
     if (!opt['noappcache']) {
       html = html.replace('<html', "<html manifest='/manifest.appcache'");
     }
     html = html.replace('</head>', "<link rel='stylesheet' href='/style.css'></head>");
-    html = html.replace('</body>', "<script src='" + opt.conf.zz.server.protocol + "://" + opt.conf.zz.server.host + ":" + opt.conf.zz.server.port + "/api-library.js'></script></body>");
+    html = html.replace('</body>', "<script src='" + opt.serverUri + "/api-library.js'></script></body>");
     done = function() {
       cache['/index.html'] = html;
       return clbk();
     };
-    if (opt.concat) {
+    if (opt.concatJS) {
       html = html.replace('</body>', '<script src="/main.js"></script></body>');
       return done();
     } else {

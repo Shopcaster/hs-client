@@ -7,7 +7,7 @@ require 'colors'
 
 compile = (files, opt, cache, clbk) ->
 
-  return clbk() if not opt.minify and not opt.concat
+  return clbk() if not opt.minifyJS and not opt.concatJS
 
   console.log 'minifying js'.magenta
 
@@ -26,12 +26,11 @@ compile = (files, opt, cache, clbk) ->
     for file in files.output
       js += files.js[file]
 
-    if opt.minify
+    if opt.minifyJS
       ast = ug.parser.parse js
       ast = ug.uglify.ast_mangle ast, toplevel: true
       ast = ug.uglify.ast_squeeze ast
       js = ug.uglify.gen_code ast,
-        beautify: opt.pretify
         indent_level: 2
 
     cache['/main.js'] = js

@@ -34,7 +34,7 @@ compile = function(files, opt, cache, clbk) {
       if (/favicon\.ico/.test(file)) {
         name = '/favicon.ico';
       } else {
-        name = file.replace(opt.src, '');
+        name = file.replace(opt.clientSource, '');
       }
       cache[name] = content;
       return next();
