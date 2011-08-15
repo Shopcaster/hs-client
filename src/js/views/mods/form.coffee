@@ -27,7 +27,7 @@ hs.v.mods.form = (View) ->
       this.fields[fieldOpts.name] = field
 
     # only pass if you suck
-    return if 'placeholder' in document.createElement('input')
+    return if `'placeholder' in document.createElement('input')`
 
     for name, field of this.fields then do (field)->
       el = field.template.el
