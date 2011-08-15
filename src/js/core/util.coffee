@@ -122,4 +122,5 @@ setInterval ->
 
 Function.prototype.getName =->
   return this.name if this.name?
-  return /function (.+)\(/.exec(this.toString())[1]
+  p = /function (.+)\(/.exec(this.toString())
+  return p[1] if p?
