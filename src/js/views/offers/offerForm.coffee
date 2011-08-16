@@ -37,19 +37,19 @@ class hs.v.OfferForm extends hs.View
             this.createMessage amount, offerId
 
 
-  submit: ->
+  submit: (clbk)->
+    console.log 'submitting', this._cache
     this.options.listing.myOffer (offer) =>
 
       if offer?
-        console.log 'updating offer'
         zz.update.offer offer, amount: this.amount(), =>
           this.createMessage(this.amount(), offer._id)
           this.clear()
           this.blur()
+          clbk?()
 
 
       else
-        console.log 'creating offer'
         zz.create.offer
           amount: this.amount()
           listing: this.options.listing._id
@@ -57,6 +57,7 @@ class hs.v.OfferForm extends hs.View
             this.createMessage(this.amount(), id)
             this.clear()
             this.blur()
+            clbk?()
 
 
 hs.v.mods.form hs.v.OfferForm

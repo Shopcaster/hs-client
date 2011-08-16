@@ -107,19 +107,26 @@ exports.run = function(opt) {
     return watchRecursive(opt.clientSource, function(file) {
       console.log('File change detected'.yellow);
       return build.build([file], opt, cache, function(err) {
-        var _ref;
         if (err != null) {
           return console.log('ERROR:'.red, err);
         }
-        if (opt.prerender && ((_ref = /\.(\w+)$/.exec(file)[1]) === 'coffee' || _ref === 'html')) {
-          console.log('Reloading render'.yellow);
-          return render.init(cache, opt, function(err) {
-            if (err != null) {
-              return cli.fatal(err);
-            }
-            return console.log('render reload complete'.yellow);
-          });
-        }
+        return build.gzip({
+          file: cache[file]
+        }, gzip, function(err) {
+          var _ref;
+          if (err != null) {
+            return console.log('ERROR:'.red, err);
+          }
+          if (opt.prerender && ((_ref = /\.(\w+)$/.exec(file)[1]) === 'coffee' || _ref === 'html')) {
+            console.log('Reloading render'.yellow);
+            return render.init(cache, opt, function(err) {
+              if (err != null) {
+                return cli.fatal(err);
+              }
+              return console.log('render reload complete'.yellow);
+            });
+          }
+        });
       });
     });
   };
@@ -127,11 +134,10 @@ exports.run = function(opt) {
     if (err != null) {
       return cli.fatal(err);
     }
-    return build.gzip(cache, function(err, zipped) {
+    return build.gzip(cache, gzip, function(err, zipped) {
       if (err != null) {
         return cli.fatal(err);
       }
-      gzip = zipped;
       if (opt.prerender) {
         console.log('initializing render'.magenta);
         return render.init(cache, opt, startServe);

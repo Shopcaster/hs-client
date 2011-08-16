@@ -58,10 +58,8 @@ listDir = (dir, clbk)->
           next()
 
 
-zippit = (cache, clbk)->
+zippit = (cache, zipped, clbk)->
   console.log 'performing gzip'.magenta
-
-  zipped = {}
 
   done = _.after Object.keys(cache).length, -> clbk null, zipped
 

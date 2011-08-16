@@ -112,22 +112,23 @@ exports.run = (opt) ->
       build.build [file], opt, cache, (err)->
         return console.log 'ERROR:'.red, err if err?
 
-        if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
-          console.log 'Reloading render'.yellow
+        build.gzip file: cache[file], gzip, (err)->
+          return console.log 'ERROR:'.red, err if err?
 
-          render.init cache, opt, (err)->
-            return cli.fatal err if err?
-            console.log 'render reload complete'.yellow
+          if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
+            console.log 'Reloading render'.yellow
+
+            render.init cache, opt, (err)->
+              return cli.fatal err if err?
+              console.log 'render reload complete'.yellow
 
 
   # initial build
   build.buildDir opt.clientSource, opt, cache, (err)->
     return cli.fatal err if err?
 
-    build.gzip cache, (err, zipped)->
+    build.gzip cache, gzip, (err, zipped)->
       return cli.fatal err if err?
-
-      gzip = zipped
 
       ## start renderer
       if opt.prerender
