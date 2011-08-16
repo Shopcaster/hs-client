@@ -5,15 +5,6 @@ dep.require 'hs.geo'
 
 dep.provide 'hs.t.Home'
 
-### TODO: add flash fallback
-              <object class="vjs-flash-fallback" width="480" height="272" type="application/x-shockwave-flash"
-                data="http://www.youtube.com/v/jl1devFMfD4">
-                <param name="movie" value="http://www.youtube.com/v/jl1devFMfD4" />
-                <param name="allowfullscreen" value="true" />
-                <img src="/video/video.png" width="480" height="272>
-              </object>
-###
-
 
 class hs.t.Home extends hs.Template
 
@@ -25,11 +16,16 @@ class hs.t.Home extends hs.Template
       <div class="splash">
         <div class="left">
           <div class="video-js-box" id="splash-video">
-            <video class="video-js" width="480" height="272" controls preload poster="/video/video.png">
+            <video class="video-js" width="480" height="270" controls preload poster="/video/video.png">
               <source src="/video/video.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
               <source src="/video/video.webm" type='video/webm; codecs="vp8, vorbis"' />
               <source src="/video/video.ogv" type='video/ogg; codecs="theora, vorbis"' />
-              <img src="/video/video.png" width="480" height="272">
+              <object class="vjs-flash-fallback" width="480" height="270" type="application/x-shockwave-flash" data="http://vimeo.com/moogaloop.swf?clip_id=27782331&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=00adef&amp;fullscreen=1&amp;autoplay=0&amp;loop=0">
+                <param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=27782331&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=00adef&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" />
+                <param name="allowfullscreen" value="true" />
+                <param name="allowscriptaccess" value="always" />
+                <img src="/video/video.png" width="480" height="270">
+              </object>
             </video>
           </div>
         </div>

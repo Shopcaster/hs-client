@@ -11,7 +11,7 @@ class hs.t.OfferForm extends hs.Template
   template: -> """
     <form class="offer-form">
       <span class="formFields"></span>
-      <input type="submit" class="submit" />
+      <input type="submit" class="submit" value="Submit" />
     </form>
     """
 
