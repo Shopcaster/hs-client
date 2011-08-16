@@ -82,10 +82,12 @@ class hs.t.Home extends hs.Template
           if listings.length < 24
             this.scrollDone = true
 
-          for listingID in listings then do (listingID)=>
+          for listingID, i in listings
             this.rendered++
-            zz.data.listing listingID, (listing)=>
-              tmpl = this.listingTmpl listing, appendTo: '#'+this.id+' .listings'
+            do (listingID, i)=> zz.data.listing listingID, (listing)=>
+              tmpl = this.listingTmpl listing,
+                appendTo: '#'+this.id+' .listings',
+                nthChild: i
               scroll = tmpl.el.offset().top
               this.scrollTrigger = scroll if scroll > this.scrollTrigger
 

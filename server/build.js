@@ -62,10 +62,9 @@ listDir = function(dir, clbk) {
     })();
   });
 };
-zippit = function(cache, clbk) {
-  var content, done, name, zipped, _results;
+zippit = function(cache, zipped, clbk) {
+  var content, done, name, _results;
   console.log('performing gzip'.magenta);
-  zipped = {};
   done = _.after(Object.keys(cache).length, function() {
     return clbk(null, zipped);
   });

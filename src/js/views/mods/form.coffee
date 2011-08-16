@@ -114,12 +114,15 @@ hs.v.mods.form = (View) ->
 
   View.prototype._cache = {}
   View.prototype.cache = ->
+    console.log 'caching', this.constructor.name
     for node in this.template.$('[name]')
       node = $(node)
       this._cache[node.attr('name')] = node.val()
 
 
-  View.prototype.unCache = -> this._cache = {}
+  View.prototype.unCache = ->
+    console.log 'unCaching', this.constructor.name
+    this._cache = {}
 
 
   View.prototype.get = (fieldname) ->
@@ -132,7 +135,9 @@ hs.v.mods.form = (View) ->
     this.fields[fieldname].set(value)
 
 
-  View.prototype.clear = () -> field.set('') for name, field of this.fields
+  View.prototype.clear = () ->
+    field.set('') for name, field of this.fields
+    this.unCache()
 
 
   View.prototype.showInvalid = (name) ->

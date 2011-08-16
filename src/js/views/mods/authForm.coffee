@@ -45,4 +45,3 @@ hs.v.mods.authForm = (View) ->
 
     else
       this.template.$('[name=password]').show()
-
