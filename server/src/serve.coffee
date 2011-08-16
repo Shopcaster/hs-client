@@ -112,24 +112,23 @@ exports.run = (opt) ->
       build.build [file], opt, cache, (err)->
         return console.log 'ERROR:'.red, err if err?
 
-        build.gzip file: cache[file], gzip, (err)->
-          return console.log 'ERROR:'.red, err if err?
+        if opt.gzip
+          build.gzip file: cache[file], gzip, (err)->
+            return console.log 'ERROR:'.red, err if err?
 
-          if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
-            console.log 'Reloading render'.yellow
+        if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
+          console.log 'Reloading render'.yellow
 
-            render.init cache, opt, (err)->
-              return cli.fatal err if err?
-              console.log 'render reload complete'.yellow
+          render.init cache, opt, (err)->
+            return cli.fatal err if err?
+            console.log 'render reload complete'.yellow
 
 
   # initial build
   build.buildDir opt.clientSource, opt, cache, (err)->
     return cli.fatal err if err?
 
-    build.gzip cache, gzip, (err, zipped)->
-      return cli.fatal err if err?
-
+    pre = ->
       ## start renderer
       if opt.prerender
         console.log 'initializing render'.magenta
@@ -137,6 +136,15 @@ exports.run = (opt) ->
 
       else
         startServe()
+
+    if opt.gzip
+      build.gzip cache, gzip, (err)->
+        return cli.fatal err if err?
+        pre()
+    else
+      pre()
+
+
 
 
 watchRecursive = (path, clbk)->

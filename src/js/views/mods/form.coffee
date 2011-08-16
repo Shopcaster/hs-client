@@ -111,18 +111,14 @@ hs.v.mods.form = (View) ->
               el.addClass 'placeheld'
 
 
-
-  View.prototype._cache = {}
   View.prototype.cache = ->
-    console.log 'caching', this.constructor.name
+    this._cache ||= {}
     for node in this.template.$('[name]')
       node = $(node)
       this._cache[node.attr('name')] = node.val()
 
 
-  View.prototype.unCache = ->
-    console.log 'unCaching', this.constructor.name
-    this._cache = {}
+  View.prototype.unCache = -> this._cache = {}
 
 
   View.prototype.get = (fieldname) ->
@@ -143,4 +139,3 @@ hs.v.mods.form = (View) ->
   View.prototype.showInvalid = (name) ->
     this.template.$('[name="'+name+'"]').addClass('formError').one 'keydown change', =>
       this.template.$('[name="'+name+'"]').removeClass('formError')
-

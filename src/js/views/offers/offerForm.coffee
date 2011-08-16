@@ -38,7 +38,6 @@ class hs.v.OfferForm extends hs.View
 
 
   submit: (clbk)->
-    console.log 'submitting', this._cache
     this.options.listing.myOffer (offer) =>
 
       if offer?
