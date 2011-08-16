@@ -29,8 +29,7 @@ hs.v.mods.authForm = (View) ->
       if valid
         if not zz.auth.curUser()?
           this.cache()
-          zz.auth this.get('email'), this.get('password'), =>
-            this._authHandler.apply(this, arguments)
+          zz.auth this.get('email'), this.get('password'), _.bind this._authHandler, this
 
         else
           this.submit?()
@@ -39,6 +38,8 @@ hs.v.mods.authForm = (View) ->
   View.prototype._authHandler = ->
     if zz.auth.curUser()?
       return this.submit? => this.unCache()
+
+    this.unCache()
 
     if this.template.$('[name=password]:visible').length
       this.showInvalid 'password'

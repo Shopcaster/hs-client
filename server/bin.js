@@ -17,7 +17,8 @@ cli.parse({
   prerender: ['r', 'Prerender pages before serving', 'boolean'],
   appcache: ['a', 'HTML5 Application Cache', 'boolean'],
   concatJS: ['c', 'Connatinate js info one file', 'boolean'],
-  minifyJS: ['m', 'Minify JS using Uglify JS', 'boolean']
+  minifyJS: ['m', 'Minify JS using Uglify JS', 'boolean'],
+  gzip: ['g', 'gzip everything', 'boolean']
 });
 mash = function() {
   var key, obj, objs, res, val, _i, _len;
