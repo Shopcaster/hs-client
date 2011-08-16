@@ -5,20 +5,13 @@ dep.require 'hs.geo'
 
 dep.provide 'hs.t.Home'
 
-###TO be added when video is ready
-        <div class="video-js-box" id="splash-video">
-          <video class="video-js" width="480" height="272" controls preload poster="/video/test2.png">
-            <source src="/video/test.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-            <source src="/video/test.webm" type='video/webm; codecs="vp8, vorbis"' />
-            <source src="/video/test.ogv" type='video/ogg; codecs="theora, vorbis"' />
-            <object class="vjs-flash-fallback" width="480" height="272" type="application/x-shockwave-flash"
-              data="http://www.youtube.com/v/jl1devFMfD4">
-              <param name="movie" value="http://www.youtube.com/v/jl1devFMfD4" />
-              <param name="allowfullscreen" value="true" />
-              <img src="/video/test2.png" width="480" height="272>
-            </object>
-          </video>
-        </div>
+### TODO: add flash fallback
+              <object class="vjs-flash-fallback" width="480" height="272" type="application/x-shockwave-flash"
+                data="http://www.youtube.com/v/jl1devFMfD4">
+                <param name="movie" value="http://www.youtube.com/v/jl1devFMfD4" />
+                <param name="allowfullscreen" value="true" />
+                <img src="/video/video.png" width="480" height="272>
+              </object>
 ###
 
 
@@ -31,7 +24,14 @@ class hs.t.Home extends hs.Template
     <div class="home">
       <div class="splash">
         <div class="left">
-          <img width="480" height="272" src="/video/soon.png">
+          <div class="video-js-box" id="splash-video">
+            <video class="video-js" width="480" height="272" controls preload poster="/video/video.png">
+              <source src="/video/video.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+              <source src="/video/video.webm" type='video/webm; codecs="vp8, vorbis"' />
+              <source src="/video/video.ogv" type='video/ogg; codecs="theora, vorbis"' />
+              <img src="/video/video.png" width="480" height="272">
+            </video>
+          </div>
         </div>
         <div class="right">
           <h3>Sellers</h3>
