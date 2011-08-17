@@ -12,19 +12,29 @@ def merge():
 
 def deploy(server='test'):
   if server == 'test':
-    with settings(hosts=['d.hipsell.com'])
-      with cd('/var/www/hs-client')
+    with settings(hosts=['d.hipsell.com']):
+      with cd('/var/hipsell/hs-client'):
+        run('git pull origin develop')
+        run('sudo restart hs-client')
+        run('sleep 0.1')
+        run('sudo status hs-client')
 
+  else if server in ['staging', 's', 'production', 'p']
 
-  else if server == 'staging' or server == 's':
-    loc = '/data/web/s.hipsell.com/client/'
+    if server in ['staging', 's']:
+      loc = '/data/web/s.hipsell.com/client/'
+      proc = 'client-staging'
+      host = 's.hipsell.com'
 
-  else if server == 'production' or server == 'p':
-    loc = '/data/web/hipsell.com/client/'
+    else if server in ['production', 'p']:
+      loc = '/data/web/hipsell.com/client/'
+      proc = 'client'
+      host = 'hipsell.com'
+
+    with settings(hosts=[host]):
+      with cd(loc):
+        run('git pull origin master')
+        run('sudo supervisorctl restart %s' % proc)
 
   else:
     raise ValueError('Bad server %s' % server)
-
-  with cd(loc):
-    run('git pull')
-    run(
