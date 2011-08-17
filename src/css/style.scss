@@ -132,8 +132,7 @@ body{
   #logo{
     $height: 34px;
 
-    width:$layout_width;
-    margin:auto;
+    width:200px;
     height:50px;
     @include background-size(auto 34px);
     background-repeat:no-repeat;
