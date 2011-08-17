@@ -8,6 +8,7 @@ def merge():
     local('git pull origin master')
     local('git merge origin develop')
     local('git push origin master')
+    local('git checkout develop')
 
 
 def deploy(server='test'):
