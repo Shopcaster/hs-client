@@ -19,14 +19,14 @@ def deploy(server='test'):
         run('sleep 0.1')
         run('sudo status hs-client')
 
-  else if server in ['staging', 's', 'production', 'p']
+  elif server in ['staging', 's', 'production', 'p']:
 
     if server in ['staging', 's']:
       loc = '/data/web/s.hipsell.com/client/'
       proc = 'client-staging'
       host = 's.hipsell.com'
 
-    else if server in ['production', 'p']:
+    elif server in ['production', 'p']:
       loc = '/data/web/hipsell.com/client/'
       proc = 'client'
       host = 'hipsell.com'
