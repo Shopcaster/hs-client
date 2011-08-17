@@ -5,16 +5,8 @@ dep.require 'hs.geo'
 
 dep.provide 'hs.t.Home'
 
+### Better video, not working in FF for some reason
 
-class hs.t.Home extends hs.Template
-
-  appendTo: '#main'
-
-
-  template: -> '''
-    <div class="home">
-      <div class="splash">
-        <div class="left">
           <div class="video-js-box" id="splash-video">
             <video class="video-js" width="480" height="270" controls preload poster="/video/video.png">
               <source src="/video/video.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
@@ -28,6 +20,20 @@ class hs.t.Home extends hs.Template
               </object>
             </video>
           </div>
+
+###
+
+
+class hs.t.Home extends hs.Template
+
+  appendTo: '#main'
+
+
+  template: -> '''
+    <div class="home">
+      <div class="splash">
+        <div class="left">
+          <iframe src="http://player.vimeo.com/video/27782331?title=0&amp;byline=0&amp;portrait=0&amp;color=3F74B2" width="480" height="270" frameborder="0"></iframe>
         </div>
         <div class="right">
           <h3>Sellers</h3>
