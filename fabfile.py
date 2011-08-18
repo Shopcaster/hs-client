@@ -3,13 +3,14 @@ from __future__ import with_statement
 from fabric.api import *
 
 
-def d():
-  env.hosts = ['d.hipsell.com']
-  env.key_filename = env.hs_develop_keyfile
+def d(): env.hosts = ['d.hipsell.com']
+develop = d
 
 def s(): env.hosts = ['s.hipsell.com']
+staging = s
 
 def p(): env.hosts = ['hipsell.com']
+production = p
 
 
 def merge():

@@ -62,7 +62,9 @@ exports.run = (opt) ->
       console.log ('GET 200 '+pathname).grey
       headers = 'Content-Type': mime pathname
 
-      if opt.gzip and 'gzip' in req.headers['accept-encoding'].split(',')
+      if opt.gzip and
+          req.headers['accept-encoding']? and
+          'gzip' in req.headers['accept-encoding'].split(',')
         headers['Content-Encoding'] = 'gzip'
         content = gzip[pathname]
       else
