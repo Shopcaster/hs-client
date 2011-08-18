@@ -99,9 +99,9 @@ exports.run = (opt) ->
   startServe = (err)->
     return cli.fatal err if err?
     #serve
-    addy = url.parse opt.clientUri               #FIXME
+    ##TODO: make this configurable.
     server = http.createServer(onRequest).listen(3000, '0.0.0.0')
-    console.log "server listening - http://#{addy.hostname}:#{addy.port}"
+    console.log "server listening - http://0.0.0.0:3000"
 
     autoBuild() if opt.autobuild
 

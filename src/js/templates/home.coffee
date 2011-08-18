@@ -46,7 +46,10 @@ class hs.t.Home extends hs.Template
           <p class="desc">Browse items near you and communicate in real-time.
           Know if the item is still available and who you're buying from.</p>
 
-          <p class="platforms">Coming soon to iPhone and Android</p>
+          <p class="platforms">Available now for
+          <a href="http://itunes.apple.com/ca/app/hipsell/id455074551?mt=8&uo=4">iOS</a>
+          and
+          <a target="_blank" href="https://market.android.com/details?id=com.hipsell.Hipsell&feature=search_result">Android</a></p>
         </div>
         <a class="close pictos" href="javascript:;">D</a>
       </div>

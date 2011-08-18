@@ -92,13 +92,12 @@ exports.run = function(opt) {
     };
   };
   startServe = function(err) {
-    var addy, server;
+    var server;
     if (err != null) {
       return cli.fatal(err);
     }
-    addy = url.parse(opt.clientUri);
     server = http.createServer(onRequest).listen(3000, '0.0.0.0');
-    console.log("server listening - http://" + addy.hostname + ":" + addy.port);
+    console.log("server listening - http://0.0.0.0:3000");
     if (opt.autobuild) {
       return autoBuild();
     }
