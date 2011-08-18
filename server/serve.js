@@ -62,7 +62,7 @@ exports.run = function(opt) {
       headers = {
         'Content-Type': mime(pathname)
       };
-      if (opt.gzip && __indexOf.call(req.headers['accept-encoding'].split(','), 'gzip') >= 0) {
+      if (opt.gzip && (req.headers['accept-encoding'] != null) && __indexOf.call(req.headers['accept-encoding'].split(','), 'gzip') >= 0) {
         headers['Content-Encoding'] = 'gzip';
         content = gzip[pathname];
       } else {
