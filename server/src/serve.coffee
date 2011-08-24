@@ -38,7 +38,6 @@ rendering = false
 doRender = (res, pathname)->
   rendering = true
   render.route pathname, (status, content)->
-    rendering = false
 
     status = 200 if not status?
 
@@ -50,7 +49,8 @@ doRender = (res, pathname)->
     res.write content
     res.end()
 
-    #renderQ.pop()() if renderQ.length
+    rendering = false
+    renderQ.pop()() if renderQ.length
 
 
 exports.run = (opt) ->
@@ -74,12 +74,12 @@ exports.run = (opt) ->
       res.write content, 'binary'
       res.end()
 
-    else if opt.prerender
-      #if not rendering or true# temp disable q
-      doRender res, pathname
+    else if opt.prerender and render.ready
+      if not rendering or true
+        doRender res, pathname
 
-      #else
-      #  renderQ.push -> doRender res, pathname
+      else
+        renderQ.push -> doRender res, pathname
 
     else
       console.log 'GET 200 /index.html'
@@ -123,6 +123,11 @@ exports.run = (opt) ->
     server = http.createServer(onRequest).listen(3000, '0.0.0.0')
     console.log "server listening - http://0.0.0.0:3000"
 
+    ## start renderer
+    if opt.prerender
+      console.log 'initializing render'.magenta
+      setTimeout (-> render.init cache, opt), 100
+
     autoBuild() if opt.autobuild
 
 
@@ -130,20 +135,10 @@ exports.run = (opt) ->
   build.buildDir opt.clientSource, opt, cache, (err)->
     return cli.fatal err if err?
 
-    pre = (err)->
-      return cli.fatal err if err?
-      ## start renderer
-      if opt.prerender
-        console.log 'initializing render'.magenta
-        render.init cache, opt, startServe
-
-      else
-        startServe()
-
     if opt.gzip
-      build.gzip cache, gzip, pre
+      build.gzip cache, gzip, startServe
     else
-      pre()
+      startServe()
 
 
 
