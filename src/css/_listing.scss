@@ -438,12 +438,27 @@
           .message-body{margin-left:0;}
         }
 
-        .name{
-          font-size:14px !important;
+        .creator{
+          float:left;
+
+          .avatar{
+            position:absolute;
+            left:-40px;
+          }
+
+          .name{
+            font-size:14px !important;
+          }
+        }
+
+        .created{
+          float:left;
+          margin:0 0 0 5px;
         }
 
         .message-body{
-          margin-left:40px;
+          clear:left;
+          margin:0 0 0 40px;
           font-size:16px;
         }
       }
