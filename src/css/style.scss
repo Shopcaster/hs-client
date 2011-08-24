@@ -290,6 +290,8 @@ body{
 
       .avatar{
         img.current{
+          height:75px;
+          width:auto;
           margin:10px 0 15px;
         }
         input[type=file]{
