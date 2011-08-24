@@ -91,17 +91,6 @@ exports.run = function(opt) {
       return res.end();
     };
   };
-  startServe = function(err) {
-    var server;
-    if (err != null) {
-      return cli.fatal(err);
-    }
-    server = http.createServer(onRequest).listen(3000, '0.0.0.0');
-    console.log("server listening - http://0.0.0.0:3000");
-    if (opt.autobuild) {
-      return autoBuild();
-    }
-  };
   autoBuild = function() {
     return watchRecursive(opt.clientSource, function(file) {
       console.log('File change detected'.yellow);
@@ -131,12 +120,26 @@ exports.run = function(opt) {
       });
     });
   };
+  startServe = function(err) {
+    var server;
+    if (err != null) {
+      return cli.fatal(err);
+    }
+    server = http.createServer(onRequest).listen(3000, '0.0.0.0');
+    console.log("server listening - http://0.0.0.0:3000");
+    if (opt.autobuild) {
+      return autoBuild();
+    }
+  };
   return build.buildDir(opt.clientSource, opt, cache, function(err) {
     var pre;
     if (err != null) {
       return cli.fatal(err);
     }
-    pre = function() {
+    pre = function(err) {
+      if (err != null) {
+        return cli.fatal(err);
+      }
       if (opt.prerender) {
         console.log('initializing render'.magenta);
         return render.init(cache, opt, startServe);
@@ -145,12 +148,7 @@ exports.run = function(opt) {
       }
     };
     if (opt.gzip) {
-      return build.gzip(cache, gzip, function(err) {
-        if (err != null) {
-          return cli.fatal(err);
-        }
-        return pre();
-      });
+      return build.gzip(cache, gzip, pre);
     } else {
       return pre();
     }

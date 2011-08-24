@@ -39,6 +39,11 @@ compile = (files, opt, cache, clbk) ->
       cache['/index.html'] = html
       clbk()
 
+
+    if opt.prerender
+      cache.cleanIndex = html
+
+
     if opt.concatJS
       html = html.replace '</body>', '<script src="/main.js"></script></body>'
       done()

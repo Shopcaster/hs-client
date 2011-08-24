@@ -96,16 +96,6 @@ exports.run = (opt) ->
       res.end()
 
 
-  startServe = (err)->
-    return cli.fatal err if err?
-    #serve
-    ##TODO: make this configurable.
-    server = http.createServer(onRequest).listen(3000, '0.0.0.0')
-    console.log "server listening - http://0.0.0.0:3000"
-
-    autoBuild() if opt.autobuild
-
-
   autoBuild = ->
     # Autobuild
     watchRecursive opt.clientSource, (file)->
@@ -126,11 +116,22 @@ exports.run = (opt) ->
             console.log 'render reload complete'.yellow
 
 
+  startServe = (err)->
+    return cli.fatal err if err?
+    #serve
+    ##TODO: make this configurable.
+    server = http.createServer(onRequest).listen(3000, '0.0.0.0')
+    console.log "server listening - http://0.0.0.0:3000"
+
+    autoBuild() if opt.autobuild
+
+
   # initial build
   build.buildDir opt.clientSource, opt, cache, (err)->
     return cli.fatal err if err?
 
-    pre = ->
+    pre = (err)->
+      return cli.fatal err if err?
       ## start renderer
       if opt.prerender
         console.log 'initializing render'.magenta
@@ -140,9 +141,7 @@ exports.run = (opt) ->
         startServe()
 
     if opt.gzip
-      build.gzip cache, gzip, (err)->
-        return cli.fatal err if err?
-        pre()
+      build.gzip cache, gzip, pre
     else
       pre()
 
