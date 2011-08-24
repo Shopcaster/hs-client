@@ -6,32 +6,49 @@ dep.provide 'hs.geo'
 hs.geo =
 
   get: (clbk)->
+
+    # Success callback
+    success = ->
+      # Pass on through to the callback
+      clbk.apply this, arguments
+
+    # Error callback
+    error = (err) ->
+      # Clear the error template
+      if hs.geo.errorTemplate?
+        hs.geo.errorTemplate.remove()
+
+      # Choose the error message based on the error code
+      if err.code == 1
+        msg = 'Turn on location to get the full Hipsell experience.'
+      else
+        msg = 'We can\'t figure out your location, so some things might
+               not work perfectly.  Sorry about that.'
+
+      # Display the error message
+      hs.geo.errorTemplate = new hs.t.Error null, message: msg
+
+      # Fall back to IP geolocation
+      dogeo()
+
+    # Does an IP geolocation
+    dogeo = ->
+
+      # Our IP geo functionality currently can't call the error
+      # callback, so we don't have to include it.
+      hs._ipgeo.getCurrentPosition success
+
+
+    # If we have the geolocation API available to us, use it.  The
+    # fallback for it is IP geolocation.
     if navigator.geolocation?
-      navigator.geolocation.getCurrentPosition(
-          hs.geo._success(clbk),
-          hs.geo._error(clbk))
-
-  _success: (clbk)->->
-    if hs.geo.errorTemplate?
-      hs.geo.errorTemplate.remove()
-
-    clbk.apply this, arguments
-
-  _error: (clbk)-> (err)->
-    if err.code = 1
-      msg = 'Turn on location to get the full Hipsell experience.'
-
+      navigator.geolocation.getCurrentPosition(success, error)
     else
-      msg = 'We can\'t figure out your location,
-        so some things might not work perfectly. Sorry about that.'
+      dogeo()
 
-    if hs.geo.errorTemplate?
-      hs.geo.errorTemplate.remove()
 
-    hs.geo.errorTemplate = new hs.t.Error null, message: msg
-
-# Patch in IP-based geolocation if it's not present
-navigator.geolocation ||=
+# IP-based geolocation
+hs._ipgeo =
   getCurrentPosition: (success, error) ->
     # Cache super aggresively
     return success(navigator.geolocation._cache) if navigator.geolocation._cache
@@ -45,7 +62,7 @@ navigator.geolocation ||=
 
     # Fire the JSONP
     s = navigator.geolocation._req = document.createElement('script')
-    s.src = 'http://freegeoip.net/json/?callback=navigator.geolocation._pclbk'
+    s.src = 'http://freegeoip.net/json/?callback=hs._ipgeo._pclbk'
     document.getElementsByTagName('head')[0].appendChild(s)
 
   # The JSONP callback function
@@ -75,4 +92,6 @@ navigator.geolocation ||=
     for clbk in navigator.geolocation._callbacks
       clbk(navigator.geolocation._cache)
 
-
+# If the native geolocation API isn't available, patch in IP geo in
+# its place.
+navigator.geolocation ||= hs._ipgeo
