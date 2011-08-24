@@ -15,7 +15,7 @@ class hs.t.AvatarSetting extends hs.Template
       <img class="current">
 
       <form id="password-form" method="POST" enctype="multipart/form-data">
-        <input type="submit" />
+        <input type="submit" value="Submit" />
         <input type="file" name="avatar" />
         <input type="hidden" name="email" />
         <input type="hidden" name="password" />
