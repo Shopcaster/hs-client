@@ -119,10 +119,6 @@ class hs.t.Listing extends hs.Template
 
       this.offerFormTmpl null, listing: this.model
 
-      this.$('#listing-creator .name').after("
-      <a href='/#{this.model.creator}' class='profile'>
-          More items by this seller</a>");
-
     else
       this.hideOfferButton()
 
@@ -152,6 +148,12 @@ class hs.t.Listing extends hs.Template
   setCreator: () ->
     zz.data.user this.model, 'creator', (creator) =>
       this.userTmpl creator
+
+      cur = zz.auth.curUser()
+      if not cur? or this.model.creator != cur._id
+        this.$('#listing-creator .name').after("
+        <a href='/#{this.model.creator}' class='profile'>
+            More items by this seller</a>");
 
 
   setPhoto: () ->
