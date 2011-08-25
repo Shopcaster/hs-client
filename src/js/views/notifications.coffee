@@ -11,14 +11,16 @@ class hs.v.Notifications extends hs.View
     zz.on 'notification', this.handle
 
 
-  handle: (message, key) ->
+  handle: (message, key, goto) ->
     n = $ "
       <div class='notification'>
         #{message}
       </div>
     "
 
-    n.append "<a href='/#{key}'>Listing</a>" if key?
+    if goto?
+      name = goto.split('/')[0]
+      n.append "<a href='/#{goto}'>#{name}</a>"
 
     this.template.el.append(n)
 
