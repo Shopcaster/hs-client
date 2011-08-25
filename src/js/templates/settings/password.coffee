@@ -17,7 +17,7 @@ class hs.t.PasswordSetting extends hs.Template
 
     <form id="password-form">
       <span class="formFields"></span>
-      <input type="submit" />
+      <input type="submit" value="Submit" />
       <span class="confirm">saved</span>
     </form>
     '''

@@ -10,7 +10,7 @@ class hs.t.User extends hs.Template
     <div class="user">
       <div class="presence offline"></div>
       <img class="avatar">
-      <span class="name">Anonymous</span>
+      <a class="name">Anonymous</a>
       <div class="social">
         <a target="_blank" class="fb"><img src="/img/fb.png"></a>
         <a target="_blank" class="twitter"><img src="/img/twitter.png"></a>
@@ -35,7 +35,7 @@ class hs.t.User extends hs.Template
 
 
   setName: ->
-    this.$('.name').text this.model.name
+    this.$('.name').text(this.model.name).attr 'href', '/'+this.model._id
 
 
   setAvatar: ->

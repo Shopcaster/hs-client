@@ -14,6 +14,7 @@
         "xmlhttprequest": "1.2.2",
         "jsdom": "latest",
         "colors": "latest",
-        "gzip": "latest"
+        "gzip": "latest",
+        "request": "latest"
     }
 }

@@ -138,3 +138,32 @@ textarea, input[type=text], input[type=email], input[type=password],
   }
 }
 
+
+.field-wrap{
+  position:relative;
+  margin:none;
+}
+
+.bubble{
+  position:absolute;
+  left:-205px;
+  width:180px;
+  padding: 10px;
+
+  color:#444;
+  z-index:3;
+
+  @include box-shadow(0 1px 3px $black + #666);
+  background-color: $white;
+
+  .bubble-arrow{
+    position:absolute;
+    right:-10px;
+    top:5px;
+    height:0;width:0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 10px solid $white;
+  }
+}
+

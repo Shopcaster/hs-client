@@ -24,7 +24,7 @@ compile = (files, opt, cache, clbk) ->
 
 
     # appcache
-    if not opt['noappcache']
+    if opt['noappcache'] == true
       html = html.replace '<html', "<html manifest='/manifest.appcache'"
 
 
@@ -38,6 +38,11 @@ compile = (files, opt, cache, clbk) ->
     done = ->
       cache['/index.html'] = html
       clbk()
+
+
+    if opt.prerender
+      cache.cleanIndex = html
+
 
     if opt.concatJS
       html = html.replace '</body>', '<script src="/main.js"></script></body>'

@@ -30,6 +30,7 @@ class hs.Template extends hs.EventEmitter
     if this.options.nthChild? then this.nthChild = this.options.nthChild
     if this.options.parent? then this.parent = this.options.parent
     if this.options.authRequired? then this.authRequired = this.options.authRequired
+    if this.options.heat? then this.heat = this.options.heat
 
     if this.options.id?
       this.id = this.options.id
@@ -143,7 +144,7 @@ class hs.Template extends hs.EventEmitter
 
   _listenOnModel: ->
     if this.model?
-      if this.options.heat != false
+      if this.heat != false
         this.model.heat()
 
       this.modelInit = true

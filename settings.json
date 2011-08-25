@@ -4,7 +4,7 @@
     "clientUri": null,
     "clientSource": "./src",
     "analytics": false,
-    "appcache": true,
+    "appcache": false,
     "prerender": false,
     "concatJS": true,
     "minifyJS": false,

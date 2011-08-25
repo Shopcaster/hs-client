@@ -15,7 +15,7 @@ class hs.t.NameSetting extends hs.Template
     <p>Your public name will be displayed to other users on the site.</p>
     <form id="name-form">
       <span class="formFields"></span>
-      <input type="submit" />
+      <input type="submit" value="Submit" />
       <span class="confirm">saved</span>
     </form>
     '''

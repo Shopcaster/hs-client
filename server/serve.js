@@ -36,7 +36,6 @@ doRender = function(res, pathname) {
   rendering = true;
   return render.route(pathname, function(status, content) {
     var lg;
-    rendering = false;
     if (!(status != null)) {
       status = 200;
     }
@@ -49,7 +48,11 @@ doRender = function(res, pathname) {
       'Content-Type': 'text/html; charset=utf-8'
     });
     res.write(content);
-    return res.end();
+    res.end();
+    rendering = false;
+    if (renderQ.length) {
+      return renderQ.pop()();
+    }
   });
 };
 exports.run = function(opt) {
@@ -71,8 +74,14 @@ exports.run = function(opt) {
       res.writeHead(200, headers);
       res.write(content, 'binary');
       res.end();
-    } else if (opt.prerender) {
-      doRender(res, pathname);
+    } else if (opt.prerender && render.ready) {
+      if (!rendering || true) {
+        doRender(res, pathname);
+      } else {
+        renderQ.push(function() {
+          return doRender(res, pathname);
+        });
+      }
     } else {
       console.log('GET 200 /index.html');
       res.writeHead(200, {
@@ -90,17 +99,6 @@ exports.run = function(opt) {
       res.write(err + '\n');
       return res.end();
     };
-  };
-  startServe = function(err) {
-    var server;
-    if (err != null) {
-      return cli.fatal(err);
-    }
-    server = http.createServer(onRequest).listen(3000, '0.0.0.0');
-    console.log("server listening - http://0.0.0.0:3000");
-    if (opt.autobuild) {
-      return autoBuild();
-    }
   };
   autoBuild = function() {
     return watchRecursive(opt.clientSource, function(file) {
@@ -131,28 +129,31 @@ exports.run = function(opt) {
       });
     });
   };
-  return build.buildDir(opt.clientSource, opt, cache, function(err) {
-    var pre;
+  startServe = function(err) {
+    var server;
     if (err != null) {
       return cli.fatal(err);
     }
-    pre = function() {
-      if (opt.prerender) {
-        console.log('initializing render'.magenta);
-        return render.init(cache, opt, startServe);
-      } else {
-        return startServe();
-      }
-    };
+    server = http.createServer(onRequest).listen(3000, '0.0.0.0');
+    console.log("server listening - http://0.0.0.0:3000");
+    if (opt.prerender) {
+      console.log('initializing render'.magenta);
+      setTimeout((function() {
+        return render.init(cache, opt);
+      }), 100);
+    }
+    if (opt.autobuild) {
+      return autoBuild();
+    }
+  };
+  return build.buildDir(opt.clientSource, opt, cache, function(err) {
+    if (err != null) {
+      return cli.fatal(err);
+    }
     if (opt.gzip) {
-      return build.gzip(cache, gzip, function(err) {
-        if (err != null) {
-          return cli.fatal(err);
-        }
-        return pre();
-      });
+      return build.gzip(cache, gzip, startServe);
     } else {
-      return pre();
+      return startServe();
     }
   });
 };

@@ -98,18 +98,33 @@ body{
   }
 
   #login-form{
-    right:0px;top:17px;
+    right:0px;top:20px;
     width:160px;
     z-index:3;
 
     @include rounded-bottom();
     @include rounded-top-left();
 
+    .bubble-password{
+      top:35px;
+    }
+
     input{
       float:right;
       margin-bottom:5px;
       width:148px;
+      min-height:1px;
     }
+
+    .forgot, .remember{
+      display:block;
+      color:$blue;
+      padding-left:3px;
+      margin-bottom:5px;
+    }
+
+    .remember{display :none;}
+
     input.submit{
       width:77px;
     }
@@ -290,6 +305,8 @@ body{
 
       .avatar{
         img.current{
+          height:75px;
+          width:auto;
           margin:10px 0 15px;
         }
         input[type=file]{

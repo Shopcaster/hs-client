@@ -22,7 +22,7 @@ compile = function(files, opt, cache, clbk) {
       return clbk(err);
     }
     html = html.replace('</head>', '<script>var conf=' + JSON.stringify(opt) + ';</script></head>');
-    if (!opt['noappcache']) {
+    if (opt['noappcache'] === true) {
       html = html.replace('<html', "<html manifest='/manifest.appcache'");
     }
     html = html.replace('</head>', "<link rel='stylesheet' href='/style.css'></head>");
@@ -31,6 +31,9 @@ compile = function(files, opt, cache, clbk) {
       cache['/index.html'] = html;
       return clbk();
     };
+    if (opt.prerender) {
+      cache.cleanIndex = html;
+    }
     if (opt.concatJS) {
       html = html.replace('</body>', '<script src="/main.js"></script></body>');
       return done();

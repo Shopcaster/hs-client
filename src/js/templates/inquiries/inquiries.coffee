@@ -20,12 +20,10 @@ class hs.t.Inquiries extends hs.Template
       appendTo: '.inquiry-list'
 
 
-  addModel: (inquiry, index) ->
-    console.log 'inquiries addModel', index, inquiry
+  addModel: (inquiry, index)->
     this.$('.no-qs').remove()
     this.inquiryTmpl inquiry, {nthChild: index}
 
 
-  removeModel: (id, index) ->
-    this.removeTmpl index
+  removeModel: (id, index)-> this.removeTmpl index
 

@@ -10,6 +10,7 @@ class hs.t.Message extends hs.Template
   template: -> """
     <div class="message li">
       <div class="creator"></div>
+      <span class="created"></span>
       <div class="message-body"></div>
       <div class="actions"></div>
     </div>
@@ -50,3 +51,4 @@ class hs.t.Message extends hs.Template
   setCreated: ->
     return unless this.model.created instanceof Date
     since = this.model.created.since()
+    this.$('.created').text "#{since.num} #{since.text}"

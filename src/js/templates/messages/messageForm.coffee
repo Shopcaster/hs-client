@@ -11,6 +11,7 @@ class hs.t.MessageForm extends hs.Template
     <form>
       <span class="formFields"></span>
       <input type="submit" class="submit" value="Submit" />
+      <div style="clear:both;"></div>
     </form>
     """
 

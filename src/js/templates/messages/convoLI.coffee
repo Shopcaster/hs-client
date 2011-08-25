@@ -60,10 +60,8 @@ class hs.t.ConvoLI extends hs.Template
 
             this.listing = listing
             this.listing.heat()
-            this.listing.on 'accepted', _.bind(this.setAccepted, this)
             this.listing.on 'sold', _.bind(this.setSold, this)
             this.setSold()
-            this.setAccepted()
 
 
   preRemove: ->
@@ -94,33 +92,21 @@ class hs.t.ConvoLI extends hs.Template
     this.$('.message-preview .count').text "#{this.messages.length} messages"
 
 
-  setAccepted: ->
-    return if this.listing.sold
-    this.$('.accepted').remove()
-    this.$('.accept-offer').remove()
+  setSold: ->
 
-    if this.listing.accepted? and this.offer? and this.listing.accepted == this.offer._id
+    if this.offer? and this.listing.sold and this.listing.accepted == this.offer._id
+      this.$('.accept-offer').remove()
+      this.$('.sold').remove()
       this.el.addClass 'accepted'
+      this.$('.offerbox').append '<span class="sold">sold</span>
+        <a href="javascript:;" class="cancel-sold">(cancel)</a>'
 
-      this.$('.offerbox').append '
-        <span class="accepted">
-          Offer Accepted -
-          <a href="javascript:;" class="cancel-offer">cancel</a> |
-          <a href="javascript:;" class="sold-offer">sold</a>
-        </span>'
-
-    else
+    else if this.offer?
+      this.$('.sold').remove()
+      this.$('.cancel-sold').remove()
       this.el.removeClass 'accepted'
       this.$('.offerbox').append '
         <a class="accept-offer" href="javascript:;">Accept Offer</a>'
 
-    this.emit 'acceptedRendered'
+    this.emit 'domEventChanges'
 
-
-  setSold: ->
-    if this.offer? and this.listing.sold and this.listing.accepted == this.offer._id
-      this.$('.accepted').remove()
-      this.$('.accept-offer').remove()
-      this.$('.sold').remove()
-      this.el.addClass 'accepted'
-      this.$('.offerbox').append '<span class="sold">sold</span>'
