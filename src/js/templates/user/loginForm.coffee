@@ -24,6 +24,7 @@ class hs.t.LoginForm extends hs.Template
   template: -> """
     <form class="formDialog">
       #{this.renderFields()}
+      <a href="javascript:;" class="forgot">Forgot your password?</a>
       <input type="submit" value="Submit" class="dark submit" />
     </form>
     """
