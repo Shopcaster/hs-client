@@ -59,16 +59,16 @@ hs.v.mods.form = (View) ->
 
       field = this.fields[name]
 
-      if not field.valid()
-        this.showInvalid name
+      if (reason = field.valid())?
+        this.showInvalid name, reason
         return clbk false
 
       validator = 'validate'+name.charAt(0).toUpperCase() + name.slice(1)
 
       if this[validator]?
-        this[validator] (valid) =>
+        this[validator] (valid, reason) =>
           if not valid
-            this.showInvalid name
+            this.showInvalid name, reason
             return clbk false
 
           else
@@ -136,6 +136,14 @@ hs.v.mods.form = (View) ->
     this.unCache()
 
 
-  View.prototype.showInvalid = (name) ->
-    this.template.$('[name="'+name+'"]').addClass('formError').one 'keydown change', =>
-      this.template.$('[name="'+name+'"]').removeClass('formError')
+  View.prototype.showInvalid = (name, reason) ->
+    reason ||= "#{name} is invalid"
+
+    field = this.template.$('[name="'+name+'"]')
+    field.addClass('formError')
+    field.before "<div class='bubble bubble-#{name}'>
+      <div class='bubble-arrow'></div>#{reason}</div>"
+
+    field.one 'keydown change', =>
+      field.removeClass('formError')
+      this.template.$(".bubble-#{name}").remove()

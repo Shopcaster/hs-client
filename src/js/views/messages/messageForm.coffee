@@ -33,7 +33,7 @@ class hs.v.MessageForm extends hs.View
     this.template.$('[name=question]').val('').hide()
 
 
-  validateMessage: (clbk) -> clbk this.get('message').length > 0
+  validateMessage: (clbk) -> clbk this.get('message').length > 0, 'A message is required'
 
 
   createMessage: (convo, clbk) ->

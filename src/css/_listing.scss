@@ -254,8 +254,11 @@
           @include dark-button($blue - #444, '.submit');
           @include angled-top();
 
-          input{
-            margin-bottom:5px;
+          input{margin-bottom:5px;}
+
+          input, .field-wrap{
+            float:left;
+
             width:$section_width - 135px;
             @media only screen and (max-width: 480px) {
               width: $mob_section_width - 135px;
@@ -291,11 +294,14 @@
     .message-form{
       padding:10px;
 
-      input{
-        margin-bottom:5px;
-        width:$section_width - 125px;
+      input{margin-bottom:5px;}
+
+      input, .field-wrap{
+        float:left;
+
+        width:$section_width - 125px !important;
         @media only screen and (max-width: 480px) {
-          width:$mob_section_width - 125px;
+          width:$mob_section_width - 125px !important;
         }
       }
       .submit{
@@ -405,7 +411,6 @@
 
           border:none;
           background-color:$white;
-          @include box-shadow(0 1px 3px $black + #666);
           @include angled-top();
 
           input{
@@ -425,6 +430,8 @@
     }
 
     .convo{
+
+      @include box-shadow(none);
 
       .message{
         min-height:20px;

@@ -32,9 +32,9 @@ hs.t.mods.authForm = (Template) ->
     user = zz.auth.curUser()
 
     if not user?
-      this.$('input[name=email]').show()
+      this.$('.email-wrap').show()
 
     else
-      this.$('input[name=email]').hide()
-      this.$('input[name=password]').hide()
+      this.$('.email-wrap').hide()
+      this.$('.password-wrap').hide()
 

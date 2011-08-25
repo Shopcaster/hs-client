@@ -27,7 +27,11 @@ class hs.FormFieldView extends hs.View
 
   valid: () ->
     value = this.get()
-    return value? or this.options.nullable
+    if not value? and not this.options.nullable
+      return 'This field is required'
+
+    else
+      return null
 
 
 
@@ -40,16 +44,23 @@ reg 'text', 'password', 'email', 'number', {
       attrs.value = this.options.value if this.options.value?
       attrs.placeholder = this.options.placeholder if this.options.placeholder?
       attrs.maxlength = this.options.maxlength if this.options.maxlength?
-      attrs.style = 'display:none' if this.options.hide? and this.options.hide
 
-      op = '<input '
+      op = ''
+      op += '<div class="'+this.options.name+'-wrap field-wrap"'
+      op += ' style="display:none"' if this.options.hide? and this.options.hide
+      op += '>'
+      op += '<input '
       for key, val of attrs
         op += "#{key}='#{val}' "
       op += '/>'
+      op += '</div>'
 
       return op
 
   v: class InputV extends hs.FormFieldView
+
+    get: () -> this.template.$('input').val()
+    set: (value) -> this.template.$('input').val value
 }
 
 
@@ -62,14 +73,19 @@ reg 'file', {
       attrs.style = 'display:none' if this.options.hide? and this.options.hide
       attrs.type = 'file'
 
-      op = '<input '
+      op = '<div class="'+this.options.name+'-wrap field-wrap">'
+      op += '<input '
       for key, val of attrs
         op += "#{key}='#{val}' "
       op += '/>'
+      op += '</div>'
 
       return op
 
   v: class FileV extends hs.FormFieldView
+
+    get: () -> this.template.$('input').val()
+    set: (value) -> this.template.$('input').val value
 }
 
 
@@ -83,14 +99,17 @@ reg 'textarea', {
       attrs.maxlength = this.options.maxlength if this.options.maxlength?
       attrs.style = 'display:none' if this.options.hide? and this.options.hide
 
-      op = '<textarea '
+      op = '<div class="'+this.options.name+'-wrap field-wrap"><textarea '
       for key, val of attrs
         op += "#{key}='#{val}' "
-      op += '></textarea>'
+      op += '></textarea></div>'
 
       return op
 
-  v: hs.FormFieldView
+
+  v: class TextareaV extends hs.FormFieldView
+    get: () -> this.template.$('textarea').val()
+    set: (value) -> this.template.$('textarea').val value
 }
 
 
@@ -102,25 +121,19 @@ reg 'image', {
       attrs.class = this.options.clas if this.options.clas?
       attrs.style = 'display:none' if this.options.hide? and this.options.hide
 
-      op = '<div '
+      op = '<div class="'+this.options.name+'-wrap field-wrap"><div '
       for key, val of attrs
         op += "#{key}='#{val}' "
       op += '>'
 
       op += "<input type='file' name='#{name} />
-        <span class='drop'>Drag files here</span>"
+        <span class='drop'>Drag files here</span></div>"
 
       return op
 
 
   v: class ImageV extends hs.FormFieldView
 
-    get: () -> this.template.el.val()
-
-    set: (value) -> this.template.el.val value
-
-    valid: () ->
-      value = this.get()
-      return value? or this.options.nullable
-
+    get: () -> this.template.$('input').val()
+    set: (value) -> this.template.$('input').val value
 }

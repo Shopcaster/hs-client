@@ -13,12 +13,12 @@ hs.v.mods.authForm = (View) ->
 
   View.prototype.validateEmail = (clbk) ->
     return clbk true if zz.auth.curUser()?
-    clbk this.get('email')?
+    clbk this.get('email')?, 'Email is required'
 
 
   View.prototype.validatePassword = (clbk) ->
     return clbk true if zz.auth.curUser()?
-    clbk this.template.$('[name=password]:visible').length == 0 or this.get('password')?
+    clbk this.template.$('.password-wrap:visible').length == 0 or this.get('password')?, 'Password is required'
 
 
   old_submit = View.prototype._submit
@@ -41,8 +41,8 @@ hs.v.mods.authForm = (View) ->
 
     this.unCache()
 
-    if this.template.$('[name=password]:visible').length
-      this.showInvalid 'password'
+    if this.template.$('.password-wrap:visible').length
+      this.showInvalid 'password', 'Invalid password'
 
     else
-      this.template.$('[name=password]').show()
+      this.template.$('.password-wrap').show()

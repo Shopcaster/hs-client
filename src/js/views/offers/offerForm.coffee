@@ -15,7 +15,7 @@ class hs.v.OfferForm extends hs.View
     parseInt parseFloat(this.get('amount').replace '$', '')*100
 
 
-  validateAmount: (clbk) -> clbk !_.isNaN this.amount()
+  validateAmount: (clbk) -> clbk !_.isNaN(this.amount()), 'Needs to be a number'
 
 
   createMessage: (amount, offerId) ->

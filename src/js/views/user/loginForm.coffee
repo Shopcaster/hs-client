@@ -13,7 +13,7 @@ class hs.v.LoginForm extends hs.View
   submit: ->
     zz.auth this.get('email'), this.get('password'), =>
       if not zz.auth.curUser()?
-        this.showInvalid 'password'
+        this.showInvalid 'password', 'Incorrect password'
       else
         this.blur()
         this.clear()
