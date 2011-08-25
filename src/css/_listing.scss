@@ -98,7 +98,15 @@
 
     #listing-description{
       font-size:16px;
+
+      .edit-wrap{
+        font-size:14px;
+      }
     }
+    .listing-edit{
+      display:none;
+    }
+
     .bottom{
       position:absolute;
       bottom:10px;
@@ -412,6 +420,7 @@
           border:none;
           background-color:$white;
           @include angled-top();
+          @include box-shadow(0 1px 3px $black + #666);
 
           input{
             width:$section_width - 175px;

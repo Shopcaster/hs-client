@@ -7,6 +7,7 @@ dep.require 'hs.t.Convo'
 dep.require 'hs.t.ConvoList'
 dep.require 'hs.t.OfferForm'
 dep.require 'hs.t.Offers'
+dep.require 'hs.t.EditListing'
 dep.require 'hs.geo'
 
 dep.provide 'hs.t.Listing'
@@ -28,6 +29,7 @@ class hs.t.Listing extends hs.Template
           <div id="listing-creator"></div>
           <span class="status">Available</span>
           <div id="listing-description"></div>
+          <div class="listing-edit"></div>
 
           <div class="bottom">
             <div id="listing-social">
@@ -85,6 +87,10 @@ class hs.t.Listing extends hs.Template
       class: hs.t.Offers
       appendTo: '.listing .bottom'
 
+    edit:
+      class: hs.t.EditListing
+      appendTo: '.listing-edit'
+
 
   postRender: ->
     this.model.relatedInquiries this.inquiriesTmpl
@@ -119,8 +125,12 @@ class hs.t.Listing extends hs.Template
 
       this.offerFormTmpl null, listing: this.model
 
+      this.$('.edit-wrap').remove()
+
     else
       this.hideOfferButton()
+      #this.$('#listing-description').append '<span class="edit-wrap">
+      #   - <a href="javascript:;" class="edit">edit</a></span>'
 
 
   newConvo: ->

@@ -116,12 +116,14 @@ body{
       min-height:1px;
     }
 
-    .forgot{
+    .forgot, .remember{
       display:block;
       color:$blue;
       padding-left:3px;
       margin-bottom:5px;
     }
+
+    .remember{display :none;}
 
     input.submit{
       width:77px;

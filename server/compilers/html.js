@@ -22,7 +22,7 @@ compile = function(files, opt, cache, clbk) {
       return clbk(err);
     }
     html = html.replace('</head>', '<script>var conf=' + JSON.stringify(opt) + ';</script></head>');
-    if (!opt['noappcache']) {
+    if (opt['noappcache'] === true) {
       html = html.replace('<html', "<html manifest='/manifest.appcache'");
     }
     html = html.replace('</head>', "<link rel='stylesheet' href='/style.css'></head>");

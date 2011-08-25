@@ -24,7 +24,7 @@ compile = (files, opt, cache, clbk) ->
 
 
     # appcache
-    if not opt['noappcache']
+    if opt['noappcache'] == true
       html = html.replace '<html', "<html manifest='/manifest.appcache'"
 
 
