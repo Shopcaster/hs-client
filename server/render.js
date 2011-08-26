@@ -1,66 +1,61 @@
-var XMLHttpRequest, cache, dep, depends, fs, jsdom, request, window;
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var XMLHttpRequest, cache, dep, depends, fs, jsdom;
 depends = require('depends');
 jsdom = require("jsdom").jsdom;
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 fs = require('fs');
-request = require('request');
 require('colors');
 dep = null;
 cache = null;
-window = null;
-exports.ready = false;
 exports.init = function(c, opt, clbk) {
-  var content, file, files;
+  var content, doc, file, files, index, window;
   cache = c;
+  index = cache.cleanIndex;
+  doc = jsdom(index, null, {
+    features: {
+      FetchExternalResources: false
+    }
+  });
+  window = doc.createWindow();
+  window.route = false;
+  window.console.log = function() {
+    var args;
+    args = Array.prototype.slice.call(arguments, 0);
+    args.unshift('client:'.blue);
+    return console.log.apply(console, args);
+  };
+  window.alert = window.console.log;
+  window.XDomainRequest = XMLHttpRequest;
+  window.XMLHttpRequest = XMLHttpRequest;
+  window.localStorage = {};
+  window.Date = Date;
+  window.Array = Array;
+  window.Number = Number;
+  window.JSON = JSON;
+  window.conf = opt;
   files = new depends.Files();
   files.js = {};
   for (file in cache) {
     content = cache[file];
-    if (/\.js$/.test(file)) {
+    if (/\.js$/.test(file) && file !== '/main.js') {
       files.js[file] = content;
     }
   }
-  return files.parse(__bind(function() {
-    var s, scripts, _i, _len, _ref;
-    if (typeof err !== "undefined" && err !== null) {
-      return typeof clbk === "function" ? clbk(err) : void 0;
+  dep = new depends.NodeDep(files, {
+    context: window,
+    init: 'hs.urls'
+  });
+  return dep.dlIntoContext("" + opt.serverUri + "/api-library.js", function(err) {
+    if (err != null) {
+      return clbk(err);
     }
-    files.clean();
-    scripts = ['http://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js'];
-    _ref = files.dependsOn('hs.urls');
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      s = _ref[_i];
-      scripts.push("" + opt.clientUri + files.map[s]);
-    }
-    return jsdom.env({
-      html: cache.cleanIndex,
-      scripts: scripts,
-      done: __bind(function(errors, w) {
-        var e, _j, _len2;
-        if ((errors != null) && errors.length) {
-          for (_j = 0, _len2 = errors.length; _j < _len2; _j++) {
-            e = errors[_j];
-            console.error('jsdom error:\n'.red, e);
-          }
-        }
-        window = w;
-        console.log(window.document.innerHTML);
-        console.log('window.hs', window.hs);
-        console.log('window.$', window.$);
-        console.log('window.Prototype', window.Prototype);
-        exports.ready = true;
-        return typeof clbk === "function" ? clbk() : void 0;
-      }, this)
-    });
-  }, this));
+    return dep.execute('hs.urls', clbk);
+  });
 };
 exports.route = function(pathname, clbk) {
   var Template, e404, exp, html, parsed, use, _ref;
-  console.log('window.hs', window.hs);
   html = '<!DOCTYPE html>';
   e404 = function() {
-    return use(window.hs.t.e404, [], 404);
+    return use(dep.context.hs.t.e404, [], 404);
   };
   use = function(Template, parsedUrl, status) {
     if (status == null) {
@@ -73,14 +68,14 @@ exports.route = function(pathname, clbk) {
       if (!(t != null)) {
         return e404();
       }
-      html += window.document.innerHTML;
+      html += dep.context.document.innerHTML;
       clbk(status, html);
       t.remove();
       return dep.context.$('#main').html('');
     });
   };
   try {
-    _ref = window.hs.urls;
+    _ref = dep.context.hs.urls;
     for (exp in _ref) {
       Template = _ref[exp];
       parsed = new RegExp(exp).exec(pathname);
@@ -95,7 +90,7 @@ exports.route = function(pathname, clbk) {
     return e404();
   } catch (e) {
     console.log(('error' + e.stack).red);
-    html += window.document.innerHTML;
+    html += dep.context.document.innerHTML;
     return clbk(500, html);
   }
 };
