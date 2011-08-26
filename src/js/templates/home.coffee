@@ -87,12 +87,12 @@ class hs.t.Home extends hs.Template
           if listings.length < 24
             this.scrollDone = true
 
-          for listingID, i in listings
+          for listingID in listings
             this.rendered++
-            do (listingID, i)=> zz.data.listing listingID, (listing)=>
-              tmpl = this.listingTmpl listing,
-                appendTo: '#'+this.id+' .listings',
-                nthChild: i
+            holder = $('<div class="listing-wrap"></div>')
+            this.$('.listings').append holder
+            do (listingID, holder)=> zz.data.listing listingID, (listing)=>
+              tmpl = this.listingTmpl listing, appendTo: holder
               scroll = tmpl.el.offset().top
               this.scrollTrigger = scroll if scroll > this.scrollTrigger
 
