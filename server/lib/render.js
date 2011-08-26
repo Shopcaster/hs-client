@@ -6,6 +6,7 @@ fs = require('fs');
 require('colors');
 dep = null;
 cache = null;
+exports.ready = false;
 exports.init = function(c, opt, clbk) {
   var content, file, files, window;
   cache = c;
@@ -42,7 +43,10 @@ exports.init = function(c, opt, clbk) {
     if (err != null) {
       return clbk(err);
     }
-    return dep.execute('hs.urls', clbk);
+    return dep.execute('hs.urls', function() {
+      exports.ready = true;
+      return typeof clbk === "function" ? clbk() : void 0;
+    });
   });
 };
 exports.route = function(pathname, clbk) {
@@ -55,10 +59,12 @@ exports.route = function(pathname, clbk) {
     if (status == null) {
       status = 200;
     }
+    console.log('using', Template.name);
     return Template.get({
       pathname: pathname,
       parsedUrl: parsedUrl
     }, function(t) {
+      console.log('done');
       if (!(t != null)) {
         return e404();
       }

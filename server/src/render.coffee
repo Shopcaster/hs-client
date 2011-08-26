@@ -9,6 +9,8 @@ require 'colors'
 dep = null
 cache = null
 
+exports.ready = false
+
 # initialize
 exports.init = (c, opt, clbk)->
   cache = c
@@ -43,7 +45,9 @@ exports.init = (c, opt, clbk)->
 
   dep.dlIntoContext "#{opt.serverUri}/api-library.js", (err)->
     return clbk err if err?
-    dep.execute 'hs.urls', clbk
+    dep.execute 'hs.urls', ->
+      exports.ready = true
+      clbk?()
 
 
 #route
@@ -53,7 +57,9 @@ exports.route = (pathname, clbk) ->
   e404 = -> use dep.context.hs.t.e404, [], 404
 
   use = (Template, parsedUrl, status=200)->
+    console.log 'using', Template.name
     Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
+      console.log 'done'
       return e404() if not t?
 
       html += dep.context.document.innerHTML

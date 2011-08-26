@@ -77,7 +77,7 @@ exports.run = (opt) ->
       res.end()
 
     else if opt.prerender and render.ready
-      if not rendering or true
+      if not rendering
         doRender res, pathname
 
       else

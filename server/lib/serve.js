@@ -76,7 +76,7 @@ exports.run = function(opt) {
       res.write(content, 'binary');
       res.end();
     } else if (opt.prerender && render.ready) {
-      if (!rendering || true) {
+      if (!rendering) {
         doRender(res, pathname);
       } else {
         renderQ.push(function() {
