@@ -63,7 +63,8 @@ exports.run = function(opt) {
     if ((opt.gzip && (gzip[pathname] != null)) || (cache[pathname] != null)) {
       console.log(('GET 200 ' + pathname).grey);
       headers = {
-        'Content-Type': mime(pathname)
+        'Content-Type': mime(pathname),
+        'Cache-Control': 'max-age=31536000'
       };
       if (opt.gzip && (req.headers['accept-encoding'] != null) && __indexOf.call(req.headers['accept-encoding'].split(','), 'gzip') >= 0) {
         headers['Content-Encoding'] = 'gzip';
@@ -104,12 +105,11 @@ exports.run = function(opt) {
     return watchRecursive(opt.clientSource, function(file) {
       console.log('File change detected'.yellow);
       return build.build([file], opt, cache, function(err) {
-        var _ref;
         if (err != null) {
           return console.log('ERROR:'.red, err);
         }
         if (opt.gzip) {
-          build.gzip({
+          return build.gzip({
             file: cache[file]
           }, gzip, function(err) {
             if (err != null) {
@@ -117,15 +117,14 @@ exports.run = function(opt) {
             }
           });
         }
-        if (opt.prerender && ((_ref = /\.(\w+)$/.exec(file)[1]) === 'coffee' || _ref === 'html')) {
-          console.log('Reloading render'.yellow);
-          return render.init(cache, opt, function(err) {
-            if (err != null) {
-              return cli.fatal(err);
-            }
-            return console.log('render reload complete'.yellow);
-          });
-        }
+        /*
+                if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
+                  console.log 'Reloading render'.yellow
+        
+                  render.init cache, opt, (err)->
+                    return cli.fatal err if err?
+                    console.log 'render reload complete'.yellow
+                */
       });
     });
   };

@@ -60,7 +60,9 @@ exports.run = (opt) ->
 
     if (opt.gzip and gzip[pathname]?) or cache[pathname]?
       console.log ('GET 200 '+pathname).grey
-      headers = 'Content-Type': mime pathname
+      headers =
+        'Content-Type': mime pathname
+        'Cache-Control': 'max-age=31536000'
 
       if opt.gzip and
           req.headers['accept-encoding']? and
@@ -107,13 +109,14 @@ exports.run = (opt) ->
         if opt.gzip
           build.gzip file: cache[file], gzip, (err)->
             return console.log 'ERROR:'.red, err if err?
-
+        ###
         if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
           console.log 'Reloading render'.yellow
 
           render.init cache, opt, (err)->
             return cli.fatal err if err?
             console.log 'render reload complete'.yellow
+        ###
 
 
   startServe = (err)->

@@ -51,7 +51,7 @@ cleanOpt = function(opt, clbk) {
   if (opt.minify) {
     opt.concat = true;
   }
-  settings = fs.readFileSync(__dirname + '/../settings.json', 'utf8');
+  settings = fs.readFileSync(__dirname + '/../../settings.json', 'utf8');
   settings = JSON.parse(settings);
   if (_ref = opt.mode, __indexOf.call(Object.keys(settings), _ref) >= 0) {
     settings = mash(settings["default"], settings[opt.mode], opt);

@@ -46,7 +46,7 @@ cleanOpt = (opt, clbk)->
 
   opt.concat = true if opt.minify
 
-  settings = fs.readFileSync __dirname+'/../settings.json', 'utf8'
+  settings = fs.readFileSync __dirname+'/../../settings.json', 'utf8'
   settings = JSON.parse settings
 
   if opt.mode in Object.keys settings

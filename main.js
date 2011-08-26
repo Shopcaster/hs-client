@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require('./server/bin');
+require('./server/lib/bin');

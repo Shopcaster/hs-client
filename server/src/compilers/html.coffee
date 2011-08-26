@@ -1,4 +1,5 @@
 
+crypto = require 'crypto'
 fs = require 'fs'
 depends = require 'depends'
 require 'colors'
@@ -16,21 +17,24 @@ compile = (files, opt, cache, clbk) ->
 
   console.log 'building html'.magenta
 
+
+  hash = (file)-> encodeURIComponent crypto.createHash('md5').update(cache[file]).digest('base64')
+
+
   fs.readFile file, 'utf8', (err, html)->
     return clbk err if err?
 
     # conf
     html = html.replace '</head>', '<script>var conf='+JSON.stringify(opt)+';</script></head>'
 
-
     # appcache
     if opt['noappcache'] == true
-      html = html.replace '<html', "<html manifest='/manifest.appcache'"
-
+      html = html.replace '<html', "<html manifest='/manifest.appcache?v=#{hash('/manifest.appcache')}'"
 
     #CSS
-    html = html.replace '</head>', "<link rel='stylesheet' href='/style.css'></head>"
+    html = html.replace '</head>', "<link rel='stylesheet' href='/style.css?v=#{hash('/style.css')}'></head>"
 
+    cache.cleanIndex = html if opt.prerender
 
     # JavaScript
     html = html.replace '</body>', "<script src='#{opt.serverUri}/api-library.js'></script></body>"
@@ -39,13 +43,8 @@ compile = (files, opt, cache, clbk) ->
       cache['/index.html'] = html
       clbk()
 
-
-    if opt.prerender
-      cache.cleanIndex = html
-
-
     if opt.concatJS
-      html = html.replace '</body>', '<script src="/main.js"></script></body>'
+      html = html.replace '</body>', "<script src='/main.js?v=#{hash('/manifest.appcache')}'></script></body>"
       done()
 
     else
@@ -60,11 +59,11 @@ compile = (files, opt, cache, clbk) ->
       files.getClient false, (err, content) ->
         return clbk err if err?
 
-        scripts += '<script src="/loader.js"></script>'
         cache['/loader.js'] = content
+        scripts += "<script src='/loader.js?v=#{hash('/loader.js')}'></script>"
 
         for file in files.output
-          scripts += "<script src='#{file}'></script>"
+          scripts += "<script src='#{file}?v=#{hash(file)}'></script>"
 
         html = html.replace '</body>', scripts+'</body>'
 
