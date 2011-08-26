@@ -19,5 +19,10 @@
   "staging": {
     "serverUri": "http://s.hipsell.com:8080",
     "clientUri": "http://s.hipsell.com"
+  },
+  "development": {
+    "serverUri": "http://d.hipsell.com:8080",
+    "clientUri": "http://d.hipsell.com",
+    "concatJS": false
   }
 }

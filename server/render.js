@@ -7,15 +7,9 @@ require('colors');
 dep = null;
 cache = null;
 exports.init = function(c, opt, clbk) {
-  var content, doc, file, files, index, window;
+  var content, file, files, window;
   cache = c;
-  index = cache.cleanIndex;
-  doc = jsdom(index, null, {
-    features: {
-      FetchExternalResources: false
-    }
-  });
-  window = doc.createWindow();
+  window = jsdom(cache.cleanIndex).createWindow();
   window.route = false;
   window.console.log = function() {
     var args;

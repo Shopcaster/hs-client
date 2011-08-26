@@ -30,8 +30,6 @@ def merge():
 def deploy():
   if 'd.hipsell.com' in env.hosts:
     with cd('/var/hipsell/hs-client'):
-      run('echo executed')
-      run('echo executed')
       run('git pull origin develop')
       run('sudo restart hs-client')
       run('sleep 0.1')

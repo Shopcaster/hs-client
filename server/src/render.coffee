@@ -13,13 +13,7 @@ cache = null
 exports.init = (c, opt, clbk)->
   cache = c
 
-  index = cache.cleanIndex
-
-  doc = jsdom index, null,
-    features:
-      FetchExternalResources: false
-
-  window = doc.createWindow()
+  window = jsdom(cache.cleanIndex).createWindow()
 
   window.route = false
 
