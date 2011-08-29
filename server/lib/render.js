@@ -1,9 +1,10 @@
-var XMLHttpRequest, cache, contextify, dep, depends, fs, jsdom;
+var XMLHttpRequest, cache, contextify, dep, depends, fs, gzip, jsdom;
 depends = require('depends');
 jsdom = require("jsdom").jsdom;
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 fs = require('fs');
 require('colors');
+gzip = require('gzip');
 contextify = require('contextify');
 dep = null;
 cache = null;

@@ -34,24 +34,38 @@ renderQ = [];
 rendering = false;
 doRender = function(res, pathname) {
   rendering = true;
-  return render.route(pathname, function(status, content) {
-    var lg;
-    if (!(status != null)) {
-      status = 200;
-    }
-    lg = ('GET ' + status + ' ' + pathname).bold;
-    if (status !== 200) {
-      lg = lg.red;
-    }
-    console.log(lg);
-    res.writeHead(status, {
-      'Content-Type': 'text/html; charset=utf-8'
-    });
-    res.write(content);
-    res.end();
-    rendering = false;
-    if (renderQ.length) {
-      return renderQ.pop()();
+  return render.route(pathname, function(status, htm) {
+    var write;
+    write = function(content) {
+      var lg;
+      if (!(status != null)) {
+        status = 200;
+      }
+      lg = ('GET ' + status + ' ' + pathname).bold;
+      if (status !== 200) {
+        lg = lg.red;
+      }
+      console.log(lg);
+      res.writeHead(status, {
+        'Content-Type': 'text/html; charset=utf-8'
+      });
+      res.write(content);
+      res.end();
+      rendering = false;
+      if (renderQ.length) {
+        return renderQ.pop()();
+      }
+    };
+    if (opt.gzip && (req.headers['accept-encoding'] != null) && __indexOf.call(req.headers['accept-encoding'].split(','), 'gzip') >= 0) {
+      return gzip(content, function(err, zipd) {
+        if (!(err != null)) {
+          return write(zipd);
+        } else {
+          return write(htm);
+        }
+      });
+    } else {
+      return write(htm);
     }
   });
 };

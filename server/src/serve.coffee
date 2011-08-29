@@ -37,20 +37,31 @@ rendering = false
 
 doRender = (res, pathname)->
   rendering = true
-  render.route pathname, (status, content)->
+  render.route pathname, (status, htm)->
 
-    status = 200 if not status?
+    write = (content)->
+      status = 200 if not status?
 
-    lg = ('GET '+status+' '+pathname).bold
-    lg = lg.red if status != 200
-    console.log lg
+      lg = ('GET '+status+' '+pathname).bold
+      lg = lg.red if status != 200
+      console.log lg
 
-    res.writeHead status, 'Content-Type': 'text/html; charset=utf-8'
-    res.write content
-    res.end()
+      res.writeHead status, 'Content-Type': 'text/html; charset=utf-8'
+      res.write content
+      res.end()
 
-    rendering = false
-    renderQ.pop()() if renderQ.length
+      rendering = false
+      renderQ.pop()() if renderQ.length
+
+    if opt.gzip and req.headers['accept-encoding']? and
+        'gzip' in req.headers['accept-encoding'].split(',')
+      gzip content, (err, zipd)->
+        if not err?
+          write zipd
+        else
+          write htm
+    else
+      write htm
 
 
 exports.run = (opt) ->

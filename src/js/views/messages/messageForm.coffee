@@ -19,10 +19,10 @@ class hs.v.MessageForm extends hs.View
     this.template.$('[name=question]')
       .before('<div class="qa">Q:</div>')
       .val(question)
-      .show()
+      .parent().show()
 
     this.template.$('[name=message]')
-      .before('<br><div class="qa">A:</div>')
+      .before('<div class="qa">A:</div>')
 
 
   removePublicly: ->
@@ -30,7 +30,7 @@ class hs.v.MessageForm extends hs.View
     this.template.el.removeClass 'question'
     this.template.$('.qa').remove()
     this.template.$('br').remove()
-    this.template.$('[name=question]').val('').hide()
+    this.template.$('[name=question]').val('').parent().hide()
 
 
   validateMessage: (clbk) -> clbk this.get('message').length > 0, 'A message is required'

@@ -8,6 +8,7 @@
     "prerender": false,
     "concatJS": true,
     "minifyJS": false,
+    "minifyCSS": true,
     "autobuild": false,
     "gzip": true
   },
