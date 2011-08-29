@@ -139,42 +139,62 @@ zz.auth.on 'change', ->
 
 # Presence handling
 $ -> zz.init ->
-  moved = false
-  onMove = null
+  activity = false
+  onActivity = null
 
   # If the mouse moves with the user offline, just set them back
   # to online
-  offlineMove = ->
+  awayActivity = ->
     zz.presence.online();
 
-  # If the mouse moves with the user offline, set them to offline
-  # if they don't move the mouse for a while
-  omTimeout = null
-  onlineMove = ->
-    clearTimeout(omTimeout) if omTimeout
-    omTimeout = setTimeout ->
-      zz.presence.offline()
+  # Every time there's activity while the user is online, we reset
+  # the away timeout.
+  oaTimeout = null
+  onlineActivity = ->
+    clearTimeout(oaTimeout) if oaTimeout
+    oaTimeout = setTimeout ->
+      zz.presence.away()
     , 30 * 1000 # 30s - CHANGE AWAY TIMING HERE
+  # Bootstrap
+  onlineActivity()
 
-  # Set moved to true when the mouse moves
+  # Set activity when the mouse moves
   $(document.body).bind 'mousemove', ->
-    moved = true;
+    activity = true;
+  # Also when a key is pressed
+  $(document.body).bind 'keydown', ->
+    activity = true;
 
-  # Run movement logic no faster than once per second
+  # To avoid clobbering performance, we perform all activity-related
+  # logic here, every 1000 ms.
   setInterval ->
-    onMove() if moved
-    moved = false;
+    onActivity() if activity
+    activity = false;
   , 1000
 
   # To start, use the online handler
-  onMove = onlineMove;
+  onActivity = onlineActivity;
 
   # Change the handler when presence status changes
   zz.presence.on 'me', (status) ->
     if status == 'online'
-      onMove = onlineMove
+      onActivity = onlineActivity
     else
-      onMove = offlineMove
+      onActivity = awayActivity
+
+  # Finally, watch on the visibility API's.
+  # Webkit
+  document.addEventListener 'webkitvisibilitychange', ->
+    if document.webkitHidden
+      zz.presence.away()
+    else
+      zz.presence.online()
+  # IE (WTF, IE supports something before Firefox?)
+  document.addEventListener 'msvisibilitychange', ->
+    if document.msHidden
+      zz.presence.away()
+    else
+      zz.presence.online()
 
 # Initialize global views
 $ -> zz.init ->
