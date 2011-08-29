@@ -4,6 +4,7 @@ jsdom  = require("jsdom").jsdom
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 fs = require 'fs'
 require 'colors'
+contextify = require 'contextify'
 
 # module vars
 dep = null
@@ -16,8 +17,11 @@ exports.init = (c, opt, clbk)->
   cache = c
 
   window = jsdom(cache.cleanIndex).createWindow()
+  window = contextify window
+  window.window = window.getGlobal()
 
   window.route = false
+  window.conf = opt
 
   window.console.log = ->
     args = Array.prototype.slice.call arguments, 0
@@ -28,11 +32,10 @@ exports.init = (c, opt, clbk)->
   window.XDomainRequest = XMLHttpRequest
   window.XMLHttpRequest = XMLHttpRequest
   window.localStorage = {}
-  window.Date = Date
-  window.Array = Array
-  window.Number = Number
-  window.JSON = JSON
-  window.conf = opt
+  #window.Date = Date
+  #window.Array = Array
+  #window.Number = Number
+  #window.JSON = JSON
 
   files = new depends.Files()
 
@@ -41,7 +44,7 @@ exports.init = (c, opt, clbk)->
     if /\.js$/.test(file) and file != '/main.js'
       files.js[file] = content
 
-  dep = new depends.NodeDep files, context: window, init: 'hs.urls'
+  dep = new depends.NodeDep files, context: window
 
   dep.dlIntoContext "#{opt.serverUri}/api-library.js", (err)->
     return clbk err if err?
@@ -58,8 +61,11 @@ exports.route = (pathname, clbk) ->
 
   use = (Template, parsedUrl, status=200)->
     console.log 'using', Template.name
+    console.log dep.context.Function.prototype.getName instanceof dep.context.Function
+    console.log dep.context.Function.prototype.getName instanceof Function
+    console.log Template instanceof dep.context.Function
+    console.log Template instanceof Function
     Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
-      console.log 'done'
       return e404() if not t?
 
       html += dep.context.document.innerHTML

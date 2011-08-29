@@ -1,9 +1,10 @@
-var XMLHttpRequest, cache, dep, depends, fs, jsdom;
+var XMLHttpRequest, cache, contextify, dep, depends, fs, jsdom;
 depends = require('depends');
 jsdom = require("jsdom").jsdom;
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 fs = require('fs');
 require('colors');
+contextify = require('contextify');
 dep = null;
 cache = null;
 exports.ready = false;
@@ -11,7 +12,10 @@ exports.init = function(c, opt, clbk) {
   var content, file, files, window;
   cache = c;
   window = jsdom(cache.cleanIndex).createWindow();
+  window = contextify(window);
+  window.window = window.getGlobal();
   window.route = false;
+  window.conf = opt;
   window.console.log = function() {
     var args;
     args = Array.prototype.slice.call(arguments, 0);
@@ -22,11 +26,6 @@ exports.init = function(c, opt, clbk) {
   window.XDomainRequest = XMLHttpRequest;
   window.XMLHttpRequest = XMLHttpRequest;
   window.localStorage = {};
-  window.Date = Date;
-  window.Array = Array;
-  window.Number = Number;
-  window.JSON = JSON;
-  window.conf = opt;
   files = new depends.Files();
   files.js = {};
   for (file in cache) {
@@ -36,8 +35,7 @@ exports.init = function(c, opt, clbk) {
     }
   }
   dep = new depends.NodeDep(files, {
-    context: window,
-    init: 'hs.urls'
+    context: window
   });
   return dep.dlIntoContext("" + opt.serverUri + "/api-library.js", function(err) {
     if (err != null) {
@@ -60,11 +58,14 @@ exports.route = function(pathname, clbk) {
       status = 200;
     }
     console.log('using', Template.name);
+    console.log(dep.context.Function.prototype.getName instanceof dep.context.Function);
+    console.log(dep.context.Function.prototype.getName instanceof Function);
+    console.log(Template instanceof dep.context.Function);
+    console.log(Template instanceof Function);
     return Template.get({
       pathname: pathname,
       parsedUrl: parsedUrl
     }, function(t) {
-      console.log('done');
       if (!(t != null)) {
         return e404();
       }

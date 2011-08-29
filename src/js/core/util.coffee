@@ -124,3 +124,6 @@ Function.prototype.getName =->
   return this.name if this.name?
   p = /function (.+)\(/.exec(this.toString())
   return p[1] if p?
+
+console.log 'F', (->) instanceof Function
+console.log 'F', (->) instanceof window.Function
