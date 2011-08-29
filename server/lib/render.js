@@ -11,9 +11,9 @@ exports.ready = false;
 exports.init = function(c, opt, clbk) {
   var content, file, files, window;
   cache = c;
-  window = jsdom(cache.cleanIndex).createWindow();
-  window = contextify(window);
-  window.window = window.getGlobal();
+  window = jsdom(cache['/index.html'], null, {
+    FetchExternalResources: false
+  }).createWindow();
   window.route = false;
   window.conf = opt;
   window.console.log = function() {
@@ -57,11 +57,6 @@ exports.route = function(pathname, clbk) {
     if (status == null) {
       status = 200;
     }
-    console.log('using', Template.name);
-    console.log(dep.context.Function.prototype.getName instanceof dep.context.Function);
-    console.log(dep.context.Function.prototype.getName instanceof Function);
-    console.log(Template instanceof dep.context.Function);
-    console.log(Template instanceof Function);
     return Template.get({
       pathname: pathname,
       parsedUrl: parsedUrl

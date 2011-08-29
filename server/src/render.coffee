@@ -16,9 +16,7 @@ exports.ready = false
 exports.init = (c, opt, clbk)->
   cache = c
 
-  window = jsdom(cache.cleanIndex).createWindow()
-  window = contextify window
-  window.window = window.getGlobal()
+  window = jsdom(cache['/index.html'], null, FetchExternalResources: false).createWindow()
 
   window.route = false
   window.conf = opt
@@ -32,10 +30,6 @@ exports.init = (c, opt, clbk)->
   window.XDomainRequest = XMLHttpRequest
   window.XMLHttpRequest = XMLHttpRequest
   window.localStorage = {}
-  #window.Date = Date
-  #window.Array = Array
-  #window.Number = Number
-  #window.JSON = JSON
 
   files = new depends.Files()
 
@@ -60,11 +54,6 @@ exports.route = (pathname, clbk) ->
   e404 = -> use dep.context.hs.t.e404, [], 404
 
   use = (Template, parsedUrl, status=200)->
-    console.log 'using', Template.name
-    console.log dep.context.Function.prototype.getName instanceof dep.context.Function
-    console.log dep.context.Function.prototype.getName instanceof Function
-    console.log Template instanceof dep.context.Function
-    console.log Template instanceof Function
     Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
       return e404() if not t?
 
