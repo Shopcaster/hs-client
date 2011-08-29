@@ -3,3 +3,5 @@ lsettings.json
 node_modules
 .node-xmlhttprequest-sync*
 *.pyc
+npm-debug.log
+

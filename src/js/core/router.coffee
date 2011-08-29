@@ -52,7 +52,6 @@ display = (Template, url, parsedUrl)->
       mp_note: 'User was routed to '+url
     ]
 
-
 goTo = hs.goTo = (url) ->
 
   for exp, Template of hs.urls
@@ -108,8 +107,24 @@ window.onpopstate = ->
 
   goTo document.location.pathname
 
-$ -> zz.init -> goTo document.location.pathname
+# If ZZ isn't present then we had a problem loading the library
+# and need to bail out with an error message immediately.
+#
+# Note that we check for auth's existence because zz is guaranteed
+# to be present due to the model code.
+if not zz.auth
+  # This has to be done manually, as the rest of the template system
+  # relies on ZZ
+  $('#main').html '''
+    <div class="flatpage">
+      <h1>Unable to Reach Hipsell Servers</h1>
+      <p>Either you're offline or something is wrong with the our servers.</p>
+      <p><strong>Refresh this page to try again.</strong></p>
+    </div>
+  '''
 
+# Bootstrap the location
+$ -> zz.init -> goTo document.location.pathname
 
 # Handle auth changes
 zz.auth.on 'change', ->
