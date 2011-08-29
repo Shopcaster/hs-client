@@ -52,7 +52,6 @@ display = (Template, url, parsedUrl)->
       mp_note: 'User was routed to '+url
     ]
 
-
 goTo = hs.goTo = (url) ->
 
   for exp, Template of hs.urls
@@ -108,8 +107,24 @@ window.onpopstate = ->
 
   goTo document.location.pathname
 
-$ -> zz.init -> goTo document.location.pathname
+# If ZZ isn't present then we had a problem loading the library
+# and need to bail out with an error message immediately.
+#
+# Note that we check for auth's existence because zz is guaranteed
+# to be present due to the model code.
+if not zz.auth
+  # This has to be done manually, as the rest of the template system
+  # relies on ZZ
+  $('#main').html '''
+    <div class="flatpage">
+      <h1>Unable to Reach Hipsell Servers</h1>
+      <p>Either you're offline or something is wrong with the our servers.</p>
+      <p><strong>Refresh this page to try again.</strong></p>
+    </div>
+  '''
 
+# Bootstrap the location
+$ -> zz.init -> goTo document.location.pathname
 
 # Handle auth changes
 zz.auth.on 'change', ->
@@ -124,42 +139,62 @@ zz.auth.on 'change', ->
 
 # Presence handling
 $ -> zz.init ->
-  moved = false
-  onMove = null
+  activity = false
+  onActivity = null
 
   # If the mouse moves with the user offline, just set them back
   # to online
-  offlineMove = ->
+  awayActivity = ->
     zz.presence.online();
 
-  # If the mouse moves with the user offline, set them to offline
-  # if they don't move the mouse for a while
-  omTimeout = null
-  onlineMove = ->
-    clearTimeout(omTimeout) if omTimeout
-    omTimeout = setTimeout ->
-      zz.presence.offline()
+  # Every time there's activity while the user is online, we reset
+  # the away timeout.
+  oaTimeout = null
+  onlineActivity = ->
+    clearTimeout(oaTimeout) if oaTimeout
+    oaTimeout = setTimeout ->
+      zz.presence.away()
     , 30 * 1000 # 30s - CHANGE AWAY TIMING HERE
+  # Bootstrap
+  onlineActivity()
 
-  # Set moved to true when the mouse moves
+  # Set activity when the mouse moves
   $(document.body).bind 'mousemove', ->
-    moved = true;
+    activity = true;
+  # Also when a key is pressed
+  $(document.body).bind 'keydown', ->
+    activity = true;
 
-  # Run movement logic no faster than once per second
+  # To avoid clobbering performance, we perform all activity-related
+  # logic here, every 1000 ms.
   setInterval ->
-    onMove() if moved
-    moved = false;
+    onActivity() if activity
+    activity = false;
   , 1000
 
   # To start, use the online handler
-  onMove = onlineMove;
+  onActivity = onlineActivity;
 
   # Change the handler when presence status changes
   zz.presence.on 'me', (status) ->
     if status == 'online'
-      onMove = onlineMove
+      onActivity = onlineActivity
     else
-      onMove = offlineMove
+      onActivity = awayActivity
+
+  # Finally, watch on the visibility API's.
+  # Webkit
+  document.addEventListener 'webkitvisibilitychange', ->
+    if document.webkitHidden
+      zz.presence.away()
+    else
+      zz.presence.online()
+  # IE (WTF, IE supports something before Firefox?)
+  document.addEventListener 'msvisibilitychange', ->
+    if document.msHidden
+      zz.presence.away()
+    else
+      zz.presence.online()
 
 # Initialize global views
 $ -> zz.init ->

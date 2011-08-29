@@ -1,3 +1,4 @@
 #!/usr/bin/env node
 
-require('./server/lib/bin');
+require('coffee-script');
+require('./server/bin');
