@@ -15,6 +15,7 @@
         "jsdom": "latest",
         "colors": "latest",
         "gzip": "latest",
-        "request": "latest"
+        "request": "latest",
+        "contextify": "latest"
     }
 }
