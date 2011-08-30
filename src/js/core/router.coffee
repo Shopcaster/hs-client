@@ -140,7 +140,6 @@ zz.auth.on 'change', ->
 # Presence handling
 $ -> zz.init ->
   activity = false
-  onActivity = null
 
   # If the mouse moves with the user offline, just set them back
   # to online
@@ -168,21 +167,15 @@ $ -> zz.init ->
   # To avoid clobbering performance, we perform all activity-related
   # logic here, every 1000 ms.
   setInterval ->
-    onActivity() if activity
+    if activity
+      if zz.presence.status == 'away'
+        awayActivity()
+      else if zz.presence.status == 'online'
+        onlineActivity()
     activity = false;
   , 1000
 
-  # To start, use the online handler
-  onActivity = onlineActivity;
-
-  # Change the handler when presence status changes
-  zz.presence.on 'me', (status) ->
-    if status == 'online'
-      onActivity = onlineActivity
-    else
-      onActivity = awayActivity
-
-  # Finally, watch on the visibility API's.
+  # Watch on the visibility API's.
   # Webkit
   document.addEventListener 'webkitvisibilitychange', ->
     if document.webkitHidden
