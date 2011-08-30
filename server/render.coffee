@@ -5,7 +5,6 @@ XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 fs = require 'fs'
 require 'colors'
 gzip = require 'gzip'
-contextify = require 'contextify'
 
 # module vars
 dep = null
