@@ -17,10 +17,16 @@ class hs.t.EditListing extends hs.Template
   }]
 
   template: -> """
-    <form class="edit-listing">
-      <span class="formFields"></span>
-      <input type="submit" class="submit" value="Submit" />
-    </form>
+    <span class="edit-listing">
+      <span class="edit-wrap">- <a href="javascript:;" class="edit">edit</a></span>
+      <form>
+        <div style="clear:both;"></div>
+        <span class="formFields"></span>
+        <input type="submit" class="submit" value="Save" />
+        <a href="javascript:;" class="cancel">cancel</a>
+        <div style="clear:both;"></div>
+      </form>
+    </span>
     """
 
 

@@ -5,10 +5,6 @@ dep.provide 'hs.v.Listing'
 
 class hs.v.Listing extends hs.View
 
-  events:
-    'click .edit': 'edit'
-
-
   init: ->
     this.template.$('#listing-social .twitter').html '
       <a href="http://twitter.com/share"
@@ -32,9 +28,3 @@ class hs.v.Listing extends hs.View
     this.template.$('#listing-social .goog').html '
       <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
       <g:plusone size="medium" count="false"></g:plusone>'
-
-
-  edit: (e)->
-    e.preventDefault()
-    #this.template.editTmpl this.template.model
-

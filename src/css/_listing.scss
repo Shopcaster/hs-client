@@ -98,13 +98,33 @@
 
     #listing-description{
       font-size:16px;
-
-      .edit-wrap{
-        font-size:14px;
-      }
     }
-    .listing-edit{
-      display:none;
+    .edit-listing{
+      font-size:14px;
+
+      form{
+        display:none;
+
+        @include dark-button($blue - #444, '.submit');
+
+        textarea{
+          display:block;
+          margin: 5px 0;
+          height:60px;
+          width:$section_width - 35;
+          @media only screen and (max-width: 480px) {
+            width: $mob_section_width - 35;
+          }
+        }
+
+        .cancel{
+          margin:5px 5px 0 0;
+          float:right;
+        }
+        .submit{
+          float:right;
+        }
+      }
     }
 
     .bottom{

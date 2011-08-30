@@ -29,7 +29,7 @@ class hs.t.Listing extends hs.Template
           <div id="listing-creator"></div>
           <span class="status">Available</span>
           <div id="listing-description"></div>
-          <div class="listing-edit"></div>
+          <div class="listing-edit-description"></div>
 
           <div class="bottom">
             <div id="listing-social">
@@ -89,7 +89,7 @@ class hs.t.Listing extends hs.Template
 
     edit:
       class: hs.t.EditListing
-      appendTo: '.listing-edit'
+      appendTo: '.listing-edit-description'
 
 
   postRender: ->
@@ -129,8 +129,9 @@ class hs.t.Listing extends hs.Template
 
     else
       this.hideOfferButton()
-      #this.$('#listing-description').append '<span class="edit-wrap">
-      #   - <a href="javascript:;" class="edit">edit</a></span>'
+      this.editTmpl this.model
+
+      this.$('#listing-description').append ''
 
 
   newConvo: ->
