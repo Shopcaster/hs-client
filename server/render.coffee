@@ -17,7 +17,11 @@ exports.ready = false
 exports.init = (c, opt, clbk)->
   cache = c
 
-  window = jsdom(cache['/index.html'], null, FetchExternalResources: false).createWindow()
+  window = jsdom cache['/index.html'], null,
+    FetchExternalResources: false,
+    ProcessExternalResources: false
+
+  window = window.createWindow()
 
   window.route = false
   window.conf = opt
@@ -41,11 +45,13 @@ exports.init = (c, opt, clbk)->
 
   dep = new depends.NodeDep files, context: window
 
-  dep.dlIntoContext "#{opt.serverUri}/api-library.js", (err)->
-    return clbk err if err?
+  #dep.dlIntoContext "#{opt.serverUri}/api-library.js", (err)->
+  #  return clbk err if err?
+  setTimeout ->
     dep.execute 'hs.urls', ->
       exports.ready = true
       clbk?()
+  , 100
 
 
 #route

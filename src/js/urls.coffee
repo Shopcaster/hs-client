@@ -34,3 +34,5 @@ hs.urls =
   '^/how-it-works': hs.t.HowItWorks
   '^/terms-and-conditions': hs.t.TermsAndConditions
   '^/privacy-policy': hs.t.PrivacyPolicy
+
+console.log 'urls'
