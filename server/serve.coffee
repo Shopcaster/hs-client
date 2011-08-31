@@ -61,7 +61,7 @@ doRender = (res, pathname)->
 
 exports.run = (opt) ->
 
-  serve = (pathname, res)->
+  serve = (pathname, req, res)->
     headers = {}
     headers['Content-Type'] = mime pathname
 
@@ -88,13 +88,13 @@ exports.run = (opt) ->
     pathname = opt.pathname = url.parse(req.url).pathname
     try
       if (opt.gzip and gzip[pathname]?) or cache[pathname]?
-        serve pathname, res
+        serve pathname, req, res
 
       else if opt.prerender and render.ready
         doRender res, pathname
 
       else
-        serve '/index.html', res
+        serve '/index.html', req, res
 
     catch err
       console.log ('GET 500 '+pathname).red
