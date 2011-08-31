@@ -216,7 +216,7 @@ class hs.Template extends hs.EventEmitter
     this.el?.remove()
     this._removeMeta()
 
-    if this.options.heat != false
+    if this.heat != false
       if this.model?
         this.model.freeze()
 
