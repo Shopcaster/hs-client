@@ -22,7 +22,52 @@ class hs.t.Message extends hs.Template
       class: hs.t.InlineUser
 
 
-  setOffer: -> this.el.addClass 'offer' if this.model.offer?
+  postRender:->
+    console.log 'message postRender'
+    this.listingSub = false
+    this.setOffer = _.bind this.setOffer, this
+
+
+  preRemove:->
+    if this.listingSub
+      this.listing.removeListener 'accepted', this.setOffer
+
+
+
+  setOffer: ->
+    console.log 'setOffer'
+    if this.model.offer?
+      this.el.addClass 'offer'
+      ###
+      withListing = =>
+
+        if zz.auth.curUser()._id == this.listing.creator
+
+          if this.listing.sold and this.listing.accepted = this.model.offer
+            this.$('.accept-offer-inline').remove()
+            this.$('.actions').append '
+              <a href="javascript:;" class="cancel-offer-inline">Cancel</a>'
+
+          else
+            this.$('.cancel-offer-inline').remove()
+            this.$('.actions').append '
+              <a href="javascript:;" class="accept-offer-inline">Accept</a>'
+
+          if not this.listingSub == false
+            this.listing.on 'sold', this.setOffer
+            console.log 'sub on listing', this.listing
+            console.log this.setOffer
+            this.listing.emit 'sold'
+            this.listingSub = true
+
+
+      if not this.listing?
+        zz.data.listing this.model, 'convo', 'listing', (listing)=>
+          this.listing = listing
+          withListing()
+      else
+        withListing()
+    ###
 
 
   setCreator: ->
