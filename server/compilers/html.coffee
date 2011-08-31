@@ -28,8 +28,8 @@ compile = (files, opt, cache, clbk) ->
     html = html.replace '</head>', '<script>var conf='+JSON.stringify(opt)+';</script></head>'
 
     # appcache
-    if opt['noappcache'] == true
-      html = html.replace '<html', "<html manifest='/manifest.appcache?v=#{hash('/manifest.appcache')}'"
+    if opt['appcache'] == true
+      html = html.replace '<html', "<html manifest='/manifest.appcache'"
 
     #CSS
     html = html.replace '</head>', "<link rel='stylesheet' href='/style.css?v=#{hash('/style.css')}'></head>"

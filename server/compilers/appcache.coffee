@@ -15,6 +15,7 @@ compile = (files, opt, cache, clbk) ->
   manifest += 'CACHE MANIFEST\n'
 
   if not opt.appcache
+    manifest += '#'+Math.random()+'\n'
     manifest += 'NETWORK:\n*\n'
     cache[manifestFilename] = manifest
     return clbk()
