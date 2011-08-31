@@ -13,7 +13,6 @@ class hs.t.TopBar extends hs.Template
   template: -> """
     <div class="inner-top-bar">
       <a href="/about">About</a>
-      <a href="https://getsatisfaction.com/hipsell" target="_blank">Feedback</a>
       <a class="name"></a>
       <a href="/settings/name" class="settings">Settings</a>
       <a href="javascript:;" class="logout">Logout</a>

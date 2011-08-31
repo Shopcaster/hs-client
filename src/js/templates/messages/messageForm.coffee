@@ -24,7 +24,7 @@ class hs.t.MessageForm extends hs.Template
   },{
     'name': 'message'
     'type': 'text'
-    'placeholder': 'Message'
+    'placeholder': 'Private Message'
   }]
 
 
