@@ -32,11 +32,7 @@ mimetypes =
   css: 'text/css; charset=utf-8'
 
 
-renderQ = []
-rendering = false
-
 doRender = (res, pathname)->
-  rendering = true
   render.route pathname, (status, htm)->
 
     write = (content)->
@@ -46,12 +42,11 @@ doRender = (res, pathname)->
       lg = lg.red if status != 200
       console.log lg
 
-      res.writeHead status, 'Content-Type': 'text/html; charset=utf-8'
+      res.writeHead status,
+        'Content-Type': 'text/html; charset=utf-8'
+        'Cache-Control': 'no-cache'
       res.write content
       res.end()
-
-      rendering = false
-      renderQ.pop()() if renderQ.length
 
     if opt.gzip and req.headers['accept-encoding']? and
         'gzip' in req.headers['accept-encoding'].split(',')
@@ -66,46 +61,46 @@ doRender = (res, pathname)->
 
 exports.run = (opt) ->
 
+  serve = (pathname, res)->
+    headers = {}
+    headers['Content-Type'] = mime pathname
+
+    if pathname == '/index.html'
+      headers['Cache-Control'] = 'no-cache'
+    else
+      headers['Cache-Control'] = 'max-age=31536000'
+
+    if opt.gzip and
+        req.headers['accept-encoding']? and
+        'gzip' in req.headers['accept-encoding'].split(',')
+      headers['Content-Encoding'] = 'gzip'
+      content = gzip[pathname]
+    else
+      content = cache[pathname]
+
+    res.writeHead 200, headers
+    res.write content, 'binary'
+    res.end()
+    console.log ('GET 200 '+pathname).grey
+
+
   onRequest = (req, res) ->
     pathname = opt.pathname = url.parse(req.url).pathname
+    try
+      if (opt.gzip and gzip[pathname]?) or cache[pathname]?
+        serve pathname, res
 
-    if (opt.gzip and gzip[pathname]?) or cache[pathname]?
-      console.log ('GET 200 '+pathname).grey
-      headers =
-        'Content-Type': mime pathname
-        'Cache-Control': 'max-age=31536000'
-
-      if opt.gzip and
-          req.headers['accept-encoding']? and
-          'gzip' in req.headers['accept-encoding'].split(',')
-        headers['Content-Encoding'] = 'gzip'
-        content = gzip[pathname]
-      else
-        content = cache[pathname]
-
-      res.writeHead 200, headers
-      res.write content, 'binary'
-      res.end()
-
-    else if opt.prerender and render.ready
-      if not rendering
+      else if opt.prerender and render.ready
         doRender res, pathname
 
       else
-        renderQ.push -> doRender res, pathname
+        serve '/index.html', res
 
-    else
-      console.log 'GET 200 /index.html'
-      res.writeHead 200, 'Content-Type': 'text/html'
-      res.write cache['/index.html']
-      res.end()
-
-
-    errEnd = (err) ->
-      console.log 'ERROR'.red
+    catch err
+      console.log ('GET 500 '+pathname).red
       console.log err.stack.red
       res.writeHead 500, 'Content-Type': 'text/plain; charset=utf-8'
-      res.write err + '\n'
+      res.write '<h1>500</h1><p>oops.</p>'
       res.end()
 
 
@@ -140,7 +135,7 @@ exports.run = (opt) ->
     ## start renderer
     if opt.prerender
       console.log 'initializing render'.magenta
-      setTimeout (-> render.init cache, opt), 100
+      render.init cache, opt
 
     autoBuild() if opt.autobuild
 

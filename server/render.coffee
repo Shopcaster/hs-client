@@ -1,39 +1,41 @@
 
+require 'colors'
 depends = require 'depends'
 jsdom  = require("jsdom").jsdom
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 fs = require 'fs'
-require 'colors'
 gzip = require 'gzip'
+contextify = require 'contextify'
+request = require 'request'
 
 # module vars
-dep = null
+#dep = null
 cache = null
+opt = null
+files = null
+
+zzContext = {}
+zzContext.XMLHttpRequest = XMLHttpRequest
+zzContext.XMLHttpRequest.prototype.withCredentials = true
+zzContext.addEventListener = ->
+zzContext.setTimeout = setTimeout
+zzContext.clearTimeout = clearTimeout
+zzContext.console = console
+zzContext.localStorage = {}
+
+zzContext.Date = Date
+zzContext.String = String
+zzContext.Number = Number
+
+zzContext = contextify zzContext
+zzContext.window = zzContext.getGlobal()
 
 exports.ready = false
 
 # initialize
-exports.init = (c, opt, clbk)->
+exports.init = (c, o, clbk)->
   cache = c
-
-  window = jsdom cache['/index.html'], null,
-    FetchExternalResources: false,
-    ProcessExternalResources: false
-
-  window = window.createWindow()
-
-  window.route = false
-  window.conf = opt
-
-  window.console.log = ->
-    args = Array.prototype.slice.call arguments, 0
-    args.unshift 'client:'.blue
-    console.log.apply console, args
-
-  window.alert = window.console.log
-  window.XDomainRequest = XMLHttpRequest
-  window.XMLHttpRequest = XMLHttpRequest
-  window.localStorage = {}
+  opt = o
 
   files = new depends.Files()
 
@@ -42,35 +44,78 @@ exports.init = (c, opt, clbk)->
     if /\.js$/.test(file) and file != '/main.js'
       files.js[file] = content
 
-  dep = new depends.NodeDep files, context: window
+  request url: "#{opt.serverUri}/api-library.js", (err, res, body)=>
+    return clbk err if err?
 
-  #dep.dlIntoContext "#{opt.serverUri}/api-library.js", (err)->
-  #  return clbk err if err?
-  setTimeout ->
-    dep.execute 'hs.urls', ->
-      exports.ready = true
-      clbk?()
-  , 100
+    try
+      zzContext.run body, "#{opt.serverUri}/api-library.js"
+    catch e
+      console.log 'Error in zz:'.red
+      console.log e.stack
+
+    exports.ready = true
+    clbk?()
+
 
 
 #route
 exports.route = (pathname, clbk) ->
-  html = '<!DOCTYPE html>'
+  window = jsdom cache['/index.html'], null,
+    features:
+      FetchExternalResources: false
+      ProcessExternalResources: false
+      MutationEvents: false
 
-  e404 = -> use dep.context.hs.t.e404, [], 404
+  window = window.createWindow()
+
+  window.route = false
+  window.conf = opt
+
+  window.Date = Date
+  window.String = String
+  window.Number = Number
+
+  window.console.log = window.console.error = ->
+    args = Array.prototype.slice.call arguments, 0
+    args.unshift 'client:'.blue
+    console.log.apply console, args
+
+  window.alert = window.console.log
+
+  window.zz = zzContext.zz
+
+  window.dep = require: (->), provide: (mod)->
+    split = mod.split('.')
+    cur = window
+    cur = cur[split.shift()] ||= {} while split.length
+
+  for mod in files.dependsOn 'hs.urls'
+    file = files.rawMap[mod]
+    content = files.js[file]
+    window.run content, file
+
+
+  html = '<!DOCTYPE html>'
 
   use = (Template, parsedUrl, status=200)->
     Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
       return e404() if not t?
 
-      html += dep.context.document.innerHTML
-      clbk status, html
-      t.remove()
-      dep.context.$('#main').html('')
+      html += window.document.innerHTML
 
+      clbk status, html
+
+      window.hs = null
+      window.close()
+
+      #t.remove()
+      #t = null
+      #dep.context.$('#main').html('')
+
+  e404 = -> use window.hs.t.e404, [], 404
 
   try
-    for exp, Template of dep.context.hs.urls
+    for exp, Template of window.hs.urls
 
       parsed = new RegExp(exp).exec(pathname)
       if parsed?
@@ -82,6 +127,6 @@ exports.route = (pathname, clbk) ->
     e404()
 
   catch e
-    console.log ('error'+e.stack).red
-    html += dep.context.document.innerHTML
-    clbk 500, html
+    console.log ('error '+ (e.stack || e)).red
+    #html += window.document.innerHTML
+    clbk 500, 'we suck'

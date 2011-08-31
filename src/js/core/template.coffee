@@ -224,9 +224,6 @@ class hs.Template extends hs.EventEmitter
     this.emit('postRemove')
 
 
-hs.util
-
-
 hs.Template.get = (options, clbk) ->
   user = zz.auth.curUser()
   if this.getModel?

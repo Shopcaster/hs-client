@@ -45,7 +45,6 @@ Number.prototype.degreesToDirection = () ->
   return dirs[Math.round(this/(360/dirs.length))]
 
 
-
 Date.prototype.since = (since) ->
   now = 0
   second = 1000
@@ -81,7 +80,6 @@ Date.prototype.since = (since) ->
     else {text: "just now", num: 0}
 
 
-
 class window.URL
 
   reg: /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
@@ -112,11 +110,11 @@ jQuery.fn.liveSince = (timestamp) ->
   this.addClass '_live_since'
 
 # Update live sinces every half minute
-setInterval ->
+do updateLive = ->
   $('._live_since').each ->
     since = new Date(parseInt($(this).attr 'data-timestamp')).since()
     $(this).text "#{since.num || ''} #{since.text || ''}"
-, 30 * 1000
+  setTimeout updateLive, 30 * 1000
 
 
 
