@@ -99,7 +99,7 @@ exports.run = (opt) ->
     catch err
       console.log ('GET 500 '+pathname).red
       console.log err.stack.red
-      res.writeHead 500, 'Content-Type': 'text/plain; charset=utf-8'
+      res.writeHead 500, 'Content-Type': 'text/html; charset=utf-8'
       res.write '<h1>500</h1><p>oops.</p>'
       res.end()
 
