@@ -26,7 +26,7 @@ class hs.t.Offers extends hs.Template
         <div class="value my-offer">$0</div>
         <div class="details my-offer"></div>
       </div>
-    
+
     </div>
     """
 

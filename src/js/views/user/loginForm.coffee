@@ -15,6 +15,9 @@ class hs.v.LoginForm extends hs.View
     'click .remember': 'remember'
 
 
+  init:-> hs.on 'openLogin', _.bind this.focus, this
+
+
   forgot: (e)->
     e?.preventDefault()
     this.forgot = true

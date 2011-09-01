@@ -29,7 +29,6 @@ class hs.t.Message extends hs.Template
 
 
   setOffer:->
-    console.log 'setOffer'
     if this.model.offer?
       this.el.addClass 'offer'
       withListing = =>
