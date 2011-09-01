@@ -460,6 +460,7 @@
 
       .message{
         min-height:20px;
+        position:relative;
 
         &.offer{
           padding-top:5px;
@@ -468,6 +469,13 @@
           background-color:$lightYellow;
 
           .message-body{margin-left:0;}
+        }
+
+        .actions{
+          position:absolute;
+          top:5px;
+          right:10px;
+          font-size:12px;
         }
 
         .creator{

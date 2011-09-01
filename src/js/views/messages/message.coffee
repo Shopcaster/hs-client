@@ -12,6 +12,11 @@ class hs.v.Message extends hs.View
     'click .cancel-offer-inline': 'cancelOffer'
 
 
+  init:->
+    if this.template.listing?
+      this.template.listing.on 'sold', _.bind this.registerDomEvents, this
+
+
   answerPublicly: ->
     this.parent.answerPublicly this.template.model.message
 
