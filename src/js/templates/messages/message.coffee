@@ -34,11 +34,10 @@ class hs.t.Message extends hs.Template
 
 
 
-  setOffer: ->
+  setOffer:->
     console.log 'setOffer'
     if this.model.offer?
       this.el.addClass 'offer'
-      ###
       withListing = =>
 
         if zz.auth.curUser()._id == this.listing.creator
@@ -67,7 +66,6 @@ class hs.t.Message extends hs.Template
           withListing()
       else
         withListing()
-    ###
 
 
   setCreator: ->

@@ -6,10 +6,10 @@ from fabric.api import *
 def d(): env.hosts = ['d.hipsell.com']
 develop = d
 
-def s(): env.hosts = ['s.hipsell.com']
+def s(): env.hosts = ['web@s.hipsell.com']
 staging = s
 
-def p(): env.hosts = ['hipsell.com']
+def p(): env.hosts = ['web@hipsell.com']
 production = p
 
 
