@@ -10,6 +10,10 @@ dep.provide 'hs.v.MessageForm'
 class hs.v.MessageForm extends hs.View
 
 
+  events:
+    'click .cancel': 'removePublicly'
+
+
   answerPublicly: (question) ->
     this.removePublicly()
 
@@ -24,11 +28,17 @@ class hs.v.MessageForm extends hs.View
     this.template.$('[name=message]')
       .before('<div class="qa">A:</div>')
 
+    this.template.$('[type=submit]')
+      .after('<a href="javascript:;" class="cancel">cancel</a>')
+
+    this.registerDomEvents()
+
 
   removePublicly: ->
     this.options.question = undefined
     this.template.el.removeClass 'question'
     this.template.$('.qa').remove()
+    this.template.$('.cancel').hide()
     this.template.$('br').remove()
     this.template.$('[name=question]').val('').parent().hide()
 

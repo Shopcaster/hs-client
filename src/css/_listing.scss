@@ -321,8 +321,7 @@
 
     .message-form{
       padding:10px;
-
-      input{margin-bottom:5px;}
+      position:relative;
 
       input, .field-wrap{
         float:left;
@@ -438,15 +437,30 @@
             .qa{
               display:block;
               float:left;
-              margin-right:3px;
+              margin-top:8px;
             }
 
             input{
               float:right;
-              width:$section_width - 210px;
+              margin:2px 0 0;
+              width:$section_width - 100px;
               @media only screen and (max-width: 480px) {
-                width:$mob_section_width - 210px;
+                width:$mob_section_width - 100px;
               }
+            }
+
+            .field-wrap{
+              margin: 2px 0 5px;
+              float:right;
+              width:$section_width - 70px;
+              @media only screen and (max-width: 480px) {
+                width:$mob_section_width - 70px;
+              }
+            }
+
+            .cancel{
+              float:right;
+              margin: 6px 5px 0 0;
             }
           }
 
