@@ -15,12 +15,19 @@ class hs.v.LoginForm extends hs.View
     'click .remember': 'remember'
 
 
+  init:-> hs.on 'openLogin', _.bind this.focus, this
+
+
   forgot: (e)->
     e?.preventDefault()
     this.forgot = true
     this.template.$('[name=password]').hide()
     this.template.$('.forgot').hide()
     this.template.$('.remember').show()
+    this.template.$('.submit').val 'Reset'
+
+    this.template.$('.formError').removeClass('formError')
+    this.template.$(".bubble").remove()
 
 
   remember: (e)->
@@ -29,6 +36,7 @@ class hs.v.LoginForm extends hs.View
     this.template.$('[name=password]').show()
     this.template.$('.forgot').show()
     this.template.$('.remember').hide()
+    this.template.$('.submit').val 'Login'
 
 
   submit: ->

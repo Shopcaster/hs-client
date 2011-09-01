@@ -10,7 +10,8 @@
     "minifyJS": false,
     "minifyCSS": true,
     "autobuild": false,
-    "gzip": true
+    "gzip": true,
+    "cache": true
   },
   "production": {
     "serverUri": "http://hipsell.com:8080",

@@ -4,5 +4,4 @@ dep.require 'hs'
 
 dep.provide 'hs.EventEmitter'
 
-
-class hs.EventEmitter extends zz.EventEmitter
+hs.EventEmitter = zz.EventEmitter

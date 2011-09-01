@@ -157,6 +157,7 @@ class hs.t.Listing extends hs.Template
 
 
   setCreator: () ->
+    console.log 'setcreator'
     zz.data.user this.model, 'creator', (creator) =>
       this.userTmpl creator
 

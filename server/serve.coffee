@@ -65,7 +65,7 @@ exports.run = (opt) ->
     headers = {}
     headers['Content-Type'] = mime pathname
 
-    if pathname == '/index.html' or pathname == '/manifest.appcache'
+    if pathname == '/index.html' or pathname == '/manifest.appcache' or opt.cache == false
       headers['Cache-Control'] = 'no-cache'
     else
       headers['Cache-Control'] = 'max-age=31536000'
@@ -109,7 +109,7 @@ exports.run = (opt) ->
     watchRecursive opt.clientSource, (file)->
       console.log 'File change detected'.yellow
 
-      build.build [file], opt, cache, (err)->
+      build.build [file, '/index.html'], opt, cache, (err)->
         return console.log 'ERROR:'.red, err if err?
 
         if opt.gzip

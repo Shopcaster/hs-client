@@ -26,7 +26,7 @@ class hs.t.LoginForm extends hs.Template
       #{this.renderFields()}
       <a href="javascript:;" class="forgot">I forgot my password : /</a>
       <a href="javascript:;" class="remember">Oh, I remember</a>
-      <input type="submit" value="Submit" class="dark submit" />
+      <input type="submit" value="Login" class="dark submit" />
     </form>
     """
 

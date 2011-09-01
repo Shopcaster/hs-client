@@ -321,8 +321,7 @@
 
     .message-form{
       padding:10px;
-
-      input{margin-bottom:5px;}
+      position:relative;
 
       input, .field-wrap{
         float:left;
@@ -350,6 +349,7 @@
 
       .convo-li{
         min-height:35px;
+        border:none;
 
         font-size:14px !important;
 
@@ -412,7 +412,7 @@
 
         .convo{
           position:absolute;
-          top:41px;left:50px;
+          top:42px;left:50px;
           padding:0;
           margin-bottom:10px;
           z-index:2;
@@ -438,15 +438,30 @@
             .qa{
               display:block;
               float:left;
-              margin-right:3px;
+              margin-top:8px;
             }
 
             input{
               float:right;
-              width:$section_width - 210px;
+              margin:2px 0 0;
+              width:$section_width - 100px;
               @media only screen and (max-width: 480px) {
-                width:$mob_section_width - 210px;
+                width:$mob_section_width - 100px;
               }
+            }
+
+            .field-wrap{
+              margin: 2px 0 5px;
+              float:right;
+              width:$section_width - 70px;
+              @media only screen and (max-width: 480px) {
+                width:$mob_section_width - 70px;
+              }
+            }
+
+            .cancel{
+              float:right;
+              margin: 6px 5px 0 0;
             }
           }
 
@@ -460,6 +475,7 @@
 
       .message{
         min-height:20px;
+        position:relative;
 
         &.offer{
           padding-top:5px;
@@ -468,6 +484,13 @@
           background-color:$lightYellow;
 
           .message-body{margin-left:0;}
+        }
+
+        .actions{
+          position:absolute;
+          top:5px;
+          right:10px;
+          font-size:12px;
         }
 
         .creator{

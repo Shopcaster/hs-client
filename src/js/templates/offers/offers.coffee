@@ -26,7 +26,7 @@ class hs.t.Offers extends hs.Template
         <div class="value my-offer">$0</div>
         <div class="details my-offer"></div>
       </div>
-    
+
     </div>
     """
 
@@ -83,7 +83,6 @@ class hs.t.Offers extends hs.Template
           this.myOffer.on 'amount', => this.setMyOffer
           this.setMyOffer
           break
-
 
 
   addModel: (offer, index) ->
