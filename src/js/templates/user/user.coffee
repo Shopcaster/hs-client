@@ -28,6 +28,8 @@ class hs.t.User extends hs.Template
     else
       this.$('.avatar').attr 'src', '/img/default_avatar.png'
 
+    this.$('.name').attr 'href', '/'+this.model._id
+
 
   preRemove: ->
     if this.model?
@@ -35,7 +37,7 @@ class hs.t.User extends hs.Template
 
 
   setName: ->
-    this.$('.name').text(this.model.name).attr 'href', '/'+this.model._id
+    this.$('.name').text this.model.name
 
 
   setAvatar: ->

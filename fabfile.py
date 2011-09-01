@@ -35,13 +35,13 @@ def deploy():
       run('sleep 0.1')
       run('sudo status hs-client')
 
-  elif 's.hipsell.com' in env.hosts or 'hipsell.com' in env.hosts:
+  elif 'web@s.hipsell.com' in env.hosts or 'web@hipsell.com' in env.hosts:
 
-    if 's.hipsell.com' in env.hosts:
+    if 'web@s.hipsell.com' in env.hosts:
       loc = '/data/web/s.hipsell.com/client/'
       proc = 'client-staging'
 
-    elif 'hipsell.com' in env.hosts:
+    elif 'web@hipsell.com' in env.hosts:
       loc = '/data/web/hipsell.com/client/'
       proc = 'client'
 
