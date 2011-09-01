@@ -85,7 +85,6 @@ class hs.t.Offers extends hs.Template
           break
 
 
-
   addModel: (offer, index) ->
     offer.heat()
     this.offers[offer._id] = offer
