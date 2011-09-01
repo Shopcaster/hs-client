@@ -140,6 +140,7 @@ zz.auth.on 'change', ->
 # Presence handling
 $ -> zz.init ->
   activity = false
+  ignoreActivity = false
 
   # If the mouse moves with the user offline, just set them back
   # to online
@@ -167,7 +168,7 @@ $ -> zz.init ->
   # To avoid clobbering performance, we perform all activity-related
   # logic here, every 1000 ms.
   setInterval ->
-    if activity
+    if activity and not ignoreActivity
       if zz.presence.status == 'away'
         awayActivity()
       else if zz.presence.status == 'online'
@@ -179,14 +180,18 @@ $ -> zz.init ->
   # Webkit
   document.addEventListener 'webkitvisibilitychange', ->
     if document.webkitHidden
+      ignoreActivity = true
       zz.presence.away()
     else
+      ignoreActivity = false
       zz.presence.online()
   # IE (WTF, IE supports something before Firefox?)
   document.addEventListener 'msvisibilitychange', ->
     if document.msHidden
+      ignoreActivity = true
       zz.presence.away()
     else
+      ignoreActivity = false
       zz.presence.online()
 
 # Initialize global views
