@@ -349,6 +349,7 @@
 
       .convo-li{
         min-height:35px;
+        border:none;
 
         font-size:14px !important;
 
@@ -411,7 +412,7 @@
 
         .convo{
           position:absolute;
-          top:41px;left:50px;
+          top:42px;left:50px;
           padding:0;
           margin-bottom:10px;
           z-index:2;
