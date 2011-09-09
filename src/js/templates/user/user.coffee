@@ -24,11 +24,10 @@ class hs.t.User extends hs.Template
     if this.model?
       this.setPresence = _.bind(this.setPresence, this)
       zz.presence.on this.model._id, this.setPresence
+      this.$('.name').attr 'href', '/'+this.model._id
 
     else
       this.$('.avatar').attr 'src', '/img/default_avatar.png'
-
-    this.$('.name').attr 'href', '/'+this.model._id
 
 
   preRemove: ->
