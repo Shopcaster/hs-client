@@ -21,7 +21,7 @@ class hs.t.NewListing extends hs.Template
     'type': 'text',
     'placeholder': 'Price'
   },{
-    'name': 'image',
+    'name': 'photo',
     'type': 'file',
     'placeholder': 'Image'
   },{
