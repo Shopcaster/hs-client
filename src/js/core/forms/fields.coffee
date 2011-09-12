@@ -64,6 +64,32 @@ reg 'text', 'password', 'email', 'number', {
 }
 
 
+
+reg 'hidden', {
+  t: class InputT extends hs.FormFieldTemplate
+
+    template: ->
+      attrs = name: this.options.name, type: this.options.type
+      attrs.class = this.options.clas if this.options.clas?
+      attrs.value = this.options.value if this.options.value?
+
+      op = ''
+      op += '<div class="'+this.options.name+'-wrap field-wrap">'
+      op += '<input '
+      for key, val of attrs
+        op += "#{key}='#{val}' "
+      op += '/>'
+      op += '</div>'
+
+      return op
+
+  v: class InputV extends hs.FormFieldView
+
+    get: () -> this.template.$('input').val()
+    set: (value) -> this.template.$('input').val value
+}
+
+
 reg 'file', {
   t: class FileT extends hs.FormFieldTemplate
 
