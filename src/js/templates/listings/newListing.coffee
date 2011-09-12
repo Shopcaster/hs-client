@@ -34,7 +34,7 @@ class hs.t.NewListing extends hs.Template
 
 
   template: -> """
-    <form action="#{conf.serverUri}/iapi/listing" method="POST">
+    <form action="#{conf.serverUri}/iapi/listing" method="POST" enctype="multipart/form-data">
       <span class="formFields"></span>
       <input type="submit" class="submit" value="Submit" />
       <div style="clear:both;"></div>
