@@ -83,7 +83,16 @@ hs.v.mods.form = (View) ->
       next()
 
 
+  View.prototype.browserSubmit =->
+    this.skipSubmit = true
+    this.template.el.submit()
+
+
   View.prototype._submit = (e) ->
+    if this.skipSubmit
+      this.skipSubmit = false
+      return
+
     e?.preventDefault()
 
     if not 'placeholder' in document.createElement('input')
@@ -137,6 +146,8 @@ hs.v.mods.form = (View) ->
 
 
   View.prototype.showInvalid = (name, reason) ->
+    this.stopSubmit?()
+
     reason ||= "#{name} is invalid"
 
     field = this.template.$('[name="'+name+'"]')
