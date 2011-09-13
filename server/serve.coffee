@@ -69,7 +69,6 @@ doRender = (res, pathname)->
 
   render.on 'exit', ->
 
-    fs.writeFileSync '/home/defrex/Desktop/buffer', buffer, 'utf8'
     done = true
     return if killed
 
