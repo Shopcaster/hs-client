@@ -1,5 +1,6 @@
 
 dep.require 'hs'
+dep.require 'hs.globalTemplates'
 dep.require 'hs.t.e404'
 dep.require 'hs.t.Home'
 dep.require 'hs.t.Listing'

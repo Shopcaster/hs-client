@@ -22,7 +22,7 @@ class hs.t.LoginForm extends hs.Template
 
 
   template: -> """
-    <form class="formDialog">
+    <form class="formDialog dialog">
       #{this.renderFields()}
       <a href="javascript:;" class="forgot">I forgot my password : /</a>
       <a href="javascript:;" class="remember">Oh, I remember</a>

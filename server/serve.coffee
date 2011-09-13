@@ -4,14 +4,17 @@ url = require 'url'
 path = require 'path'
 fs = require 'fs'
 cli = require 'cli'
+spawn = require('child_process').spawn
 require 'colors'
 
 build = require './build'
-render = require './render'
 
 
 cache = {}
+serial_cache = ''
 gzip = {}
+conf = null
+renderTimeout = 2000
 
 mimetypes =
   png: 'image/png'
@@ -33,7 +36,42 @@ mimetypes =
 
 
 doRender = (res, pathname)->
-  render.route pathname, (status, htm)->
+  buffer = ''
+  done = false
+  killed = false
+
+  render = spawn 'coffee', [__dirname+'/render.coffee', pathname]
+
+  if not render.stdin.write serial_cache
+    render.stdin.on 'drain', -> render.stdin.end()
+  else
+    render.stdin.end()
+
+  render.stdout.setEncoding 'utf8'
+  render.stdout.on 'data', (data)-> buffer += data
+
+  render.stderr.setEncoding 'utf8'
+  render.stderr.on 'data', (data)-> process.stderr.write data.red
+
+
+  setTimeout ->
+    if not done
+      killed = true
+      render.kill()
+      console.log ('GET 500 '+pathname).red
+      console.log 'Timeout while rendering. Current content:'.red
+      console.log buffer
+      res.writeHead 500, 'Content-Type': 'text/html; charset=utf-8'
+      res.write '<h1>500</h1><p>oops.</p>'
+      res.end()
+  , renderTimeout
+
+
+  render.on 'exit', ->
+
+    fs.writeFileSync '/home/defrex/Desktop/buffer', buffer, 'utf8'
+    done = true
+    return if killed
 
     write = (content)->
       status = 200 if not status?
@@ -50,16 +88,17 @@ doRender = (res, pathname)->
 
     if opt.gzip and req.headers['accept-encoding']? and
         'gzip' in req.headers['accept-encoding'].split(',')
-      gzip content, (err, zipd)->
+      gzip buffer, (err, zipd)->
         if not err?
           write zipd
         else
-          write htm
+          write buffer
     else
-      write htm
+      write buffer
 
 
 exports.run = (opt) ->
+  conf = opt
 
   serve = (pathname, req, res)->
     headers = {}
@@ -90,7 +129,7 @@ exports.run = (opt) ->
       if (opt.gzip and gzip[pathname]?) or cache[pathname]?
         serve pathname, req, res
 
-      else if opt.prerender and render.ready
+      else if opt.prerender
         doRender res, pathname
 
       else
@@ -112,17 +151,11 @@ exports.run = (opt) ->
       build.build [file], opt, cache, (err)->
         return console.log 'ERROR:'.red, err if err?
 
+        serializeCache()
+
         if opt.gzip
           build.gzip file: cache[file], gzip, (err)->
             return console.log 'ERROR:'.red, err if err?
-        ###
-        if opt.prerender and  /\.(\w+)$/.exec(file)[1] in ['coffee', 'html']
-          console.log 'Reloading render'.yellow
-
-          render.init cache, opt, (err)->
-            return cli.fatal err if err?
-            console.log 'render reload complete'.yellow
-        ###
 
 
   startServe = (err)->
@@ -132,11 +165,6 @@ exports.run = (opt) ->
     server = http.createServer(onRequest).listen(3000, '0.0.0.0')
     console.log "server listening - http://0.0.0.0:3000"
 
-    ## start renderer
-    if opt.prerender
-      console.log 'initializing render'.magenta
-      render.init cache, opt
-
     autoBuild() if opt.autobuild
 
 
@@ -144,12 +172,12 @@ exports.run = (opt) ->
   build.buildDir opt.clientSource, opt, cache, (err)->
     return cli.fatal err if err?
 
+    serializeCache()
+
     if opt.gzip
       build.gzip cache, gzip, startServe
     else
       startServe()
-
-
 
 
 watchRecursive = (path, clbk)->
@@ -176,3 +204,15 @@ mime = (filename)->
   for ext, type of mimetypes
     if parsed[1] == ext
       return type
+
+
+serializeCache =->
+  serial_cache = ''
+
+  for name, content of cache
+    serial_cache += name+'\n'
+    serial_cache += content+'\n'
+    serial_cache += '==========\n'
+
+  serial_cache += '===conf===\n'
+  serial_cache += JSON.stringify conf
