@@ -109,7 +109,7 @@ exports.run = (opt) ->
     watchRecursive opt.clientSource, (file)->
       console.log 'File change detected'.yellow
 
-      build.build [file, '/index.html'], opt, cache, (err)->
+      build.build [file], opt, cache, (err)->
         return console.log 'ERROR:'.red, err if err?
 
         if opt.gzip
