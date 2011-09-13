@@ -5,6 +5,7 @@ XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 fs = require 'fs'
 gzip = require 'gzip'
 contextify = require 'contextify'
+parseUrl = require('url').parse
 request = require 'request'
 
 #TODO set these
@@ -50,6 +51,8 @@ process.stdin.on 'end', ->
   window.setTimeout = setTimeout
   window.clearTimeout = clearTimeout
   window.localStorage = {}
+  window.location = parseUrl opt.clientUri+pathname
+  window.location.toString =-> opt.clientUri+pathname
 
   window.window = window.getGlobal()
 

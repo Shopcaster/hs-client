@@ -192,6 +192,7 @@ class hs.Template extends hs.EventEmitter
       meta.attr key, val
 
     this._meta.push meta
+    $('head').append meta
 
 
   _removeMeta: -> meta.remove() for meta in this._meta
