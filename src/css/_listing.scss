@@ -615,12 +615,30 @@
   width:320px;
   z-index:2;
 
+  background-color:#2E63A1;
+  border-color:#00306E;
   border-top:none;
   @include angled-top();
 
-  textarea, input[type=number]{
+
+  textarea, input[type=text], .photo-wrap{
     width:300px;
     margin:5px 5px;
+  }
+  .photo-wrap{
+    margin-left:12px;
+    color:#fff;
+
+    .file-placeholder{
+      display:block;
+      float:left;
+      margin-top:5px;
+    }
+  }
+  input[type=file]{
+    width:240px;
+    float:right;
+    color:#fff;
   }
 
   @include dark-button($blue - #444, '.submit');

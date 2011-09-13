@@ -23,7 +23,7 @@ class hs.t.NewListing extends hs.Template
   },{
     'name': 'photo',
     'type': 'file',
-    'placeholder': 'Image'
+    'placeholder': 'Photo:'
   },{
     'name': 'latitude',
     'type': 'hidden',

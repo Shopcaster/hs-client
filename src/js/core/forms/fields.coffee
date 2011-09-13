@@ -100,6 +100,10 @@ reg 'file', {
       attrs.type = 'file'
 
       op = '<div class="'+this.options.name+'-wrap field-wrap">'
+
+      if this.options.placeholder?
+        op += '<span class="file-placeholder">'+this.options.placeholder+'</span>'
+
       op += '<input '
       for key, val of attrs
         op += "#{key}='#{val}' "
