@@ -97,10 +97,12 @@ class hs.t.Listing extends hs.Template
     this.model.relatedOffers (offers) =>
       this.offersTmpl offers, listing: this.model
 
-    this.meta property: 'og:title', content: 'Listing at Hipsell'
+    this.meta property: 'og:title', content: 'Listing on Hipsell'
     this.meta property: 'og:type', content: 'product'
     this.meta property: 'og:url', content: window.location.toString()
     this.meta property: 'og:site_name', content: 'Hipsell'
+    this.meta property: 'og:image', content: "#{conf.serverUri}/#{this.model.photo}"
+    this.meta property: 'og:description', content: this.model.description
     this.meta property: 'fb:app_id', content: '110693249023137'
 
 
