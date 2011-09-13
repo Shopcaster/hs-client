@@ -25,7 +25,8 @@
         text-decoration:none;
     }
     input[type=button]:active#{$class}, input[type=submit]:active#{$class},
-    .button:active#{$class}{
+    .button:active#{$class}, input[type=button].open#{$class},
+    input[type=submit].open#{$class}, .button.open#{$class}{
         border:1px solid $color - #333;
         @include gradient($color + #111, $color + #222);
         @include rounded();
@@ -58,7 +59,8 @@
         text-decoration:none;
     }
     input[type=button]:active, input[type=submit]:active, .button:active,
-    input[type=button].active, input[type=submit].active, .button.active{
+    input[type=button].active, input[type=submit].active, .button.active,
+    input[type=button].open, input[type=submit].open, .button.open{
         border:1px solid $color - #444;
         @include box-shadow((inset 0 0px 2px $color - #444));
         @include gradient($color - #080808, $color + #040404);
