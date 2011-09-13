@@ -19,7 +19,6 @@ class hs.t.AvatarSetting extends hs.Template
         <input type="file" name="avatar" />
         <input type="hidden" name="email" />
         <input type="hidden" name="password" />
-        <input type="hidden" name="return" />
         <span class="confirm">saved</span>
       </form>
     </span>
@@ -31,12 +30,11 @@ class hs.t.AvatarSetting extends hs.Template
   }]
 
   postRender:->
-    this.$('form').attr 'action', "#{conf.serverUri}/iapi/avatar"
+    this.$('form').attr 'action', "#{conf.serverUri}/iapi/avatar?return=#{encodeURIComponent(document.location.href)}"
 
     user = zz.auth.curUser()
     this.$('[name=email]').val user.email
     this.$('[name=password]').val user.password
-    this.$('[name=return]').val document.location.href
 
     avatar = zz.models.User.prototype.getAvatarUrl.call zz.auth.curUser(), 75
     this.$('.current').attr 'src', avatar
