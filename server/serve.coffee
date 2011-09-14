@@ -51,7 +51,7 @@ doRender = (res, pathname, clbk)->
   render.stdout.on 'data', (data)-> buffer += data
 
   render.stderr.setEncoding 'utf8'
-  render.stderr.on 'data', (data)-> process.stderr.write data.red
+  render.stderr.on 'data', (data)-> process.stderr.write data.yellow
 
 
   setTimeout ->
@@ -59,8 +59,8 @@ doRender = (res, pathname, clbk)->
       killed = true
       render.kill()
 
-      console.log ('GET 500 '+pathname).red
-      console.log 'Timeout while rendering. Current content:\n'.red
+      console.log 'Timeout while rendering '+pathname
+      console.log 'Streamed so far:'.red
       console.log buffer
 
       return clbk('timeout')

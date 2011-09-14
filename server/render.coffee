@@ -8,6 +8,8 @@ contextify = require 'contextify'
 parseUrl = require('url').parse
 request = require 'request'
 
+console.error 1
+
 #TODO set these
 cache = {}
 opt = null
@@ -19,8 +21,11 @@ process.stdin.on 'data', (chunk)-> buffer += chunk
 
 process.stdin.resume()
 
+console.error 2
 
 process.stdin.on 'end', ->
+
+  console.error 3
 
   for chunk in buffer.split '==========\n'
     chunk = chunk.split('\n')
@@ -34,6 +39,8 @@ process.stdin.on 'end', ->
 
   files = null
 
+  console.error 4
+
   window = jsdom cache['/index.html'], null,
     features:
       FetchExternalResources: false
@@ -41,6 +48,9 @@ process.stdin.on 'end', ->
       MutationEvents: false
 
   window = window.createWindow()
+
+  console.error 5
+
 
   window.route = false
   window.conf = opt
@@ -56,6 +66,9 @@ process.stdin.on 'end', ->
 
   window.window = window.getGlobal()
 
+  console.error 6
+
+
   files = new depends.Files()
 
   files.js = {}
@@ -63,8 +76,14 @@ process.stdin.on 'end', ->
     if /\.js$/.test(file) and file != '/main.js'
       files.js[file] = content
 
+  console.error 7
+
+
   request url: "#{opt.serverUri}/api-library.js", (err, res, body)=>
     return throw err if err?
+
+    console.error 8
+
 
     try
       window.run body, "#{opt.serverUri}/api-library.js"
@@ -72,6 +91,8 @@ process.stdin.on 'end', ->
       console.error 'Error in zz:'.red
       console.error e.stack
       process.exit()
+
+    console.error 9
 
     window.alert = window.console.log = window.console.error = ->
       # uncomment for logging
@@ -82,20 +103,29 @@ process.stdin.on 'end', ->
       cur = window
       cur = cur[split.shift()] ||= {} while split.length
 
+    console.error 10
+
     for mod in files.dependsOn 'hs.urls'
       file = files.rawMap[mod]
       content = files.js[file]
       window.run content, file
 
+    console.error 11
+
     html = '<!DOCTYPE html>'
 
     use = (Template, parsedUrl, status=200)->
+
+      console.error 13
+
       window.zz.waitThreshold = 0
 
       Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
         return e404() if not t?
 
         window.zz.on 'done', ->
+
+          console.error 14
           html += window.document.innerHTML
           if not process.stdout.write html
             process.stdout.on 'drain', ->
@@ -119,6 +149,8 @@ process.stdin.on 'end', ->
         View = window.hs.v[Tmpl.getName()] or window.hs.View
         window.hs.globalViews[i] = new View(window.hs.globalTemplates[i])
 
+
+      console.error 12
 
       try
         for exp, Template of window.hs.urls
