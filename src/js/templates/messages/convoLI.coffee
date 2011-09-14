@@ -31,8 +31,8 @@ class hs.t.ConvoLI extends hs.Template
 
 
   postRender: ->
-
     zz.data.listing this.model.listing, (listing) =>
+
       this.model.relatedMessages (messages) =>
 
         this.convoTmpl messages,
@@ -45,23 +45,21 @@ class hs.t.ConvoLI extends hs.Template
         this.messages.on 'add', _.bind(this.setMessage, this)
         this.setMessage this.messages[0], 0 if this.messages[0]?
 
-    if not this.model.creator?
-      this.userTmpl null, prependTo: '#'+this.id
+      if not this.model.creator?
+        this.userTmpl null, prependTo: '#'+this.id
 
-    else
-      zz.data.listing this.model.listing, (listing) =>
-        zz.data.user this.model.creator, (creator) =>
-          listing.offerForUser creator, (offer) =>
-            if offer?
-              this.offer = offer
-              this.offer.heat()
-              this.offer.on 'amount', _.bind(this.setAmount, this)
-              this.setAmount()
+      else
+        this.listing = listing
+        this.listing.heat()
+        this.listing.on 'sold', _.bind(this.setSold, this)
+        this.setSold()
 
-            this.listing = listing
-            this.listing.heat()
-            this.listing.on 'sold', _.bind(this.setSold, this)
-            this.setSold()
+
+  setOffer: (offer)->
+    this.offer = offer
+    this.offer.heat()
+    this.offer.on 'amount', _.bind(this.setAmount, this)
+    this.setAmount()
 
 
   preRemove: ->
@@ -69,7 +67,7 @@ class hs.t.ConvoLI extends hs.Template
     this.listing.freeze() if this.listing?
 
 
-  setCreator: ->
+  setCreator:->
     return if not this.model.creator?
 
     this.userTmpl.remove()
@@ -77,7 +75,7 @@ class hs.t.ConvoLI extends hs.Template
       this.userTmpl creator, prependTo: '#'+this.id
 
 
-  setAmount: ->
+  setAmount:->
     this.$('.offerbox').show()
     this.$('.offerbox > .offer').text "$#{this.offer.amount/100}"
 
@@ -89,10 +87,13 @@ class hs.t.ConvoLI extends hs.Template
     #    this.$('.message-preview .message').text ' | '+message.message.truncateWords(50)
     #    break
 
+    if msg.offer
+      zz.data.offer msg.offer, _.bind this.setOffer, this
+
     this.$('.message-preview .count').text "#{this.messages.length} messages"
 
 
-  setSold: ->
+  setSold:->
 
     if this.offer? and this.listing.sold and this.listing.accepted == this.offer._id
       this.$('.accept-offer').remove()
@@ -109,4 +110,3 @@ class hs.t.ConvoLI extends hs.Template
         <a class="accept-offer" href="javascript:;">Accept Offer</a>'
 
     this.emit 'domEventChanges'
-
