@@ -26,6 +26,6 @@
     "serverUri": "http://d.hipsell.com:8080",
     "clientUri": "http://d.hipsell.com",
     "concatJS": false,
-    "prerender": false
+    "prerender": true
   }
 }

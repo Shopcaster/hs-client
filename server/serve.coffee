@@ -35,7 +35,7 @@ mimetypes =
   css: 'text/css; charset=utf-8'
 
 
-doRender = (res, pathname)->
+doRender = (res, pathname, clbk)->
   buffer = ''
   done = false
   killed = false
@@ -58,12 +58,12 @@ doRender = (res, pathname)->
     if not done
       killed = true
       render.kill()
+
       console.log ('GET 500 '+pathname).red
-      console.log 'Timeout while rendering. Current content:'.red
+      console.log 'Timeout while rendering. Current content:\n'.red
       console.log buffer
-      res.writeHead 500, 'Content-Type': 'text/html; charset=utf-8'
-      res.write '<h1>500</h1><p>oops.</p>'
-      res.end()
+
+      return clbk('timeout')
   , renderTimeout
 
 
@@ -84,6 +84,7 @@ doRender = (res, pathname)->
         'Cache-Control': 'no-cache'
       res.write content
       res.end()
+      clbk()
 
     if opt.gzip and req.headers['accept-encoding']? and
         'gzip' in req.headers['accept-encoding'].split(',')
@@ -129,7 +130,9 @@ exports.run = (opt) ->
         serve pathname, req, res
 
       else if opt.prerender
-        doRender res, pathname
+        doRender res, pathname, (err)->
+          if err?
+            serve '/index.html', req, res
 
       else
         serve '/index.html', req, res

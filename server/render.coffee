@@ -97,7 +97,6 @@ process.stdin.on 'end', ->
 
         window.zz.on 'done', ->
           html += window.document.innerHTML
-
           if not process.stdout.write html
             process.stdout.on 'drain', ->
               process.stdout.end()
@@ -105,7 +104,6 @@ process.stdin.on 'end', ->
           else
               process.stdout.end()
               process.exit()
-
 
 
     e404 = -> use window.hs.t.e404, [], 404
