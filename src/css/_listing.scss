@@ -7,10 +7,6 @@
 
     width: $section_width - 20px !important;
     height: 450px;
-    @media only screen and (max-width: 480px) {
-      width: $mob_section_width - 20px !important;
-      height:auto;
-    }
 
     padding: 10px;
 
@@ -21,10 +17,6 @@
       /*can be removed later*/
       height:448px;
       width:448px;
-      @media only screen and (max-width: 480px) {
-        width: $mob_section_width - 20px !important;
-        height: auto;
-      }
 
       border:1px solid $grey;
     }
@@ -78,9 +70,6 @@
     position:relative;
 
     width:$section_width - 20;
-    @media only screen and (max-width: 480px) {
-      width: $mob_section_width - 20;
-    }
     height:450px;
     padding:10px;
 
@@ -112,9 +101,6 @@
           margin: 5px 0;
           height:60px;
           width:$section_width - 35;
-          @media only screen and (max-width: 480px) {
-            width: $mob_section_width - 35;
-          }
         }
 
         .cancel{
@@ -132,9 +118,6 @@
       bottom:10px;
       height:255px;
       width: $section_width - 20px;
-      @media only screen and (max-width: 480px) {
-        width: $mob_section_width - 20;
-      }
 
       font-size:12px;
 
@@ -188,9 +171,6 @@
         & > div{
           float:left;
           width: (($section_width - 20px)/3) - 33px;
-          @media only screen and (max-width: 480px) {
-            width: (($mob_section_width - 20px)/3) - 33px;
-          }
           height:55px;
           padding:10px;
           margin:0 5px;
@@ -218,17 +198,11 @@
           .title{
             font-size:18px;
             font-weight:bold;
-            @media only screen and (max-width: 480px) {
-              font-size:14px;
-            }
           }
           .value{
             margin:5px 0;
             font-size:28px;
             font-weight:bold;
-            @media only screen and (max-width: 480px) {
-              font-size:22px;
-            }
           }
           .details{
             font-size:16px;
@@ -242,9 +216,6 @@
         bottom:0px;left:0;
         z-index:2;
         width: $section_width - 20px;
-        @media only screen and (max-width: 480px) {
-          width: $mob_section_width - 20px;
-        }
 
         @include light-button($green);
 
@@ -271,9 +242,6 @@
           display:none;
 
           width: $section_width - 32px;
-          @media only screen and (max-width: 480px) {
-            width: $mob_section_width - 32px;
-          }
 
           border:1px solid $grey - #222;
           background-color:$grey;
@@ -288,9 +256,6 @@
             float:left;
 
             width:$section_width - 135px;
-            @media only screen and (max-width: 480px) {
-              width: $mob_section_width - 135px;
-            }
           }
           .submit{
             width:77px !important;
@@ -327,9 +292,6 @@
         float:left;
 
         width:$section_width - 125px;
-        @media only screen and (max-width: 480px) {
-          width:$mob_section_width - 125px;
-        }
       }
       .submit{
         width:77px !important;
@@ -417,9 +379,6 @@
           margin-bottom:10px;
           z-index:2;
           width:$section_width - 50px;
-          @media only screen and (max-width: 480px) {
-            width:$mob_section_width - 50px;
-          }
 
           border:none;
           background-color:$white;
@@ -428,9 +387,6 @@
 
           input, .field-wrap{
             width:$section_width - 175px;
-            @media only screen and (max-width: 480px) {
-              width:$mob_section_width - 175px;
-            }
           }
 
           .question{
@@ -445,18 +401,12 @@
               float:right;
               margin:2px 0 0;
               width:$section_width - 100px;
-              @media only screen and (max-width: 480px) {
-                width:$mob_section_width - 100px;
-              }
             }
 
             .field-wrap{
               margin: 2px 0 5px;
               float:right;
               width:$section_width - 70px;
-              @media only screen and (max-width: 480px) {
-                width:$mob_section_width - 70px;
-              }
             }
 
             .cancel{
