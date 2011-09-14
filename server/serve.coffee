@@ -59,7 +59,7 @@ doRender = (res, pathname, clbk)->
       killed = true
       render.kill()
 
-      console.log 'Timeout while rendering '+pathname
+      console.log ('Timeout while rendering '+pathname).red
       console.log 'Streamed so far:'.red
       console.log buffer
 

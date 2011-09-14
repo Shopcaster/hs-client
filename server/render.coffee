@@ -123,16 +123,22 @@ process.stdin.on 'end', ->
       Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
         return e404() if not t?
 
+        console.error 14
+
         window.zz.on 'done', ->
 
-          console.error 14
+          console.error 15
           html += window.document.innerHTML
           if not process.stdout.write html
             process.stdout.on 'drain', ->
               process.stdout.end()
+
+              console.error 16
               process.exit()
           else
               process.stdout.end()
+
+              console.error 16
               process.exit()
 
 
