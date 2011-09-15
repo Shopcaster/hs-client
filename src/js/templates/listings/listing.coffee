@@ -18,17 +18,17 @@ class hs.t.Listing extends hs.Template
   appendTo: '#main'
 
   template: -> """
-    <div class="listing clearfix">
+    <div itemscope class="listing clearfix">
 
       <div class="section-left">
-        <div id="listing-image"><img></div>
+        <div id="listing-image"><img itemprop="image"></div>
       </div>
 
       <div class="section-right">
         <div id="listing-details">
           <div id="listing-creator"></div>
           <span class="status">Available</span>
-          <div id="listing-description"></div>
+          <div id="listing-description" itemprop="description"></div>
           <div class="listing-edit-description"></div>
 
           <div class="bottom">

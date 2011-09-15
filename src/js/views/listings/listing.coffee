@@ -26,9 +26,9 @@ class hs.v.Listing extends hs.View
         allowTransparency='true'>
       </iframe>"
 
-    this.template.$('#listing-social .goog').html '
-      <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-      <g:plusone size="medium" count="false"></g:plusone>'
+    gapi.plusone.render this.template.$('#listing-social .goog')[0],
+      size: 'medium'
+      annotation: 'none'
 
     hs.geo.get => (position) ->
       this.lat ?= position.coords.latitude

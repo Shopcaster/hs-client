@@ -33,6 +33,8 @@ process.stdin.on 'end', ->
     else
       opt = JSON.parse chunk
 
+  opt._render = true
+
   files = null
 
   window = jsdom cache['/index.html'], null,
