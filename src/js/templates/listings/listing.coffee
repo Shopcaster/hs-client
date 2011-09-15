@@ -211,32 +211,6 @@ class hs.t.Listing extends hs.Template
     this.meta property: 'og:latitude', content: lat
     this.meta property: 'og:longitude', content: lng
 
-    hs.geo.get => this.updateLocation.apply(this, arguments)
-
-
-  updateLocation: (position) ->
-    this.lat ?= position.coords.latitude
-    this.lng ?= position.coords.longitude
-
-    if this.model.location?
-      listingLoc = new LatLon this.model.location[0], this.model.location[1]
-    else
-      listingLoc = new LatLon this.model.latitude, this.model.longitude
-
-    userLoc = new LatLon this.lat, this.lng
-
-    dist = parseFloat userLoc.distanceTo listingLoc
-    brng = userLoc.bearingTo listingLoc
-
-    direction = brng.degreesToDirection()
-
-    if dist < 1
-      distStr = Math.round(dist*1000)+' metres'
-    else
-      distStr = Math.round(dist*100)/100+' km'
-
-    this.$('#listing-loc-diff').html "Roughly #{distStr} #{direction} of you &ndash; "
-
 
   setAccepted: -> this.setStatus()
   setSold: -> this.setStatus()

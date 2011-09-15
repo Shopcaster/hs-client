@@ -29,3 +29,26 @@ class hs.v.Listing extends hs.View
     this.template.$('#listing-social .goog').html '
       <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
       <g:plusone size="medium" count="false"></g:plusone>'
+
+    hs.geo.get => (position) ->
+      this.lat ?= position.coords.latitude
+      this.lng ?= position.coords.longitude
+
+      if this.template.model.location?
+        listingLoc = new LatLon this.template.model.location[0], this.template.model.location[1]
+      else
+        listingLoc = new LatLon this.template.model.latitude, this.template.model.longitude
+
+      userLoc = new LatLon this.lat, this.lng
+
+      dist = parseFloat userLoc.distanceTo listingLoc
+      brng = userLoc.bearingTo listingLoc
+
+      direction = brng.degreesToDirection()
+
+      if dist < 1
+        distStr = Math.round(dist*1000)+' metres'
+      else
+        distStr = Math.round(dist*100)/100+' km'
+
+      this.template.$('#listing-loc-diff').html "Roughly #{distStr} #{direction} of you &ndash; "

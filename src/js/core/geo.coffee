@@ -61,36 +61,28 @@ hs._ipgeo =
     # bother worrying about that callback.
 
     # Fire the JSONP
-    s = navigator.geolocation._req = document.createElement('script')
-    s.src = 'http://freegeoip.net/json/?callback=hs._ipgeo._pclbk'
-    document.getElementsByTagName('head')[0].appendChild(s)
+    $.getJSON 'http://freegeoip.net/json/?callback=?', (data) ->
+      # Update the cache
+      navigator.geolocation._cache =
+        timestamp: new Date()
+        coords:
+          # Set lat/long
+          latitude: parseFloat data.latitude
+          longitude: parseFloat data.longitude
+          # Make up an accuracy
+          accuracy: 10 * 1000 # 10 km seems ok?
 
-  # The JSONP callback function
-  _pclbk: (data) ->
-    # Update the cache
-    navigator.geolocation._cache =
-      timestamp: new Date()
-      coords:
-        # Set lat/long
-        latitude: parseFloat data.latitude
-        longitude: parseFloat data.longitude
-        # Make up an accuracy
-        accuracy: 10 * 1000 # 10 km seems ok?
+          # Unfortunately, we only have access to lat/long, so we
+          # have to set the other fields to null to conform to the
+          # spec.
+          altitude: null
+          altitudeAccuracy: null
+          heading: null
+          speed: null
 
-        # Unfortunately, we only have access to lat/long, so we
-        # have to set the other fields to null to conform to the
-        # spec.
-        altitude: null
-        altitudeAccuracy: null
-        heading: null
-        speed: null
-
-    # Remove the JSONP script from the DOM
-    document.getElementsByTagName('head')[0].removeChild(navigator.geolocation._req)
-
-    # Fire all the callbacks
-    for clbk in navigator.geolocation._callbacks
-      clbk(navigator.geolocation._cache)
+      # Fire all the callbacks
+      for clbk in navigator.geolocation._callbacks
+        clbk(navigator.geolocation._cache)
 
 # If the native geolocation API isn't available, patch in IP geo in
 # its place.
