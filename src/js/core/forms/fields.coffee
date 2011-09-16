@@ -108,6 +108,7 @@ reg 'file', {
       for key, val of attrs
         op += "#{key}='#{val}' "
       op += '/>'
+      op += '<div style="clear:both;"></div>'
       op += '</div>'
 
       return op

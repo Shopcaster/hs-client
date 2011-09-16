@@ -23,6 +23,8 @@ hs.urls =
   '^/(item/\\d+)': hs.t.Listing
   '^/(user/[\\da-f]+)': hs.t.Profile
 
+  '^/new-listing': hs.t.NewListingDone
+
   #settings
   '^/settings/name': hs.t.NameSetting
   '^/settings/password': hs.t.PasswordSetting

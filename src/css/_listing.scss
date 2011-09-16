@@ -290,6 +290,7 @@
 
       input, .field-wrap{
         float:left;
+        margin-bottom:5px;
 
         width:$section_width - 125px;
       }
@@ -571,7 +572,7 @@
   @include angled-top();
 
 
-  textarea, input[type=text], .photo-wrap{
+  textarea, input[type=text], input[type=email], input[type=password], .photo-wrap{
     width:300px;
     margin:5px 5px;
   }

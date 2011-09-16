@@ -11,9 +11,41 @@ class hs.v.NewListing extends hs.View
   focusSelector: '.new-listing'
 
 
-  submit:->
-    console.log 'submitting'
+  validateDescription:(clbk)->
+    desc = this.get 'description'
+    if not desc? or desc.length <= 0
+      clbk false, 'Gotta have a description'
 
+    else if desc.length > 200
+      clbk false, 'There is a 200 char cap'
+
+    else
+      clbk true
+
+
+  validatePrice:(clbk)->
+    price = this.get 'price'
+    if not price? or price.length <= 0
+      clbk false, 'How much?'
+
+    else if price.length > 6
+      clbk false, 'Really? Over 6 figures?'
+
+    else
+      clbk true
+
+
+  validatePhoto:(clbk)->
+    photo = this.get 'photo'
+    if not photo? or photo.length <= 0
+      clbk false, 'Show me the money'
+
+    else
+      clbk true
+
+
+
+  submit:->
     user = zz.auth.curUser()
 
     this.template.$('input[name=email]').val user.email

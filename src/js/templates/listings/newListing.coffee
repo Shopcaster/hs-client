@@ -4,6 +4,22 @@ dep.require 'hs.t.mods.form'
 dep.require 'hs.t.mods.authForm'
 
 dep.provide 'hs.t.NewListing'
+dep.provide 'hs.t.NewListingDone'
+
+
+class hs.t.NewListingDone extends hs.Template
+  preRender:->
+    q = document.location.href.split '?'
+    return console.error('GET args required') if not q.length > 1
+
+    q = q[1].split '&'
+
+    args = {}
+    for item in q
+      item = item.split '='
+      args[item[0]] = item[1]
+
+    hs.goTo args.success
 
 
 class hs.t.NewListing extends hs.Template
@@ -15,7 +31,7 @@ class hs.t.NewListing extends hs.Template
   fields: [{
     'name': 'description',
     'type': 'textarea',
-    'placeholder': 'Description'
+    'placeholder': 'Description',
   },{
     'name': 'price',
     'type': 'text',
@@ -33,8 +49,10 @@ class hs.t.NewListing extends hs.Template
   },]
 
 
-  template: -> """
-    <form action="#{conf.serverUri}/iapi/listing"
+  template: ->
+    redirect = encodeURIComponent "#{conf.clientUri}/new-listing"
+    """
+    <form action="#{conf.serverUri}/iapi/listing?redirect=#{redirect}"
           method="POST"
           enctype="multipart/form-data"
           class="dialog">
@@ -43,6 +61,7 @@ class hs.t.NewListing extends hs.Template
       <div style="clear:both;"></div>
     </form>
     """
+
 
 
 hs.t.mods.form hs.t.NewListing
