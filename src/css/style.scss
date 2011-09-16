@@ -17,13 +17,9 @@ $gorange: #EF4136;
 $layout_width: 960px;
 $section_width: ($layout_width - 15)/2;
 
-$mob_layout_width: 320px;
-$mob_section_width: $mob_layout_width - 20px;
-
 @import "reset";
 @import "mixins";
 @import "generic";
-@import "video";
 
 html, body{
   background-image:url(../img/bg.jpg);
@@ -44,9 +40,6 @@ body{
 .width{
   position:relative;
   width: $layout_width;
-  @media only screen and (max-width: 480px) {
-    width: $mob_layout_width;
-  }
 }
 
 #top-bar{
@@ -57,12 +50,6 @@ body{
   text-align:left;
   color:$grey;
   background-color:$black + #333;
-
-  @media only screen and (max-width: 480px) {
-    .tagline{
-      display:none;
-    }
-  }
 
   .tagline{
     padding:5px;
@@ -75,10 +62,6 @@ body{
     float:right;
     color:$grey;
     padding:5px;
-
-    @media only screen and (max-width: 480px) {
-      padding-right:10px;
-    }
   }
 
   .login, .logout{
@@ -142,6 +125,8 @@ body{
   @include gradient($headerBack + #111, $headerBack - #111);
   @include box-shadow(0 1px 2px $black + #666);
 
+  z-index:3;
+
   .width{position:relative;}
 
   #logo{
@@ -163,9 +148,6 @@ body{
     position:absolute;
     top:0;right:0;
     width: $layout_width - 200px;
-    @media only screen and (max-width: 480px) {
-      width: $mob_layout_width - 200px;
-    }
 
     li{
       height:100%;
@@ -198,29 +180,14 @@ body{
     width: $section_width;
     float:left;
     clear:left;
-
-    @media screen and (max-width: 480px) {
-      width: $mob_section_width;
-      float:none;
-      margin:10px auto;
-    }
   }
   .section-right{
     width: $section_width;
     float:right;
     clear:right;
-
-    @media screen and (max-width: 480px) {
-      width: $mob_section_width;
-      float:none;
-      margin:10px auto;
-    }
   }
   .flatpage{
     width:700px;
-    @media screen and (max-width: 480px) {
-      width: $mob_section_width;
-    }
 
     margin:10px auto;
 
@@ -328,10 +295,6 @@ body{
       $width: $layout_width;
       width: $width;
 
-      @media screen and (max-width: 480px) {
-        display:none;
-      }
-
       margin:10px auto 15px;
 
       .left{
@@ -388,11 +351,6 @@ body{
         margin:10px 30px 10px 0;
 
         &:nth-child(3n){margin-right:0;}
-
-
-        @media screen and (max-width: 480px) {
-          margin: 10px;
-        }
       }
     }
   }
@@ -512,5 +470,4 @@ body{
 @import "listing";
 @import "user";
 
-@import "mobile/landscape";
 @import "mobile/retna";

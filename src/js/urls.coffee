@@ -1,8 +1,10 @@
 
 dep.require 'hs'
+dep.require 'hs.globalTemplates'
 dep.require 'hs.t.e404'
 dep.require 'hs.t.Home'
 dep.require 'hs.t.Listing'
+dep.require 'hs.t.NewListingDone'
 dep.require 'hs.t.Profile'
 dep.require 'hs.t.About'
 dep.require 'hs.t.HowItWorks'
@@ -21,6 +23,8 @@ hs.urls =
   '^/(listing/\\d+)': hs.t.Listing
   '^/(item/\\d+)': hs.t.Listing
   '^/(user/[\\da-f]+)': hs.t.Profile
+
+  '^/new-listing': hs.t.NewListingDone
 
   #settings
   '^/settings/name': hs.t.NameSetting

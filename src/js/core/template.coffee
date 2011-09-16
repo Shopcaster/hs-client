@@ -186,12 +186,13 @@ class hs.Template extends hs.EventEmitter
 
 
   meta: (props) ->
-    meta = $ '<meta>'
+    $('meta[property="'+props.property+'"]').remove() if props.property?
 
-    for key, val of props
-      meta.attr key, val
+    meta = $ '<meta>'
+    meta.attr key, val for key, val of props
 
     this._meta.push meta
+    $('head').append meta
 
 
   _removeMeta: -> meta.remove() for meta in this._meta

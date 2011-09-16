@@ -31,7 +31,7 @@ class hs.v.MessageForm extends hs.View
     this.template.$('[type=submit]')
       .after('<a href="javascript:;" class="cancel">cancel</a>')
 
-    this.registerDomEvents()
+    this.registerDomEvents true
 
 
   removePublicly: ->
@@ -47,6 +47,7 @@ class hs.v.MessageForm extends hs.View
 
 
   createMessage: (convo, clbk) ->
+    console.log 'createMessage'
     zz.create.message
       message: this.get('message')
       convo: convo._id

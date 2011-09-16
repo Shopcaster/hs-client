@@ -52,7 +52,7 @@ display = (Template, url, parsedUrl)->
       mp_note: 'User was routed to '+url
     ]
 
-goTo = hs.goTo = (url) ->
+goTo = (url) ->
 
   for exp, Template of hs.urls
     parsed = new RegExp(exp).exec(url)
@@ -86,7 +86,7 @@ $('a').live 'click', (e) ->
   e.preventDefault();
   load location
 
-load = (url) ->
+load = hs.goTo = (url) ->
   if not window.history.pushState?
     return document.location = url
 

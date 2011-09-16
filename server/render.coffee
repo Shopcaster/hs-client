@@ -1,65 +1,42 @@
 
-require 'colors'
 depends = require 'depends'
 jsdom  = require("jsdom").jsdom
 XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 fs = require 'fs'
 gzip = require 'gzip'
 contextify = require 'contextify'
+parseUrl = require('url').parse
 request = require 'request'
 
-# module vars
-#dep = null
-cache = null
+
+#TODO set these
+cache = {}
 opt = null
-files = null
+pathname = process.argv[2]
+buffer = ''
 
-zzContext = {}
-zzContext.XMLHttpRequest = XMLHttpRequest
-zzContext.XMLHttpRequest.prototype.withCredentials = true
-zzContext.addEventListener = ->
-zzContext.setTimeout = setTimeout
-zzContext.clearTimeout = clearTimeout
-zzContext.console = console
-zzContext.localStorage = {}
+process.stdin.setEncoding 'utf8'
+process.stdin.on 'data', (chunk)-> buffer += chunk
 
-zzContext.Date = Date
-zzContext.String = String
-zzContext.Number = Number
-
-zzContext = contextify zzContext
-zzContext.window = zzContext.getGlobal()
-
-exports.ready = false
-
-# initialize
-exports.init = (c, o, clbk)->
-  cache = c
-  opt = o
-
-  files = new depends.Files()
-
-  files.js = {}
-  for file, content of cache
-    if /\.js$/.test(file) and file != '/main.js'
-      files.js[file] = content
-
-  request url: "#{opt.serverUri}/api-library.js", (err, res, body)=>
-    return clbk err if err?
-
-    try
-      zzContext.run body, "#{opt.serverUri}/api-library.js"
-    catch e
-      console.log 'Error in zz:'.red
-      console.log e.stack
-
-    exports.ready = true
-    clbk?()
+process.stdin.resume()
 
 
+process.stdin.on 'end', ->
 
-#route
-exports.route = (pathname, clbk) ->
+  for chunk in buffer.split '==========\n'
+    chunk = chunk.split('\n')
+    top = chunk.shift()
+    chunk = chunk.join '\n'
+
+    if top != '===conf==='
+      cache[top] = chunk
+    else
+      opt = JSON.parse chunk
+
+  opt._render = true
+
+  files = null
+
   window = jsdom cache['/index.html'], null,
     features:
       FetchExternalResources: false
@@ -71,62 +48,95 @@ exports.route = (pathname, clbk) ->
   window.route = false
   window.conf = opt
 
-  window.Date = Date
-  window.String = String
-  window.Number = Number
+  window.XMLHttpRequest = XMLHttpRequest
+  window.XMLHttpRequest.prototype.withCredentials = true
+  window.addEventListener = ->
+  window.setTimeout = setTimeout
+  window.clearTimeout = clearTimeout
+  window.localStorage = {}
+  window.location = parseUrl opt.clientUri+pathname
+  window.location.toString =-> opt.clientUri+pathname
 
-  window.console.log = window.console.error = ->
-    args = Array.prototype.slice.call arguments, 0
-    args.unshift 'client:'.blue
-    console.log.apply console, args
+  window.window = window.getGlobal()
 
-  window.alert = window.console.log
+  files = new depends.Files()
 
-  window.zz = zzContext.zz
+  files.js = {}
+  for file, content of cache
+    if /\.js$/.test(file) and file != '/main.js'
+      files.js[file] = content
 
-  window.dep = require: (->), provide: (mod)->
-    split = mod.split('.')
-    cur = window
-    cur = cur[split.shift()] ||= {} while split.length
+  request url: "#{opt.serverUri}/api-library.js", (err, res, body)=>
+    return throw err if err?
 
-  for mod in files.dependsOn 'hs.urls'
-    file = files.rawMap[mod]
-    content = files.js[file]
-    window.run content, file
+    try
+      window.run body, "#{opt.serverUri}/api-library.js"
+    catch e
+      console.error 'Error in zz:'.red
+      console.error e.stack
+      process.exit()
+
+    window.alert = window.console.log = window.console.error = ->
+      # uncomment for logging
+      #console.error.apply console, arguments
+
+    window.dep = require: (->), provide: (mod)->
+      split = mod.split('.')
+      cur = window
+      cur = cur[split.shift()] ||= {} while split.length
+
+    for mod in files.dependsOn 'hs.urls'
+      file = files.rawMap[mod]
+      content = files.js[file]
+      window.run content, file
+
+    html = '<!DOCTYPE html>'
+
+    use = (Template, parsedUrl, status=200)->
+
+      window.zz.waitThreshold = 0
+
+      Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
+        return e404() if not t?
+
+        window.zz.ping()
+        window.zz.on 'done', ->
+
+          html += window.document.innerHTML
+          if not process.stdout.write html
+            process.stdout.on 'drain', ->
+              process.stdout.end()
+              process.exit()
+          else
+              process.stdout.end()
+              process.exit()
 
 
-  html = '<!DOCTYPE html>'
+    e404 = -> use window.hs.t.e404, [], 404
 
-  use = (Template, parsedUrl, status=200)->
-    Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
-      return e404() if not t?
+    window.$ -> window.zz.init ->
+      window.hs.globalViews = []
+      user = window.zz.auth.curUser()
 
-      html += window.document.innerHTML
+      for Tmpl, i in window.hs.globalTemplates
+        window.hs.globalTemplates[i] = new Tmpl()
+        window.hs.globalTemplates[i].authChange null, user
 
-      clbk status, html
+        View = window.hs.v[Tmpl.getName()] or window.hs.View
+        window.hs.globalViews[i] = new View(window.hs.globalTemplates[i])
 
-      window.hs = null
-      window.close()
+      try
+        for exp, Template of window.hs.urls
 
-      #t.remove()
-      #t = null
-      #dep.context.$('#main').html('')
+          parsed = new RegExp(exp).exec(pathname)
+          if parsed?
+            break if Template.prototype.authRequired
 
-  e404 = -> use window.hs.t.e404, [], 404
+            use Template, parsed.slice(1)
+            return
 
-  try
-    for exp, Template of window.hs.urls
+        e404()
 
-      parsed = new RegExp(exp).exec(pathname)
-      if parsed?
-        break if Template.prototype.authRequired
+      catch e
+        console.error ('error '+ (e.stack || e)).red
 
-        use Template, parsed.slice(1)
-        return
-
-    e404()
-
-  catch e
-    console.log ('error '+ (e.stack || e)).red
-    #html += window.document.innerHTML
-    clbk 500, 'we suck'

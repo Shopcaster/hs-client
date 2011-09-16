@@ -23,6 +23,10 @@ hs.v.mods.authForm = (View) ->
 
   old_submit = View.prototype._submit
   View.prototype._submit = (e) ->
+    if this.skipSubmit
+      this.skipSubmit = false
+      return
+
     e?.preventDefault()
 
     this._validate (valid) =>

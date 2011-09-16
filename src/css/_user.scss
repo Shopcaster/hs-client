@@ -87,9 +87,6 @@
 
   .user-info {
     width: $section_width - 20px !important;
-    @media only screen and (max-width: 480px) {
-      width: $mob_section_width - 20px !important;
-    }
 
     padding: 10px;
 

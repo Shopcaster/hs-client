@@ -18,17 +18,17 @@ class hs.t.Listing extends hs.Template
   appendTo: '#main'
 
   template: -> """
-    <div class="listing clearfix">
+    <div itemscope class="listing clearfix">
 
       <div class="section-left">
-        <div id="listing-image"><img></div>
+        <div id="listing-image"><img itemprop="image"></div>
       </div>
 
       <div class="section-right">
         <div id="listing-details">
           <div id="listing-creator"></div>
           <span class="status">Available</span>
-          <div id="listing-description"></div>
+          <div id="listing-description" itemprop="description"></div>
           <div class="listing-edit-description"></div>
 
           <div class="bottom">
@@ -97,10 +97,12 @@ class hs.t.Listing extends hs.Template
     this.model.relatedOffers (offers) =>
       this.offersTmpl offers, listing: this.model
 
-    this.meta property: 'og:title', content: 'Listing at Hipsell'
+    this.meta property: 'og:title', content: 'Listing on Hipsell'
     this.meta property: 'og:type', content: 'product'
-    this.meta property: 'og:url', content: window.location.toString() if window.location?
+    this.meta property: 'og:url', content: window.location.toString()
     this.meta property: 'og:site_name', content: 'Hipsell'
+    this.meta property: 'og:image', content: "#{conf.serverUri}/#{this.model.photo}"
+    this.meta property: 'og:description', content: this.model.description
     this.meta property: 'fb:app_id', content: '110693249023137'
 
 
@@ -157,7 +159,6 @@ class hs.t.Listing extends hs.Template
 
 
   setCreator: () ->
-    console.log 'setcreator'
     zz.data.user this.model, 'creator', (creator) =>
       this.userTmpl creator
 
@@ -209,32 +210,6 @@ class hs.t.Listing extends hs.Template
 
     this.meta property: 'og:latitude', content: lat
     this.meta property: 'og:longitude', content: lng
-
-    hs.geo.get => this.updateLocation.apply(this, arguments)
-
-
-  updateLocation: (position) ->
-    this.lat ?= position.coords.latitude
-    this.lng ?= position.coords.longitude
-
-    if this.model.location?
-      listingLoc = new LatLon this.model.location[0], this.model.location[1]
-    else
-      listingLoc = new LatLon this.model.latitude, this.model.longitude
-
-    userLoc = new LatLon this.lat, this.lng
-
-    dist = parseFloat userLoc.distanceTo listingLoc
-    brng = userLoc.bearingTo listingLoc
-
-    direction = brng.degreesToDirection()
-
-    if dist < 1
-      distStr = Math.round(dist*1000)+' metres'
-    else
-      distStr = Math.round(dist*100)/100+' km'
-
-    this.$('#listing-loc-diff').html "Roughly #{distStr} #{direction} of you &ndash; "
 
 
   setAccepted: -> this.setStatus()
