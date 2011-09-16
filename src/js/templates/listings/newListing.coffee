@@ -25,11 +25,12 @@ class hs.t.NewListing extends hs.Template
   },{
     'name': 'price',
     'type': 'text',
-    'placeholder': 'Price'
+    'placeholder': 'Price',
+    'maxlength': 6,
   },{
     'name': 'photo',
     'type': 'file',
-    'placeholder': 'Photo:'
+    'placeholder': 'Photo:',
   },{
     'name': 'latitude',
     'type': 'hidden',
@@ -48,6 +49,7 @@ class hs.t.NewListing extends hs.Template
           class="dialog">
       <span class="formFields"></span>
       <input type="submit" class="submit" value="Submit" />
+      <div class="loading">Uploading...</div>
       <div style="clear:both;"></div>
     </form>
     """

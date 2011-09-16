@@ -576,6 +576,20 @@
     width:300px;
     margin:5px 5px;
   }
+
+  .counter{
+    text-align:right;
+    margin-right:5px;
+    margin-bottom:-5px;
+
+    color:$white;
+    font-size:12px;
+
+    &.under{
+      color:$red;
+    }
+  }
+
   .photo-wrap{
     margin-left:12px;
     color:#fff;
@@ -586,9 +600,17 @@
     }
   }
   input[type=file]{
-    width:240px;
+    width:245px;
     float:right;
     color:#fff;
+  }
+
+  .loading{
+    display:none;
+    float:right;
+    margin:10px 5px 0 0;
+
+    color:$white;
   }
 
   @include dark-button($blue - #444, '.submit');

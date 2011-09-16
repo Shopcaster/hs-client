@@ -29,6 +29,20 @@ class hs.v.NewListing extends hs.View
   focusSelector: '.new-listing'
 
 
+  init:->
+    this.template.$('.description-wrap').prepend '<div class="counter">0</div>'
+    this.template.$('[name=description]').bind 'change keyup', =>
+      len = this.template.$('[name=description]').val().length
+      counter = this.template.$('.counter')
+      count = 200 - len
+      counter.text count
+
+      if count < 0
+        counter.addClass 'under'
+      else
+        counter.removeClass 'under'
+
+
   validateDescription:(clbk)->
     desc = this.get 'description'
     if not desc? or desc.length <= 0
@@ -48,6 +62,9 @@ class hs.v.NewListing extends hs.View
 
     else if price.length > 6
       clbk false, 'Really? Over 6 figures?'
+
+    else if not /[\d\.]+/.test price
+      clbk false, 'Numbers only, please'
 
     else
       clbk true
@@ -73,6 +90,9 @@ class hs.v.NewListing extends hs.View
 
       this.template.$('input[name=latitude]').val position.coords.latitude
       this.template.$('input[name=longitude]').val position.coords.longitude
+
+      this.template.$('.loading').show()
+      zz.emit 'waiting'
 
       this.browserSubmit()
 
