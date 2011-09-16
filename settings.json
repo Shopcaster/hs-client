@@ -16,11 +16,13 @@
   "production": {
     "serverUri": "http://hipsell.com:8080",
     "clientUri": "http://hipsell.com",
-    "analytics": true
+    "analytics": true,
+    "prerender": true
   },
   "staging": {
     "serverUri": "http://s.hipsell.com:8080",
-    "clientUri": "http://s.hipsell.com"
+    "clientUri": "http://s.hipsell.com",
+    "prerender": true
   },
   "development": {
     "serverUri": "http://d.hipsell.com:8080",
