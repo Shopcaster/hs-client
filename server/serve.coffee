@@ -40,7 +40,7 @@ doRender = (res, pathname, clbk)->
   done = false
   killed = false
 
-  render = spawn 'coffee', [__dirname+'/render.coffee', pathname]
+  render = spawn 'node', [__dirname+'/render-stub.js', pathname]
 
   if not render.stdin.write serial_cache
     render.stdin.on 'drain', -> render.stdin.end()
