@@ -5,6 +5,24 @@ dep.require 'hs.v.mods.form'
 dep.require 'hs.v.mods.authForm'
 
 dep.provide 'hs.v.NewListing'
+dep.provide 'hs.v.NewListingDone'
+
+
+class hs.v.NewListingDone extends hs.View
+  init:->
+    q = document.location.href.split '?'
+    return console.error('GET args required') if not q.length > 1
+
+    q = q[1].split '&'
+
+    args = {}
+    for item in q
+      item = item.split '='
+      args[item[0]] = decodeURIComponent item[1]
+
+    console.log 'goTo', args.success
+    hs.goTo '/'+args.success
+
 
 class hs.v.NewListing extends hs.View
 

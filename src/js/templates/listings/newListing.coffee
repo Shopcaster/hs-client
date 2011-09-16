@@ -8,18 +8,8 @@ dep.provide 'hs.t.NewListingDone'
 
 
 class hs.t.NewListingDone extends hs.Template
-  preRender:->
-    q = document.location.href.split '?'
-    return console.error('GET args required') if not q.length > 1
-
-    q = q[1].split '&'
-
-    args = {}
-    for item in q
-      item = item.split '='
-      args[item[0]] = item[1]
-
-    hs.goTo args.success
+  appendTo: '#main'
+  template:->''
 
 
 class hs.t.NewListing extends hs.Template
@@ -52,7 +42,7 @@ class hs.t.NewListing extends hs.Template
   template: ->
     redirect = encodeURIComponent "#{conf.clientUri}/new-listing"
     """
-    <form action="#{conf.serverUri}/iapi/listing?redirect=#{redirect}"
+    <form action="#{conf.serverUri}/iapi/listing?return=#{redirect}"
           method="POST"
           enctype="multipart/form-data"
           class="dialog">
