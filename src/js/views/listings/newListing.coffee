@@ -5,10 +5,42 @@ dep.require 'hs.v.mods.form'
 dep.require 'hs.v.mods.authForm'
 
 dep.provide 'hs.v.NewListing'
+dep.provide 'hs.v.NewListingDone'
+
+
+class hs.v.NewListingDone extends hs.View
+  init:->
+    q = document.location.href.split '?'
+    return console.error('GET args required') if not q.length > 1
+
+    q = q[1].split '&'
+
+    args = {}
+    for item in q
+      item = item.split '='
+      args[item[0]] = decodeURIComponent item[1]
+
+    console.log 'goTo', args.success
+    hs.goTo '/'+args.success
+
 
 class hs.v.NewListing extends hs.View
 
   focusSelector: '.new-listing'
+
+
+  init:->
+    this.template.$('.description-wrap').prepend '<div class="counter">0</div>'
+    this.template.$('[name=description]').bind 'change keyup', =>
+      len = this.template.$('[name=description]').val().length
+      counter = this.template.$('.counter')
+      count = 200 - len
+      counter.text count
+
+      if count < 0
+        counter.addClass 'under'
+      else
+        counter.removeClass 'under'
 
 
   validateDescription:(clbk)->
@@ -30,6 +62,9 @@ class hs.v.NewListing extends hs.View
 
     else if price.length > 6
       clbk false, 'Really? Over 6 figures?'
+
+    else if not /[\d\.]+/.test price
+      clbk false, 'Numbers only, please'
 
     else
       clbk true
@@ -55,6 +90,9 @@ class hs.v.NewListing extends hs.View
 
       this.template.$('input[name=latitude]').val position.coords.latitude
       this.template.$('input[name=longitude]').val position.coords.longitude
+
+      this.template.$('.loading').show()
+      zz.emit 'waiting'
 
       this.browserSubmit()
 
