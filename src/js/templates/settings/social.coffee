@@ -63,10 +63,8 @@ class hs.t.SocialSetting extends hs.Template
     else
       this.$('#unlinked').append($(this._buildu('twitter', 'Twitter')))
 
-    ###
     if user.linkedin
       this.$('#linked').append($(this._buildl(user.linkedin, 'linkedin', 'Facebook')))
     else
       this.$('#unlinked').append($(this._buildu('linkedin', 'LinkedIn')))
-    ###
 
