@@ -45,35 +45,3 @@ class hs.t.Home extends hs.Template
     listing:
       class: hs.t.ListingLI
 
-
-  postRender: ->
-    this.rendered = 0
-    this.scrollTrigger = 0
-    this.scrollDone = false
-
-    this.renderListings()
-
-
-  renderListings: ->
-    run = false
-    hs.geo.get (pos)=>
-      return if run
-      run = true
-
-      zz.data.listing.query('location-near')
-        .params(latitude: pos.coords.latitude, longitude: pos.coords.longitude)
-        .limit(24)
-        .offset(this.rendered)
-        .run (listings)=>
-          if listings.length < 24
-            this.scrollDone = true
-
-          for listingID in listings
-            this.rendered++
-            holder = $('<div class="listing-wrap"></div>')
-            this.$('.listings').append holder
-            do (listingID, holder)=> zz.data.listing listingID, (listing)=>
-              tmpl = this.listingTmpl listing, appendTo: holder
-              scroll = tmpl.el.offset().top
-              this.scrollTrigger = scroll if scroll > this.scrollTrigger
-
