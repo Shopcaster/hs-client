@@ -10,7 +10,7 @@ class hs.t.MessageForm extends hs.Template
   template: -> """
     <form>
       <span class="formFields"></span>
-      <input type="submit" class="submit" value="Submit" />
+      <input type="submit" class="submit" value="Send" />
       <div style="clear:both;"></div>
     </form>
     """

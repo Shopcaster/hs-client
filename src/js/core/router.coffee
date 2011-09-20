@@ -177,22 +177,23 @@ $ -> zz.init ->
   , 1000
 
   # Watch on the visibility API's.
-  # Webkit
-  document.addEventListener 'webkitvisibilitychange', ->
-    if document.webkitHidden
-      ignoreActivity = true
-      zz.presence.away()
-    else
-      ignoreActivity = false
-      zz.presence.online()
-  # IE (WTF, IE supports something before Firefox?)
-  document.addEventListener 'msvisibilitychange', ->
-    if document.msHidden
-      ignoreActivity = true
-      zz.presence.away()
-    else
-      ignoreActivity = false
-      zz.presence.online()
+  if document.addEventListener? #IE8 -.-
+    # Webkit
+    document.addEventListener 'webkitvisibilitychange', ->
+      if document.webkitHidden
+        ignoreActivity = true
+        zz.presence.away()
+      else
+        ignoreActivity = false
+        zz.presence.online()
+    # IE (WTF, IE supports something before Firefox?)
+    document.addEventListener 'msvisibilitychange', ->
+      if document.msHidden
+        ignoreActivity = true
+        zz.presence.away()
+      else
+        ignoreActivity = false
+        zz.presence.online()
 
 # Initialize global views
 $ -> zz.init ->
