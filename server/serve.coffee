@@ -6,6 +6,7 @@ fs = require 'fs'
 cli = require 'cli'
 spawn = require('child_process').spawn
 require 'colors'
+special = require './special/route'
 
 build = require './build'
 
@@ -125,6 +126,9 @@ exports.run = (opt) ->
 
   onRequest = (req, res) ->
     pathname = opt.pathname = url.parse(req.url).pathname
+
+    return if special.isHandling req, res, pathname
+
     try
       if (opt.gzip and gzip[pathname]?) or cache[pathname]?
         serve pathname, req, res

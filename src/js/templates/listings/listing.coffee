@@ -33,8 +33,8 @@ class hs.t.Listing extends hs.Template
 
           <div class="bottom">
             <div id="listing-social">
-              <div class="twitter"></div>
-              <div class="fb"></div>
+              <a href="javascript:;" class="twitter"><img src="/img/tweet.png"/></a>
+              <a href="javascript:;" class="fb"><img src="/img/like.png"/></a>
               <div class="goog"></div>
             </div>
 
