@@ -165,7 +165,7 @@ exports.run = (opt) ->
     #serve
     ##TODO: make this configurable.
     server = http.createServer(onRequest).listen(3000, '0.0.0.0')
-    console.log "server listening - http://0.0.0.0:3000"
+    console.log "server listening - #{opt.clientUri}"
 
     autoBuild() if opt.autobuild
 

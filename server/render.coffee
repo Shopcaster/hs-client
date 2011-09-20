@@ -92,27 +92,28 @@ process.stdin.on 'end', ->
 
     html = '<!DOCTYPE html>'
 
+
+    finish = (content)->
+      if not process.stdout.write content
+        process.stdout.on 'drain', ->
+          process.stdout.end()
+          process.exit()
+      else
+          process.stdout.end()
+          process.exit()
+
+
     use = (Template, parsedUrl, status=200)->
 
       window.zz.waitThreshold = 0
 
-      Template.get pathname: pathname, parsedUrl: parsedUrl, (t) ->
-        return e404() if not t?
+      Template.get pathname: pathname, parsedUrl: parsedUrl, ->
 
         window.zz.ping()
         window.zz.on 'done', ->
-
           html += window.document.innerHTML
-          if not process.stdout.write html
-            process.stdout.on 'drain', ->
-              process.stdout.end()
-              process.exit()
-          else
-              process.stdout.end()
-              process.exit()
+          finish html
 
-
-    e404 = -> use window.hs.t.e404, [], 404
 
     window.$ -> window.zz.init ->
       window.hs.globalViews = []
@@ -130,12 +131,15 @@ process.stdin.on 'end', ->
 
           parsed = new RegExp(exp).exec(pathname)
           if parsed?
-            break if Template.prototype.authRequired
+            if Template.prototype.authRequired
+              html += window.document.innerHTML
+              finish html
+              return
 
             use Template, parsed.slice(1)
             return
 
-        e404()
+        use window.hs.t.e404, [], 404
 
       catch e
         console.error ('error '+ (e.stack || e)).red
