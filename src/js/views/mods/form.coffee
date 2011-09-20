@@ -30,7 +30,7 @@ hs.v.mods.form = (View) ->
     return if `'placeholder' in document.createElement('input')`
 
     for name, field of this.fields then do (field)->
-      el = field.template.el
+      el = field.template.$('input, textarea')
       return if not placeholder = el.attr('placeholder')
 
       el.val placeholder
@@ -45,8 +45,6 @@ hs.v.mods.form = (View) ->
         if el.val() == ''
           el.val placeholder
           el.addClass 'placeheld'
-
-
 
 
   View.prototype._validate = (clbk) ->
