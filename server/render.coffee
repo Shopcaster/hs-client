@@ -72,7 +72,7 @@ process.stdin.on 'end', ->
     try
       window.run body, "#{opt.serverUri}/api-library.js"
     catch e
-      console.error 'Error in zz:'.red
+      console.error 'Error in zz:'
       console.error e.stack
       process.exit()
 
